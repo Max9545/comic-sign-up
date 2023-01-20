@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Comic } from './interface'
+import testComedians from './testData'
 
 function App() {
+
+  const [comedians, setComedians] = useState<Comic[] | []>([])
+
+  useEffect(() => {
+ 
+      setComedians(testComedians.testData)
+    
+  },[])
+
   return (
     <div className="App">
       <header className="App-header">
@@ -16,7 +27,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Comedian Sign Up
         </a>
       </header>
     </div>
