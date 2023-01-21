@@ -26,7 +26,8 @@ const testComedians = {testData: [ {
     sunday: ['6:00', '8:30']
   },
   payAmount: 0
-}]}
+}
+]}
 
 
 

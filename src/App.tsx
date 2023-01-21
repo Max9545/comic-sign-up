@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Comic } from './interface'
 import testComedians from './testData'
+import Week from './Week'
 
 function App() {
 
@@ -17,7 +18,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={'https://media.glassdoor.com/sqll/508212/comedy-works-squarelogo-1432024977251.png'} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -29,6 +30,7 @@ function App() {
         >
           Comedian Sign Up
         </a>
+        <Week clubType='Downtown'/>
       </header>
     </div>
   );
