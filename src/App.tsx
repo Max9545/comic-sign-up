@@ -8,7 +8,7 @@ import Week from './Week'
 function App() {
 
   const [comedians, setComedians] = useState<Comic[] | []>([])
-  const [clubType, setClubType] = useState()
+  const [clubType, setClubType] = useState('')
 
   useEffect(() => {
  
@@ -23,17 +23,12 @@ function App() {
         <p>
           Let us know your availability
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <p>
           Comedian Sign Up
-        </a>
-        <button onClick={() => setClubType('Downtown')}>Down Town</button>
-        <button onClick={() => setClubType('South')}>South Club</button>
-        <Week clubType={clubType}/>
+        </p>
+        {/* <button onClick={() => setClubType('Downtown')}>Down Town</button>
+        <button onClick={() => setClubType('South')}>South Club</button> */}
+        <Week clubType={'Downtown'}/>
       </header>
     </div>
   );
