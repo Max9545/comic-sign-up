@@ -11,10 +11,9 @@ function Show(day: string, time: string) {
   }, [])
 
   return (
-    <>
-      <p>{`${day.day}!! at ${day.time}`}</p>
-      <button onClick={() => setAvailability(!availability)}></button>
-    </>
+    <div classname='show'>
+      <button onClick={() => setAvailability(!availability)} className={`${availability}`}>{`${day.day}!! at ${day.time}`}</button>
+    </div>
   )
 
 }
