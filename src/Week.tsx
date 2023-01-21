@@ -1,7 +1,9 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-function Week(clubType: string) {
+
+
+function Week(clubType: string, weeklyShowTimes: []) {
 
   const [days, setDays] = useState([])
   const [club, setClub] = useState()
@@ -10,9 +12,14 @@ function Week(clubType: string) {
     setClub(clubType.clubType)
   })
 
+  useEffect(() => {
+    setDays()
+  })
+
     return (
       <>
         <h1>{`Sign up for ${club}`}</h1>
+
       </>
     )
 }

@@ -31,4 +31,7 @@ const testComedians = {testData: [ {
 
 
 
-export default testComedians
+
+exports.default = {}
+// export default testComedians
+// export default testDay
