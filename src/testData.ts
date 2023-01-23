@@ -39,7 +39,22 @@ const testData = {testComedians: [ {
   },
   {day:'wednesday', 
   time:'7:30',
-  pay:40}
+  pay:40},
+  {day:'thursday', 
+  time:'8:00',
+  pay:50},
+  {day:'friday', 
+  time:'7:30',
+  pay:40},
+  {day:'saturday', 
+  time:'7:30',
+  pay:60},
+  {day:'saturday', 
+  time:'9:00',
+  pay:70},
+  {day:'sunday', 
+  time:'7:30',
+  pay:30}
 ]}
 
 

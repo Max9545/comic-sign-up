@@ -30,9 +30,16 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
     setComedian(props.availableComedian)
   })
 
+  useEffect(() => {
+    setAvailability(availability)
+  },[])
+
   return (
     <div className='show'>
-      <button onClick={() => setAvailability(!availability)} className={`${availability}`}>{`${dayOfWeek}!! at ${showTime}`}</button>
+      <button onClick={() => {
+        event?.preventDefault()
+        setAvailability(!availability)}} 
+        className={`${availability}`}>{`${dayOfWeek}!! at ${showTime}`}</button>
     </div>
   )
 

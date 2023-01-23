@@ -7,7 +7,6 @@ import Show from './Show'
 function Week(props: {comedian: object, weeklyShowTimes: []}) {
 
   const [shows, setShows] = useState([])
-  // const [club, setClub] = useState()
   const [currentComedian, setCurrentComedian] = useState()
   const [club, setClub] = useState('shows, first choose a club')
   const [showComponents, setShowComponents] = useState()
@@ -35,7 +34,6 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
               </div>
           
       })
-      console.log(showElements)
       setShowComponents(showElements)
     }
   }, [shows, club, currentComedian])
@@ -43,7 +41,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log(document.getElementsByClassName('show'))
+    console.log(showComponents.map(show => show.props.children.props))
   }
 
     return (
@@ -52,11 +50,13 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
         <button onClick={() => setClub('Downtown')}>Down Town</button>
         <button onClick={() => setClub('South')}>South Club</button>
         <form className='show-container' 
-        
-        // onSubmit={submitForm}
+              onSubmit={submitForm}
         >
           {showComponents}
-          <button className='submit'>Submit Availability</button>
+          <button 
+            type="submit" 
+            className='submit-btn'
+          >Submit Availability</button>
         </form>
       </>
     )
