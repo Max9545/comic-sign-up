@@ -14,37 +14,23 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
 
   useEffect(() => {
     setCurrentComedian(props.comedian)
-  })
+  },[currentComedian])
 
   useEffect(() => {
     setShows(props.weeklyShowTimes)
-  })
+  },[club])
 
   useEffect(() => {
-    // const newShows = props.weeklyShowTimes.map(show => { 
-      // return <div>
-                // <Show
-                //     day={show.day}
-                //     time={show.time}
-                // />
-            {/* </div> */}
     
-    // const completedShows = newShows.map(show => { 
-    //   return <>
-    //             <Show
-    //                 day={show.day}
-    //                 time={show.time}
-    //             />
-    //         </>
-        
-    // })
     if(shows) {
-      console.log(props.weeklyShowTimes)
       const showElements = props.weeklyShowTimes.map(show => { 
         return <div>
                   <Show
                       day={show.day}
                       time={show.time}
+                      pay={show.pay}
+                      currentClub={club}
+                      availableComedian={currentComedian}
                   />
               </div>
           
@@ -52,12 +38,13 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
       console.log(showElements)
       setShowComponents(showElements)
     }
-  }, [shows])
+  }, [shows, club])
 
-  // const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault()
-  //   console.log(document.getElementsByClassName('show'))
-  // }
+
+  const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    console.log(document.getElementsByClassName('show'))
+  }
 
     return (
       <>
@@ -68,56 +55,6 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
         
         // onSubmit={submitForm}
         >
-          {/* <Show 
-          day='monday' 
-          time='7:30'
-          pay={25}
-          />
-          <Show 
-          day='tuesday' 
-          time='6:00'
-          pay={40}
-          />
-          <Show 
-          day='tuesday' 
-          time='8:00'
-          pay={40}
-          />
-          <Show 
-          day='wednesday' 
-          time='7:30'
-          pay={40}
-          />
-          <Show 
-          day='thursday' 
-          time='7:30'
-          pay={50}
-          />
-          <Show 
-          day='friday' 
-          time='7:30'
-          pay={50}
-          />
-          <Show 
-          day='friday' 
-          time='9:30'
-          pay={40}
-          />
-          <Show 
-          day='saturday' 
-          time='7:30'
-          pay={40}
-          />
-          <Show 
-          day='saturday' 
-          time='9:30'
-          pay={50}
-          />
-          <Show 
-          day='sunday' 
-          time='5:30'
-          pay={60}
-          /> */}
           {showComponents}
           <button className='submit'>Submit Availability</button>
         </form>
