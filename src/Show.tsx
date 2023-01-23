@@ -1,34 +1,34 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-function Show(day: string, time: string, pay: string, currentClub: string, comedian: string) {
+function Show(props: {day: string, time: string, pay: string, currentClub: string, availableComedian: string}) {
 
   const [availability, setAvailability] = useState(false)
   const [dayOfWeek, setDayOfWeek] = useState('')
   const [showTime, setShowTime] = useState()
   const [showPay, setShowPay] = useState()
   const [clubToSign, setClubToSign] = useState()
-  const [availableComedian, setAvailableComedian] = useState(comedian)
+  const [comedian, setComedian] = useState()
 
   useEffect(() => {
-    setDayOfWeek(day.day)
+    setDayOfWeek(props.day)
   },[])
 
   useEffect(() => {
-    setShowTime(day.time)
+    setShowTime(props.time)
   },[])
 
   useEffect(() => {
-    setShowPay(day.pay)
+    setShowPay(props.pay)
   },[])
 
   useEffect(() => {
-    setClubToSign(day.currentClub)
-  },[])
+    setClubToSign(props.currentClub)
+  },[props.currentClub])
 
-  // useEffect(() => {
-  //   setAvailableComedian(availableComedian)
-  // },[])
+  useEffect(() => {
+    setComedian(props.availableComedian)
+  })
 
   return (
     <div className='show'>

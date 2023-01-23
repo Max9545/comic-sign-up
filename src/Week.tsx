@@ -18,7 +18,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
 
   useEffect(() => {
     setShows(props.weeklyShowTimes)
-  },[club])
+  },[club, shows])
 
   useEffect(() => {
     
@@ -38,7 +38,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
       console.log(showElements)
       setShowComponents(showElements)
     }
-  }, [shows, club])
+  }, [shows, club, currentComedian])
 
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
