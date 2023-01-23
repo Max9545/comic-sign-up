@@ -1,4 +1,4 @@
-const testComedians = {testData: [ {
+const testData = {testComedians: [ {
   name: "Max B",
   id: 1,
   type: 'Not Famous',
@@ -26,12 +26,24 @@ const testComedians = {testData: [ {
     sunday: ['6:00', '8:30']
   },
   payAmount: 0
-}
+}], testShows: [
+  {day:'monday', 
+  time:'7:30',
+  pay:25},
+  {day:'tuesday', 
+  time:'6:00',
+  pay:40}, {
+  day:'tuesday', 
+  time:'8:00',
+  pay:40 
+  },
+  {day:'wednesday', 
+  time:'7:30',
+  pay:40}
 ]}
 
 
 
-
 // exports.default = {}
-export default testComedians
+export default testData
 // export default testDay

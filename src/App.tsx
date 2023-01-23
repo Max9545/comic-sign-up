@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { Comic } from './interface'
-import testComedians from './testData'
+import testData from './testData'
 import Week from './Week'
 
 function App() {
 
-  const [comedians, setComedians] = useState<Comic[] | []>([])
-  const [clubType, setClubType] = useState('')
+  const [comedian, setComedian] = useState<Comic[] | []>([])
+  const [shows, setShows] = useState([])
 
   useEffect(() => {
  
-      setComedians(testComedians.testData)
+      setComedian(testData.testComedians[0])
     
   },[])
+
+  useEffect(() => {
+ 
+    setShows(testData.testShows)
+  
+},[])  
 
   return (
     <div className="App">
@@ -26,9 +31,7 @@ function App() {
         <p>
           Comedian Sign Up
         </p>
-        {/* <button onClick={() => setClubType('Downtown')}>Down Town</button>
-        <button onClick={() => setClubType('South')}>South Club</button> */}
-        <Week clubType={'Downtown'}/>
+        <Week comedian={comedian} weeklyShowTimes={shows}/>
       </header>
     </div>
   );
