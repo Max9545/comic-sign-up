@@ -4,12 +4,12 @@ const testData = {testComedians: [ {
   type: 'Not Famous',
   showsAvailable: {
     monday: [],
-    tuesday: ['8:00'],
+    tuesday: [],
     wednesday: [],
-    thursday: ['8:00'], 
-    friday: ['7:30', '9:45'],
-    saturday: ['7:30', '9:45'],
-    sunday: ['6:00']
+    thursday: [], 
+    friday: [],
+    saturday: [],
+    sunday: []
   },
   payAmount: 0
 },{
