@@ -5,6 +5,7 @@ import { Comic } from './interface'
 import testData from './testData'
 import Week from './Week'
 import Admin from './Admin'
+import { parse } from 'path';
 
 function App() {
 
@@ -15,9 +16,17 @@ function App() {
       setComedian(testData.testComedians[0])
   },[])
 
-//   useEffect(() => {
-//     setShows(testData.testShows)
-// },[])  
+  useEffect(() => {
+    
+    const toParse = localStorage.getItem('new-week')
+    const parsedData = JSON.parse(toParse)
+
+    console.log(parsedData)
+    // console.log(toParse, parsedData)
+    setShows(parsedData)
+    // .then(console.log(week))
+    // .then(data => setShows(data))
+},[])  
 
   return (
     <div className="App">

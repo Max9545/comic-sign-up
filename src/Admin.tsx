@@ -11,6 +11,11 @@ function Admin(props: {shows, setShows}) {
     newSchedule.push(data)
   }
 
+  const buildWeek = () => {
+    // props.setShows(newSchedule)
+    localStorage.setItem('new-week', JSON.stringify(newSchedule))
+  }
+
   return (
     <div>
       <p>Build Week</p>
@@ -28,7 +33,7 @@ function Admin(props: {shows, setShows}) {
         <label>Add Show</label>
         <input type='submit'/>
       </form>
-      {props.setShows && <button onClick={() => props.setShows(newSchedule)}>Build Week</button>}
+      {props.setShows && <button onClick={buildWeek}>Build Week</button>}
     </div>
   )
 }
