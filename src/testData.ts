@@ -2,7 +2,8 @@ const testData = {testComedians: [ {
   name: "Max B",
   id: 1,
   type: 'Not Famous',
-  showsAvailable: {
+  payAmount: 0,
+  showsAvailableDowntown: {
     monday: [],
     tuesday: [],
     wednesday: [],
@@ -11,7 +12,15 @@ const testData = {testComedians: [ {
     saturday: [],
     sunday: []
   },
-  payAmount: 0
+  showsAvailableSouth: {
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [], 
+    friday: [],
+    saturday: [],
+    sunday: []
+  },
 },{
   name: "Norm",
   id: 2,
