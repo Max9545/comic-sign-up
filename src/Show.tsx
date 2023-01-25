@@ -34,20 +34,22 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
     setAvailability(availability)
   },[])
 
+  // handlePay() = () => {
+
+  // }
+
   const handleClick = () => {
       setAvailability(!availability)
-      comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(showTime)
+      if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(showTime)) {
+        comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(showTime)
+      }
+      
       event?.preventDefault()
   }
 
   return (
     <div className='show'>
-      <button onClick={() => {
-        // setAvailability(!availability)
-        // comedian.showsAvailable[dayOfWeek].push(showTime)
-        // event?.preventDefault()
-        handleClick()
-      }} 
+      <button onClick={() => {handleClick()}} 
         className={`${availability}`}>{`${dayOfWeek}!! at ${showTime}`}</button>
     </div>
   )
