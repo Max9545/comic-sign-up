@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import Week from './Week'
 
-function Admin(shows, setShows) {
+function Admin(props: {shows, setShows}) {
 
   const [newSchedule, setNewSchedule] = useState([])
 
@@ -14,6 +15,10 @@ function Admin(shows, setShows) {
     <div>
       <p>Build Week</p>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <select {...register('club')}>
+          <option value='downtown'>Downtown</option>
+          <option value='south'>South</option>
+        </select>
         <label>Day</label>
         <input {...register('day')} />
         <label>Time</label>
@@ -23,6 +28,7 @@ function Admin(shows, setShows) {
         <label>Add Show</label>
         <input type='submit'/>
       </form>
+      {props.setShows && <button onClick={() => props.setShows(newSchedule)}>Build Week</button>}
     </div>
   )
 }
