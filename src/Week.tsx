@@ -43,6 +43,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
     event.preventDefault()
     localStorage.setItem(JSON.stringify(`${currentComedian.name}'s availability`), JSON.stringify(currentComedian))
     console.log(showComponents.map(show => show))
+    
     // showComponents.forEach(show => show.availability = false)
   }
 
