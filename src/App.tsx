@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { Route, Redirect, Routes } from 'react-router-dom'
 import './App.css';
 import { Comic } from './interface'
 import testData from './testData'
@@ -14,15 +11,11 @@ function App() {
   const [shows, setShows] = useState([])
 
   useEffect(() => {
- 
       setComedian(testData.testComedians[0])
-    
   },[])
 
   useEffect(() => {
- 
     setShows(testData.testShows)
-  
 },[])  
 
   return (
@@ -35,10 +28,15 @@ function App() {
         <p>
           Comedian Sign Up
         </p>
-        <Week 
-        comedian={comedian} 
-        weeklyShowTimes={shows}
+        <Routes>
+          <Route exact path='/' element={<Week 
+          comedian={comedian} 
+          weeklyShowTimes={shows}
+          />}
         />
+          
+        </Routes>
+        
       </header>
     </div>
   );
