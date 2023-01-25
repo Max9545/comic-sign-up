@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Redirect, Routes } from 'react-router-dom'
+import { Route, Redirect, Routes, Link } from 'react-router-dom'
 import './App.css';
 import { Comic } from './interface'
 import testData from './testData'
 import Week from './Week'
+import Admin from './Admin'
 
 function App() {
 
@@ -14,9 +15,9 @@ function App() {
       setComedian(testData.testComedians[0])
   },[])
 
-  useEffect(() => {
-    setShows(testData.testShows)
-},[])  
+//   useEffect(() => {
+//     setShows(testData.testShows)
+// },[])  
 
   return (
     <div className="App">
@@ -28,13 +29,17 @@ function App() {
         <p>
           Comedian Sign Up
         </p>
+        <Link to={'admin'}>Administration</Link>
         <Routes>
-          <Route exact path='/' element={<Week 
-          comedian={comedian} 
-          weeklyShowTimes={shows}
-          />}
-        />
-          
+          <Route exact path='/' element={
+            <Week 
+            comedian={comedian} 
+            weeklyShowTimes={shows}/>}
+            />
+          <Route exact path='/admin' element={
+            <Admin shows={shows} setShows={setShows}/>
+          }/>
+
         </Routes>
         
       </header>
