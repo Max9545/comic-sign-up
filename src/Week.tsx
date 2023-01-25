@@ -42,7 +42,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const schedule = showComponents.map(show => show.props.children.props)
-    console.log()
+    console.log(schedule)
     localStorage.setItem(JSON.stringify(`${currentComedian.name}'s availability`), JSON.stringify(schedule))
   }
 

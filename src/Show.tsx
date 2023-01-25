@@ -38,7 +38,9 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
     <div className='show'>
       <button onClick={() => {
         event?.preventDefault()
-        setAvailability(!availability)}} 
+        setAvailability(!availability)
+        // comedian[dayOfWeek].push(showTime)
+      }} 
         className={`${availability}`}>{`${dayOfWeek}!! at ${showTime}`}</button>
     </div>
   )
