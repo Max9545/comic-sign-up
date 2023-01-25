@@ -38,7 +38,7 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
     comedian.payAmount += showPay
   }
 
-  const handleClick = () => {
+  const handleClick = (event) => {
       setAvailability(!availability)
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(showTime)) {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(showTime)
@@ -50,7 +50,7 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
 
   return (
     <div className='show'>
-      <button onClick={() => {handleClick()}} 
+      <button onClick={() => {handleClick(event)}} 
         className={`${availability}`}>{`${dayOfWeek}!! at ${showTime}`}</button>
     </div>
   )

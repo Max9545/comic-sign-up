@@ -12,7 +12,8 @@ export interface Comic {
   name: string,
   id: number,
   type: string,
-  showsAvailable: Week,
+  showsAvailableDowntown: Week,
+  showsAvailableSouth: Week,
   payAmount: number
 }
 

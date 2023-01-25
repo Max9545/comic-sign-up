@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import './App.css';
 import { Comic } from './interface'
 import testData from './testData'
@@ -31,7 +35,10 @@ function App() {
         <p>
           Comedian Sign Up
         </p>
-        <Week comedian={comedian} weeklyShowTimes={shows}/>
+        <Week 
+        comedian={comedian} 
+        weeklyShowTimes={shows}
+        />
       </header>
     </div>
   );

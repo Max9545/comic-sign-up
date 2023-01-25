@@ -25,16 +25,25 @@ const testData = {testComedians: [ {
   name: "Norm",
   id: 2,
   type: 'Out of Town Pro',
-  showsAvailable: {
-    monday: ['8:00'],
+  payAmount: 0,
+  showsAvailableDowntown: {
+    monday: [],
     tuesday: [],
-    wednesday: ['8:00'],
+    wednesday: [],
     thursday: [], 
-    friday: ['9:45'],
-    saturday: ['7:30', '9:45'],
-    sunday: ['6:00', '8:30']
+    friday: [],
+    saturday: [],
+    sunday: []
   },
-  payAmount: 0
+  showsAvailableSouth: {
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [], 
+    friday: [],
+    saturday: [],
+    sunday: []
+  },
 }], testShows: [
   {day:'monday', 
   time:'7:30',
