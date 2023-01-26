@@ -8,7 +8,8 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
 
   const [shows, setShows] = useState([])
   const [currentComedian, setCurrentComedian] = useState()
-  const [club, setClub] = useState('shows, first choose a club')
+  // const [club, setClub] = useState('shows, first choose a club')
+  // const [club, setClub] = useState()
   const [showComponents, setShowComponents] = useState()
 
   useEffect(() => {
@@ -17,7 +18,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
 
   useEffect(() => {
     setShows(props.weeklyShowTimes)
-  },[club, shows])
+  },[shows])
 
   useEffect(() => {
     
@@ -28,7 +29,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
                       day={show.day}
                       time={show.time}
                       pay={show.pay}
-                      currentClub={club}
+                      currentClub={show.club}
                       availableComedian={currentComedian}
                   />
               </div>
@@ -36,22 +37,22 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
       })
       setShowComponents(showElements)
     }
-  }, [shows, club, currentComedian])
+  }, [shows, currentComedian])
 
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     localStorage.setItem(JSON.stringify(`${currentComedian.name}'s availability`), JSON.stringify(currentComedian))
     console.log(showComponents.map(show => show))
-    
+
     // showComponents.forEach(show => show.availability = false)
   }
 
     return (
       <>
-        <h1>{`Sign up for ${club}`}</h1>
-        <button onClick={() => setClub('Downtown')}>Down Town</button>
-        <button onClick={() => setClub('South')}>South Club</button>
+        {/* <h1>{`Sign up for ${club}`}</h1> */}
+        {/* <button onClick={() => setClub('Downtown')}>Down Town</button>
+        <button onClick={() => setClub('South')}>South Club</button> */}
         <form className='show-container' 
               onSubmit={submitForm}
         >

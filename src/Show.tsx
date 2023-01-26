@@ -52,7 +52,7 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
   return (
     <div className='show'>
       <button onClick={() => {handleClick(event)}} 
-        className={`${availability}`}>{`${dayOfWeek}!! at ${showTime}`}</button>
+        className={`${availability}`}>{`${dayOfWeek}!! at ${showTime} at the ${clubToSign} club`}</button>
     </div>
   )
 
