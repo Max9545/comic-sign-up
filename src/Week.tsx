@@ -22,7 +22,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
 
   useEffect(() => {
     
-    if(shows) {
+    if(shows.length > 0) {
       const showElements = props.weeklyShowTimes.map(show => { 
         return <div>
                   <Show
@@ -42,8 +42,9 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    console.log(currentComedian)
+
     localStorage.setItem(JSON.stringify(`${currentComedian.name}'s availability`), JSON.stringify(currentComedian))
-    console.log(showComponents.map(show => show))
 
     // showComponents.forEach(show => show.availability = false)
   }
