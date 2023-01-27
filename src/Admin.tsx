@@ -12,8 +12,9 @@ function Admin(props: {shows, setShows}) {
   }
 
   const buildWeek = () => {
-    // props.setShows(newSchedule)
+    props.setShows(newSchedule)
     localStorage.setItem('new-week', JSON.stringify(newSchedule))
+
   }
 
   return (
