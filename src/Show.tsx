@@ -35,7 +35,7 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
   },[])
 
   const handlePay = () => {
-    comedian.payAmount += showPay
+    comedian.payAmount += parseFloat(showPay)
   }
 
   const handleClick = (event) => {
