@@ -3,7 +3,7 @@ const testData = {testComedians: [ {
   id: 1,
   type: 'Not Famous',
   payAmount: 0,
-  showsAvailableDowntown: {
+  showsAvailabledowntown: {
     monday: [],
     tuesday: [],
     wednesday: [],
@@ -12,7 +12,7 @@ const testData = {testComedians: [ {
     saturday: [],
     sunday: []
   },
-  showsAvailableSouth: {
+  showsAvailablesouth: {
     monday: [],
     tuesday: [],
     wednesday: [],

@@ -11,7 +11,7 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
   const [comedian, setComedian] = useState()
 
   useEffect(() => {
-    setDayOfWeek(props.day)
+    setDayOfWeek(props.day.toLowerCase())
   },[])
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
 
   const handleClick = (event) => {
     event.preventDefault()
-    console.log(comedian)
+    console.log(comedian, clubToSign)
       setAvailability(!availability)
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(showTime)) {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(showTime)
