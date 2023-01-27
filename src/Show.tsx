@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-function Show(props: {day: string, time: string, pay: string, currentClub: string, availableComedian: string}) {
+function Show(props: {day: string, time: string, pay: string, currentClub: string, availableComedian: string, date: string}) {
 
   const [availability, setAvailability] = useState(false)
   const [dayOfWeek, setDayOfWeek] = useState()
@@ -9,6 +9,8 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
   const [showPay, setShowPay] = useState()
   const [clubToSign, setClubToSign] = useState()
   const [comedian, setComedian] = useState()
+  const [date, setDate] = useState()
+  const [headliner, setHeadliner] = useState()
 
   useEffect(() => {
     setDayOfWeek(props.day.toLowerCase())
@@ -34,6 +36,14 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
     setAvailability(availability)
   },[])
 
+  useEffect(() => {
+    setDate(props.date)
+  },[])
+
+  useEffect(() => {
+    setHeadliner(props.headliner)
+  })
+
   const handlePay = () => {
     comedian.payAmount += parseFloat(showPay)
   }
@@ -53,7 +63,7 @@ function Show(props: {day: string, time: string, pay: string, currentClub: strin
   return (
     <div className='show'>
       <button onClick={() => {handleClick(event)}} 
-        className={`${availability}`}>{`${dayOfWeek}!! at ${showTime} at the ${clubToSign} club`}</button>
+        className={`${availability}`}>{`${dayOfWeek} on ${date} at ${showTime} at the ${clubToSign} club for ${headliner}`}</button>
     </div>
   )
 

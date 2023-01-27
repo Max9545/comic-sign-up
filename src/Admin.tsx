@@ -28,6 +28,10 @@ function Admin(props: {shows, setShows}) {
         <input {...register('day')} />
         <label>Time</label>
         <input {...register('time')} />
+        <label>Date</label>
+        <input {...register('date')}/>
+        <label>Headliner</label>
+        <input {...register('headliner')}/>
         <label>Pay</label>
         <input {...register('pay')} />
         <label>Add Show</label>
