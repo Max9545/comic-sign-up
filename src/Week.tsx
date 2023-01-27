@@ -45,7 +45,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log(currentComedian)
-
+    // localStorage.removeItem(`${currentComedian.name}'s availability`)
     localStorage.setItem(JSON.stringify(`${currentComedian.name}'s availability`), JSON.stringify(currentComedian))
 
     // showComponents.forEach(show => show.availability = false)
@@ -53,9 +53,6 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
 
     return (
       <>
-        {/* <h1>{`Sign up for ${club}`}</h1> */}
-        {/* <button onClick={() => setClub('Downtown')}>Down Town</button>
-        <button onClick={() => setClub('South')}>South Club</button> */}
         <form className='show-container' 
               onSubmit={submitForm}
         >

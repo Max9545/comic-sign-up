@@ -5,7 +5,6 @@ import { Comic } from './interface'
 import testData from './testData'
 import Week from './Week'
 import Admin from './Admin'
-import { parse } from 'path';
 
 function App() {
 

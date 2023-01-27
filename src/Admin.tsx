@@ -20,7 +20,7 @@ function Admin(props: {shows, setShows}) {
   return (
     <div>
       <p>Build Week</p>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} value='Submit Show'>
         <select {...register('club')}>
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>
@@ -36,7 +36,7 @@ function Admin(props: {shows, setShows}) {
         <label>Pay</label>
         <input {...register('pay')} />
         <label>Add Show</label>
-        <input type='submit'/>
+        <input type='submit' value='Add Show'/>
       </form>
       {props.setShows && <button onClick={buildWeek}>Build Week</button>}
     </div>
