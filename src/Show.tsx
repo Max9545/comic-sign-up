@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-function Show(props: {day: string, time: string, pay: string, currentClub: string, availableComedian: string, date: string}) {
+function Show(props: {key: number, day: string, time: string, pay: string, currentClub: string, availableComedian: string, date: string}) {
 
   const [availability, setAvailability] = useState(false)
   const [dayOfWeek, setDayOfWeek] = useState()

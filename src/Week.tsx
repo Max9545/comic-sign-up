@@ -26,6 +26,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
       const showElements = props.weeklyShowTimes.map(show => { 
         return <div>
                   <Show
+                      key={Date.now()}
                       day={show.day}
                       time={show.time}
                       pay={show.pay}

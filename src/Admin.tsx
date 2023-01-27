@@ -10,7 +10,9 @@ function Admin(props: {shows, setShows}) {
   const { register, handleSubmit } = useForm()
 
   const onSubmit = data => {
-    newSchedule.push(data)
+    if (!newSchedule.map(show => show.key).includes(data.key)) {
+      newSchedule.push(data)
+    }
   }
 
   const buildWeek = () => {
@@ -22,6 +24,7 @@ function Admin(props: {shows, setShows}) {
   const displayPotentialShows = () => {
      setShowsToAdd(newSchedule.map(newShow => {
               return <Show
+                        key={Date.now()}
                         day={newShow.day}
                         time={newShow.time}
                         pay={newShow.pay}
