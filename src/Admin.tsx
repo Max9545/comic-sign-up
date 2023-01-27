@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Week from './Week'
+import Show from './Show' 
 
 function Admin(props: {shows, setShows}) {
 
   const [newSchedule, setNewSchedule] = useState([])
+  const [showsToAdd, setShowsToAdd] = useState([])
 
   const { register, handleSubmit } = useForm()
+
   const onSubmit = data => {
     newSchedule.push(data)
   }
@@ -16,6 +18,33 @@ function Admin(props: {shows, setShows}) {
     localStorage.setItem('new-week', JSON.stringify(newSchedule))
 
   }
+ 
+  const displayPotentialShows = () => {
+     setShowsToAdd(newSchedule.map(newShow => {
+              return <Show
+                        day={newShow.day}
+                        time={newShow.time}
+                        pay={newShow.pay}
+                        currentClub={newShow.club}
+                        availableComedian={{name: 'admin'}}
+                        date={newShow.date}
+                        headliner={newShow.headliner}
+                      />
+          }))
+  }
+  // useEffect(() => {
+    // setShowsToAdd(newSchedule.map(newShow => {
+    //   return <Show
+    //             day={newShow.day}
+    //             time={newShow.time}
+    //             pay={newShow.pay}
+    //             currentClub={newShow.club}
+    //             availableComedian={{name: 'admin'}}
+    //             date={newShow.date}
+    //             headliner={newShow.headliner}
+    //           />
+    // }))
+  // }, [newSchedule])
 
   return (
     <div>
@@ -36,9 +65,10 @@ function Admin(props: {shows, setShows}) {
         <label>Pay</label>
         <input {...register('pay')} />
         <label>Add Show</label>
-        <input type='submit' value='Add Show'/>
+        <input type='submit' value='Add Show' onClick={displayPotentialShows}/>
       </form>
       {props.setShows && <button onClick={buildWeek}>Build Week</button>}
+      {showsToAdd}
     </div>
   )
 }
