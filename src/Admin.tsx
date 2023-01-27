@@ -32,19 +32,6 @@ function Admin(props: {shows, setShows}) {
                       />
           }))
   }
-  // useEffect(() => {
-    // setShowsToAdd(newSchedule.map(newShow => {
-    //   return <Show
-    //             day={newShow.day}
-    //             time={newShow.time}
-    //             pay={newShow.pay}
-    //             currentClub={newShow.club}
-    //             availableComedian={{name: 'admin'}}
-    //             date={newShow.date}
-    //             headliner={newShow.headliner}
-    //           />
-    // }))
-  // }, [newSchedule])
 
   return (
     <div>
