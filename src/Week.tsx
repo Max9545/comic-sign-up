@@ -27,6 +27,7 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
         return <div>
                   <Show
                       key={Date.now()}
+                      id={`${newShow.date}${newShow.time}${newShow.headliner}${newShow.currentClub}${newShow.pay}${newShow.day}`}
                       day={show.day}
                       time={show.time}
                       pay={show.pay}

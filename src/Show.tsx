@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-function Show(props: {key: number, day: string, time: string, pay: string, currentClub: string, availableComedian: string, date: string}) {
+function Show(props: {key: number, day: string, time: string, pay: string, currentClub: string, availableComedian: string, date: string, id: string}) {
 
   const [availability, setAvailability] = useState(false)
   const [dayOfWeek, setDayOfWeek] = useState()
@@ -11,6 +11,7 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
   const [comedian, setComedian] = useState()
   const [date, setDate] = useState()
   const [headliner, setHeadliner] = useState()
+  const [id, setId] = useState()
 
   useEffect(() => {
     setDayOfWeek(props.day.toLowerCase())
@@ -43,6 +44,11 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
   useEffect(() => {
     setHeadliner(props.headliner)
   })
+
+  useEffect(() => {
+    console.log(props)
+    setId(props.id)
+  }, [])
 
   const handlePay = () => {
     comedian.payAmount += parseFloat(showPay)
