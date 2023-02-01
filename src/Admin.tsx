@@ -9,8 +9,33 @@ function Admin(props: {shows, setShows}) {
 
   const { register, handleSubmit } = useForm()
 
-  const onSubmit = data => {
-    newSchedule.push(data)
+  useEffect(() => { 
+    displayPotentialShows()
+  },[newSchedule])
+
+  const onSubmit = potentialShow => {
+        potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}`
+    // if (newSchedule.map(show => { 
+    //   console.log(potentialShow, newSchedule)
+    //   if (show.id !== potentialShow.id) {
+        if (newSchedule.length === 0) {
+          newSchedule.push(potentialShow)
+        } else {
+          const idCheck = newSchedule.map(show => show.id)
+          if(!idCheck.includes(potentialShow.id)) {
+            newSchedule.push(potentialShow)
+          }
+        }
+    //   }
+    // })) {
+    // }
+    // const idCheck = newSchedule.map(show => show.id)
+    // console.log(idCheck)
+    // newSchedule.map(show => {
+    //   if (show.id !== potentialShow.id) {
+    //     newSchedule.push(potentialShow)
+    //   }
+    // })
   }
 
   const buildWeek = () => {
@@ -20,17 +45,26 @@ function Admin(props: {shows, setShows}) {
   }
  
   const displayPotentialShows = () => {
-     setShowsToAdd(newSchedule.map(newShow => {
-              return <Show
-                        day={newShow.day}
-                        time={newShow.time}
-                        pay={newShow.pay}
-                        currentClub={newShow.club}
-                        availableComedian={{name: 'admin'}}
-                        date={newShow.date}
-                        headliner={newShow.headliner}
-                      />
-          }))
+    const idCheck = newSchedule.map(show => show.id)
+    console.log(idCheck)
+    const compId = showsToAdd.map(show => show.props.id)
+    console.log(compId)
+    if(!compId.some(r => idCheck.indexOf(r) >= 0)) {
+      setShowsToAdd(newSchedule.map((newShow, index) => {
+        return <Show
+                  key={index}
+                  id={`${newShow.date}${newShow.time}${newShow.headliner}${newShow.club}${newShow.pay}${newShow.day}`}
+                  day={newShow.day}
+                  time={newShow.time}
+                  pay={newShow.pay}
+                  currentClub={newShow.club}
+                  availableComedian={{name: 'admin'}}
+                  date={newShow.date}
+                  headliner={newShow.headliner}
+                />
+    }))
+    }
+     
   }
 
   return (

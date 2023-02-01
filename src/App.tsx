@@ -17,8 +17,11 @@ function App() {
 
   useEffect(() => {
     const toParse = localStorage.getItem('new-week')
-    const parsedData = JSON.parse(toParse)
-    setShows(parsedData)
+    if (toParse !== null) {
+      const parsedData = JSON.parse(toParse)
+      setShows(parsedData)
+    }
+    
 },[])  
 
   return (
