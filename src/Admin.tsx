@@ -9,9 +9,9 @@ function Admin(props: {shows, setShows}) {
 
   const { register, handleSubmit } = useForm()
 
-  // useEffect(() => {
-  //   displayPotentialShows()
-  // },[newSchedule])
+  useEffect(() => { 
+    displayPotentialShows()
+  },[newSchedule])
 
   const onSubmit = potentialShow => {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}`
@@ -49,10 +49,10 @@ function Admin(props: {shows, setShows}) {
     console.log(idCheck)
     const compId = showsToAdd.map(show => show.props.id)
     console.log(compId)
-    if(!idCheck.some(r => compId.indexOf(r) >= 0)) {
-      setShowsToAdd(newSchedule.map(newShow => {
+    if(!compId.some(r => idCheck.indexOf(r) >= 0)) {
+      setShowsToAdd(newSchedule.map((newShow, index) => {
         return <Show
-                  key={Date.now()}
+                  key={index}
                   id={`${newShow.date}${newShow.time}${newShow.headliner}${newShow.club}${newShow.pay}${newShow.day}`}
                   day={newShow.day}
                   time={newShow.time}

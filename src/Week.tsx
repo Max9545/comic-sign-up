@@ -23,11 +23,11 @@ function Week(props: {comedian: object, weeklyShowTimes: []}) {
   useEffect(() => {
     
     if(shows.length > 0) {
-      const showElements = props.weeklyShowTimes.map(show => { 
+      const showElements = props.weeklyShowTimes.map((show, index) => { 
         return <div>
                   <Show
-                      key={Date.now()}
-                      id={`${newShow.date}${newShow.time}${newShow.headliner}${newShow.currentClub}${newShow.pay}${newShow.day}`}
+                      key={index}
+                      id={`${show.date}${show.time}${show.headliner}${show.currentClub}${show.pay}${show.day}`}
                       day={show.day}
                       time={show.time}
                       pay={show.pay}
