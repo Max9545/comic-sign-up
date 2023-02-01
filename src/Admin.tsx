@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
+import { ShowToBook } from './interface'
 
-function Admin(props: {shows, setShows}) {
+function Admin(props: {shows: [], setShows: any}) {
 
   const [newSchedule, setNewSchedule] = useState([])
   const [showsToAdd, setShowsToAdd] = useState([])
@@ -13,11 +14,8 @@ function Admin(props: {shows, setShows}) {
     displayPotentialShows()
   },[newSchedule])
 
-  const onSubmit = potentialShow => {
+  const onSubmit = (potentialShow: ShowToBook) => {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}`
-    // if (newSchedule.map(show => { 
-    //   console.log(potentialShow, newSchedule)
-    //   if (show.id !== potentialShow.id) {
         if (newSchedule.length === 0) {
           newSchedule.push(potentialShow)
         } else {
@@ -26,16 +24,6 @@ function Admin(props: {shows, setShows}) {
             newSchedule.push(potentialShow)
           }
         }
-    //   }
-    // })) {
-    // }
-    // const idCheck = newSchedule.map(show => show.id)
-    // console.log(idCheck)
-    // newSchedule.map(show => {
-    //   if (show.id !== potentialShow.id) {
-    //     newSchedule.push(potentialShow)
-    //   }
-    // })
   }
 
   const buildWeek = () => {

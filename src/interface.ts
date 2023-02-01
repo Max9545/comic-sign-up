@@ -17,5 +17,18 @@ export interface Comic {
   payAmount: number
 }
 
+export interface ShowToBook {
+  key: number, 
+  day: string, 
+  time: string, 
+  pay: string, 
+  currentClub: string, 
+  availableComedian: string, 
+  date: string, 
+  id: string,
+  headliner: string,
+  club: string
+}
+
 
  

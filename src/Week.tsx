@@ -1,15 +1,14 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import Show from './Show'
+import { Comic } from './interface'
 
 
 
-function Week(props: {comedian: object, weeklyShowTimes: []}) {
+function Week(props: {comedian: Comic, weeklyShowTimes: []}) {
 
   const [shows, setShows] = useState([])
   const [currentComedian, setCurrentComedian] = useState()
-  // const [club, setClub] = useState('shows, first choose a club')
-  // const [club, setClub] = useState()
   const [showComponents, setShowComponents] = useState()
 
   useEffect(() => {
