@@ -26,7 +26,7 @@ const testData = {testComedians: [ {
   id: 2,
   type: 'Out of Town Pro',
   payAmount: 0,
-  showsAvailableDowntown: {
+  showsAvailabledowntown: {
     monday: [],
     tuesday: [],
     wednesday: [],
@@ -35,7 +35,7 @@ const testData = {testComedians: [ {
     saturday: [],
     sunday: []
   },
-  showsAvailableSouth: {
+  showsAvailablesouth: {
     monday: [],
     tuesday: [],
     wednesday: [],

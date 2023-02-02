@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, Link } from 'react-router-dom'
 import './App.css';
-import { Comic, ShowToBook } from './interface'
+import { Comic, ShowToBook, WeekInter } from './interface'
 import testData from './testData'
 import Week from './Week'
 import Admin from './Admin'
 
 function App() {
 
-  const [comedian, setComedian] = useState<Comic[] | []>([])
+  const [comedian, setComedian] = useState<Comic | {}>({})
   const [shows, setShows] = useState<ShowToBook[]>([])
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function App() {
         <Link to={'admin'}>Administration</Link>
         <Link to={'/'}>Comedians</Link>
         <Routes>
-          <Route exact path='/' element={
+          <Route path='/' element={
             <Week 
             comedian={comedian} 
             weeklyShowTimes={shows}/>}

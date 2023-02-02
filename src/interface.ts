@@ -1,4 +1,4 @@
-export interface Week {
+export interface WeekInter {
   monday: string[],
   tuesday: string[],
   wednesday: string[],
@@ -10,10 +10,10 @@ export interface Week {
 
 export interface Comic {
   name: string,
-  id: number,
+  id: string,
   type: string,
-  showsAvailableDowntown: Week,
-  showsAvailableSouth: Week,
+  showsAvailabledowntown: WeekInter,
+  showsAvailablesouth: WeekInter,
   payAmount: number
 }
 
