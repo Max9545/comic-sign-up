@@ -48,8 +48,6 @@ function Week(props: {comedian: Comic, weeklyShowTimes: []}) {
     console.log(currentComedian)
     // localStorage.removeItem(`${currentComedian.name}'s availability`)
     localStorage.setItem(JSON.stringify(`${currentComedian.name}'s availability`), JSON.stringify(currentComedian))
-
-    // showComponents.forEach(show => show.availability = false)
   }
 
     return (

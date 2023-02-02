@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Redirect, Routes, Link } from 'react-router-dom'
+import { Route, Routes, Link } from 'react-router-dom'
 import './App.css';
-import { Comic } from './interface'
+import { Comic, ShowToBook } from './interface'
 import testData from './testData'
 import Week from './Week'
 import Admin from './Admin'
@@ -9,7 +9,7 @@ import Admin from './Admin'
 function App() {
 
   const [comedian, setComedian] = useState<Comic[] | []>([])
-  const [shows, setShows] = useState([])
+  const [shows, setShows] = useState<ShowToBook[]>([])
 
   useEffect(() => {
       setComedian(testData.testComedians[0])

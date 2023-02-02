@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook } from './interface'
 
 function Admin(props: {shows: [], setShows: any}) {
 
-  const [newSchedule, setNewSchedule] = useState([])
-  const [showsToAdd, setShowsToAdd] = useState([])
+  const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
+  const [showsToAdd, setShowsToAdd] = useState<any[]>([])
 
   const { register, handleSubmit } = useForm()
 
@@ -14,7 +15,7 @@ function Admin(props: {shows: [], setShows: any}) {
     displayPotentialShows()
   },[newSchedule])
 
-  const onSubmit = (potentialShow: ShowToBook) => {
+  const onSubmit = (potentialShow: any) => {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}`
         if (newSchedule.length === 0) {
           newSchedule.push(potentialShow)
@@ -34,9 +35,9 @@ function Admin(props: {shows: [], setShows: any}) {
  
   const displayPotentialShows = () => {
     const idCheck = newSchedule.map(show => show.id)
-    console.log(idCheck)
+    console.log(idCheck,'idCheck')
     const compId = showsToAdd.map(show => show.props.id)
-    console.log(compId)
+    console.log(compId, 'compId', showsToAdd)
     if(!compId.some(r => idCheck.indexOf(r) >= 0)) {
       setShowsToAdd(newSchedule.map((newShow, index) => {
         return <Show
@@ -58,7 +59,7 @@ function Admin(props: {shows: [], setShows: any}) {
   return (
     <div>
       <p>Build Week</p>
-      <form onSubmit={handleSubmit(onSubmit)} value='Submit Show'>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <select {...register('club')}>
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>

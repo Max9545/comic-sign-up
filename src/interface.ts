@@ -23,10 +23,10 @@ export interface ShowToBook {
   time: string, 
   pay: string, 
   currentClub: string, 
-  availableComedian: string, 
+  availableComedian: object, 
   date: string, 
   id: string,
-  headliner: string,
+  headliner: string
   club: string
 }
 
