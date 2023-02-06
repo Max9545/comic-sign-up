@@ -11,12 +11,12 @@ function Admin(props: {shows: [], setShows: any}) {
 
   const { register, handleSubmit } = useForm()
 
-  useEffect(() => { 
-    displayPotentialShows()
-  },[newSchedule])
+  // useEffect(() => { 
+  //   displayPotentialShows()
+  // },[newSchedule])
 
   const onSubmit = (potentialShow: any) => {
-        potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}`
+        potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}${potentialShow.day}`
         if (newSchedule.length === 0) {
           newSchedule.push(potentialShow)
         } else {
@@ -25,6 +25,7 @@ function Admin(props: {shows: [], setShows: any}) {
             newSchedule.push(potentialShow)
           }
         }
+        displayPotentialShows()
   }
 
   const buildWeek = () => {
@@ -32,29 +33,43 @@ function Admin(props: {shows: [], setShows: any}) {
     localStorage.setItem('new-week', JSON.stringify(newSchedule))
 
   }
+
+  const displayPotentialShows = () => {setShowsToAdd(newSchedule.map((newShow, index) => {
+            return <Show
+              key={index}
+              id={`${newShow.date}${newShow.time}${newShow.headliner}${newShow.club}${newShow.pay}${newShow.day}`}
+              day={newShow.day}
+              time={newShow.time}
+              pay={newShow.pay}
+              currentClub={newShow.club}
+              availableComedian={{name: 'admin'}}
+              date={newShow.date}
+              headliner={newShow.headliner}
+            />
+}))}
  
-  const displayPotentialShows = () => {
-    const idCheck = newSchedule.map(show => show.id)
-    console.log(idCheck,'idCheck')
-    const compId = showsToAdd.map(show => show.props.id)
-    console.log(compId, 'compId', showsToAdd)
-    if(!compId.some(r => idCheck.indexOf(r) >= 0)) {
-      setShowsToAdd(newSchedule.map((newShow, index) => {
-        return <Show
-                  key={index}
-                  id={`${newShow.date}${newShow.time}${newShow.headliner}${newShow.club}${newShow.pay}${newShow.day}`}
-                  day={newShow.day}
-                  time={newShow.time}
-                  pay={newShow.pay}
-                  currentClub={newShow.club}
-                  availableComedian={{name: 'admin'}}
-                  date={newShow.date}
-                  headliner={newShow.headliner}
-                />
-    }))
-    }
+  // const displayPotentialShows = () => {
+  //   const idCheck = newSchedule.map(show => show.id)
+  //   console.log(idCheck,'idCheck')
+  //   const compId = showsToAdd.map(show => show.props.id)
+  //   console.log(compId, 'compId', showsToAdd)
+  //   if(!compId.some(r => idCheck.indexOf(r) >= 0)) {
+  //     setShowsToAdd(newSchedule.map((newShow, index) => {
+  //       return <Show
+  //                 key={index}
+  //                 id={`${newShow.date}${newShow.time}${newShow.headliner}${newShow.club}${newShow.pay}${newShow.day}`}
+  //                 day={newShow.day}
+  //                 time={newShow.time}
+  //                 pay={newShow.pay}
+  //                 currentClub={newShow.club}
+  //                 availableComedian={{name: 'admin'}}
+  //                 date={newShow.date}
+  //                 headliner={newShow.headliner}
+  //               />
+  //   }))
+  //   }
      
-  }
+  // }
 
   return (
     <div>
@@ -75,10 +90,13 @@ function Admin(props: {shows: [], setShows: any}) {
         <label>Pay</label>
         <input {...register('pay')} />
         <label>Add Show</label>
-        <input type='submit' value='Add Show' onClick={displayPotentialShows}/>
+        <input type='submit' value='Add Show' 
+        // onClick={displayPotentialShows}
+        />
       </form>
       {props.setShows && <button onClick={buildWeek}>Build Week</button>}
       {showsToAdd}
+      {/* {showDisplay} */}
     </div>
   )
 }
