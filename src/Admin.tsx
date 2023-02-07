@@ -15,6 +15,11 @@ function Admin(props: {shows: [], setShows: any}) {
   //   displayPotentialShows()
   // },[newSchedule])
 
+  const deleteShow = (showId) => {
+    newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
+    displayPotentialShows()
+  }
+
   const onSubmit = (potentialShow: any) => {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}${potentialShow.day}`
         if (newSchedule.length === 0) {
@@ -35,17 +40,23 @@ function Admin(props: {shows: [], setShows: any}) {
   }
 
   const displayPotentialShows = () => {setShowsToAdd(newSchedule.map((newShow, index) => {
-            return <Show
-              key={index}
-              id={`${newShow.date}${newShow.time}${newShow.headliner}${newShow.club}${newShow.pay}${newShow.day}`}
-              day={newShow.day}
-              time={newShow.time}
-              pay={newShow.pay}
-              currentClub={newShow.club}
-              availableComedian={{name: 'admin'}}
-              date={newShow.date}
-              headliner={newShow.headliner}
-            />
+            return (
+            <div>
+              <Show
+                key={index}
+                // speep={newShow.id}
+                id={newShow.id}
+                day={newShow.day}
+                time={newShow.time}
+                pay={newShow.pay}
+                currentClub={newShow.club}
+                availableComedian={{name: 'admin'}}
+                date={newShow.date}
+                headliner={newShow.headliner}
+              />
+              <button onClick={() => deleteShow(newShow.id)}>Delete</button>
+            </div>
+          )
 }))}
  
   // const displayPotentialShows = () => {
