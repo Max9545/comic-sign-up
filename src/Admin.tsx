@@ -35,9 +35,10 @@ function Admin(props: {shows: [], setShows: any}) {
   }
 
   const buildWeek = () => {
-    props.setShows(newSchedule)
-    localStorage.setItem('new-week', JSON.stringify(newSchedule))
-
+    if (newSchedule.length > 0) {
+      props.setShows(newSchedule)
+      localStorage.setItem('new-week', JSON.stringify(newSchedule))
+    }
   }
 
   const displayPotentialShows = () => {setShowsToAdd(newSchedule.map((newShow, index) => {
@@ -85,22 +86,22 @@ function Admin(props: {shows: [], setShows: any}) {
 
   return (
     <div>
-      <p>Build Week</p>
+      <p>Admin Build Week of Upcoming Shows</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <select {...register('club')}>
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>
         </select>
         <label>Day</label>
-        <input {...register('day')} autoFocus='true'/>
+        <input {...register('day')} autoFocus='true' required/>
         <label>Time</label>
-        <input {...register('time')} defaultValue='8:00'/>
+        <input {...register('time')} defaultValue='8:00' required/>
         <label>Date</label>
-        <input {...register('date')}/>
+        <input {...register('date')} required/>
         <label>Headliner</label>
-        <input {...register('headliner')}/>
+        <input {...register('headliner')} required/>
         <label>Pay</label>
-        <input {...register('pay')} />
+        <input {...register('pay')} type='number' required/>
         <label>Add Show</label>
         <input type='submit' value='Add Show' 
         // onClick={displayPotentialShows}
