@@ -92,9 +92,9 @@ function Admin(props: {shows: [], setShows: any}) {
           <option value='south'>South</option>
         </select>
         <label>Day</label>
-        <input {...register('day')} />
+        <input {...register('day')} autoFocus='true'/>
         <label>Time</label>
-        <input {...register('time')} />
+        <input {...register('time')} defaultValue='8:00'/>
         <label>Date</label>
         <input {...register('date')}/>
         <label>Headliner</label>
