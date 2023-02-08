@@ -67,10 +67,14 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
   }
 
   return (
+    // <div className='show'>
+    //   <button onClick={() => {handleClick(event)}} 
+    //     className={`${availability}`}>{`${dayOfWeek} on ${date} at ${showTime} at the ${clubToSign} club for ${headliner}`}</button>
+    // </div>
     <div className='show'>
-      <button onClick={() => {handleClick(event)}} 
-        className={`${availability}`}>{`${dayOfWeek} on ${date} at ${showTime} at the ${clubToSign} club for ${headliner}`}</button>
-    </div>
+    <button onClick={() => {handleClick(event)}} 
+      className={`${availability}`}>{`${props.day} on ${props.date} at ${props.time} at the ${props.currentClub} club for ${props.headliner}`}</button>
+  </div>
   )
 
 }
