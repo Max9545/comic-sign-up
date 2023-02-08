@@ -9,7 +9,7 @@ function Admin(props: {shows: [], setShows: any}) {
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
 
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, reset } = useForm()
 
   // useEffect(() => { 
   //   displayPotentialShows()
@@ -87,6 +87,7 @@ function Admin(props: {shows: [], setShows: any}) {
   return (
     <div>
       <p>Admin Build Week of Upcoming Shows</p>
+      <button onClick={() => reset()}>Clear/Reset Form</button>
       <form onSubmit={handleSubmit(onSubmit)}>
         <select {...register('club')}>
           <option value='downtown'>Downtown</option>
@@ -103,9 +104,7 @@ function Admin(props: {shows: [], setShows: any}) {
         <label>Pay</label>
         <input {...register('pay')} type='number' required/>
         <label>Add Show</label>
-        <input type='submit' value='Add Show' 
-        // onClick={displayPotentialShows}
-        />
+        <input type='submit' value='Add Show'/>
       </form>
       {props.setShows && <button onClick={buildWeek}>Build Week</button>}
       {showsToAdd}
