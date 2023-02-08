@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-function Show(props: {key: number, day: string, time: string, pay: string, currentClub: string, availableComedian: string, date: string, id: string}) {
+function Show(props: {key: number, day: string, time: string, pay: string, currentClub: string, availableComedian: object, date: string, id: string, headliner: string}) {
 
   const [availability, setAvailability] = useState(false)
   const [dayOfWeek, setDayOfWeek] = useState()
@@ -18,7 +18,7 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
   },[])
 
   useEffect(() => {
-    setShowTime(props.time)
+    setShowTime(props.time) 
   },[])
 
   useEffect(() => {
@@ -73,7 +73,8 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
     // </div>
     <div className='show'>
     <button onClick={() => {handleClick(event)}} 
-      className={`${availability}`}>{`${props.day} on ${props.date} at ${props.time} at the ${props.currentClub} club for ${props.headliner}`}</button>
+      className={`${availability}`}>{`${props.day} on ${props.date} at ${props.time} at the ${props.currentClub} club for ${props.headliner}`}{props.availableComedian.name === 'admin'  && <div>{`Pay:${props.pay}`}</div>}</button>
+      
   </div>
   )
 
