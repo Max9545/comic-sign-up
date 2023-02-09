@@ -15,7 +15,7 @@ function Admin(props: {shows: [], setShows: any}) {
   //   displayPotentialShows()
   // },[newSchedule])
 
-  const deleteShow = (showId) => {
+  const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
     setNewSchedule(newSchedule)
     displayPotentialShows()
