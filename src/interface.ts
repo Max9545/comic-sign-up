@@ -10,7 +10,7 @@ export interface WeekInter {
 
 export interface Comic {
   name: string,
-  id: string,
+  id: number,
   type: string,
   showsAvailabledowntown: WeekInter,
   showsAvailablesouth: WeekInter,
@@ -29,6 +29,5 @@ export interface ShowToBook {
   headliner: string
   club: string
 }
-
 
  

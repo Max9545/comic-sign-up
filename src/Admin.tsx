@@ -46,7 +46,6 @@ function Admin(props: {shows: [], setShows: any}) {
             <div>
               <Show
                 key={index}
-                // speep={newShow.id}
                 id={newShow.id}
                 day={newShow.day}
                 time={newShow.time}
@@ -94,7 +93,7 @@ function Admin(props: {shows: [], setShows: any}) {
           <option value='south'>South</option>
         </select>
         <label>Day</label>
-        <input {...register('day')} autoFocus='true' required/>
+        <input {...register('day')} autoFocus={true} required/>
         <label>Time</label>
         <input {...register('time')} defaultValue='8:00' required/>
         <label>Date</label>

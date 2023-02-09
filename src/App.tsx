@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, Link } from 'react-router-dom'
 import './App.css';
-import { Comic, ShowToBook, WeekInter } from './interface'
+import { Comic, ShowToBook } from './interface'
 import testData from './testData'
 import Week from './Week'
 import Admin from './Admin'
 
 function App() {
 
-  const [comedian, setComedian] = useState<Comic | {}>({})
+  const [comedian, setComedian] = useState<Comic>(testData.testComedians[0])
   const [shows, setShows] = useState<ShowToBook[]>([])
 
-  useEffect(() => {
-      setComedian(testData.testComedians[0])
-  },[])
+  // useEffect(() => {
+  //     // const comedian = new <Comic/>
+  //     setComedian(testData.testComedians[0])
+  // },[])
 
   useEffect(() => {
     const toParse = localStorage.getItem('new-week')
