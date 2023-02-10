@@ -59,6 +59,10 @@ function Admin(props: {shows: [], setShows: any}) {
             </div>
           )
 }))}
+
+  const viewAllComicsAvailable = () => {
+    console.log(localStorage)
+  }
  
   // const displayPotentialShows = () => {
   //   const idCheck = newSchedule.map(show => show.id)
@@ -85,6 +89,7 @@ function Admin(props: {shows: [], setShows: any}) {
 
   return (
     <div>
+      <button onClick={viewAllComicsAvailable}>View Available Comedians</button>
       <p>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
       <form onSubmit={handleSubmit(onSubmit)}>
