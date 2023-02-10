@@ -38,6 +38,8 @@ function Admin(props: {shows: [], setShows: any}) {
     if (newSchedule.length > 0) {
       props.setShows(newSchedule)
       localStorage.setItem('new-week', JSON.stringify(newSchedule))
+      setNewSchedule([])
+      setShowsToAdd([])
     }
   }
 

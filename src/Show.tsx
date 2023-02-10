@@ -59,7 +59,7 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
     console.log(comedian, clubToSign)
       setAvailability(!availability)
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(showTime)) {
-        comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(showTime)
+        comedian[`showsAvailable${clubToSign}`][dayOfWeek].push({showTime: showTime, showPay: showPay})
         handlePay()
       }
       
