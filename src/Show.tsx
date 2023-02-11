@@ -1,17 +1,41 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
+import { Comic } from './interface'
 
-function Show(props: {key: number, day: string, time: string, pay: string, currentClub: string, availableComedian: object, date: string, id: string, headliner: string}) {
+function Show(props: {key: number, day: string, time: string, pay: string, currentClub: string, availableComedian: Comic, date: string, id: string, headliner: string}) {
 
   const [availability, setAvailability] = useState(false)
-  const [dayOfWeek, setDayOfWeek] = useState()
-  const [showTime, setShowTime] = useState()
-  const [showPay, setShowPay] = useState()
-  const [clubToSign, setClubToSign] = useState()
-  const [comedian, setComedian] = useState()
-  const [date, setDate] = useState()
-  const [headliner, setHeadliner] = useState()
-  const [id, setId] = useState()
+  const [dayOfWeek, setDayOfWeek] = useState('')
+  const [showTime, setShowTime] = useState('')
+  const [showPay, setShowPay] = useState('')
+  const [clubToSign, setClubToSign] = useState('')
+  const [comedian, setComedian] = useState<Comic>({
+    name: 'admin',
+    id: '',
+    type: '',
+    showsAvailabledowntown: {
+      monday: [{}],
+      tuesday: [{}],
+      wednesday: [{}],
+      thursday: [{}], 
+      friday: [{}],
+      saturday: [{}],
+      sunday: [{}]
+    },
+    showsAvailablesouth: {
+      monday: [{}],
+      tuesday: [{}],
+      wednesday: [{}],
+      thursday: [{}], 
+      friday: [{}],
+      saturday: [{}],
+      sunday: [{}]
+    },
+    payAmount: 0}
+  )
+  const [date, setDate] = useState('')
+  const [headliner, setHeadliner] = useState('')
+  const [id, setId] = useState('')
 
   useEffect(() => {
     setDayOfWeek(props.day.toLowerCase())
@@ -50,17 +74,19 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
     setId(props.id)
   }, [])
 
-  const handlePay = () => {
-    comedian.payAmount += parseFloat(showPay)
-  }
+  // const handlePay = () => {
+  //   comedian.payAmount += parseFloat(showPay)
+  // }
 
-  const handleClick = (event) => {
-    event.preventDefault()
-    console.log(comedian, clubToSign)
+  const handleClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault()
       setAvailability(!availability)
+      // const comicInter: {[index: string]: any} = {}
+      
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(showTime)) {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push({showTime: showTime, showPay: showPay})
-        handlePay()
+        
+        // handlePay()
       }
       
       
@@ -72,7 +98,7 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
     //     className={`${availability}`}>{`${dayOfWeek} on ${date} at ${showTime} at the ${clubToSign} club for ${headliner}`}</button>
     // </div>
     <div className='show'>
-    <button onClick={(event) => {handleClick(event)}} 
+    <button onClick={(event) => handleClick(event)} 
       className={`${availability}`}>{`${props.day} on ${props.date} at ${props.time} at the ${props.currentClub} club for ${props.headliner}`}{props.availableComedian.name === 'admin'  && <div>{`Pay: $${props.pay}`}</div>}</button>
       
   </div>

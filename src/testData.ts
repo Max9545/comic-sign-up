@@ -1,6 +1,6 @@
 const testData = {testComedians: [ {
   name: "Max B",
-  id: 1,
+  id: '1',
   type: 'Not Famous',
   payAmount: 0,
   showsAvailabledowntown: {
@@ -23,7 +23,7 @@ const testData = {testComedians: [ {
   },
 },{
   name: "Norm",
-  id: 2,
+  id: '2',
   type: 'Out of Town Pro',
   payAmount: 0,
   showsAvailabledowntown: {

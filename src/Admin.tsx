@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
-import { ShowToBook } from './interface'
+import { ShowToBook, WeekInter } from './interface'
 
-function Admin(props: {shows: [], setShows: any}) {
+function Admin(props: {shows: [ShowToBook], setShows: any}) {
 
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
@@ -53,7 +53,30 @@ function Admin(props: {shows: [], setShows: any}) {
                 time={newShow.time}
                 pay={newShow.pay}
                 currentClub={newShow.club}
-                availableComedian={{name: 'admin'}}
+                availableComedian={{
+                  name: 'admin',
+                  id: '',
+                  type: '',
+                  showsAvailabledowntown: {
+                    monday: [{}],
+                    tuesday: [{}],
+                    wednesday: [{}],
+                    thursday: [{}], 
+                    friday: [{}],
+                    saturday: [{}],
+                    sunday: [{}]
+                  },
+                  showsAvailablesouth: {
+                    monday: [{}],
+                    tuesday: [{}],
+                    wednesday: [{}],
+                    thursday: [{}], 
+                    friday: [{}],
+                    saturday: [{}],
+                    sunday: [{}]
+                  },
+                  payAmount: 0}
+                }
                 date={newShow.date}
                 headliner={newShow.headliner}
               />

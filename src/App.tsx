@@ -9,7 +9,17 @@ import Admin from './Admin'
 function App() {
 
   const [comedian, setComedian] = useState<Comic>(testData.testComedians[0])
-  const [shows, setShows] = useState<ShowToBook[]>([])
+  const [shows, setShows] = useState<[ShowToBook]>([{
+    key: 0, 
+    day: '', 
+    time: '', 
+    pay: '', 
+    currentClub: '', 
+    availableComedian: {}, 
+    date: '', 
+    id: '',
+    headliner: '',
+    club: ''}])
 
   // useEffect(() => {
   //     // const comedian = new <Comic/>
@@ -43,7 +53,7 @@ function App() {
             comedian={comedian} 
             weeklyShowTimes={shows}/>}
             />
-          <Route exact path='/admin' element={
+          <Route path='/admin' element={
             <Admin shows={shows} setShows={setShows}/>
           }/>
 

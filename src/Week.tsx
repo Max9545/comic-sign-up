@@ -1,11 +1,11 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import Show from './Show'
-import { Comic } from './interface'
+import { Comic, ShowToBook } from './interface'
 
 
 
-function Week(props: {comedian: Comic, weeklyShowTimes: []}) {
+function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   const [shows, setShows] = useState([])
   const [currentComedian, setCurrentComedian] = useState()

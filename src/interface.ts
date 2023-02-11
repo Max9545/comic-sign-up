@@ -1,20 +1,25 @@
+export interface AvailableShow {
+  showTime: string,
+  showPay: string
+}
+
 export interface WeekInter {
-  monday: string[],
-  tuesday: string[],
-  wednesday: string[],
-  thursday: string[], 
-  friday: string[],
-  saturday: string[],
-  sunday: string[]
+  monday: object[],
+  tuesday: object[],
+  wednesday: object[],
+  thursday: object[], 
+  friday: object[],
+  saturday: object[],
+  sunday: object[]
 }
 
 export interface Comic {
-  name: string,
-  id: number,
-  type: string,
-  showsAvailabledowntown: WeekInter,
-  showsAvailablesouth: WeekInter,
-  payAmount: number
+  name: string;
+  id: string;
+  type: string;
+  showsAvailabledowntown: WeekInter;
+  showsAvailablesouth: WeekInter;
+  payAmount: number;
 }
 
 export interface ShowToBook {
