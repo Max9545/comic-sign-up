@@ -77,7 +77,7 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
   //   comedian.payAmount += parseFloat(showPay)
   // }
 
-  const handleClick = (event: any) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       event.preventDefault()
       setAvailability(!availability)
       // const comicInter: {[index: string]: any} = {}

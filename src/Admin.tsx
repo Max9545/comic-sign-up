@@ -45,7 +45,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
 
   const displayPotentialShows = () => {setShowsToAdd(newSchedule.map((newShow, index) => {
             return (
-            <div>
+            <div key={index}>
               <Show
                 key={index}
                 id={newShow.id}
@@ -88,29 +88,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
   const viewAllComicsAvailable = () => {
     console.log(localStorage)
   }
- 
-  // const displayPotentialShows = () => {
-  //   const idCheck = newSchedule.map(show => show.id)
-  //   console.log(idCheck,'idCheck')
-  //   const compId = showsToAdd.map(show => show.props.id)
-  //   console.log(compId, 'compId', showsToAdd)
-  //   if(!compId.some(r => idCheck.indexOf(r) >= 0)) {
-  //     setShowsToAdd(newSchedule.map((newShow, index) => {
-  //       return <Show
-  //                 key={index}
-  //                 id={`${newShow.date}${newShow.time}${newShow.headliner}${newShow.club}${newShow.pay}${newShow.day}`}
-  //                 day={newShow.day}
-  //                 time={newShow.time}
-  //                 pay={newShow.pay}
-  //                 currentClub={newShow.club}
-  //                 availableComedian={{name: 'admin'}}
-  //                 date={newShow.date}
-  //                 headliner={newShow.headliner}
-  //               />
-  //   }))
-  //   }
-     
-  // }
 
   return (
     <div>
@@ -131,7 +108,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
         <label>Headliner</label>
         <input {...register('headliner')} required/>
         <label>Pay</label>
-        <input {...register('pay')} type='number' required/>
+        <input {...register('pay')} type='number' min='0' required/>
         <label>Add Show</label>
         <input type='submit' value='Add Show'/>
       </form>
