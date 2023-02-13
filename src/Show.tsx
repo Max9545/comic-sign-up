@@ -70,7 +70,6 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
   })
 
   useEffect(() => {
-    console.log(props)
     setId(props.id)
   }, [])
 
@@ -78,11 +77,11 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
   //   comedian.payAmount += parseFloat(showPay)
   // }
 
-  const handleClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleClick = (event: any) => {
       event.preventDefault()
       setAvailability(!availability)
       // const comicInter: {[index: string]: any} = {}
-      
+      // console.log(comedian[`showsAvailable${clubToSign}`][dayOfWeek])
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(showTime)) {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push({showTime: showTime, showPay: showPay})
         

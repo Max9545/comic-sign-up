@@ -7,9 +7,32 @@ import { Comic, ShowToBook } from './interface'
 
 function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
-  const [shows, setShows] = useState([])
-  const [currentComedian, setCurrentComedian] = useState()
-  const [showComponents, setShowComponents] = useState()
+  const [shows, setShows] = useState<ShowToBook[]>([])
+  const [currentComedian, setCurrentComedian] = useState<Comic>({
+    name: 'admin',
+    id: '',
+    type: '',
+    showsAvailabledowntown: {
+      monday: [{}],
+      tuesday: [{}],
+      wednesday: [{}],
+      thursday: [{}], 
+      friday: [{}],
+      saturday: [{}],
+      sunday: [{}]
+    },
+    showsAvailablesouth: {
+      monday: [{}],
+      tuesday: [{}],
+      wednesday: [{}],
+      thursday: [{}], 
+      friday: [{}],
+      saturday: [{}],
+      sunday: [{}]
+    },
+    payAmount: 0}
+  )
+  const [showComponents, setShowComponents] = useState<any[]>([])
 
   useEffect(() => {
     setCurrentComedian(props.comedian)
@@ -23,7 +46,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
     
     if(shows.length > 0) {
       const showElements = props.weeklyShowTimes.map((show, index) => { 
-        return <div>
+        return <div key={index}>
                   <Show
                       key={index}
                       id={`${show.date}${show.time}${show.headliner}${show.currentClub}${show.pay}${show.day}`}
