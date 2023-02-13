@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Redirect, Routes, Link } from 'react-router-dom'
+import { Route, Routes, Link } from 'react-router-dom'
 import './App.css';
-import { Comic } from './interface'
+import { Comic, ShowToBook } from './interface'
 import testData from './testData'
 import Week from './Week'
 import Admin from './Admin'
 
 function App() {
 
-  const [comedian, setComedian] = useState<Comic[] | []>([])
-  const [shows, setShows] = useState([])
+  const [comedian, setComedian] = useState<Comic>(testData.testComedians[0])
+  const [shows, setShows] = useState<[ShowToBook]>([{
+    key: 0, 
+    day: '', 
+    time: '', 
+    pay: '', 
+    currentClub: '', 
+    availableComedian: {}, 
+    date: '', 
+    id: '',
+    headliner: '',
+    club: ''}])
 
-  useEffect(() => {
-      setComedian(testData.testComedians[0])
-  },[])
+  // useEffect(() => {
+  //     // const comedian = new <Comic/>
+  //     setComedian(testData.testComedians[0])
+  // },[])
 
   useEffect(() => {
     const toParse = localStorage.getItem('new-week')
@@ -37,12 +48,12 @@ function App() {
         <Link to={'admin'}>Administration</Link>
         <Link to={'/'}>Comedians</Link>
         <Routes>
-          <Route exact path='/' element={
+          <Route path='/' element={
             <Week 
             comedian={comedian} 
             weeklyShowTimes={shows}/>}
             />
-          <Route exact path='/admin' element={
+          <Route path='/admin' element={
             <Admin shows={shows} setShows={setShows}/>
           }/>
 
