@@ -11,10 +11,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
 
   const { register, handleSubmit, reset } = useForm()
 
-  // useEffect(() => { 
-  //   displayPotentialShows()
-  // },[newSchedule])
-
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
     setNewSchedule(newSchedule)
@@ -114,7 +110,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
       </form>
       {props.setShows && <button onClick={buildWeek}>Build Week</button>}
       {showsToAdd}
-      {/* {showDisplay} */}
     </div>
   )
 }

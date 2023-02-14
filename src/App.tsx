@@ -8,7 +8,7 @@ import Admin from './Admin'
 
 function App() {
 
-  const [comedian, setComedian] = useState<Comic>(testData.testComedians[0])
+  const [comedian, setComedian] = useState<Comic>(testData.testComedians[1])
   const [shows, setShows] = useState<[ShowToBook]>([{
     key: 0, 
     day: '', 
