@@ -47,7 +47,7 @@ function App() {
           Comedian Sign Up
         </p>
         <Link to={'admin'}>Administration</Link>
-        <Link to={'/'}>Comedian Portal</Link>
+        <Link to={'/comic'}>Comedian Portal</Link>
         <Routes>
           <Route path='/' element={<Login/>}/>
           <Route path='/comic' element={
