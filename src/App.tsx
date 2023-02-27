@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
 import './App.css';
 import { Comic, ShowToBook } from './interface'
 import testData from './testData'
 import Week from './Week'
 import Admin from './Admin'
+import Login from './Login'
 
 function App() {
 
@@ -46,9 +47,10 @@ function App() {
           Comedian Sign Up
         </p>
         <Link to={'admin'}>Administration</Link>
-        <Link to={'/'}>Comedians</Link>
+        <Link to={'/'}>Comedian Portal</Link>
         <Routes>
-          <Route path='/' element={
+          <Route path='/' element={<Login/>}/>
+          <Route path='/comic' element={
             <Week 
             comedian={comedian} 
             weeklyShowTimes={shows}/>}
