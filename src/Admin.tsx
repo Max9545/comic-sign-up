@@ -21,6 +21,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}${potentialShow.day}`
         if (newSchedule.length === 0) {
           newSchedule.push(potentialShow)
+          // use (prev => […prev, new]) instead-- spread operator
         } else {
           const idCheck = newSchedule.map(show => show.id)
           if(!idCheck.includes(potentialShow.id)) {
