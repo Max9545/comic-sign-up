@@ -15,7 +15,7 @@ function Login() {
       // maybe trigger a loading screen
       return 
     }
-    if (user) navigate("/dashboard") 
+    if (user) navigate("/comic") 
   }, [user, loading]) 
   return (
     <div className="login">
@@ -44,11 +44,11 @@ function Login() {
           Login with Google
         </button>
         <div>
-          <Link to="/reset">Forgot Password</Link>
+          <Link to="/reset">Reset/Forgot Password</Link>
         </div>
-        <div>
+        {/* <div>
           Don't have an account? <Link to="/register">Register</Link> now.
-        </div>
+        </div> */}
       </div>
     </div>
   ) 
