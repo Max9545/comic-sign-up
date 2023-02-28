@@ -40,7 +40,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   useEffect(() => {
     setShows(props.weeklyShowTimes)
-  },[])
+  })
 
   useEffect(() => {
     
