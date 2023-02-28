@@ -4,6 +4,9 @@ import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook, WeekInter } from './interface'
 
+
+
+
 function Admin(props: {shows: [ShowToBook], setShows: any}) {
 
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
@@ -31,10 +34,17 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
         displayPotentialShows()
   }
 
+  // const { getDatabase } = require('firebase/database')
+  // const db = getDatabase()
+  // const ref = db.ref('server/saving-data/comic-availability')
+  // const usersRef = ref.child('shows')
+
+
   const buildWeek = () => {
     if (newSchedule.length > 0) {
       props.setShows(newSchedule)
       localStorage.setItem('new-week', JSON.stringify(newSchedule))
+      // usersRef.set(JSON.stringify(newSchedule))
       setNewSchedule([])
       setShowsToAdd([])
     }

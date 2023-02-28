@@ -14,7 +14,7 @@ import testData from './testData'
 function Dashboard() {
 
   const [user, loading, error] = useAuthState(auth) 
-  // const [name, setName] = useState("")
+  const [name, setName] = useState("")
 
   const [comedian, setComedian] = useState<Comic>(testData.testComedians[1])
 
@@ -32,24 +32,24 @@ function Dashboard() {
 
   const navigate = useNavigate() 
 
-  // const fetchUserName = async () => {
-  //   try {
-  //     const q = query(collection(db, "users"), where("uid", "==", user?.uid)) 
-  //     const doc = await getDocs(q)
-  //     console.log(doc.docs) 
-  //     const data = doc.docs[0].data() 
-  //     setName(data.name) 
-  //   } catch (err) {
-  //     console.error(err) 
-  //     alert("An error occured while fetching user data") 
-  //   }
-  // }
+  const fetchUserName = async () => {
+    try {
+      const q = query(collection(db, "users"), where("uid", "==", user?.uid)) 
+      const doc = await getDocs(q)
+      console.log(doc.docs) 
+      const data = doc.docs[0].data() 
+      setName(data.name) 
+    } catch (err) {
+      console.error(err) 
+      alert("An error occured while fetching user data") 
+    }
+  }
 
   useEffect(() => {
     console.log(user)
     if (loading) return 
     if (!user) return navigate("/") 
-    // fetchUserName() 
+    fetchUserName() 
   }, [user, loading]) 
 
   useEffect(() => {
@@ -81,7 +81,7 @@ function Dashboard() {
         {/* <Week comedian={comedian} weeklyShowTimes={shows}/> */}
         {/* <Admin shows={shows} setShows={setShows}/> */}
         Logged in as
-         {/* <div>{name}</div> */}
+         <div>{name}</div>
          <div>{user?.email}</div>
          <button className="dashboard__btn" onClick={logout}>
           Logout
