@@ -28,9 +28,9 @@ function Reset() {
         >
           Send password reset email
         </button>
-        <div>
+        {/* <div>
           Don't have an account? <Link to="/register">Register</Link> now.
-        </div>
+        </div> */}
       </div>
     </div>
   );

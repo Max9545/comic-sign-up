@@ -6,6 +6,7 @@ import testData from './testData'
 import Week from './Week'
 import Admin from './Admin'
 import Login from './Login'
+import Reset from './Reset'
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
         <Link to={'/comic'}>Comedian Portal</Link>
         <Routes>
           <Route path='/' element={<Login/>}/>
+          <Route path='reset' element={<Reset/>}/>
           <Route path='/comic' element={
             <Week 
             comedian={comedian} 
