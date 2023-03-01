@@ -3,6 +3,10 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook, WeekInter } from './interface'
+import { doc, addDoc, collection } from "firebase/firestore";
+import {db} from './firebase'
+
+
 
 
 
@@ -34,17 +38,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
         displayPotentialShows()
   }
 
-  // const { getDatabase } = require('firebase/database')
-  // const db = getDatabase()
-  // const ref = db.ref('server/saving-data/comic-availability')
-  // const usersRef = ref.child('shows')
-
-
   const buildWeek = () => {
     if (newSchedule.length > 0) {
       props.setShows(newSchedule)
-      localStorage.setItem('new-week', JSON.stringify(newSchedule))
-      // usersRef.set(JSON.stringify(newSchedule))
+      // localStorage.setItem('new-week', JSON.stringify(newSchedule))
+      addDoc(collection(db, "shows"), {thisWeek: newSchedule})
       setNewSchedule([])
       setShowsToAdd([])
     }
