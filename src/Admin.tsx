@@ -15,6 +15,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
 
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
+  const [week, setWeek] = useState('')
 
   const { register, handleSubmit, reset } = useForm()
 
@@ -26,6 +27,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
 
   const onSubmit = (potentialShow: any) => {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}${potentialShow.day}`
+        console.log(potentialShow.week)
+        setWeek(potentialShow.week)
         if (newSchedule.length === 0) {
           newSchedule.push(potentialShow)
           // use (prev => […prev, new]) instead-- spread operator
@@ -42,7 +45,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
     if (newSchedule.length > 0) {
       props.setShows(newSchedule)
       localStorage.setItem('new-week', JSON.stringify(newSchedule))
-      addDoc(collection(db, `shows for Date ${new Date()}`), {thisWeek: newSchedule})
+      addDoc(collection(db, `shows for week of ${week}`), {thisWeek: newSchedule})
       setNewSchedule([])
       setShowsToAdd([])
     }
@@ -104,6 +107,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>
         </select>
+        <label>Week Of:</label>
+        <input {...register('week')} autoFocus={true} required/>
         <label>Day</label>
         <input {...register('day')} autoFocus={true} required/>
         <label>Time</label>
