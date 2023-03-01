@@ -41,8 +41,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
   const buildWeek = () => {
     if (newSchedule.length > 0) {
       props.setShows(newSchedule)
-      // localStorage.setItem('new-week', JSON.stringify(newSchedule))
-      addDoc(collection(db, "shows"), {thisWeek: newSchedule})
+      localStorage.setItem('new-week', JSON.stringify(newSchedule))
+      addDoc(collection(db, `shows for Date ${new Date()}`), {thisWeek: newSchedule})
       setNewSchedule([])
       setShowsToAdd([])
     }
