@@ -107,12 +107,12 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>
         </select>
-        <label>Week Of:</label>
-        <input {...register('week')} autoFocus={true} required/>
+        <label>Week Of (dd/mm/yyyy):</label>
+        <input {...register('week')} type='date' autoFocus={true} required/>
         <label>Day</label>
         <input {...register('day')} autoFocus={true} required/>
         <label>Time</label>
-        <input {...register('time')} defaultValue='8:00' required/>
+        <input {...register('time')} type='time' required/>
         <label>Date</label>
         <input {...register('date')} required/>
         <label>Headliner</label>
