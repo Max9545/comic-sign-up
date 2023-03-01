@@ -98,7 +98,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
   }
 
   return (
-    <div>
+    <div className='admin-form'>
       <button onClick={viewAllComicsAvailable}>View Available Comedians</button>
       <p>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
@@ -107,7 +107,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>
         </select>
-        <label>Week Of (dd/mm/yyyy):</label>
+        <label>Week Of:</label>
         <input {...register('week')} type='date' autoFocus={true} required/>
         <label>Day</label>
         <input {...register('day')} autoFocus={true} required/>
