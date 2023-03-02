@@ -2,6 +2,8 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import Show from './Show'
 import { Comic, ShowToBook } from './interface'
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from './firebase'
 
 
 
@@ -68,7 +70,8 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    localStorage.setItem(JSON.stringify(`${currentComedian.name}'s availability`), JSON.stringify(currentComedian))
+    addDoc(collection(db, `${currentComedian.name}`), currentComedian)
+    // localStorage.setItem(JSON.stringify(`${currentComedian.name}'s availability`), JSON.stringify(currentComedian))
   }
 
     return (
