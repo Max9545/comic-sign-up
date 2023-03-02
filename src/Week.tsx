@@ -70,7 +70,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    addDoc(collection(db, `${currentComedian.name}`), currentComedian)
+    addDoc(collection(db, `users/comedians/${currentComedian.name}`), currentComedian)
     // localStorage.setItem(JSON.stringify(`${currentComedian.name}'s availability`), JSON.stringify(currentComedian))
   }
 
