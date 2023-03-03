@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook, WeekInter } from './interface'
-import { doc, addDoc, collection } from "firebase/firestore";
+import { doc, addDoc, collection, query, getDocs } from "firebase/firestore";
 import {db} from './firebase'
 
 
@@ -27,6 +27,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const onSubmit = (potentialShow: any) => {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}${potentialShow.day}`
+        potentialShow.fireOrder = Date.now()
         // setWeek(potentialShow.week)
         props.setWeekSchedule(potentialShow.week)
         if (newSchedule.length === 0) {
@@ -39,6 +40,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           }
         }
         displayPotentialShows()
+        console.log(newSchedule)
   }
 
   const buildWeek = () => {
@@ -94,8 +96,17 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           )
 }))}
 
-  const viewAllComicsAvailable = () => {
-    console.log(localStorage)
+  const viewAllComicsAvailable = async () => {
+
+    try {
+      const docRef = query(collection(db, `comedians`))
+      const doc = await (await getDocs(docRef))
+      console.log(doc.docs[0].data().thisWeek)
+    } catch (err) {
+      console.error(err) 
+      alert("An error occured while fetching comedian data") 
+    }  
+    // console.log(localStorage)
   }
 
   return (
