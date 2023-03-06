@@ -19,6 +19,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const { register, handleSubmit, reset } = useForm()
 
+  useEffect(() => {
+    displayPotentialShows()
+  }, [newSchedule])
+
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
     setNewSchedule(newSchedule)
@@ -27,15 +31,13 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const onSubmit = (potentialShow: any) => {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}${potentialShow.day}`
-        // setWeek(potentialShow.week)
         props.setWeekSchedule(potentialShow.week)
         if (newSchedule.length === 0) {
-          newSchedule.push(potentialShow)
-          // use (prev => […prev, new]) instead-- spread operator
+          setNewSchedule(potentialShow)
         } else {
           const idCheck = newSchedule.map(show => show.id)
           if(!idCheck.includes(potentialShow.id)) {
-            newSchedule.push(potentialShow)
+            setNewSchedule([...newSchedule, potentialShow])
           }
         }
         displayPotentialShows()
