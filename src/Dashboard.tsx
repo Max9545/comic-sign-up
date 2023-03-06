@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom" 
 import "./Dashboard.css" 
 import { auth, db, logout } from "./firebase" 
-import { query, collection, getDocs, where, doc, getDoc, setDoc } from "firebase/firestore" 
+import { query, collection, getDocs, where, doc, getDoc, setDoc, orderBy, limit } from "firebase/firestore" 
 import Week  from './Week'
 import { Comic, ShowToBook } from './interface'
 import Admin from './Admin'
@@ -51,8 +51,8 @@ function Dashboard() {
   const fetchWeekForComedian = async () => {
 
     try {
-      const docRef = query(collection(db, `shows for week`))
-      const doc = await (await getDocs(docRef))
+      const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
+      const doc = await (getDocs(docRef))
       setShows(doc.docs[0].data().thisWeek)
       console.log(doc.docs[0].data().thisWeek)
     } catch (err) {
@@ -61,18 +61,6 @@ function Dashboard() {
     }  
 }
     
-    
-    // try {
-    //   const docRef = doc(db, 'shows for week of 2022-03-02', 'thisWeek')
-    //   const docSnap = await getDoc(docRef)
-
-    //   console.log(docSnap.data())
-    // } catch (err) {
-    //   console.error(err) 
-    //   alert("An error occured while fetching user data") 
-    // }
-
-
   useEffect(() => {
     if (loading) return 
     if (!user) return navigate("/") 
@@ -81,11 +69,6 @@ function Dashboard() {
 
   useEffect(() => {
     fetchWeekForComedian()
-    // const toParse = localStorage.getItem('new-week')
-    // if (toParse !== null) {
-    //   const parsedData = JSON.parse(toParse)
-    //   setShows(parsedData)
-    // }
 },[])  
 
   return (

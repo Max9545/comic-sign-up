@@ -27,7 +27,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const onSubmit = (potentialShow: any) => {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}${potentialShow.day}`
-        potentialShow.fireOrder = Date.now()
         // setWeek(potentialShow.week)
         props.setWeekSchedule(potentialShow.week)
         if (newSchedule.length === 0) {
@@ -40,14 +39,13 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           }
         }
         displayPotentialShows()
-        console.log(newSchedule)
   }
 
   const buildWeek = () => {
     if (newSchedule.length > 0) {
       props.setShows(newSchedule)
       // localStorage.setItem('new-week', JSON.stringify(newSchedule))
-      addDoc(collection(db, `shows for week`), {thisWeek: newSchedule})
+      addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: newSchedule})
       // addDoc(collection(db, `shows for week of ${week}`), {thisWeek: newSchedule})
       setNewSchedule([])
       setShowsToAdd([])
