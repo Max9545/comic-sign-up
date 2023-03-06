@@ -32,14 +32,14 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const onSubmit = (potentialShow: any) => {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}${potentialShow.day}`
         props.setWeekSchedule(potentialShow.week)
-        if (newSchedule.length === 0) {
-          setNewSchedule(potentialShow)
-        } else {
+        // if (newSchedule.length === 0) {
+        //   setNewSchedule(potentialShow)
+        // } else {
           const idCheck = newSchedule.map(show => show.id)
           if(!idCheck.includes(potentialShow.id)) {
             setNewSchedule([...newSchedule, potentialShow])
           }
-        }
+        // }
         displayPotentialShows()
   }
 
