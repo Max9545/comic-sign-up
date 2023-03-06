@@ -46,9 +46,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const buildWeek = () => {
     if (newSchedule.length > 0) {
       props.setShows(newSchedule)
-      // localStorage.setItem('new-week', JSON.stringify(newSchedule))
       addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: newSchedule})
-      // addDoc(collection(db, `shows for week of ${week}`), {thisWeek: newSchedule})
       setNewSchedule([])
       setShowsToAdd([])
     }
@@ -106,7 +104,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       console.error(err) 
       alert("An error occured while fetching comedian data") 
     }  
-    // console.log(localStorage)
   }
 
   return (

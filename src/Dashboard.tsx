@@ -76,21 +76,7 @@ function Dashboard() {
       <Week comedian={comedian} weeklyShowTimes={shows}/>
       {user?.email === 'bregmanmax91@gmail.com' && <Admin shows={shows} setShows={setShows}
       setWeekSchedule={setWeekSchedule}/>}
-      {/* <Link to={'/dashboard/admin'}>Administration</Link>
-      <Link to={'/dashboard/comic'}>Comedian Portal</Link> */}
-        {/* <Routes>
-          <Route path='dashboard/comic' element={
-              <Week 
-              comedian={comedian} 
-              weeklyShowTimes={shows}/>}
-              />
-            <Route path='dashboard/admin' element={
-              <Admin shows={shows} setShows={setShows}/>
-            }/>
-        </Routes> */}
        <div className="dashboard__container">
-        {/* <Week comedian={comedian} weeklyShowTimes={shows}/> */}
-        {/* <Admin shows={shows} setShows={setShows}/> */}
         Logged in as
          <div>{name}</div>
          <div>{user?.email}</div>
