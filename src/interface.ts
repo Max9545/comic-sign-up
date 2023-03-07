@@ -32,7 +32,8 @@ export interface ShowToBook {
   date: string, 
   id: string,
   headliner: string
-  club: string
+  club: string,
+  availability: boolean,
 }
 
  

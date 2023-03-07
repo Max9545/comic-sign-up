@@ -21,6 +21,10 @@ show-button {
   background-color: darkred;
 }
 
+.false {
+  background-color: aliceblue;
+}
+
 show-container {
   flex-direction: row;
   width: 100vw

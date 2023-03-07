@@ -15,12 +15,33 @@ function Dashboard() {
 
   const [user, loading, error] = useAuthState(auth) 
   const [name, setName] = useState("")
-
-  const [comedian, setComedian] = useState<Comic>(testData.testComedians[1])
+  const [comedian, setComedian] = useState<Comic>({
+    name: '',
+    id: '',
+    type: '',
+    showsAvailabledowntown: {
+      monday: [{}],
+      tuesday: [{}],
+      wednesday: [{}],
+      thursday: [{}], 
+      friday: [{}],
+      saturday: [{}],
+      sunday: [{}]
+    }, 
+    showsAvailablesouth: {
+      monday: [{}],
+      tuesday: [{}],
+      wednesday: [{}],
+      thursday: [{}], 
+      friday: [{}],
+      saturday: [{}],
+      sunday: [{}]
+    }, 
+    payAmount: 0
+  }
+)
 
   const [weekSchedule, setWeekSchedule] = useState('')
-
-
 
   const [shows, setShows] = useState<[ShowToBook]>([{
     key: 0, 
@@ -32,7 +53,9 @@ function Dashboard() {
     date: '', 
     id: '',
     headliner: '',
-    club: ''}]) 
+    club: '',
+    availability: false
+  }]) 
 
   const navigate = useNavigate() 
 
@@ -41,7 +64,31 @@ function Dashboard() {
       const q = query(collection(db, "users"), where("uid", "==", user?.uid)) 
       const doc = await getDocs(q)
       const data = doc.docs[0].data() 
-      setName(data.name) 
+      setName(data.name)
+      setComedian({
+        name: data.name,
+        id: data.uid,
+        type: '',
+        showsAvailabledowntown: {
+          monday: [{}],
+          tuesday: [{}],
+          wednesday: [{}],
+          thursday: [{}], 
+          friday: [{}],
+          saturday: [{}],
+          sunday: [{}]
+        }, 
+        showsAvailablesouth: {
+          monday: [{}],
+          tuesday: [{}],
+          wednesday: [{}],
+          thursday: [{}], 
+          friday: [{}],
+          saturday: [{}],
+          sunday: [{}]
+        }, 
+      payAmount: 0
+      })
     } catch (err) {
       console.error(err) 
       alert("An error occured while fetching user data") 
@@ -54,7 +101,6 @@ function Dashboard() {
       const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
       const doc = await (getDocs(docRef))
       setShows(doc.docs[0].data().thisWeek)
-      console.log(doc.docs[0].data().thisWeek)
     } catch (err) {
       console.error(err) 
       alert("An error occured while fetching user data") 

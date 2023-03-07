@@ -6,11 +6,6 @@ import { ShowToBook, WeekInter } from './interface'
 import { doc, addDoc, collection, query, getDocs } from "firebase/firestore";
 import {db} from './firebase'
 
-
-
-
-
-
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
 
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>(props.shows)
@@ -88,6 +83,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                 }
                 date={newShow.date}
                 headliner={newShow.headliner}
+                availability={false}
               />
               <button onClick={() => deleteShow(newShow.id)}>Delete</button>
             </div>
