@@ -43,7 +43,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   useEffect(() => {
     setShows(props.weeklyShowTimes)
-  }, [])
+  }, [props.weeklyShowTimes])
 
   useEffect(() => {
     showShows()
@@ -124,7 +124,6 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
     return (
       <>
         <form className='show-container' onSubmit={submitForm}>
-        {console.log(showComponents)}
           {showComponents}
           <button type="submit" className='submit-btn'>
           Submit Availability

@@ -115,7 +115,7 @@ function Dashboard() {
 
   useEffect(() => {
     fetchWeekForComedian()
-},[])  
+}, [])  
 
   return (
     <div className="dashboard">
