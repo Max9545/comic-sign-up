@@ -26,13 +26,13 @@ export interface ShowToBook {
   key: number, 
   day: string, 
   time: string, 
-  pay: string, 
   currentClub: string, 
   availableComedian: object, 
   date: string, 
   id: string,
   headliner: string
-  club: string
+  club: string,
+  availability: boolean,
 }
 
  

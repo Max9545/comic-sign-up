@@ -3,17 +3,19 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook, WeekInter } from './interface'
+import { doc, addDoc, collection, query, getDocs, collectionGroup } from "firebase/firestore";
+import {db} from './firebase'
 
-function Admin(props: {shows: [ShowToBook], setShows: any}) {
+function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
 
-  const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
+  const [newSchedule, setNewSchedule] = useState<ShowToBook[]>(props.shows)
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
-
+  const [day, setDay] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
-  // useEffect(() => { 
-  //   displayPotentialShows()
-  // },[newSchedule])
+  useEffect(() => {
+    displayPotentialShows()
+  }, [newSchedule])
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -22,22 +24,20 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
   }
 
   const onSubmit = (potentialShow: any) => {
-        potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}${potentialShow.day}`
-        if (newSchedule.length === 0) {
-          newSchedule.push(potentialShow)
-        } else {
+        potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${day}`
+        potentialShow.day = day
+        props.setWeekSchedule(potentialShow.week)
           const idCheck = newSchedule.map(show => show.id)
           if(!idCheck.includes(potentialShow.id)) {
-            newSchedule.push(potentialShow)
+            setNewSchedule([...newSchedule, potentialShow])
           }
-        }
         displayPotentialShows()
   }
 
   const buildWeek = () => {
     if (newSchedule.length > 0) {
       props.setShows(newSchedule)
-      localStorage.setItem('new-week', JSON.stringify(newSchedule))
+      addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: newSchedule})
       setNewSchedule([])
       setShowsToAdd([])
     }
@@ -45,13 +45,12 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
 
   const displayPotentialShows = () => {setShowsToAdd(newSchedule.map((newShow, index) => {
             return (
-            <div>
+            <div key={index}>
               <Show
                 key={index}
                 id={newShow.id}
                 day={newShow.day}
                 time={newShow.time}
-                pay={newShow.pay}
                 currentClub={newShow.club}
                 availableComedian={{
                   name: 'admin',
@@ -79,41 +78,35 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
                 }
                 date={newShow.date}
                 headliner={newShow.headliner}
+                availability={false}
               />
               <button onClick={() => deleteShow(newShow.id)}>Delete</button>
             </div>
           )
 }))}
 
-  const viewAllComicsAvailable = () => {
-    console.log(localStorage)
+  const viewAllComicsAvailable = async () => {
+
+    try {
+      const docRef = query(collectionGroup(db, `comedians`))
+      const doc = await (await getDocs(docRef))
+      const availableComicArray = doc.docs.map(comic => comic.data())
+      console.log(availableComicArray)
+    } catch (err) {
+      console.error(err) 
+      alert("An error occured while fetching comedian data") 
+    }  
   }
- 
-  // const displayPotentialShows = () => {
-  //   const idCheck = newSchedule.map(show => show.id)
-  //   console.log(idCheck,'idCheck')
-  //   const compId = showsToAdd.map(show => show.props.id)
-  //   console.log(compId, 'compId', showsToAdd)
-  //   if(!compId.some(r => idCheck.indexOf(r) >= 0)) {
-  //     setShowsToAdd(newSchedule.map((newShow, index) => {
-  //       return <Show
-  //                 key={index}
-  //                 id={`${newShow.date}${newShow.time}${newShow.headliner}${newShow.club}${newShow.pay}${newShow.day}`}
-  //                 day={newShow.day}
-  //                 time={newShow.time}
-  //                 pay={newShow.pay}
-  //                 currentClub={newShow.club}
-  //                 availableComedian={{name: 'admin'}}
-  //                 date={newShow.date}
-  //                 headliner={newShow.headliner}
-  //               />
-  //   }))
-  //   }
-     
-  // }
+
+  const showDay = (numDate: string) => {
+    
+    const dateProto = new Date(numDate).getDay()
+    const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    setDay(daysOfWeek[dateProto])
+  }
 
   return (
-    <div>
+    <div className='admin-form'>
       <button onClick={viewAllComicsAvailable}>View Available Comedians</button>
       <p>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
@@ -122,22 +115,18 @@ function Admin(props: {shows: [ShowToBook], setShows: any}) {
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>
         </select>
-        <label>Day</label>
-        <input {...register('day')} autoFocus={true} required/>
-        <label>Time</label>
-        <input {...register('time')} defaultValue='8:00' required/>
         <label>Date</label>
-        <input {...register('date')} required/>
+        <input {...register('date')} type='date' required onChange={(event) => showDay(event.target.value)}/>
+        <div>{` which is a ${day}`}</div>
+        <label>Time</label>
+        <input {...register('time')} type='time' required/>
         <label>Headliner</label>
         <input {...register('headliner')} required/>
-        <label>Pay</label>
-        <input {...register('pay')} type='number' required/>
         <label>Add Show</label>
         <input type='submit' value='Add Show'/>
       </form>
       {props.setShows && <button onClick={buildWeek}>Build Week</button>}
       {showsToAdd}
-      {/* {showDisplay} */}
     </div>
   )
 }

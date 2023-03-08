@@ -1,5 +1,5 @@
-%body {
-  margin: 0;
+body {
+  padding: 5px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -21,6 +21,10 @@ show-button {
   background-color: darkred;
 }
 
+.false {
+  background-color: aliceblue;
+}
+
 show-container {
   flex-direction: row;
   width: 100vw
@@ -30,3 +34,9 @@ show-container {
   width: 90vw;
   background-color:red
 }
+
+.admin-form {
+  width: 80%;
+  align-self: center;
+  justify-content: center; 
+} 
