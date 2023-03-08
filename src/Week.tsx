@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react'
 import Show from './Show'
 import { Comic, ShowToBook } from './interface'
 import { setDoc, doc } from 'firebase/firestore'
-import { db } from './firebase'
+import { db, logout, auth } from './firebase'
+import { redirect } from 'react-router-dom'
 
 
 
@@ -11,6 +12,8 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   const [shows, setShows] = useState<ShowToBook[]>([])
   const [currentComedian, setCurrentComedian] = useState(props.comedian)
+  const [allAvailablity, setAllAvailability] = useState(false)
+  
   // useState<Comic>({
   //   name: 'admin',
   //   id: '',
@@ -71,7 +74,8 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   const showShows = () => {
     if(shows.length > 0) {
-      const showElements = props.weeklyShowTimes.map((show, index) => { 
+      // const showElements = 
+      return props.weeklyShowTimes.map((show, index) => { 
         return <div key={index}>
                   <Show
                       key={index}
@@ -84,19 +88,21 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
                       date={show.date}
                       headliner={show.headliner}
                       availability={false}
+                      setAllAvailability={setAllAvailability}
                   />
               </div>
           
       })
-      console.log('showShows', showElements[1])
-      setShowComponents(showElements)
-      console.log(showComponents[1])
+      // console.log('showShows', showElements[1])
+      // setShowComponents(showElements)
+      // console.log(showComponents[1])
     }
   }
 
-  const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitForm = (event: any) => {
     event.preventDefault()
     setDoc(doc(db, `comedians/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
+    // showShows()
     // addDoc(collection(db, `users/comedians/${currentComedian.name}`), currentComedian)
     currentComedian.showsAvailabledowntown = {
       monday: [{}],
@@ -116,19 +122,30 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       saturday: [{}],
       sunday: [{}]
     } 
-    showShows()
+    // setShowComponents(showShows())
     alert('Availability Submitted!!')
+    // redirect('/')
+    logout()
+    // setAllAvailability(false)
     // localStorage.setItem(JSON.stringify(`${currentComedian.name}'s availability`), JSON.stringify(currentComedian))
+    
   }
 
     return (
       <>
-        <form className='show-container' onSubmit={submitForm}>
+      <section className='show-container'>
+          {/* {showComponents} */}
+          {showShows()}
+          <button onClick={submitForm}type="submit" className='submit-btn'>
+          Submit Availability
+          </button>
+        </section>
+        {/* <form className='show-container' onSubmit={submitForm}>
           {showComponents}
           <button type="submit" className='submit-btn'>
           Submit Availability
           </button>
-        </form>
+        </form> */}
       </>
     )
 }

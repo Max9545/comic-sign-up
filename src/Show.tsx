@@ -2,8 +2,10 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { Comic } from './interface'
 
-function Show(props: {key: number, day: string, time: string, pay: string, currentClub: string, availableComedian: Comic, date: string, id: string, headliner: string, availability: boolean}) {
+function Show(props: {key: number, day: string, time: string, pay: string, currentClub: string, availableComedian: Comic, date: string, id: string, headliner: string, availability: boolean, setAllAvailability?: any}) {
 
+
+  
   const [availability, setAvailability] = useState(false)
   const [dayOfWeek, setDayOfWeek] = useState('')
   const [showTime, setShowTime] = useState('')
@@ -33,9 +35,9 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
     },
     payAmount: 0}
   )
-  const [date, setDate] = useState('')
-  const [headliner, setHeadliner] = useState('')
-  const [id, setId] = useState('')
+  // const [date, setDate] = useState('')
+  // const [headliner, setHeadliner] = useState('')
+  // const [id, setId] = useState('')
 
   useEffect(() => {
     setDayOfWeek(props.day.toLowerCase())
@@ -62,17 +64,17 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
     setAvailability(props.availability)
   }, [])
 
-  useEffect(() => {
-    setDate(props.date)
-  },[])
+  // useEffect(() => {
+  //   setDate(props.date)
+  // },[])
 
-  useEffect(() => {
-    setHeadliner(props.headliner)
-  })
+  // useEffect(() => {
+  //   setHeadliner(props.headliner)
+  // })
 
-  useEffect(() => {
-    setId(props.id)
-  }, [])
+  // useEffect(() => {
+  //   setId(props.id)
+  // }, [])
 
   // const handlePay = () => {
   //   comedian.payAmount += parseFloat(showPay)
@@ -84,8 +86,6 @@ function Show(props: {key: number, day: string, time: string, pay: string, curre
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(showTime)) {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push({showTime: showTime, showPay: showPay})
       }
-      
-      
   }
 
   return (
