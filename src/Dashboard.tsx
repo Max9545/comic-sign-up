@@ -47,7 +47,6 @@ function Dashboard() {
     key: 0, 
     day: '', 
     time: '', 
-    pay: '', 
     currentClub: '', 
     availableComedian: {}, 
     date: '', 

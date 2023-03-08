@@ -10,7 +10,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>(props.shows)
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
-  // const [week, setWeek] = useState()
 
   const { register, handleSubmit, reset } = useForm()
 
@@ -25,16 +24,12 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }
 
   const onSubmit = (potentialShow: any) => {
-        potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.pay}${potentialShow.day}`
+        potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.day}`
         props.setWeekSchedule(potentialShow.week)
-        // if (newSchedule.length === 0) {
-        //   setNewSchedule(potentialShow)
-        // } else {
           const idCheck = newSchedule.map(show => show.id)
           if(!idCheck.includes(potentialShow.id)) {
             setNewSchedule([...newSchedule, potentialShow])
           }
-        // }
         displayPotentialShows()
   }
 
@@ -55,7 +50,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                 id={newShow.id}
                 day={newShow.day}
                 time={newShow.time}
-                pay={newShow.pay}
                 currentClub={newShow.club}
                 availableComedian={{
                   name: 'admin',
