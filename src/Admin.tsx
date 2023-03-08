@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook, WeekInter } from './interface'
-import { doc, addDoc, collection, query, getDocs } from "firebase/firestore";
+import { doc, addDoc, collection, query, getDocs, collectionGroup } from "firebase/firestore";
 import {db} from './firebase'
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
@@ -22,7 +22,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     setNewSchedule(newSchedule)
     displayPotentialShows()
   }
-
 
   const onSubmit = (potentialShow: any) => {
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${day}`
@@ -89,9 +88,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const viewAllComicsAvailable = async () => {
 
     try {
-      const docRef = query(collection(db, `comedians`))
+      const docRef = query(collectionGroup(db, `comedians`))
       const doc = await (await getDocs(docRef))
-      console.log(doc.docs[0].data().thisWeek)
+      const availableComicArray = doc.docs.map(comic => comic.data())
+      console.log(availableComicArray)
     } catch (err) {
       console.error(err) 
       alert("An error occured while fetching comedian data") 

@@ -118,6 +118,7 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
+      {user?.email === 'bregmanmax91@gmail.com' && <p>Current Week Shown To Comedians</p>}
       <Week comedian={comedian} weeklyShowTimes={shows}/>
       {user?.email === 'bregmanmax91@gmail.com' && <Admin shows={shows} setShows={setShows}
       setWeekSchedule={setWeekSchedule}/>}
