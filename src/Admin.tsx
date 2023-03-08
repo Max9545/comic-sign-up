@@ -10,7 +10,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>(props.shows)
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
-
+  const [day, setDay] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -23,8 +23,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     displayPotentialShows()
   }
 
+
   const onSubmit = (potentialShow: any) => {
-        potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${potentialShow.day}`
+        potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${day}`
+        potentialShow.day = day
         props.setWeekSchedule(potentialShow.week)
           const idCheck = newSchedule.map(show => show.id)
           if(!idCheck.includes(potentialShow.id)) {
@@ -96,6 +98,13 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     }  
   }
 
+  const showDay = (numDate: string) => {
+    
+    const dateProto = new Date(numDate).getDay()
+    const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    setDay(daysOfWeek[dateProto])
+  }
+
   return (
     <div className='admin-form'>
       <button onClick={viewAllComicsAvailable}>View Available Comedians</button>
@@ -106,18 +115,13 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>
         </select>
-        {/* <label>Week Of:</label>
-        <input {...register('week')} type='date' autoFocus={true} required/> */}
-        <label>Day</label>
-        <input {...register('day')} autoFocus={true} required/>
+        <label>Date</label>
+        <input {...register('date')} type='date' required onChange={(event) => showDay(event.target.value)}/>
+        <div>{` which is a ${day}`}</div>
         <label>Time</label>
         <input {...register('time')} type='time' required/>
-        <label>Date</label>
-        <input {...register('date')} required/>
         <label>Headliner</label>
         <input {...register('headliner')} required/>
-        <label>Pay</label>
-        <input {...register('pay')} type='number' min='0' required/>
         <label>Add Show</label>
         <input type='submit' value='Add Show'/>
       </form>
