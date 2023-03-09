@@ -90,8 +90,12 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     try {
       const docRef = query(collectionGroup(db, `comedians`))
       const doc = await (await getDocs(docRef))
-      const availableComicArray = doc.docs.map(comic => comic.data())
-      console.log(availableComicArray)
+    
+
+      const availableComicArrayDowntownWeek = doc.docs.map(comic => comic.data().comedianInfo.showsAvailabledowntown)
+      
+      // const downtownDays =  
+      console.log(availableComicArrayDowntownWeek)
     } catch (err) {
       console.error(err) 
       alert("An error occured while fetching comedian data") 
