@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+header {
+  height: 100%;
+}
+
 show-button {
   width: 15vw;
   height: 15vh

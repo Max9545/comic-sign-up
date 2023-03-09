@@ -4,13 +4,13 @@ export interface AvailableShow {
 }
 
 export interface WeekInter {
-  monday: object[],
-  tuesday: object[],
-  wednesday: object[],
-  thursday: object[], 
-  friday: object[],
-  saturday: object[],
-  sunday: object[]
+  monday: string[],
+  tuesday: string[],
+  wednesday: string[],
+  thursday: string[], 
+  friday: string[],
+  saturday: string[],
+  sunday: string[]
 }
 
 export interface Comic {
@@ -19,7 +19,6 @@ export interface Comic {
   type: string;
   showsAvailabledowntown: WeekInter;
   showsAvailablesouth: WeekInter;
-  payAmount: number;
 }
 
 export interface ShowToBook {

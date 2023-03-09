@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook, WeekInter } from './interface'
-import { doc, addDoc, collection, query, getDocs, collectionGroup } from "firebase/firestore";
+import { doc, addDoc, collection, query, getDocs, collectionGroup, DocumentData } from "firebase/firestore";
 import {db} from './firebase'
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
@@ -11,6 +11,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>(props.shows)
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
   const [day, setDay] = useState('')
+  const [availableDownttownFriday, setAvailableDownttownFriday] = useState<any[]>([])
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -24,6 +25,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }
 
   const onSubmit = (potentialShow: any) => {
+    console.log(potentialShow)
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${day}`
         potentialShow.day = day
         props.setWeekSchedule(potentialShow.week)
@@ -44,6 +46,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }
 
   const displayPotentialShows = () => {setShowsToAdd(newSchedule.map((newShow, index) => {
+    console.log(newShow)
             return (
             <div key={index}>
               <Show
@@ -57,24 +60,23 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                   id: '',
                   type: '',
                   showsAvailabledowntown: {
-                    monday: [{}],
-                    tuesday: [{}],
-                    wednesday: [{}],
-                    thursday: [{}], 
-                    friday: [{}],
-                    saturday: [{}],
-                    sunday: [{}]
+                    monday: [],
+                    tuesday: [],
+                    wednesday: [],
+                    thursday: [], 
+                    friday: [],
+                    saturday: [],
+                    sunday: []
                   },
                   showsAvailablesouth: {
-                    monday: [{}],
-                    tuesday: [{}],
-                    wednesday: [{}],
-                    thursday: [{}], 
-                    friday: [{}],
-                    saturday: [{}],
-                    sunday: [{}]
-                  },
-                  payAmount: 0}
+                    monday: [],
+                    tuesday: [],
+                    wednesday: [],
+                    thursday: [], 
+                    friday: [],
+                    saturday: [],
+                    sunday: []
+                  }}
                 }
                 date={newShow.date}
                 headliner={newShow.headliner}
@@ -91,11 +93,33 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       const docRef = query(collectionGroup(db, `comedians`))
       const doc = await (await getDocs(docRef))
     
-
-      const availableComicArrayDowntownWeek = doc.docs.map(comic => comic.data().comedianInfo.showsAvailabledowntown)
+      const availableComics: DocumentData[] = []
       
+       doc.docs.forEach(comic => availableComics.push(comic.data()))
+      // const availableComicWeek = 
+      availableComics.map((comedian, index) => {
+        // setAvailableDownttown()
+        props.shows.map(show => {
+          console.log(comedian)
+          console.log(show.id, comedian.comedianInfo.showsAvailabledowntown.friday[0])
+              if (show.id === comedian.comedianInfo.showsAvailabledowntown.friday[index]) {
+                console.log('success!!!', show, comedian)
+                setAvailableDownttownFriday([...comedian.comedianInfo.name, availableDownttownFriday])
+              }
+          // return {
+          //   day: show.day,
+          //   time: show.time
+          // }
+        })
+        return comedian.comedianInfo
+        // return {
+        //   comedian: comedian.comedianInfo.name,
+        //   downtown: Object.entries(comedian.comedianInfo.showsAvailabledowntown),
+        //   south: comedian.comedianInfo.showsAvailablesouth
+        // }
+      })
       // const downtownDays =  
-      console.log(availableComicArrayDowntownWeek)
+      // console.log(availableComicWeek)
     } catch (err) {
       console.error(err) 
       alert("An error occured while fetching comedian data") 
@@ -131,6 +155,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       </form>
       {props.setShows && <button onClick={buildWeek}>Build Week</button>}
       {showsToAdd}
+  <div>Available Downtown Friday: {availableDownttownFriday}</div>
     </div>
   )
 }

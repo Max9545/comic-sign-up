@@ -20,24 +20,23 @@ function Dashboard() {
     id: '',
     type: '',
     showsAvailabledowntown: {
-      monday: [{}],
-      tuesday: [{}],
-      wednesday: [{}],
-      thursday: [{}], 
-      friday: [{}],
-      saturday: [{}],
-      sunday: [{}]
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [], 
+      friday: [],
+      saturday: [],
+      sunday: []
     }, 
     showsAvailablesouth: {
-      monday: [{}],
-      tuesday: [{}],
-      wednesday: [{}],
-      thursday: [{}], 
-      friday: [{}],
-      saturday: [{}],
-      sunday: [{}]
-    }, 
-    payAmount: 0
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [], 
+      friday: [],
+      saturday: [],
+      sunday: []
+    }
   }
 )
 
@@ -69,24 +68,23 @@ function Dashboard() {
         id: data.uid,
         type: '',
         showsAvailabledowntown: {
-          monday: [{}],
-          tuesday: [{}],
-          wednesday: [{}],
-          thursday: [{}], 
-          friday: [{}],
-          saturday: [{}],
-          sunday: [{}]
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
         }, 
         showsAvailablesouth: {
-          monday: [{}],
-          tuesday: [{}],
-          wednesday: [{}],
-          thursday: [{}], 
-          friday: [{}],
-          saturday: [{}],
-          sunday: [{}]
-        }, 
-      payAmount: 0
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        }
       })
     } catch (err) {
       console.error(err) 
