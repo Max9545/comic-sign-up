@@ -25,7 +25,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }
 
   const onSubmit = (potentialShow: any) => {
-    console.log(potentialShow)
         potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${day}`
         potentialShow.day = day
         props.setWeekSchedule(potentialShow.week)
@@ -46,7 +45,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }
 
   const displayPotentialShows = () => {setShowsToAdd(newSchedule.map((newShow, index) => {
-    console.log(newShow)
             return (
             <div key={index}>
               <Show
@@ -96,14 +94,16 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       const availableComics: DocumentData[] = []
       
        doc.docs.forEach(comic => availableComics.push(comic.data()))
-      // const availableComicWeek = 
+      // const availableComicWeek =
+
+
       availableComics.map((comedian, index) => {
         // setAvailableDownttown()
+       console.log(availableComics)
         props.shows.map(show => {
-          console.log(comedian)
-          console.log(show.id, comedian.comedianInfo.showsAvailabledowntown.friday[0])
-              if (show.id === comedian.comedianInfo.showsAvailabledowntown.friday[index]) {
-                console.log('success!!!', show, comedian)
+              console.log(comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`][index])
+              if (show.id === comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`][index]) {
+                // console.log('success!!!', show, comedian)
                 setAvailableDownttownFriday([...comedian.comedianInfo.name, availableDownttownFriday])
               }
           // return {
@@ -118,8 +118,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         //   south: comedian.comedianInfo.showsAvailablesouth
         // }
       })
-      // const downtownDays =  
-      // console.log(availableComicWeek)
     } catch (err) {
       console.error(err) 
       alert("An error occured while fetching comedian data") 
