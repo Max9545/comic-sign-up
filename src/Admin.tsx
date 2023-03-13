@@ -13,6 +13,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [day, setDay] = useState('')
   const [availableDownttownFriday, setAvailableDownttownFriday] = useState<any[]>([])
   const [availableDownttownSaturday, setAvailableDownttownSaturday] = useState<any[]>([])
+  const [trigger, setTrigger] = useState(true)
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -21,7 +22,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   useEffect(() => {
     viewAllComicsAvailable()
-  },[availableDownttownSaturday, availableDownttownFriday])
+  })
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -94,11 +95,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
     try {
       const docRef = query(collectionGroup(db, `comedians`))
-      const doc = await (await getDocs(docRef))
+      const doc = await (getDocs(docRef))
     
       const availableComics: DocumentData[] = []
       
-       doc.docs.forEach(comic => availableComics.push(comic.data()))
+      doc.docs.forEach(comic => availableComics.push(comic.data()))
 
 
       availableComics.map((comedian, index) => {
@@ -114,20 +115,23 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                 availableDownttownFriday.push(`${comedian.comedianInfo.name}: ${show.time}`)
                 setAvailableDownttownFriday(availableDownttownFriday)
                 console.log('success!!!', show, comedian, availableDownttownFriday)
+      
               }
 
               if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownSaturday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Saturday') {
                 availableDownttownSaturday.push(`${comedian.comedianInfo.name}: ${show.time}`)
                 setAvailableDownttownSaturday(availableDownttownSaturday)
+                
                 console.log('success!!!', show, comedian, availableDownttownSaturday)
               }
-              
+            
           // return {
           //   day: show.day,
           //   time: show.time
-          // }
-        })
-        return comedian.comedianInfo
+            // }
+          })
+        setTrigger(!trigger)
+        // return comedian.comedianInfo
         // return {
         //   comedian: comedian.comedianInfo.name,
         //   downtown: Object.entries(comedian.comedianInfo.showsAvailabledowntown),
