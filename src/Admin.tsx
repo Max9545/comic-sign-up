@@ -139,6 +139,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   return (
     <div className='admin-form'>
       <button onClick={viewAllComicsAvailable}>View Available Comedians</button>
+      <div>Available Downtown Friday: {availableDownttownFriday.map(e => `${e}, `)}</div>
       <p>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -158,7 +159,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       </form>
       {props.setShows && <button onClick={buildWeek}>Build Week</button>}
       {showsToAdd}
-  <div>Available Downtown Friday: {availableDownttownFriday}</div>
     </div>
   )
 }
