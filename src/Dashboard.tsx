@@ -42,18 +42,7 @@ function Dashboard() {
 
   const [weekSchedule, setWeekSchedule] = useState('')
 
-  const [shows, setShows] = useState<[ShowToBook]>([{
-    key: 0, 
-    day: '', 
-    time: '', 
-    currentClub: '', 
-    availableComedian: {}, 
-    date: '', 
-    id: '',
-    headliner: '',
-    club: '',
-    availability: false
-  }]) 
+  const [shows, setShows] = useState<any>([]) 
 
   const navigate = useNavigate() 
 

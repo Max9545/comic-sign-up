@@ -12,11 +12,16 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
   const [day, setDay] = useState('')
   const [availableDownttownFriday, setAvailableDownttownFriday] = useState<any[]>([])
+  const [availableDownttownSaturday, setAvailableDownttownSaturday] = useState<any[]>([])
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
     displayPotentialShows()
   }, [newSchedule])
+
+  useEffect(() => {
+    viewAllComicsAvailable()
+  },[availableDownttownSaturday, availableDownttownFriday])
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -94,23 +99,29 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       const availableComics: DocumentData[] = []
       
        doc.docs.forEach(comic => availableComics.push(comic.data()))
-      // const availableComicWeek =
 
 
       availableComics.map((comedian, index) => {
-        // setAvailableDownttown()
+
        console.log(availableComics)
-       props.shows.splice(0,1)
-        props.shows.map(show => {
+      //  const tempProps = props.shows
+      //  tempProps.splice(0,1)
+      props.shows.map(show => {
           
           console.log(comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()], index, 'show:', show.id)
               // console.log(comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`][index])
-              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownFriday.includes(`${comedian.comedianInfo.name}: ${show.time}`)) {
+              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownFriday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Friday') {
                 availableDownttownFriday.push(`${comedian.comedianInfo.name}: ${show.time}`)
                 setAvailableDownttownFriday(availableDownttownFriday)
                 console.log('success!!!', show, comedian, availableDownttownFriday)
-
               }
+
+              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownSaturday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Saturday') {
+                availableDownttownSaturday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableDownttownSaturday(availableDownttownSaturday)
+                console.log('success!!!', show, comedian, availableDownttownSaturday)
+              }
+              
           // return {
           //   day: show.day,
           //   time: show.time
@@ -139,7 +150,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   return (
     <div className='admin-form'>
       <button onClick={viewAllComicsAvailable}>View Available Comedians</button>
-      <div>Available Downtown Friday: {availableDownttownFriday.map(e => `${e}, `)}</div>
+  <div>Available Downtown Friday: {availableDownttownFriday.map(e => `${e}, `)}</div>
+  <div>Available Downtown Saturday: {availableDownttownSaturday.map(e => `${e}, `)}</div>
       <p>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
       <form onSubmit={handleSubmit(onSubmit)}>
