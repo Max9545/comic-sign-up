@@ -46,7 +46,7 @@ show-container {
   justify-content: center; 
 } 
 
-.downtown-available-comics {
+.available-comics {
   display: flex;
   justify-content: space-between;
 }

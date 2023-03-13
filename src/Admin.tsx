@@ -11,9 +11,17 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>(props.shows)
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
   const [day, setDay] = useState('')
+  const [availableDownttownThursday, setAvailableDownttownThursday] = useState<any[]>([])
   const [availableDownttownFriday, setAvailableDownttownFriday] = useState<any[]>([])
   const [availableDownttownSaturday, setAvailableDownttownSaturday] = useState<any[]>([])
   const [availableDownttownSunday, setAvailableDownttownSunday] = useState<any[]>([])
+
+
+  const [availableSouthThursday, setAvailableSouthThursday] = useState<any[]>([])
+  const [availableSouthFriday, setAvailableSouthFriday] = useState<any[]>([])
+  const [availableSouthSaturday, setAvailableSouthSaturday] = useState<any[]>([])
+  const [availableSouthSunday, setAvailableSouthSunday] = useState<any[]>([])
+
   const [trigger, setTrigger] = useState(true)
   const { register, handleSubmit, reset } = useForm()
 
@@ -112,35 +120,47 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           
           console.log(comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()], index, 'show:', show.id)
               // console.log(comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`][index])
+              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownThursday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Thursday') {
+                availableDownttownThursday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableDownttownThursday(availableDownttownThursday)
+              }
+
               if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownFriday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Friday') {
                 availableDownttownFriday.push(`${comedian.comedianInfo.name}: ${show.time}`)
                 setAvailableDownttownFriday(availableDownttownFriday)
-                console.log('success!!!', show, comedian, availableDownttownFriday)
-      
               }
 
               if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownSaturday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Saturday') {
                 availableDownttownSaturday.push(`${comedian.comedianInfo.name}: ${show.time}`)
                 setAvailableDownttownSaturday(availableDownttownSaturday)
-                
-                console.log('success!!!', show, comedian, availableDownttownSaturday)
               }
+
               if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownSunday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Sunday') {
                 availableDownttownSunday.push(`${comedian.comedianInfo.name}: ${show.time}`)
                 setAvailableDownttownSunday(availableDownttownSunday)
               }
-          // return {
-          //   day: show.day,
-          //   time: show.time
-            // }
+
+              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthThursday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Thursday') {
+                availableSouthThursday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableSouthThursday(availableSouthThursday)
+              }
+
+              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthFriday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Friday') {
+                availableSouthFriday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableSouthFriday(availableSouthFriday)
+              }
+
+              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthSaturday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Saturday') {
+                availableSouthSaturday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableSouthSaturday(availableSouthSaturday)
+              }
+
+              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthSunday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Sunday') {
+                availableSouthSunday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableSouthSunday(availableSouthSunday)
+              }
           })
         setTrigger(!trigger)
-        // return comedian.comedianInfo
-        // return {
-        //   comedian: comedian.comedianInfo.name,
-        //   downtown: Object.entries(comedian.comedianInfo.showsAvailabledowntown),
-        //   south: comedian.comedianInfo.showsAvailablesouth
-        // }
       })
     } catch (err) {
       console.error(err) 
@@ -157,12 +177,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   return (
     <div className='admin-form'>
-      <button onClick={viewAllComicsAvailable}>View Available Comedians</button>
-      <section className='downtown-available-comics'>
-      <div className='available'>Available Downtown Friday: {availableDownttownFriday.map(e => <p>{`${e}, `}</p>)}</div>
-      <div>Available Downtown Saturday: {availableDownttownSaturday.map(e => <p>{`${e}, `}</p>)}</div>
-      <div>Available Downtown Sunday: {availableDownttownSunday.map(e => <p>{`${e}, `}</p>)}</div>
-      </section>
+      {/* <button onClick={viewAllComicsAvailable}>View Available Comedians</button> */}
       <p>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -182,6 +197,22 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       </form>
       {props.setShows && <button onClick={buildWeek}>Build Week</button>}
       {showsToAdd}
+      <div>
+      <h2>Downtown</h2>
+      <section className='available-comics'>
+        <div className='available'>Available Downtown Thursday: {availableDownttownThursday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available Downtown Friday: {availableDownttownFriday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available Downtown Saturday: {availableDownttownSaturday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available Downtown Sunday: {availableDownttownSunday.map(e => <p>{`${e}, `}</p>)}</div>
+      </section>
+      <h2>South Club</h2>
+      <section className='available-comics'>
+        <div className='available'>Available South Thursday: {availableSouthThursday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available South Friday: {availableDownttownFriday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available South Saturday: {availableSouthSaturday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available South Sunday: {availableSouthSunday.map(e => <p>{`${e}, `}</p>)}</div>
+      </section>
+      </div>
     </div>
   )
 }
