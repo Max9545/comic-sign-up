@@ -154,8 +154,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   return (
     <div className='admin-form'>
       <button onClick={viewAllComicsAvailable}>View Available Comedians</button>
-  <div>Available Downtown Friday: {availableDownttownFriday.map(e => `${e}, `)}</div>
-  <div>Available Downtown Saturday: {availableDownttownSaturday.map(e => `${e}, `)}</div>
+      <section className='downtown-available-comics'>
+      <div className='available'>Available Downtown Friday: {availableDownttownFriday.map(e => <p>{`${e}, `}</p>)}</div>
+      <div>Available Downtown Saturday: {availableDownttownSaturday.map(e => <p>{`${e}, `}</p>)}</div>
+      </section>
       <p>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
       <form onSubmit={handleSubmit(onSubmit)}>
