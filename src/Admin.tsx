@@ -13,6 +13,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [day, setDay] = useState('')
   const [availableDownttownFriday, setAvailableDownttownFriday] = useState<any[]>([])
   const [availableDownttownSaturday, setAvailableDownttownSaturday] = useState<any[]>([])
+  const [availableDownttownSunday, setAvailableDownttownSunday] = useState<any[]>([])
   const [trigger, setTrigger] = useState(true)
   const { register, handleSubmit, reset } = useForm()
 
@@ -124,7 +125,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                 
                 console.log('success!!!', show, comedian, availableDownttownSaturday)
               }
-            
+              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownSunday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Sunday') {
+                availableDownttownSunday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableDownttownSunday(availableDownttownSunday)
+              }
           // return {
           //   day: show.day,
           //   time: show.time
@@ -157,6 +161,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       <section className='downtown-available-comics'>
       <div className='available'>Available Downtown Friday: {availableDownttownFriday.map(e => <p>{`${e}, `}</p>)}</div>
       <div>Available Downtown Saturday: {availableDownttownSaturday.map(e => <p>{`${e}, `}</p>)}</div>
+      <div>Available Downtown Sunday: {availableDownttownSunday.map(e => <p>{`${e}, `}</p>)}</div>
       </section>
       <p>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
