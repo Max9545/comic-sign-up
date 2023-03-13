@@ -11,12 +11,19 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>(props.shows)
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
   const [day, setDay] = useState('')
+
+  const [availableDownttownMonday, setAvailableDownttownMonday] = useState<any[]>([])
+  const [availableDownttownTuesday, setAvailableDownttownTuesday] = useState<any[]>([])
+  const [availableDownttownWednesday, setAvailableDownttownWednesday] = useState<any[]>([])
   const [availableDownttownThursday, setAvailableDownttownThursday] = useState<any[]>([])
   const [availableDownttownFriday, setAvailableDownttownFriday] = useState<any[]>([])
   const [availableDownttownSaturday, setAvailableDownttownSaturday] = useState<any[]>([])
   const [availableDownttownSunday, setAvailableDownttownSunday] = useState<any[]>([])
 
 
+  const [availableSouthMonday, setAvailableSouthMonday] = useState<any[]>([])
+  const [availableSouthTuesday, setAvailableSouthTuesday] = useState<any[]>([])
+  const [availableSouthWednesday, setAvailableSouthWednesday] = useState<any[]>([])
   const [availableSouthThursday, setAvailableSouthThursday] = useState<any[]>([])
   const [availableSouthFriday, setAvailableSouthFriday] = useState<any[]>([])
   const [availableSouthSaturday, setAvailableSouthSaturday] = useState<any[]>([])
@@ -120,6 +127,23 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           
           console.log(comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()], index, 'show:', show.id)
               // console.log(comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`][index])
+
+
+              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownMonday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Monday') {
+                availableDownttownMonday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableDownttownMonday(availableDownttownMonday)
+              }
+
+              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownTuesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Tuesday') {
+                availableDownttownTuesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableDownttownTuesday(availableDownttownTuesday)
+              }
+
+              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownWednesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Wednesday') {
+                availableDownttownWednesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableDownttownWednesday(availableDownttownWednesday)
+              }
+
               if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownThursday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Thursday') {
                 availableDownttownThursday.push(`${comedian.comedianInfo.name}: ${show.time}`)
                 setAvailableDownttownThursday(availableDownttownThursday)
@@ -138,6 +162,22 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
               if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownSunday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Sunday') {
                 availableDownttownSunday.push(`${comedian.comedianInfo.name}: ${show.time}`)
                 setAvailableDownttownSunday(availableDownttownSunday)
+              }
+
+
+              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthMonday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Monday') {
+                availableSouthMonday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableSouthMonday(availableSouthMonday)
+              }
+
+              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthTuesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Tuesday') {
+                availableSouthTuesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableSouthTuesday(availableSouthTuesday)
+              }
+
+              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthWednesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Wednesday') {
+                availableSouthWednesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableSouthWednesday(availableSouthWednesday)
               }
 
               if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthThursday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Thursday') {
