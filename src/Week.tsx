@@ -31,7 +31,6 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
   const showShows = () => {
     if(shows.length > 0) {
       return props.weeklyShowTimes.map((show, index) => { 
-        console.log(show)
         return <div key={index}>
                   <Show
                       key={index}

@@ -100,11 +100,16 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       availableComics.map((comedian, index) => {
         // setAvailableDownttown()
        console.log(availableComics)
+       props.shows.splice(0,1)
         props.shows.map(show => {
-              console.log(comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`][index])
-              if (show.id === comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`][index]) {
-                // console.log('success!!!', show, comedian)
-                setAvailableDownttownFriday([...comedian.comedianInfo.name, availableDownttownFriday])
+          
+          console.log(comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()], index, 'show:', show.id)
+              // console.log(comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`][index])
+              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownFriday.includes(`${comedian.comedianInfo.name}: ${show.time}`)) {
+                availableDownttownFriday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+                setAvailableDownttownFriday(availableDownttownFriday)
+                console.log('success!!!', show, comedian, availableDownttownFriday)
+
               }
           // return {
           //   day: show.day,
