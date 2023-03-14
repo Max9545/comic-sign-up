@@ -11,6 +11,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>(props.shows)
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
   const [day, setDay] = useState('')
+  const [date, setDate] = useState('')
 
   const [availableDownttownMonday, setAvailableDownttownMonday] = useState<any[]>([])
   const [availableDownttownTuesday, setAvailableDownttownTuesday] = useState<any[]>([])
@@ -47,8 +48,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }
 
   const onSubmit = (potentialShow: any) => {
-        potentialShow.id = `${potentialShow.date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${day}`
+        potentialShow.id = `${date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${day}`
         potentialShow.day = day
+        potentialShow.date = date
         props.setWeekSchedule(potentialShow.week)
           const idCheck = newSchedule.map(show => show.id)
           if(!idCheck.includes(potentialShow.id)) {
@@ -209,7 +211,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }
 
   const showDay = (numDate: string) => {
-    
+    setDate(numDate)
     const dateProto = new Date(numDate).getDay()
     const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     setDay(daysOfWeek[dateProto])
