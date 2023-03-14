@@ -38,7 +38,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   useEffect(() => {
     viewAllComicsAvailable()
-  })
+  },[props])
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -240,6 +240,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       <div>
       <h2>Downtown</h2>
       <section className='available-comics'>
+        <div className='available'>Available Downtown Monday: {availableDownttownMonday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available Downtown Tuesday: {availableDownttownTuesday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available Downtown Wednesday: {availableDownttownWednesday.map(e => <p>{`${e}, `}</p>)}</div>
         <div className='available'>Available Downtown Thursday: {availableDownttownThursday.map(e => <p>{`${e}, `}</p>)}</div>
         <div className='available'>Available Downtown Friday: {availableDownttownFriday.map(e => <p>{`${e}, `}</p>)}</div>
         <div className='available'>Available Downtown Saturday: {availableDownttownSaturday.map(e => <p>{`${e}, `}</p>)}</div>
@@ -247,8 +250,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       </section>
       <h2>South Club</h2>
       <section className='available-comics'>
+        <div className='available'>Available South Monday: {availableSouthMonday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available South Tuesday: {availableSouthTuesday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available South Wednesday: {availableSouthWednesday.map(e => <p>{`${e}, `}</p>)}</div>
         <div className='available'>Available South Thursday: {availableSouthThursday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available South Friday: {availableDownttownFriday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available South Friday: {availableSouthFriday.map(e => <p>{`${e}, `}</p>)}</div>
         <div className='available'>Available South Saturday: {availableSouthSaturday.map(e => <p>{`${e}, `}</p>)}</div>
         <div className='available'>Available South Sunday: {availableSouthSunday.map(e => <p>{`${e}, `}</p>)}</div>
       </section>
