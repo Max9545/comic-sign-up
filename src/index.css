@@ -51,7 +51,6 @@ show-container {
   justify-content: space-between;
 }
 
-/* .available-comics {
-  display: flex;
-  flex-direction: column;
-} */
+.available {
+  border: bisque solid;
+}
