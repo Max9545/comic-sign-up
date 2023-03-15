@@ -51,7 +51,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
   }
 
   const submitForm = (event: any) => {
-    console.log(currentComedian)
+
     event.preventDefault()
     setDoc(doc(db, `comedians/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
     currentComedian.showsAvailabledowntown = {
@@ -84,12 +84,6 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
           Submit Availability
           </button>
         </section>
-        {/* <form className='show-container' onSubmit={submitForm}>
-          {showComponents}
-          <button type="submit" className='submit-btn'>
-          Submit Availability
-          </button>
-        </form> */}
       </>
     )
 }

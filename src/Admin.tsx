@@ -122,15 +122,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
       availableComics.map((comedian, index) => {
 
-       console.log(availableComics)
-      //  const tempProps = props.shows
-      //  tempProps.splice(0,1)
       props.shows.map(show => {
           
-          console.log(comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()], index, 'show:', show.id)
-              // console.log(comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`][index])
-
-
               if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownMonday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Monday') {
                 availableDownttownMonday.push(`${comedian.comedianInfo.name}: ${show.time}`)
                 setAvailableDownttownMonday(availableDownttownMonday)
@@ -242,23 +235,23 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       <div>
       <h2>Downtown</h2>
       <section className='available-comics'>
-        <div className='available'>Available Downtown Monday: {availableDownttownMonday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available Downtown Tuesday: {availableDownttownTuesday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available Downtown Wednesday: {availableDownttownWednesday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available Downtown Thursday: {availableDownttownThursday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available Downtown Friday: {availableDownttownFriday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available Downtown Saturday: {availableDownttownSaturday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available Downtown Sunday: {availableDownttownSunday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available Downtown Monday: {availableDownttownMonday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available Downtown Tuesday: {availableDownttownTuesday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available Downtown Wednesday: {availableDownttownWednesday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available Downtown Thursday: {availableDownttownThursday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available Downtown Friday: {availableDownttownFriday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available Downtown Saturday: {availableDownttownSaturday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available Downtown Sunday: {availableDownttownSunday.map(e => <p>{`${e}`}</p>)}</div>
       </section>
       <h2>South Club</h2>
       <section className='available-comics'>
-        <div className='available'>Available South Monday: {availableSouthMonday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available South Tuesday: {availableSouthTuesday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available South Wednesday: {availableSouthWednesday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available South Thursday: {availableSouthThursday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available South Friday: {availableSouthFriday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available South Saturday: {availableSouthSaturday.map(e => <p>{`${e}, `}</p>)}</div>
-        <div className='available'>Available South Sunday: {availableSouthSunday.map(e => <p>{`${e}, `}</p>)}</div>
+        <div className='available'>Available South Monday: {availableSouthMonday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available South Tuesday: {availableSouthTuesday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available South Wednesday: {availableSouthWednesday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available South Thursday: {availableSouthThursday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available South Friday: {availableSouthFriday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available South Saturday: {availableSouthSaturday.map(e => <p>{`${e}`}</p>)}</div>
+        <div className='available'>Available South Sunday: {availableSouthSunday.map(e => <p>{`${e}`}</p>)}</div>
       </section>
       </div>
     </div>

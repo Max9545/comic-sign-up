@@ -49,7 +49,6 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
   })
 
   useEffect(() => {
-    console.log(props.availability, availability)
     setAvailability(props.availability)
   }, [])
 

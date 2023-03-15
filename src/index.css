@@ -49,6 +49,7 @@ show-container {
 .available-comics {
   display: flex;
   justify-content: space-between;
+  flex-wrap: unset;
 }
 
 .available {
