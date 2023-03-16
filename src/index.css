@@ -37,7 +37,7 @@ header {
 }
 
 .false {
-  background-color: #17a2b8;;
+  background-color: #17a2b8;
 }
 
 show-container {
@@ -73,7 +73,7 @@ show-container {
 .available {
   border: bisque solid;
   /* justify-content: center; */
-  /* margin: 2%; */
+  margin: 1%;
   min-width: 20vw;
   padding: 2%;
   background-color: #282c34;
@@ -85,6 +85,12 @@ show-container {
   color: #dc3545
 }
 
-/* .show-button {
-  background-color: #17a2b8;
-} */
+.admin-build {
+  padding: 1%;
+  border: #dc3545 groove;
+  align-self: flex-start;
+  width: 100%;
+  background-color: #282c34;
+  font-size: 2rem;
+  color: #dc3545
+}
