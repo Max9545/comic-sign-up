@@ -29,7 +29,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [availableSouthFriday, setAvailableSouthFriday] = useState<any[]>([])
   const [availableSouthSaturday, setAvailableSouthSaturday] = useState<any[]>([])
   const [availableSouthSunday, setAvailableSouthSunday] = useState<any[]>([])
-
+  //object in state for each club
   const [trigger, setTrigger] = useState(true)
   const { register, handleSubmit, reset } = useForm()
 
