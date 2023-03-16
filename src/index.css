@@ -5,11 +5,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #282c34;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+header {
+  height: 100%;
 }
 
 show-button {
@@ -40,3 +45,13 @@ show-container {
   align-self: center;
   justify-content: center; 
 } 
+
+.available-comics {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: unset;
+}
+
+.available {
+  border: bisque solid;
+}

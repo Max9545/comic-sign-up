@@ -18,6 +18,7 @@ function Login() {
       return 
     }
     if (user) navigate("/dashboard") 
+    console.log(user)
   }, [user, loading]) 
 
   return (

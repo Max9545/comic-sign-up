@@ -13,24 +13,23 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
     id: '',
     type: '',
     showsAvailabledowntown: {
-      monday: [{}],
-      tuesday: [{}],
-      wednesday: [{}],
-      thursday: [{}], 
-      friday: [{}],
-      saturday: [{}],
-      sunday: [{}]
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [], 
+      friday: [],
+      saturday: [],
+      sunday: []
     },
     showsAvailablesouth: {
-      monday: [{}],
-      tuesday: [{}],
-      wednesday: [{}],
-      thursday: [{}], 
-      friday: [{}],
-      saturday: [{}],
-      sunday: [{}]
-    },
-    payAmount: 0}
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [], 
+      friday: [],
+      saturday: [],
+      sunday: []
+    }}
   )
 
   useEffect(() => {
@@ -50,15 +49,16 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
   })
 
   useEffect(() => {
-    console.log(props.availability, availability)
     setAvailability(props.availability)
   }, [])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       event.preventDefault()
       setAvailability(!availability)
+      console.log(comedian)
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(showTime)) {
-        comedian[`showsAvailable${clubToSign}`][dayOfWeek].push({showTime: showTime})
+        console.log(props.id)
+        comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(props.id)
       }
   }
 

@@ -15,46 +15,35 @@ function Dashboard() {
 
   const [user, loading, error] = useAuthState(auth) 
   const [name, setName] = useState("")
+  const [admin, setAdmin] = useState(false)
   const [comedian, setComedian] = useState<Comic>({
     name: '',
     id: '',
     type: '',
     showsAvailabledowntown: {
-      monday: [{}],
-      tuesday: [{}],
-      wednesday: [{}],
-      thursday: [{}], 
-      friday: [{}],
-      saturday: [{}],
-      sunday: [{}]
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [], 
+      friday: [],
+      saturday: [],
+      sunday: []
     }, 
     showsAvailablesouth: {
-      monday: [{}],
-      tuesday: [{}],
-      wednesday: [{}],
-      thursday: [{}], 
-      friday: [{}],
-      saturday: [{}],
-      sunday: [{}]
-    }, 
-    payAmount: 0
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [], 
+      friday: [],
+      saturday: [],
+      sunday: []
+    }
   }
 )
 
   const [weekSchedule, setWeekSchedule] = useState('')
 
-  const [shows, setShows] = useState<[ShowToBook]>([{
-    key: 0, 
-    day: '', 
-    time: '', 
-    currentClub: '', 
-    availableComedian: {}, 
-    date: '', 
-    id: '',
-    headliner: '',
-    club: '',
-    availability: false
-  }]) 
+  const [shows, setShows] = useState<any>([]) 
 
   const navigate = useNavigate() 
 
@@ -62,31 +51,32 @@ function Dashboard() {
     try {
       const q = query(collection(db, "users"), where("uid", "==", user?.uid)) 
       const doc = await getDocs(q)
-      const data = doc.docs[0].data() 
+      const data = doc.docs[0].data()
+      console.log(data) 
       setName(data.name)
+      setAdmin(data.admin)
       setComedian({
         name: data.name,
         id: data.uid,
         type: '',
         showsAvailabledowntown: {
-          monday: [{}],
-          tuesday: [{}],
-          wednesday: [{}],
-          thursday: [{}], 
-          friday: [{}],
-          saturday: [{}],
-          sunday: [{}]
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
         }, 
         showsAvailablesouth: {
-          monday: [{}],
-          tuesday: [{}],
-          wednesday: [{}],
-          thursday: [{}], 
-          friday: [{}],
-          saturday: [{}],
-          sunday: [{}]
-        }, 
-      payAmount: 0
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        }
       })
     } catch (err) {
       console.error(err) 
@@ -118,10 +108,14 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      {user?.email === 'bregmanmax91@gmail.com' && <p>Current Week Shown To Comedians</p>}
+      {admin && <p>Current Week Shown To Comedians</p>}
+      <Week comedian={comedian} weeklyShowTimes={shows}/>
+      {admin && <Admin shows={shows} setShows={setShows}
+      setWeekSchedule={setWeekSchedule}/>}
+      {/* {user?.email === 'bregmanmax91@gmail.com' && <p>Current Week Shown To Comedians</p>}
       <Week comedian={comedian} weeklyShowTimes={shows}/>
       {user?.email === 'bregmanmax91@gmail.com' && <Admin shows={shows} setShows={setShows}
-      setWeekSchedule={setWeekSchedule}/>}
+      setWeekSchedule={setWeekSchedule}/>} */}
        <div className="dashboard__container">
         Logged in as
          <div>{name}</div>
