@@ -10,11 +10,12 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={'https://media.glassdoor.com/sqll/508212/comedy-works-squarelogo-1432024977251.png'} className="App-logo" alt="logo" />
-        <p>
+        <img className="header-logo" src={'https://nts.comedyworks.com/uploads/images/comedyworkslogo.png'}/>
+        {/* <p className='for-comics-eyes'>
           Let us know your availability
-        </p>
-        <p>
+        </p> */}
+        </header>
+        <p className='for-comics-eyes'>
           Comedian Sign Up
         </p>
         <Routes>
@@ -23,7 +24,7 @@ function App() {
           <Route path='/dashboard/*' element={<Dashboard/>}/>
         </Routes>
         
-      </header>
+      
     </div>
   );
 }

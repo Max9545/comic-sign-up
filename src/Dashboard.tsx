@@ -108,7 +108,6 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      {admin && <p>Current Week Shown To Comedians</p>}
       <Week comedian={comedian} weeklyShowTimes={shows}/>
       {admin && <Admin shows={shows} setShows={setShows}
       setWeekSchedule={setWeekSchedule}/>}
