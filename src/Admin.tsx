@@ -8,7 +8,7 @@ import {db} from './firebase'
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
 
-  const [newSchedule, setNewSchedule] = useState<ShowToBook[]>(props.shows)
+  const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
   const [day, setDay] = useState('')
   const [date, setDate] = useState('')
