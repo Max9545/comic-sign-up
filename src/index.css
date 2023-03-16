@@ -63,15 +63,18 @@ show-container {
 .available-comics {
   width: 80vw;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   flex-wrap: wrap;
   align-self: center;
+  justify-content: center;
   
 }
 
 .available {
   border: bisque solid;
+  /* justify-content: center; */
   /* margin: 2%; */
+  min-width: 20vw;
   padding: 2%;
   background-color: #282c34;
 }
