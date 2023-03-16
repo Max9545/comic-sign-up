@@ -8,7 +8,7 @@ import {db} from './firebase'
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
 
-  const [newSchedule, setNewSchedule] = useState<ShowToBook[]>(props.shows)
+  const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
   const [day, setDay] = useState('')
   const [date, setDate] = useState('')
@@ -213,7 +213,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   return (
     <div className='admin-form'>
       {/* <button onClick={viewAllComicsAvailable}>View Available Comedians</button> */}
-      <p>Admin Build Week of Upcoming Shows</p>
+      <p className='admin-build'>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
       <form onSubmit={handleSubmit(onSubmit)}>
         <select {...register('club')}>

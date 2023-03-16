@@ -1,10 +1,14 @@
 .dashboard {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   display: flex;
+  padding: 2%;
+  border-top: #dc3545 solid;
   flex-direction: column  ;
   align-items: center;
   justify-content: flex-start;
+  background-image: url('https://nts.comedyworks.com/uploads/images/black-brick.png');
+  
 }
 .dashboard__container {
   display: flex;
@@ -12,6 +16,7 @@
   text-align: center;
   background-color: #dcdcdc;
   padding: 30px;
+  color: black
 }
 .dashboard__btn {
   padding: 10px;

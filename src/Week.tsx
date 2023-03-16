@@ -72,7 +72,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       saturday: [],
       sunday: []
     } 
-    alert('Availability Submitted!!')
+    alert('Availability Submitted!! ANd you are now logged out')
     logout()
   }
 
