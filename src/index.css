@@ -13,6 +13,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 /* 
 header {
   height: 10%;
@@ -23,7 +24,7 @@ header {
   font-weight: 700;
   color: aliceblue;
   width: 60vw;
-  height: 7vh
+  min-height: 7vh
 }
 
 .true {
@@ -58,7 +59,7 @@ show-container {
   width: 80vw;
   display: flex;
   justify-content: space-between;
-  flex-wrap: unset;
+  flex-wrap: wrap;
   align-self: center;
   
 }
@@ -69,7 +70,9 @@ show-container {
   padding: 2%
 }
 
-.for-comics-eyes {
+.comedian-signup {
+  align-self: center;
+  font-size: 2rem;
   color: #dc3545
 }
 
