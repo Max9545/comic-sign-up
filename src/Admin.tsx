@@ -215,19 +215,19 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       {/* <button onClick={viewAllComicsAvailable}>View Available Comedians</button> */}
       <p className='admin-build'>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
         <select {...register('club')}>
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>
         </select>
-        <label>Date</label>
-        <input {...register('date')} type='date' required onChange={(event) => showDay(event.target.value)}/>
-        <div>{` which is a ${day}`}</div>
+        <label className='date' >Date</label>
+        <input className='day' {...register('date')} type='date' required onChange={(event) => showDay(event.target.value)}/>
+        <div className='day-of-week' >{` which is a ${day}`}</div>
         <label>Time</label>
         <input {...register('time')} type='time' required/>
         <label>Headliner</label>
         <input {...register('headliner')} required/>
-        <label>Add Show</label>
+        <label className='add-show'>Add Show</label>
         <input type='submit' value='Add Show'/>
       </form>
       {props.setShows && <button onClick={buildWeek}>Build Week</button>}
