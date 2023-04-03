@@ -232,21 +232,25 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       <p className='admin-build'>Admin Build Week of Upcoming Shows</p>
       <button onClick={() => reset()}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
-        <select {...register('club')}>
+        <select className='club-select' {...register('club')}>
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>
         </select>
-        <label className='date' >Date</label>
+        <label className='date'>Date:</label>
         <input className='day' {...register('date')} type='date' required onChange={(event) => showDay(event.target.value)}/>
         <div className='day-of-week' >{` which is a ${day}`}</div>
-        <label>Time</label>
-        <input {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)} required/>
-        <label>Headliner</label>
+        <div>
+        <label>Time: </label>
+        <input {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)}  required/>
+        </div>
+        <div>
+        <label>Headliner: </label>
         <input {...register('headliner')} required/>
-        <label className='add-show'>Add Show</label>
-        <input type='submit' value='Add Show'/>
+        </div>
+        {/* <label className='add-show'>Add Show</label> */}
+        <input type='submit' value='Add Show' className='add-show'/>
       </form>
-      {props.setShows && <button onClick={buildWeek}>Build Week</button>}
+      {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
       {showsToAdd}
       <div>
       <h2>Downtown</h2>

@@ -101,8 +101,13 @@ label {
 }
 
 .add-show {
-  display: block;
-  margin-top: 5%;
+  width: 15vw;
+  height: 5vh;
+  margin: 5% 0% 5% 0%;
+  background-color:  #17a2b8;
+  color: aliceblue;
+  font-weight: 900;
+  /* align-self: center; */
 }
 
 .date {
@@ -118,11 +123,31 @@ label {
   font-size: 1.5rem;
   color: #dc3545
 }
-/* 
-.admin-input {
-  padding: 5% 5% 0% 5%;
-  justify-content: center;
-  height: 30vh;
-  border: red solid;
-} */
 
+.time {
+  display: inline;
+  align-self: flex-end;
+}
+
+.admin-input {
+  column-count: 1;
+  padding: 3% 0% 0% 0%;
+  justify-content: space-between;
+  border: red double 5px;
+  margin: 1% 0% 2% 0%
+}
+
+.build-week {
+  background-color: #dc3545;
+  height: 10vh;
+  width: 30vw;
+  font-size: 2em;
+  margin-bottom: 5%;
+}
+
+.club-select {
+  font-size: 1.5rem;
+  background-color: #dc3545;
+  color: #282c34;
+  margin: 2%;
+}
