@@ -55,9 +55,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       event.preventDefault()
       setAvailability(!availability)
-      console.log(comedian)
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(showTime)) {
-        console.log(props.id)
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(props.id)
       }
   }

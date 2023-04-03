@@ -12,6 +12,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
   const [day, setDay] = useState('')
   const [date, setDate] = useState('')
+  const [time, setTime] = useState('')
 
   const [availableDownttownMonday, setAvailableDownttownMonday] = useState<any[]>([])
   const [availableDownttownTuesday, setAvailableDownttownTuesday] = useState<any[]>([])
@@ -48,9 +49,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }
 
   const onSubmit = (potentialShow: any) => {
-        potentialShow.id = `${date}${potentialShow.time}${potentialShow.headliner}${potentialShow.club}${day}`
+        potentialShow.id = `${date}${time}${potentialShow.headliner}${potentialShow.club}${day}`
         potentialShow.day = day
         potentialShow.date = date
+        potentialShow.time = time
         props.setWeekSchedule(potentialShow.week)
           const idCheck = newSchedule.map(show => show.id)
           if(!idCheck.includes(potentialShow.id)) {
@@ -210,6 +212,20 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     setDay(daysOfWeek[dateProto])
   }
 
+  const showTime = (rawTime: string) => {
+    const numTime = parseInt(rawTime)
+    if (numTime === 0) {
+      setTime(`12:${rawTime.substring(3)}AM`)
+    } else if (numTime > 12) {
+      const newNum = numTime - 12
+      setTime(`${newNum.toString()}:${rawTime.substring(3)}PM`)
+    } else if (numTime == 12) {
+      setTime(`${rawTime}PM`)
+    } else {
+      setTime(`${rawTime}AM`)
+    }
+  }
+
   return (
     <div className='admin-form'>
       {/* <button onClick={viewAllComicsAvailable}>View Available Comedians</button> */}
@@ -224,7 +240,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         <input className='day' {...register('date')} type='date' required onChange={(event) => showDay(event.target.value)}/>
         <div className='day-of-week' >{` which is a ${day}`}</div>
         <label>Time</label>
-        <input {...register('time')} type='time' required/>
+        <input {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)} required/>
         <label>Headliner</label>
         <input {...register('headliner')} required/>
         <label className='add-show'>Add Show</label>
