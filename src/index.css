@@ -29,7 +29,8 @@ header {
   font-weight: 700;
   color: aliceblue;
   width: 60vw;
-  min-height: 7vh
+  min-height: 7vh;
+  font-size: 1.1rem;
 }
 
 .true {
@@ -40,10 +41,10 @@ header {
   background-color: #17a2b8;
 }
 
-show-container {
+/* .show-container {
   flex-direction: row;
   width: 100vw
-}
+} */
 
 .submit-btn {
   margin-top: 3vh;
@@ -72,7 +73,7 @@ show-container {
 
 .available {
   border: bisque solid;
-  /* justify-content: center; */
+  color: white;
   margin: 1%;
   min-width: 20vw;
   padding: 2%;
@@ -82,7 +83,8 @@ show-container {
 .comedian-signup {
   align-self: center;
   font-size: 2rem;
-  color: #dc3545
+  color: aliceblue;
+  /* margin-top: 15%; */
 }
 
 .admin-build {
@@ -114,9 +116,14 @@ label {
   display: block;
 }
 
-.day {
+.day, .time-input {
   font-size: 1.5rem;
-  color: #dc3545
+  /* color: #dc3545 */
+}
+
+.headliner-input {
+  font-size: 1.3rem;
+  background-color: aliceblue;
 }
 
 .day-of-week {
@@ -150,4 +157,28 @@ label {
   background-color: #dc3545;
   color: #282c34;
   margin: 2%;
+}
+
+.delete-show {
+  background-color:red;
+  border-radius: 20%;
+  width: 30vw;
+}
+
+.clear-form {
+  width: 20vw;
+  height: 5vh;
+  background-color:  #17a2b8;
+  color: aliceblue;
+  font-weight: 900;
+}
+
+.downtown-available-header {
+  color: #dc3545;
+  border-bottom: #17a2b8 double 10px;
+}
+
+.south-available-header {
+  color: #17a2b8;
+  border-bottom: #dc3545 double 10px;
 }

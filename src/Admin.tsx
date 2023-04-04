@@ -106,7 +106,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                 headliner={newShow.headliner}
                 availability={false}
               />
-              <button onClick={() => deleteShow(newShow.id)}>Delete</button>
+              <button className='delete-show' onClick={() => deleteShow(newShow.id)}>Delete</button>
             </div>
           )
 }))}
@@ -230,7 +230,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     <div className='admin-form'>
       {/* <button onClick={viewAllComicsAvailable}>View Available Comedians</button> */}
       <p className='admin-build'>Admin Build Week of Upcoming Shows</p>
-      <button onClick={() => reset()}>Clear/Reset Form</button>
+      <button className='clear-form' onClick={() => reset()}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
         <select className='club-select' {...register('club')}>
           <option value='downtown'>Downtown</option>
@@ -241,11 +241,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         <div className='day-of-week' >{` which is a ${day}`}</div>
         <div>
         <label>Time: </label>
-        <input {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)}  required/>
+        <input className='time-input' {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)}  required/>
         </div>
         <div>
         <label>Headliner: </label>
-        <input {...register('headliner')} required/>
+        <input className='headliner-input' {...register('headliner')} required/>
         </div>
         {/* <label className='add-show'>Add Show</label> */}
         <input type='submit' value='Add Show' className='add-show'/>
@@ -253,7 +253,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
       {showsToAdd}
       <div>
-      <h2>Downtown</h2>
+      <h2 className='downtown-available-header'>Downtown Available Comics</h2>
       <section className='available-comics'>
         <div className='available'>Available Downtown Monday: {availableDownttownMonday.map(e => <p>{`${e}`}</p>)}</div>
         <div className='available'>Available Downtown Tuesday: {availableDownttownTuesday.map(e => <p>{`${e}`}</p>)}</div>
@@ -263,7 +263,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         <div className='available'>Available Downtown Saturday: {availableDownttownSaturday.map(e => <p>{`${e}`}</p>)}</div>
         <div className='available'>Available Downtown Sunday: {availableDownttownSunday.map(e => <p>{`${e}`}</p>)}</div>
       </section>
-      <h2>South Club</h2>
+      <h2 className='south-available-header'>South Club Available Comics</h2>
       <section className='available-comics'>
         <div className='available'>Available South Monday: {availableSouthMonday.map(e => <p>{`${e}`}</p>)}</div>
         <div className='available'>Available South Tuesday: {availableSouthTuesday.map(e => <p>{`${e}`}</p>)}</div>
