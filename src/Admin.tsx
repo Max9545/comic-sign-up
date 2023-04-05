@@ -53,7 +53,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
               time={show.time}
               day={show.day}
               club={show.club}
-              id={show.id} 
+              id={show.id}
+              availableComics={[]} 
             />
         
       }))
@@ -257,22 +258,25 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       doc.docs.forEach(comic => availableComics.push(comic.data()))
 
   
-        console.log('success!!', signedShows)
         signedShows.map(show => {
-          console.log('fdasfasdfddfdsdfsf')
+          const availabeComedians: any[] = []
           availableComics.map((comedian, index) => {
-                // console.log(show.props.id, comedian.comedianInfo.showsAvailabledowntown)
-                console.log(comedian)
+              
                 comedian.comedianInfo.showsAvailabledowntown[`${show.props.day.toLowerCase()}`].map((downTownShow: []) => {
-                  console.log(downTownShow)
-                  if (show.props.id == downTownShow) {
-                    console.log('success!!')
+                  if (show.props.id == downTownShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
+                    console.log('success!!!!!')
+                    availabeComedians.push(comedian.comedianInfo.name)
+                    console.log(availabeComedians, index)
                   }
+                  
                   // if (show.props.id == downTownShow[`${show.day.toLowerCase()}`]) {
                   //   console.log('success!')
                   // }
                 })
-                
+                //  show.props.availableComics.push(...availabeComedians)
+
+
+                // show.props.availableComics = availabeComedians
               //   const availabeComedians = []
               //   if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !show.includes(`${comedian.comedianInfo.name}: ${show.time}`)) {
               //     availabeComedians.push(`${comedian.comedianInfo.name}: ${show.time}`)
@@ -280,6 +284,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
               //   }
               
           })
+          console.log(availabeComedians, show)
+          show.props.availableComics.push(...availabeComedians)
         })
         setTrigger(!trigger)
   }
