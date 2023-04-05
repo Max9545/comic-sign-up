@@ -5,6 +5,7 @@ import Show from './Show'
 import { ShowToBook, WeekInter } from './interface'
 import { doc, addDoc, collection, query, getDocs, collectionGroup, DocumentData } from "firebase/firestore";
 import {db} from './firebase'
+import ShowWithAvails from './ShowWithAvails'
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
 
@@ -13,6 +14,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [day, setDay] = useState('')
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
+  const [signedShows, setSignedShows] = useState<any[]>([])
 
   const [availableDownttownMonday, setAvailableDownttownMonday] = useState<any[]>([])
   const [availableDownttownTuesday, setAvailableDownttownTuesday] = useState<any[]>([])
@@ -39,7 +41,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }, [newSchedule])
 
   useEffect(() => {
-    viewAllComicsAvailable()
+    viewAllComicsAvailableOne()
+    viewAllComicsAvailableTwo()
   },[props])
 
   const deleteShow = (showId: string) => {
@@ -111,7 +114,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           )
 }))}
 
-  const viewAllComicsAvailable = async () => {
+  const viewAllComicsAvailableOne = async () => {
 
     try {
       const docRef = query(collectionGroup(db, `comedians`))
@@ -226,6 +229,28 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     }
   }
 
+  const viewAllComicsAvailableTwo = async () => {
+
+    // const docRef = query(collectionGroup(db, `comedians`))
+    //   const doc = await (getDocs(docRef))
+    
+    //   const availableComics: DocumentData[] = []
+      
+    //   doc.docs.forEach(comic => availableComics.push(comic.data()))
+
+      // availableComics.map((comedian, index) => {})
+
+      setSignedShows(props.shows.map(show => {
+          return (
+            <ShowWithAvails
+              headliner={show.headliner}
+            />
+          )
+          
+        }))
+   
+  }
+
   return (
     <div className='admin-form'>
       {/* <button onClick={viewAllComicsAvailable}>View Available Comedians</button> */}
@@ -254,6 +279,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       {showsToAdd}
       <div>
       <h2 className='downtown-available-header'>Downtown Available Comics</h2>
+      <div>{signedShows.map(availShow => availShow)}</div>
       <section className='available-comics'>
         <div className='available'>Available Downtown Monday: {availableDownttownMonday.map(e => <p>{`${e}`}</p>)}</div>
         <div className='available'>Available Downtown Tuesday: {availableDownttownTuesday.map(e => <p>{`${e}`}</p>)}</div>
