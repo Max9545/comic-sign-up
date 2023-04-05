@@ -241,9 +241,13 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       // availableComics.map((comedian, index) => {})
 
       setSignedShows(props.shows.map(show => {
+        console.log(show)
           return (
             <ShowWithAvails
               headliner={show.headliner}
+              time={show.time}
+              day={show.day}
+              club={show.club}
             />
           )
           
