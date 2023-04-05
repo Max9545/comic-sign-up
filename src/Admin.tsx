@@ -16,22 +16,22 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [time, setTime] = useState('')
   const [signedShows, setSignedShows] = useState<any[]>([])
 
-  const [availableDownttownMonday, setAvailableDownttownMonday] = useState<any[]>([])
-  const [availableDownttownTuesday, setAvailableDownttownTuesday] = useState<any[]>([])
-  const [availableDownttownWednesday, setAvailableDownttownWednesday] = useState<any[]>([])
-  const [availableDownttownThursday, setAvailableDownttownThursday] = useState<any[]>([])
-  const [availableDownttownFriday, setAvailableDownttownFriday] = useState<any[]>([])
-  const [availableDownttownSaturday, setAvailableDownttownSaturday] = useState<any[]>([])
-  const [availableDownttownSunday, setAvailableDownttownSunday] = useState<any[]>([])
+  // const [availableDownttownMonday, setAvailableDownttownMonday] = useState<any[]>([])
+  // const [availableDownttownTuesday, setAvailableDownttownTuesday] = useState<any[]>([])
+  // const [availableDownttownWednesday, setAvailableDownttownWednesday] = useState<any[]>([])
+  // const [availableDownttownThursday, setAvailableDownttownThursday] = useState<any[]>([])
+  // const [availableDownttownFriday, setAvailableDownttownFriday] = useState<any[]>([])
+  // const [availableDownttownSaturday, setAvailableDownttownSaturday] = useState<any[]>([])
+  // const [availableDownttownSunday, setAvailableDownttownSunday] = useState<any[]>([])
 
 
-  const [availableSouthMonday, setAvailableSouthMonday] = useState<any[]>([])
-  const [availableSouthTuesday, setAvailableSouthTuesday] = useState<any[]>([])
-  const [availableSouthWednesday, setAvailableSouthWednesday] = useState<any[]>([])
-  const [availableSouthThursday, setAvailableSouthThursday] = useState<any[]>([])
-  const [availableSouthFriday, setAvailableSouthFriday] = useState<any[]>([])
-  const [availableSouthSaturday, setAvailableSouthSaturday] = useState<any[]>([])
-  const [availableSouthSunday, setAvailableSouthSunday] = useState<any[]>([])
+  // const [availableSouthMonday, setAvailableSouthMonday] = useState<any[]>([])
+  // const [availableSouthTuesday, setAvailableSouthTuesday] = useState<any[]>([])
+  // const [availableSouthWednesday, setAvailableSouthWednesday] = useState<any[]>([])
+  // const [availableSouthThursday, setAvailableSouthThursday] = useState<any[]>([])
+  // const [availableSouthFriday, setAvailableSouthFriday] = useState<any[]>([])
+  // const [availableSouthSaturday, setAvailableSouthSaturday] = useState<any[]>([])
+  // const [availableSouthSunday, setAvailableSouthSunday] = useState<any[]>([])
   //object in state for each club
   const [trigger, setTrigger] = useState(true)
   const { register, handleSubmit, reset } = useForm()
@@ -40,10 +40,28 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     displayPotentialShows()
   }, [newSchedule])
 
+  // useEffect(() => {
+  //   viewAllComicsAvailableOne()
+  // },[props])
+
   useEffect(() => {
-    viewAllComicsAvailableOne()
+    setSignedShows(props.shows.map(show => {
+      // console.log(show)
+         
+      return <ShowWithAvails
+              headliner={show.headliner}
+              time={show.time}
+              day={show.day}
+              club={show.club}
+              id={show.id} 
+            />
+        
+      }))
+  },[])
+
+  useEffect(() => {
     viewAllComicsAvailableTwo()
-  },[props])
+  }, [signedShows])
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -114,99 +132,99 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           )
 }))}
 
-  const viewAllComicsAvailableOne = async () => {
+  // const viewAllComicsAvailableOne = async () => {
 
-    try {
-      const docRef = query(collectionGroup(db, `comedians`))
-      const doc = await (getDocs(docRef))
+  //   try {
+  //     const docRef = query(collectionGroup(db, `comedians`))
+  //     const doc = await (getDocs(docRef))
     
-      const availableComics: DocumentData[] = []
+  //     const availableComics: DocumentData[] = []
       
-      doc.docs.forEach(comic => availableComics.push(comic.data()))
+  //     doc.docs.forEach(comic => availableComics.push(comic.data()))
 
 
-      availableComics.map((comedian, index) => {
+  //     availableComics.map((comedian, index) => {
 
-      props.shows.map(show => {
+  //     props.shows.map(show => {
           
-              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownMonday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Monday') {
-                availableDownttownMonday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableDownttownMonday(availableDownttownMonday)
-              }
+  //             if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownMonday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Monday') {
+  //               availableDownttownMonday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableDownttownMonday(availableDownttownMonday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownTuesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Tuesday') {
-                availableDownttownTuesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableDownttownTuesday(availableDownttownTuesday)
-              }
+  //             if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownTuesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Tuesday') {
+  //               availableDownttownTuesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableDownttownTuesday(availableDownttownTuesday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownWednesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Wednesday') {
-                availableDownttownWednesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableDownttownWednesday(availableDownttownWednesday)
-              }
+  //             if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownWednesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Wednesday') {
+  //               availableDownttownWednesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableDownttownWednesday(availableDownttownWednesday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownThursday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Thursday') {
-                availableDownttownThursday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableDownttownThursday(availableDownttownThursday)
-              }
+  //             if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownThursday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Thursday') {
+  //               availableDownttownThursday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableDownttownThursday(availableDownttownThursday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownFriday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Friday') {
-                availableDownttownFriday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableDownttownFriday(availableDownttownFriday)
-              }
+  //             if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownFriday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Friday') {
+  //               availableDownttownFriday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableDownttownFriday(availableDownttownFriday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownSaturday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Saturday') {
-                availableDownttownSaturday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableDownttownSaturday(availableDownttownSaturday)
-              }
+  //             if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownSaturday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Saturday') {
+  //               availableDownttownSaturday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableDownttownSaturday(availableDownttownSaturday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownSunday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Sunday') {
-                availableDownttownSunday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableDownttownSunday(availableDownttownSunday)
-              }
+  //             if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !availableDownttownSunday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Sunday') {
+  //               availableDownttownSunday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableDownttownSunday(availableDownttownSunday)
+  //             }
 
 
-              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthMonday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Monday') {
-                availableSouthMonday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableSouthMonday(availableSouthMonday)
-              }
+  //             if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthMonday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Monday') {
+  //               availableSouthMonday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableSouthMonday(availableSouthMonday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthTuesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Tuesday') {
-                availableSouthTuesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableSouthTuesday(availableSouthTuesday)
-              }
+  //             if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthTuesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Tuesday') {
+  //               availableSouthTuesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableSouthTuesday(availableSouthTuesday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthWednesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Wednesday') {
-                availableSouthWednesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableSouthWednesday(availableSouthWednesday)
-              }
+  //             if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthWednesday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Wednesday') {
+  //               availableSouthWednesday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableSouthWednesday(availableSouthWednesday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthThursday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Thursday') {
-                availableSouthThursday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableSouthThursday(availableSouthThursday)
-              }
+  //             if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthThursday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Thursday') {
+  //               availableSouthThursday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableSouthThursday(availableSouthThursday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthFriday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Friday') {
-                availableSouthFriday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableSouthFriday(availableSouthFriday)
-              }
+  //             if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthFriday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Friday') {
+  //               availableSouthFriday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableSouthFriday(availableSouthFriday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthSaturday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Saturday') {
-                availableSouthSaturday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableSouthSaturday(availableSouthSaturday)
-              }
+  //             if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthSaturday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Saturday') {
+  //               availableSouthSaturday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableSouthSaturday(availableSouthSaturday)
+  //             }
 
-              if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthSunday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Sunday') {
-                availableSouthSunday.push(`${comedian.comedianInfo.name}: ${show.time}`)
-                setAvailableSouthSunday(availableSouthSunday)
-              }
-          })
-        setTrigger(!trigger)
-      })
-    } catch (err) {
-      console.error(err) 
-      alert("An error occured while fetching comedian data") 
-    }  
-  }
+  //             if (comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].includes(show.id) && !availableSouthSunday.includes(`${comedian.comedianInfo.name}: ${show.time}`) && show.day === 'Sunday') {
+  //               availableSouthSunday.push(`${comedian.comedianInfo.name}: ${show.time}`)
+  //               setAvailableSouthSunday(availableSouthSunday)
+  //             }
+  //         })
+  //       setTrigger(!trigger)
+  //     })
+  //   } catch (err) {
+  //     console.error(err) 
+  //     alert("An error occured while fetching comedian data") 
+  //   }  
+  // }
 
   const showDay = (numDate: string) => {
     setDate(numDate)
@@ -231,28 +249,39 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const viewAllComicsAvailableTwo = async () => {
 
-    // const docRef = query(collectionGroup(db, `comedians`))
-    //   const doc = await (getDocs(docRef))
+    const docRef = query(collectionGroup(db, `comedians`))
+    const doc = await (getDocs(docRef))
     
-    //   const availableComics: DocumentData[] = []
+      const availableComics: DocumentData[] = []
       
-    //   doc.docs.forEach(comic => availableComics.push(comic.data()))
+      doc.docs.forEach(comic => availableComics.push(comic.data()))
 
-      // availableComics.map((comedian, index) => {})
-
-      setSignedShows(props.shows.map(show => {
-        console.log(show)
-          return (
-            <ShowWithAvails
-              headliner={show.headliner}
-              time={show.time}
-              day={show.day}
-              club={show.club}
-            />
-          )
-          
-        }))
-   
+  
+        console.log('success!!', signedShows)
+        signedShows.map(show => {
+          console.log('fdasfasdfddfdsdfsf')
+          availableComics.map((comedian, index) => {
+                // console.log(show.props.id, comedian.comedianInfo.showsAvailabledowntown)
+                console.log(comedian)
+                comedian.comedianInfo.showsAvailabledowntown[`${show.props.day.toLowerCase()}`].map((downTownShow: []) => {
+                  console.log(downTownShow)
+                  if (show.props.id == downTownShow) {
+                    console.log('success!!')
+                  }
+                  // if (show.props.id == downTownShow[`${show.day.toLowerCase()}`]) {
+                  //   console.log('success!')
+                  // }
+                })
+                
+              //   const availabeComedians = []
+              //   if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !show.includes(`${comedian.comedianInfo.name}: ${show.time}`)) {
+              //     availabeComedians.push(`${comedian.comedianInfo.name}: ${show.time}`)
+              //     show.setAvailableComics(availabeComedians)
+              //   }
+              
+          })
+        })
+        setTrigger(!trigger)
   }
 
   return (
@@ -284,7 +313,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       <div>
       <h2 className='downtown-available-header'>Downtown Available Comics</h2>
       <div>{signedShows.map(availShow => availShow)}</div>
-      <section className='available-comics'>
+      {/* <section className='available-comics'>
         <div className='available'>Available Downtown Monday: {availableDownttownMonday.map(e => <p>{`${e}`}</p>)}</div>
         <div className='available'>Available Downtown Tuesday: {availableDownttownTuesday.map(e => <p>{`${e}`}</p>)}</div>
         <div className='available'>Available Downtown Wednesday: {availableDownttownWednesday.map(e => <p>{`${e}`}</p>)}</div>
@@ -301,8 +330,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         <div className='available'>Available South Thursday: {availableSouthThursday.map(e => <p>{`${e}`}</p>)}</div>
         <div className='available'>Available South Friday: {availableSouthFriday.map(e => <p>{`${e}`}</p>)}</div>
         <div className='available'>Available South Saturday: {availableSouthSaturday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available South Sunday: {availableSouthSunday.map(e => <p>{`${e}`}</p>)}</div>
-      </section>
+        <div className='available'>Available South Sunday: {availableSouthSunday.map(e => <p>{`${e}`}</p>)}</div> */}
+      {/* </section> */}
       </div>
     </div>
   )
