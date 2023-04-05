@@ -229,7 +229,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   return (
     <div className='admin-form'>
       {/* <button onClick={viewAllComicsAvailable}>View Available Comedians</button> */}
-      <p className='admin-build'>Admin Build Week of Upcoming Shows</p>
+      <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
       <button className='clear-form' onClick={() => reset()}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
         <select className='club-select' {...register('club')}>

@@ -15,7 +15,7 @@ function App() {
           Let us know your availability
         </p> */}
         </header>
-        <p className='comedian-signup'>
+        <p className='comedian-signup'> 
           Comedian Sign Up
         </p>
         <Routes>

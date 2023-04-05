@@ -52,6 +52,7 @@ header {
   height: 5vh;
   background-color:red;
   border-radius: 70%;
+  font-weight: 900;
 }
 
 .admin-form {
@@ -83,8 +84,9 @@ header {
 .comedian-signup {
   align-self: center;
   font-size: 2rem;
-  color: aliceblue;
-  /* margin-top: 15%; */
+  color: #dc3545;
+  padding-top: 1%;
+  /* margin-top: 1%; */
 }
 
 .admin-build {
@@ -157,6 +159,7 @@ label {
   background-color: #dc3545;
   color: #282c34;
   margin: 2%;
+  padding: 1%
 }
 
 .delete-show {

@@ -16,6 +16,12 @@
   /* height: 20vh; */
 }
 
+@media (max-width: 540px) {
+  .header-logo {
+    height: 14vh;
+  }
+}
+
 
 .App-header {
   height: 10vh;
