@@ -3,21 +3,28 @@ import React, { useEffect, useState } from 'react'
 
 function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string}) {
   
-  const [comics, setComics] = useState<any[]>([])
+  const [comics, setComics] = useState<any[]>(props.availableComics)
   const [id, setId] =useState(props.id)
+  const [comicStrings, setComicStrings] = useState<any[]>([])
   
 
    useEffect(() => {
     props.availableComics.splice(0,1)
     setComics(props.availableComics)
-  },[props])
+  })
+
+  useEffect(() => {
+    // const strings = comics.map(comic => comic)
+    setComicStrings(comics.map(comic => comic))
+  }, [])
 
 
     
   return (
     <div className='available'>
-      <h3>{`${props.day} ${props.headliner} at ${props.time} ${props.club}`}</h3>
-      <p>{comics.length > 0 && comics.map(comic => comic)}</p>
+      <h3>{`${props.day} ${props.headliner} at ${props.time} ${props.club} yaya`}</h3>
+      <p>{props.availableComics}</p>
+      <p>{comics}</p>
     </div>
   )
 }

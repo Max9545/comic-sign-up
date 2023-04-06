@@ -14,7 +14,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [day, setDay] = useState('')
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
-  const [signedShows, setSignedShows] = useState<any[]>([])
+  const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
+  const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
 
   // const [availableDownttownMonday, setAvailableDownttownMonday] = useState<any[]>([])
   // const [availableDownttownTuesday, setAvailableDownttownTuesday] = useState<any[]>([])
@@ -45,10 +46,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   // },[props])
 
   useEffect(() => {
-    setSignedShows(props.shows.map(show => {
+    setSignedShowsDown(props.shows.map(show => {
       // console.log(show)
-         
-      return <ShowWithAvails
+      if (show.club === 'downtown') {
+        return <ShowWithAvails
               headliner={show.headliner}
               time={show.time}
               day={show.day}
@@ -56,13 +57,33 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
               id={show.id}
               availableComics={[]} 
             />
-        
+      } 
       }))
   },[])
 
   useEffect(() => {
-    viewAllComicsAvailableTwo()
-  }, [signedShows])
+    setSignedShowsSouth(props.shows.map(show => {
+      // console.log(show)
+      if (show.club === 'south') {
+        return <ShowWithAvails
+              headliner={show.headliner}
+              time={show.time}
+              day={show.day}
+              club={show.club}
+              id={show.id}
+              availableComics={[]} 
+            />
+      }
+      }))
+  },[])
+
+  useEffect(() => {
+    viewAllComicsAvailableDowntown()
+  }, [signedShowsDown])
+
+  useEffect(() => {
+    viewAllComicsAvailableSouth()
+  }, [signedShowsSouth])
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -248,7 +269,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     }
   }
 
-  const viewAllComicsAvailableTwo = async () => {
+  const viewAllComicsAvailableDowntown = async () => {
 
     const docRef = query(collectionGroup(db, `comedians`))
     const doc = await (getDocs(docRef))
@@ -258,36 +279,52 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       doc.docs.forEach(comic => availableComics.push(comic.data()))
 
   
-        signedShows.map(show => {
+        signedShowsDown.map(show => {
           const availabeComedians: any[] = []
           availableComics.map((comedian, index) => {
               
                 comedian.comedianInfo.showsAvailabledowntown[`${show.props.day.toLowerCase()}`].map((downTownShow: []) => {
                   if (show.props.id == downTownShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-                    console.log('success!!!!!')
+                    console.log('success!!!!!!!!')
                     availabeComedians.push(comedian.comedianInfo.name)
                     console.log(availabeComedians, index)
+                    // setTrigger(!trigger)
                   }
-                  
-                  // if (show.props.id == downTownShow[`${show.day.toLowerCase()}`]) {
-                  //   console.log('success!')
-                  // }
                 })
-                //  show.props.availableComics.push(...availabeComedians)
-
-
-                // show.props.availableComics = availabeComedians
-              //   const availabeComedians = []
-              //   if (comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].includes(show.id) && !show.includes(`${comedian.comedianInfo.name}: ${show.time}`)) {
-              //     availabeComedians.push(`${comedian.comedianInfo.name}: ${show.time}`)
-              //     show.setAvailableComics(availabeComedians)
-              //   }
-              
           })
           console.log(availabeComedians, show)
           show.props.availableComics.push(...availabeComedians)
         })
-        setTrigger(!trigger)
+        // setTrigger(!trigger)
+  }
+
+  const viewAllComicsAvailableSouth = async () => {
+
+    const docRef = query(collectionGroup(db, `comedians`))
+    const doc = await (getDocs(docRef))
+    
+      const availableComics: DocumentData[] = []
+      
+      doc.docs.forEach(comic => availableComics.push(comic.data()))
+
+  
+        signedShowsSouth.map(show => {
+          const availabeComedians: any[] = []
+          availableComics.map((comedian, index) => {
+              
+                comedian.comedianInfo.showsAvailablesouth[`${show.props.day.toLowerCase()}`].map((southShow: []) => {
+                  if (show.props.id == southShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
+                    console.log('success!!!!!!!!')
+                    availabeComedians.push(comedian.comedianInfo.name)
+                    console.log(availabeComedians, index)
+                    // setTrigger(!trigger)
+                  }
+                })
+          })
+          console.log(availabeComedians, show)
+          show.props.availableComics.push(...availabeComedians)
+        })
+        // setTrigger(!trigger)
   }
 
   return (
@@ -318,7 +355,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       {showsToAdd}
       <div>
       <h2 className='downtown-available-header'>Downtown Available Comics</h2>
-      <div>{signedShows.map(availShow => availShow)}</div>
+      <div>{signedShowsDown.map(availShow => availShow)}</div>
+      <h2 className='south-available-header'>South Club Available Comics</h2>
+      <div>{signedShowsSouth.map(availShow => availShow)}</div>
       {/* <section className='available-comics'>
         <div className='available'>Available Downtown Monday: {availableDownttownMonday.map(e => <p>{`${e}`}</p>)}</div>
         <div className='available'>Available Downtown Tuesday: {availableDownttownTuesday.map(e => <p>{`${e}`}</p>)}</div>
