@@ -15,16 +15,16 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
   useEffect(() => {
     // const strings = comics.map(comic => comic)
-    setComicStrings(comics.map(comic => comic))
-  }, [])
+    setComicStrings(comics.map(comic => <p>{`${comic}`}</p>))
+  }, [props])
 
 
     
   return (
     <div className='available'>
       <h3>{`${props.day} ${props.headliner} at ${props.time} ${props.club} yaya`}</h3>
-      <p>{props.availableComics}</p>
-      <p>{comics}</p>
+      {/* <p>{props.availableComics}</p> */}
+      <p>{comicStrings}</p>
     </div>
   )
 }
