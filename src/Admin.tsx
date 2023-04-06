@@ -46,7 +46,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   // },[props])
 
   useEffect(() => {
-    setSignedShowsDown(props.shows.map(show => {
+    const downtownShows = props.shows.filter(show => show.club === 'downtown')
+
+    setSignedShowsDown(downtownShows.map(show => {
       // console.log(show)
       if (show.club === 'downtown') {
         return <ShowWithAvails
@@ -61,9 +63,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   },[trigger])
 
   useEffect(() => {
-    setSignedShowsSouth(props.shows.map(show => {
+    const southShows = props.shows.filter(show => show.club === 'south')
+    console.log(southShows)
+    setSignedShowsSouth(southShows.map(show => {
       // console.log(show)
-      if (show.club === 'south') {
+      // if (show.club === 'south') {
         return <ShowWithAvails
               headliner={show.headliner}
               time={show.time}
@@ -72,12 +76,14 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
               id={show.id}
               availableComics={[]} 
             />}
-    }))
-  },[])
+    // }
+    ))
+  },[trigger])
 
   useEffect(() => {
+    viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
-  }, [signedShowsDown])
+  }, [signedShowsDown,signedShowsSouth])
 
   // useEffect(() => {
   //   viewAllComicsAvailableSouth()
@@ -296,34 +302,36 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         setTrigger(!trigger)
   }
 
-  // const viewAllComicsAvailableSouth = async () => {
+  const viewAllComicsAvailableSouth = async () => {
 
-  //   const docRef = query(collectionGroup(db, `comedians`))
-  //   const doc = await (getDocs(docRef))
+    const docRef = query(collectionGroup(db, `comedians`))
+    const doc = await (getDocs(docRef))
     
-  //     const availableComics: DocumentData[] = []
+      const availableComics: DocumentData[] = []
       
-  //     doc.docs.forEach(comic => availableComics.push(comic.data()))
+      doc.docs.forEach(comic => availableComics.push(comic.data()))
 
   
-  //       signedShowsSouth.map(show => {
-  //         const availabeComedians: any[] = []
-  //         availableComics.map((comedian, index) => {
-              
-  //               comedian.comedianInfo.showsAvailablesouth[`${show.props.day.toLowerCase()}`].map((southShow: []) => {
-  //                 if (show.props.id == southShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-  //                   console.log('success!!!!!!!!')
-  //                   availabeComedians.push(comedian.comedianInfo.name)
-  //                   console.log(availabeComedians, index)
-  //                   // setTrigger(!trigger)
-  //                 }
-  //               })
-  //         })
-  //         console.log(availabeComedians, show)
-  //         show.props.availableComics.push(...availabeComedians)
-  //       })
-        // setTrigger(!trigger)
-  // }
+        signedShowsSouth.map(show => {
+          const availabeComedians: any[] = []
+          availableComics.map((comedian, index) => {
+            console.log(comedian.comedianInfo.showsAvailablesouth, signedShowsSouth)
+                comedian.comedianInfo.showsAvailablesouth[`${show.props.day.toLowerCase()}`].map((southShow: []) => {
+                  if (show.props.id == southShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
+                    console.log('success!!!!!!!!')
+                    availabeComedians.push(comedian.comedianInfo.name)
+                    console.log(availabeComedians, index)
+                    // setTrigger(!trigger)
+                    
+                   
+                  }
+                })
+              })
+              console.log(availabeComedians, show)
+              show.props.availableComics.push(...availabeComedians)
+        })
+        setTrigger(!trigger)
+  }
 
   return (
     <div className='admin-form'>

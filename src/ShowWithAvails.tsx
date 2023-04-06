@@ -23,7 +23,8 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   return (
     <div className='available'>
       <h3>{`${props.day} ${props.headliner} at ${props.time} ${props.club} yaya`}</h3>
-      {/* <p>{props.availableComics}</p> */}
+      <p>{props.availableComics}</p>
+      <p>{comics}</p>
       <p>{comicStrings}</p>
     </div>
   )
