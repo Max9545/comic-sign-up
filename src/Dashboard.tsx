@@ -47,6 +47,10 @@ function Dashboard() {
 
   const navigate = useNavigate() 
 
+  useEffect(() => {
+    fetchComedianAvailability()
+  }, [user])
+
   const fetchUserName = async () => {
     try {
       const q = query(collection(db, "users"), where("uid", "==", user?.uid)) 
@@ -54,30 +58,29 @@ function Dashboard() {
       const data = doc.docs[0].data()
       setName(data.name)
       setAdmin(data.admin)
-      console.log(data)
-      setComedian({
-        name: data.name,
-        id: data.uid,
-        type: '',
-        showsAvailabledowntown: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
-        }, 
-        showsAvailablesouth: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
-        }
-      })
+      // setComedian({
+      //   name: data.name,
+      //   id: data.uid,
+      //   type: '',
+      //   showsAvailabledowntown: {
+      //     monday: [],
+      //     tuesday: [],
+      //     wednesday: [],
+      //     thursday: [], 
+      //     friday: [],
+      //     saturday: [],
+      //     sunday: []
+      //   }, 
+      //   showsAvailablesouth: {
+      //     monday: [],
+      //     tuesday: [],
+      //     wednesday: [],
+      //     thursday: [], 
+      //     friday: [],
+      //     saturday: [],
+      //     sunday: []
+      //   }
+      // })
     } catch (err) {
       console.error(err) 
       alert("An error occured while fetching user data") 
@@ -90,10 +93,32 @@ function Dashboard() {
       const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
       const doc = await (getDocs(docRef))
       setShows(doc.docs[0].data().thisWeek)
+      console.log(doc.docs[0].data())
     } catch (err) {
       console.error(err) 
       alert("An error occured while fetching user data") 
     }  
+}
+
+const fetchComedianAvailability = async () => {
+  if (comedian.id != undefined) {
+    try {
+      const docRef = query(collection(db, "comedians"),where("comedianInfo.id", "==", user?.uid))
+      const doc = await (getDocs(docRef))
+      console.log(doc.docs[0].data().comedianInfo.showsAvailabledowntown)
+      const comic = doc.docs[0].data().comedianInfo
+      setComedian({
+        name: comic.name,
+        id: comic.id,
+        type: comic.type,
+        showsAvailabledowntown: comic.showsAvailabledowntown, 
+        showsAvailablesouth: comic.showsAvailablesouth
+      })
+    } catch (err) {
+      // console.error(err) 
+      // alert("An error occured while fetching user data") 
+    }  
+  }
 }
     
   useEffect(() => {
