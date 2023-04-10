@@ -63,7 +63,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
   return (
     <div className='show'>
     {props.headliner && <button onClick={(event) => handleClick(event)} 
-      className={`${availability} show-button`}>{`${props.day} on ${props.date} at ${props.time} at the ${props.currentClub} club for ${props.headliner}`}</button>}
+      className={`${availability} show-button`}>{`${props.day} on ${props.date} at ${props.time} at the ${props.currentClub.charAt(0).toUpperCase() + props.currentClub.slice(1)} club for ${props.headliner}`}</button>}
   </div>
   )
 

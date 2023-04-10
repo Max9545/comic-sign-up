@@ -1,3 +1,4 @@
+import { stringify } from 'querystring'
 import React, { useEffect, useState } from 'react'
 import { set } from 'react-hook-form'
 
@@ -30,7 +31,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     
   return (
     <div className='available'>
-      <h3>{`${props.day} ${props.headliner} at ${props.time} ${props.club} yaya`}</h3>
+      <h3>{`${props.day} ${props.headliner} at ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}:`}</h3>
       {/* <p>{props.availableComics}</p> */}
       <p>{props.availableComics.map(comic => <p>{`${comic}`}</p>)}</p>
       {/* 
