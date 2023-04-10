@@ -59,7 +59,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const displayPotentialShows = () => {setShowsToAdd(newSchedule.map((newShow, index) => {
             return (
-            <div key={index}>
+            <div key={index + 1}>
               <Show
                 key={index}
                 id={newShow.id}
@@ -142,8 +142,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                   }
                 })
           })
-          const showFinals = downtownShows.map(finalfForm => {
+          const showFinals = downtownShows.map((finalfForm, index) => {
             return <ShowWithAvails
+            key={index}
             headliner={finalfForm.headliner}
             time={finalfForm.time}
             day={finalfForm.day}
@@ -177,7 +178,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                   }
                 })
           })
-          const showFinals = southShows.map(finalfForm => {
+          const showFinals = southShows.map((finalfForm, index) => {
             return <ShowWithAvails
             headliner={finalfForm.headliner}
             time={finalfForm.time}
@@ -185,6 +186,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
             club={finalfForm.club}
             id={finalfForm.id}
             availableComics={finalfForm.availableComics} 
+            key={index}
           />
         })
         setSignedShowsSouth(showFinals)

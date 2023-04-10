@@ -32,7 +32,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     <div className='available'>
       <h3>{`${props.day} ${props.headliner} at ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}:`}</h3>
       {/* <p>{props.availableComics}</p> */}
-      <div>{props.availableComics.map(comic => <p>{`${comic}`}</p>)}</div>
+      <div>{props.availableComics.map(comic => <p key={comic}>{`${comic}`}</p>)}</div>
       {/* 
       <p>{comics.map(comic => <p>{comic}</p>)}</p>
       <p>{comicStrings.map(comic => <p>{`${comic}`}</p>)}</p>
