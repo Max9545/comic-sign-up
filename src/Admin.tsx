@@ -23,48 +23,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     displayPotentialShows()
   }, [newSchedule])
 
-  // useEffect(() => {
-  //   const downtownShows = props.shows.filter(show => show.club === 'downtown')
-
-  //   setSignedShowsDown(downtownShows.map(show => {
-  //     // console.log(show)
-  //     if (show.club === 'downtown') {
-  //       return <ShowWithAvails
-  //             headliner={show.headliner}
-  //             time={show.time}
-  //             day={show.day}
-  //             club={show.club}
-  //             id={show.id}
-  //             availableComics={[]} 
-  //           />} 
-  //   }))
-  // },[])
-
-  // useEffect(() => {
-  //   const southShows = props.shows.filter(show => show.club === 'south')
-  //   setSignedShowsSouth(southShows.map(show => {
-  //     // console.log(show)
-  //     // if (show.club === 'south') {
-  //       return <ShowWithAvails
-  //             headliner={show.headliner}
-  //             time={show.time}
-  //             day={show.day}
-  //             club={show.club}
-  //             id={show.id}
-  //             availableComics={[]} 
-  //           />}
-  //   // }
-  //   ))
-  // },[])
-
   useEffect(() => {
     viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
   }, [props])
-
-  // useEffect(() => {
-  //   viewAllComicsAvailableSouth()
-  // }, [signedShowsSouth])
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -169,27 +131,18 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       
       doc.docs.forEach(comic => availableComics.push(comic.data()))
 
-      console.log(availableComics)
       downtownShows.map(show => {
           const availabeComedians: any[] = []
           availableComics.map((comedian, index) => {
               
                 comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].map((downTownShow: string) => {
-                  console.log(show, comedian)
                   if (show.id == downTownShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-                    console.log('success!!!!!!!!')
                     availabeComedians.push(comedian.comedianInfo.name)
-                    console.log(availabeComedians, show.day)
-                    // setTrigger(!trigger)
                     show.availableComics = availabeComedians
                   }
                 })
           })
-          console.log(availabeComedians, show)
-          // show.availableComics = availabeComedians
-          // setTrigger(!trigger)
           const showFinals = downtownShows.map(finalfForm => {
-            console.log(finalfForm)
             return <ShowWithAvails
             headliner={finalfForm.headliner}
             time={finalfForm.time}
@@ -213,28 +166,18 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       const availableComics: DocumentData[] = []
       
       doc.docs.forEach(comic => availableComics.push(comic.data()))
-
-      console.log(availableComics)
       southShows.map(show => {
           const availabeComedians: any[] = []
-          availableComics.map((comedian, index) => {
+          availableComics.map((comedian) => {
               
                 comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].map((southShow: string) => {
-                  console.log(show, comedian)
                   if (show.id == southShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-                    console.log('success!!!!!!!!')
                     availabeComedians.push(comedian.comedianInfo.name)
-                    console.log(availabeComedians, show.day)
-                    // setTrigger(!trigger)
                     show.availableComics = availabeComedians
                   }
                 })
           })
-          console.log(availabeComedians, show)
-          // show.availableComics = availabeComedians
-          // setTrigger(!trigger)
           const showFinals = southShows.map(finalfForm => {
-            console.log(finalfForm)
             return <ShowWithAvails
             headliner={finalfForm.headliner}
             time={finalfForm.time}
@@ -250,7 +193,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   return (
     <div className='admin-form'>
-      {/* <button onClick={viewAllComicsAvailable}>View Available Comedians</button> */}
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
       <button className='clear-form' onClick={() => reset()}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
@@ -279,25 +221,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       <div>{signedShowsDown.map(availShow => availShow)}</div>
       <h2 className='south-available-header'>South Club Available Comics</h2>
       <div>{signedShowsSouth.map(availShow => availShow)}</div>
-      {/* <section className='available-comics'>
-        <div className='available'>Available Downtown Monday: {availableDownttownMonday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available Downtown Tuesday: {availableDownttownTuesday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available Downtown Wednesday: {availableDownttownWednesday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available Downtown Thursday: {availableDownttownThursday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available Downtown Friday: {availableDownttownFriday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available Downtown Saturday: {availableDownttownSaturday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available Downtown Sunday: {availableDownttownSunday.map(e => <p>{`${e}`}</p>)}</div>
-      </section>
-      <h2 className='south-available-header'>South Club Available Comics</h2>
-      <section className='available-comics'>
-        <div className='available'>Available South Monday: {availableSouthMonday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available South Tuesday: {availableSouthTuesday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available South Wednesday: {availableSouthWednesday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available South Thursday: {availableSouthThursday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available South Friday: {availableSouthFriday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available South Saturday: {availableSouthSaturday.map(e => <p>{`${e}`}</p>)}</div>
-        <div className='available'>Available South Sunday: {availableSouthSunday.map(e => <p>{`${e}`}</p>)}</div> */}
-      {/* </section> */}
       </div>
     </div>
   )

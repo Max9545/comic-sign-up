@@ -54,6 +54,7 @@ function Dashboard() {
       const data = doc.docs[0].data()
       setName(data.name)
       setAdmin(data.admin)
+      console.log(data)
       setComedian({
         name: data.name,
         id: data.uid,
