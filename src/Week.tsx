@@ -43,6 +43,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
                       headliner={show.headliner}
                       availability={false}
                       setAllAvailability={setAllAvailability}
+                      availableComics={show.availableComics}
                   />
               </div>
           

@@ -32,6 +32,7 @@ export interface ShowToBook {
   headliner: string
   club: string,
   availability: boolean,
+  availableComics: any
 }
 
  
