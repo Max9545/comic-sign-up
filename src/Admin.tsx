@@ -16,7 +16,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [time, setTime] = useState('')
   const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
   const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
-  const [trigger, setTrigger] = useState(true)
+  // const [trigger, setTrigger] = useState(true)
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {

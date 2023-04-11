@@ -50,7 +50,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
 
   useEffect(() => {
     setAvailability(props.availability)
-  }, [])
+  }, [props])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       event.preventDefault()

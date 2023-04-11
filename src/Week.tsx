@@ -17,7 +17,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   useEffect(() => {
     setCurrentComedian(props.comedian)
-  })
+  }, [props])
 
   useEffect(() => {
     setShows(props.weeklyShowTimes)
@@ -25,12 +25,13 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   useEffect(() => {
     showShows()
-  }, [shows, currentComedian])
+  }, [props])
 
 
   const showShows = () => {
     if(shows.length > 0) {
       return props.weeklyShowTimes.map((show, index) => { 
+        // console.log(show, show.availableComics, currentComedian.name, show.availableComics.includes(props.comedian.name))
         return <div key={index}>
                   <Show
                       key={index}
@@ -41,7 +42,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
                       availableComedian={currentComedian}
                       date={show.date}
                       headliner={show.headliner}
-                      availability={false}
+                      availability={show.availableComics.includes(props.comedian.name)}
                       setAllAvailability={setAllAvailability}
                       availableComics={show.availableComics}
                   />
