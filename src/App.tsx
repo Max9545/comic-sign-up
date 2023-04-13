@@ -11,9 +11,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img className="header-logo" src={'https://nts.comedyworks.com/uploads/images/comedyworkslogo.png'}/>
-        {/* <p className='for-comics-eyes'>
-          Let us know your availability
-        </p> */}
         </header>
         <p className='comedian-signup'> 
           Comedian Sign Up

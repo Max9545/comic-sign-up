@@ -156,18 +156,6 @@ const viewAllComicsAvailableDowntown = async () => {
                 }
               })
         })
-      //   const showFinals = downtownShows.map((finalfForm: { headliner: any; time: any; day: any; club: any; id: any; availableComics: any }, index: string | number | null | undefined) => {
-      //     return <ShowWithAvails
-      //     key={index}
-      //     headliner={finalfForm.headliner}
-      //     time={finalfForm.time}
-      //     day={finalfForm.day}
-      //     club={finalfForm.club}
-      //     id={finalfForm.id}
-      //     availableComics={finalfForm.availableComics} 
-      //   />
-      // })
-      // setSignedShowsDown(showFinals)
       })
 }
 
@@ -192,44 +180,8 @@ const viewAllComicsAvailableSouth = async () => {
                 }
               })
         })
-      //   const showFinals = southShows.map((finalfForm, index) => {
-      //     return <ShowWithAvails
-      //     headliner={finalfForm.headliner}
-      //     time={finalfForm.time}
-      //     day={finalfForm.day}
-      //     club={finalfForm.club}
-      //     id={finalfForm.id}
-      //     availableComics={finalfForm.availableComics} 
-      //     key={index}
-      //   />
-      // })
-      // setSignedShowsSouth(showFinals)
       })
 }
-
-// const fetchComedianAvailability = async () => {
-//   // if (comedian.id !== undefined) {
-//     try {
-//       const docRef = query(collection(db, "comedians"),where("comedianInfo.id", "==", user?.uid))
-//       const doc = await (getDocs(docRef))
-//       // console.log(doc.docs[0].data().comedianInfo.showsAvailabledowntown)
-//       const comic = await doc.docs[0].data().comedianInfo
-//       setComedian({
-//         name: comic.name,
-//         id: comic.id,
-//         type: comic.type,
-//         showsAvailabledowntown: comic.showsAvailabledowntown,
-//         showsAvailablesouth: comic.showsAvailablesouth
-//       })
-//       console.log(comedian, comic)
-//     } catch (err) {
-//       // console.error(err) 
-//       // alert("An error occured while fetching user data") 
-//     }  
-//     // setTrigger(!trigger)
-//   // }
-// }
-    
 
 
   return (
@@ -237,10 +189,6 @@ const viewAllComicsAvailableSouth = async () => {
       <Week comedian={comedian} weeklyShowTimes={shows}/>
       {admin && <Admin shows={shows} setShows={setShows}
       setWeekSchedule={setWeekSchedule}/>}
-      {/* {user?.email === 'bregmanmax91@gmail.com' && <p>Current Week Shown To Comedians</p>}
-      <Week comedian={comedian} weeklyShowTimes={shows}/>
-      {user?.email === 'bregmanmax91@gmail.com' && <Admin shows={shows} setShows={setShows}
-      setWeekSchedule={setWeekSchedule}/>} */}
        <div className="dashboard__container">
         Logged in as
          <div>{name}</div>
