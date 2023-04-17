@@ -139,24 +139,27 @@ console.log('hi')
 }
 
  const fetchComicInfo = async () => {
-  try {
-    console.log(user?.displayName)
-    const docRef = query(collection(db, name), orderBy('fireOrder', 'desc'), limit(1))
-    const doc = await (getDocs(docRef))
-    console.log(doc.docs[0].data().comedianInfo.showsAvailabledowntown)
-    const comic = await doc.docs[0].data().comedianInfo
-    setComedian({
-      name: comic.name,
-      id: comic.id,
-      type: comic.type,
-      showsAvailabledowntown: comic.showsAvailabledowntown,
-      showsAvailablesouth: comic.showsAvailablesouth
-    })
-    console.log(comedian, comic)
-  } catch (err) {
-    console.error(err) 
-    // alert("An error occured while fetching user data") 
-  }  
+
+  if (name.length > 0) {
+    try {
+      console.log(user?.displayName)
+      const docRef = query(collection(db, `comedians/comicStorage/${name}`))
+      const doc = await (getDocs(docRef))
+      console.log(doc.docs[0].data().comedianInfo.showsAvailabledowntown)
+      const comic = await doc.docs[0].data().comedianInfo
+      setComedian({
+        name: comic.name,
+        id: comic.id,
+        type: comic.type,
+        showsAvailabledowntown: comic.showsAvailabledowntown,
+        showsAvailablesouth: comic.showsAvailablesouth
+      })
+      console.log(comedian, comic)
+    } catch (err) {
+      console.error(err) 
+      // alert("An error occured while fetching user data") 
+    }  
+  }
  }
 
 const viewAllComicsAvailableDowntown = async () => {

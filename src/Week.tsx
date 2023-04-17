@@ -53,7 +53,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
   const submitForm = (event: any) => {
 
     event.preventDefault()
-    addDoc(collection(db, currentComedian.name), {comedianInfo: currentComedian, fireOrder: Date.now()})
+    addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
     currentComedian.showsAvailabledowntown = {
       monday: [],
       tuesday: [],

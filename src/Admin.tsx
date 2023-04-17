@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook, WeekInter } from './interface'
-import { doc, addDoc, collection, query, getDocs, collectionGroup, DocumentData } from "firebase/firestore";
+import { doc, addDoc, collection, query, getDocs, collectionGroup, DocumentData, where } from "firebase/firestore";
 import {db} from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 
@@ -124,7 +124,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
     const downtownShows = props.shows.filter(show => show.club === 'downtown')
 
-    const docRef = query(collectionGroup(db, `comedians`))
+    const docRef = query(collection(db, `comicStorage`))
     const doc = await (getDocs(docRef))
     
       const availableComics: DocumentData[] = []
@@ -161,7 +161,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
     const southShows = props.shows.filter(show => show.club === 'south')
 
-    const docRef = query(collectionGroup(db, `comedians`))
+    const docRef = query(collection(db, `comicStorage`))
     const doc = await (getDocs(docRef))
     
       const availableComics: DocumentData[] = []
