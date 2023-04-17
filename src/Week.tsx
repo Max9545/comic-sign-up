@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import Show from './Show'
 import { Comic, ShowToBook } from './interface'
-import { setDoc, doc } from 'firebase/firestore'
+import { setDoc, doc, addDoc, collection } from 'firebase/firestore'
 import { db, logout, auth } from './firebase'
 import { redirect } from 'react-router-dom'
 
@@ -53,7 +53,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
   const submitForm = (event: any) => {
 
     event.preventDefault()
-    setDoc(doc(db, `comedians/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
+    addDoc(collection(db, currentComedian.name), {comedianInfo: currentComedian, fireOrder: Date.now()})
     currentComedian.showsAvailabledowntown = {
       monday: [],
       tuesday: [],

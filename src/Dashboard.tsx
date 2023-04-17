@@ -63,8 +63,11 @@ function Dashboard() {
 
   useEffect(() => {
     fetchWeekForComedian()
-    
 }, [user])  
+
+useEffect(() => {
+  fetchComicInfo()
+}, [name])
 
   const fetchUserName = async () => {
     try {
@@ -101,23 +104,24 @@ function Dashboard() {
       alert("An error occured while fetching user data") 
     }
 console.log('hi')
-    try {
-      const docRef = query(collection(db, "comedians"),where("comedianInfo.id", "==", user?.uid))
-      const doc = await (getDocs(docRef))
-      console.log(doc.docs[0].data().comedianInfo.showsAvailabledowntown)
-      const comic = await doc.docs[0].data().comedianInfo
-      setComedian({
-        name: comic.name,
-        id: comic.id,
-        type: comic.type,
-        showsAvailabledowntown: comic.showsAvailabledowntown,
-        showsAvailablesouth: comic.showsAvailablesouth
-      })
-      console.log(comedian, comic)
-    } catch (err) {
-      console.error(err) 
-      // alert("An error occured while fetching user data") 
-    }  
+    // try {
+    //   console.log(user?.displayName)
+    //   const docRef = query(collection(db, name),where("comedianInfo.id", "==", user?.uid))
+    //   const doc = await (getDocs(docRef))
+    //   console.log(doc.docs[0].data().comedianInfo.showsAvailabledowntown)
+    //   const comic = await doc.docs[0].data().comedianInfo
+    //   setComedian({
+    //     name: comic.name,
+    //     id: comic.id,
+    //     type: comic.type,
+    //     showsAvailabledowntown: comic.showsAvailabledowntown,
+    //     showsAvailablesouth: comic.showsAvailablesouth
+    //   })
+    //   console.log(comedian, comic)
+    // } catch (err) {
+    //   console.error(err) 
+    //   // alert("An error occured while fetching user data") 
+    // }  
     console.log('bye')
   }
 
@@ -134,17 +138,38 @@ console.log('hi')
     }  
 }
 
+ const fetchComicInfo = async () => {
+  try {
+    console.log(user?.displayName)
+    const docRef = query(collection(db, name), orderBy('fireOrder', 'desc'), limit(1))
+    const doc = await (getDocs(docRef))
+    console.log(doc.docs[0].data().comedianInfo.showsAvailabledowntown)
+    const comic = await doc.docs[0].data().comedianInfo
+    setComedian({
+      name: comic.name,
+      id: comic.id,
+      type: comic.type,
+      showsAvailabledowntown: comic.showsAvailabledowntown,
+      showsAvailablesouth: comic.showsAvailablesouth
+    })
+    console.log(comedian, comic)
+  } catch (err) {
+    console.error(err) 
+    // alert("An error occured while fetching user data") 
+  }  
+ }
+
 const viewAllComicsAvailableDowntown = async () => {
 
   const downtownShows = shows.filter((show: { club: string }) => show.club === 'downtown')
 
-  const docRef = query(collectionGroup(db, `comedians`))
+  const docRef = query(collectionGroup(db, name))
   const doc = await (getDocs(docRef))
   
     const availableComics: DocumentData[] = []
-    
+    console.log(doc.docs[0].data())
     doc.docs.forEach(comic => availableComics.push(comic.data()))
-
+    console.log(availableComics)
     shows.map((show: { day: string; id: string; availableComics: any[] }) => {
         const availabeComedians: any[] = []
         availableComics.map((comedian, index) => {
@@ -163,7 +188,7 @@ const viewAllComicsAvailableSouth = async () => {
 
   const southShows = shows.filter((show: { club: string }) => show.club === 'south')
 
-  const docRef = query(collectionGroup(db, `comedians`))
+  const docRef = query(collectionGroup(db, name))
   const doc = await (getDocs(docRef))
   
     const availableComics: DocumentData[] = []
