@@ -57,6 +57,8 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
       setAvailability(!availability)
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(props.id)) {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(props.id)
+      } else {
+        comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice( comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))
       }
   }
 
