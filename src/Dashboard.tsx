@@ -163,25 +163,48 @@ const viewAllComicsAvailableDowntown = async () => {
 
   const downtownShows = shows.filter((show: { club: string }) => show.club === 'downtown')
 
-  const docRef = query(collectionGroup(db, name))
-  const doc = await (getDocs(docRef))
+  // const docRef = query(collectionGroup(db, name))
+  // const doc = await (getDocs(docRef))
   
-    const availableComics: DocumentData[] = []
-    console.log(doc.docs[0].data())
-    doc.docs.forEach(comic => availableComics.push(comic.data()))
-    console.log(availableComics)
-    shows.map((show: { day: string; id: string; availableComics: any[] }) => {
-        const availabeComedians: any[] = []
-        availableComics.map((comedian, index) => {
-            console.log(show, comedian)
-              comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].map((downTownShow: string) => {
-                if (show.id == downTownShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-                  availabeComedians.push(comedian.comedianInfo.name)
-                  show.availableComics = availabeComedians
-                }
-              })
+    // const availableComics: DocumentData[] = []
+    // console.log(doc.docs[0].data())
+    // doc.docs.forEach(comic => availableComics.push(comic.data()))
+    // console.log(availableComics)
+    // const comicShows = doc.docs[0].data().comedianInfo.showsAvailabledowntown
+    // console.log(comicShows)
+    // const pastAvailsObj = {
+    //   monday: [],
+    //   tuesday: [],
+    //   wednesday: [],
+    //   thursday: [], 
+    //   friday: [],
+    //   saturday: [],
+    //   sunday: []
+    // }
+    for (var key in comedian.showsAvailabledowntown) {
+      console.log(key, comedian.showsAvailabledowntown[key])
+      downtownShows.map((show: any) => {
+        comedian.showsAvailabledowntown[key].map((comicShow: any) => {
+          if (comicShow == show.id) {
+            // pastAvailsObj[key].push(show)
+            show.availableComics.push(name)
+            show.availability = true 
+          }
         })
       })
+      // console.log(pastAvailsObj)
+    }
+    // shows.map((show: { day: string; id: string; availableComics: any[] }) => {
+    //     const availabeComedians: any[] = []
+    //     comicShows.map((comedian: { comedianInfo: { showsAvailabledowntown: { [x: string]: string[] }; name: any } }, index: any) => {
+    //           comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].map((downTownShow: string) => {
+    //             if (show.id == downTownShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
+    //               availabeComedians.push(comedian.comedianInfo.name)
+    //               show.availableComics = availabeComedians
+    //             }
+    //           })
+    //     })
+      // })
 }
 
 const viewAllComicsAvailableSouth = async () => {
