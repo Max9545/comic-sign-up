@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import Show from './Show'
 import { Comic, ShowToBook } from './interface'
-import { setDoc, doc } from 'firebase/firestore'
+import { setDoc, doc, addDoc, collection } from 'firebase/firestore'
 import { db, logout, auth } from './firebase'
 import { redirect } from 'react-router-dom'
 
@@ -13,11 +13,10 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
   const [shows, setShows] = useState<ShowToBook[]>([])
   const [currentComedian, setCurrentComedian] = useState(props.comedian)
   const [allAvailablity, setAllAvailability] = useState(false)
-  // const [showComponents, setShowComponents] = useState<any[]>([])
 
   useEffect(() => {
     setCurrentComedian(props.comedian)
-  })
+  }, [props])
 
   useEffect(() => {
     setShows(props.weeklyShowTimes)
@@ -25,7 +24,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   useEffect(() => {
     showShows()
-  }, [shows, currentComedian])
+  }, [props])
 
 
   const showShows = () => {
@@ -41,8 +40,9 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
                       availableComedian={currentComedian}
                       date={show.date}
                       headliner={show.headliner}
-                      availability={false}
+                      availability={show.availableComics.includes(props.comedian.name)}
                       setAllAvailability={setAllAvailability}
+                      availableComics={show.availableComics}
                   />
               </div>
           
@@ -53,7 +53,8 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
   const submitForm = (event: any) => {
 
     event.preventDefault()
-    setDoc(doc(db, `comedians/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
+    addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
+    setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
     currentComedian.showsAvailabledowntown = {
       monday: [],
       tuesday: [],
@@ -72,7 +73,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       saturday: [],
       sunday: []
     } 
-    alert('Availability Submitted!! ANd you are now logged out')
+    alert('Availability Submitted!! And you are now logged out')
     logout()
   }
 

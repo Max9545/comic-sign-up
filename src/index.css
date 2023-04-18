@@ -29,7 +29,8 @@ header {
   font-weight: 700;
   color: aliceblue;
   width: 60vw;
-  min-height: 7vh
+  min-height: 7vh;
+  font-size: 1.1rem;
 }
 
 .true {
@@ -40,10 +41,10 @@ header {
   background-color: #17a2b8;
 }
 
-show-container {
+/* .show-container {
   flex-direction: row;
   width: 100vw
-}
+} */
 
 .submit-btn {
   margin-top: 3vh;
@@ -51,6 +52,7 @@ show-container {
   height: 5vh;
   background-color:red;
   border-radius: 70%;
+  font-weight: 900;
 }
 
 .admin-form {
@@ -72,7 +74,7 @@ show-container {
 
 .available {
   border: bisque solid;
-  /* justify-content: center; */
+  color: white;
   margin: 1%;
   min-width: 20vw;
   padding: 2%;
@@ -82,7 +84,9 @@ show-container {
 .comedian-signup {
   align-self: center;
   font-size: 2rem;
-  color: #dc3545
+  color: #dc3545;
+  padding-top: 1%;
+  /* margin-top: 1%; */
 }
 
 .admin-build {
@@ -93,4 +97,91 @@ show-container {
   background-color: #282c34;
   font-size: 2rem;
   color: #dc3545
+}
+
+label {
+  font-size: 1.5rem;
+  color: #dc3545
+}
+
+.add-show {
+  width: 15vw;
+  height: 5vh;
+  margin: 5% 0% 5% 0%;
+  background-color:  #17a2b8;
+  color: aliceblue;
+  font-weight: 900;
+  /* align-self: center; */
+}
+
+.date {
+  display: block;
+}
+
+.day, .time-input {
+  font-size: 1.5rem;
+  /* color: #dc3545 */
+}
+
+.headliner-input {
+  font-size: 1.3rem;
+  background-color: aliceblue;
+}
+
+.day-of-week {
+  font-size: 1.5rem;
+  color: #dc3545
+}
+
+.time {
+  display: inline;
+  align-self: flex-end;
+}
+
+.admin-input {
+  column-count: 1;
+  padding: 3% 0% 0% 0%;
+  justify-content: space-between;
+  border: red double 5px;
+  margin: 1% 0% 2% 0%
+}
+
+.build-week {
+  background-color: #dc3545;
+  height: 10vh;
+  width: 30vw;
+  font-size: 2em;
+  margin-bottom: 5%;
+}
+
+.club-select {
+  font-size: 1.5rem;
+  background-color: #dc3545;
+  color: #282c34;
+  margin: 2%;
+  padding: 1%
+}
+
+.delete-show {
+  background-color:red;
+  border-radius: 20%;
+  width: 30vw;
+}
+
+.clear-form {
+  width: 20vw;
+  height: 5vh;
+  background-color:  #17a2b8;
+  color: aliceblue;
+  font-weight: 900;
+}
+
+.downtown-available-header {
+  color: #dc3545;
+  border-bottom: #17a2b8 double 10px;
+}
+
+.south-available-header {
+  color: #17a2b8;
+  border-bottom: #dc3545 double 10px;
 }
