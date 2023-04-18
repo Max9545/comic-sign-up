@@ -54,6 +54,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
     event.preventDefault()
     addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
+    setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
     currentComedian.showsAvailabledowntown = {
       monday: [],
       tuesday: [],

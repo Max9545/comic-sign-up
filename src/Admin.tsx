@@ -124,7 +124,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
     const downtownShows = props.shows.filter(show => show.club === 'downtown')
 
-    const docRef = query(collection(db, `comicStorage`))
+    const docRef = query(collection(db, `comediansForAdmin`))
     const doc = await (getDocs(docRef))
     
       const availableComics: DocumentData[] = []
@@ -161,7 +161,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
     const southShows = props.shows.filter(show => show.club === 'south')
 
-    const docRef = query(collection(db, `comicStorage`))
+    const docRef = query(collection(db, `comediansForAdmin`))
     const doc = await (getDocs(docRef))
     
       const availableComics: DocumentData[] = []

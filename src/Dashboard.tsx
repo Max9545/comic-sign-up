@@ -143,7 +143,7 @@ console.log('hi')
   if (name.length > 0) {
     try {
       console.log(user?.displayName)
-      const docRef = query(collection(db, `comedians/comicStorage/${name}`))
+      const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
       console.log(doc.docs[0].data().comedianInfo.showsAvailabledowntown)
       const comic = await doc.docs[0].data().comedianInfo
