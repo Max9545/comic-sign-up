@@ -7,7 +7,6 @@ import { db, logout, auth } from './firebase'
 import { redirect } from 'react-router-dom'
 
 
-
 function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
   const [shows, setShows] = useState<ShowToBook[]>([])

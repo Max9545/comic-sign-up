@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
-import { ShowToBook, WeekInter } from './interface'
-import { doc, addDoc, collection, query, getDocs, collectionGroup, DocumentData, where } from "firebase/firestore";
+import { ShowToBook } from './interface'
+import { addDoc, collection, query, getDocs, DocumentData } from "firebase/firestore";
 import {db} from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 
@@ -16,7 +16,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [time, setTime] = useState('')
   const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
   const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
-  // const [trigger, setTrigger] = useState(true)
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
