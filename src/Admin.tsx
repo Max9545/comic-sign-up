@@ -86,7 +86,27 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                     friday: [],
                     saturday: [],
                     sunday: []
-                  }}
+                  },
+                  showsAvailabledowntownHistory: {
+                    monday: [],
+                    tuesday: [],
+                    wednesday: [],
+                    thursday: [], 
+                    friday: [],
+                    saturday: [],
+                    sunday: []
+                  },
+                  showsAvailablesouthHistory: {
+                    monday: [],
+                    tuesday: [],
+                    wednesday: [],
+                    thursday: [], 
+                    friday: [],
+                    saturday: [],
+                    sunday: []
+                  }
+                }
+                  
                 }
                 date={newShow.date}
                 headliner={newShow.headliner}

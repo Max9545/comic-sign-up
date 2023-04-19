@@ -29,7 +29,26 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
       friday: [],
       saturday: [],
       sunday: []
-    }}
+    },
+    showsAvailabledowntownHistory: {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [], 
+      friday: [],
+      saturday: [],
+      sunday: []
+    },
+    showsAvailablesouthHistory: {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [], 
+      friday: [],
+      saturday: [],
+      sunday: []
+    }
+  }
   )
 
   useEffect(() => {
@@ -57,8 +76,19 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
       setAvailability(!availability)
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(props.id)) {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(props.id)
+        comedian[`showsAvailable${clubToSign}History`][dayOfWeek].push({
+          id: props.id,
+          day: dayOfWeek,
+          time: props.time,
+          club: props.currentClub,
+          date: props.date,
+          headliner: props.headliner,
+        })
       } else {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice( comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))
+
+        comedian[`showsAvailable${clubToSign}History`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}History`][dayOfWeek].findIndex((showToDelete: { id: string }) => showToDelete.id === props.id))
+        
       }
   }
 

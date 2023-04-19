@@ -36,6 +36,24 @@ function Dashboard() {
       friday: [],
       saturday: [],
       sunday: []
+    },
+    showsAvailabledowntownHistory: {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [], 
+      friday: [],
+      saturday: [],
+      sunday: []
+    },
+    showsAvailablesouthHistory: {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [], 
+      friday: [],
+      saturday: [],
+      sunday: []
     }
   }
 )
@@ -92,6 +110,24 @@ function Dashboard() {
           friday: [],
           saturday: [],
           sunday: []
+        },
+        showsAvailabledowntownHistory: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        },
+        showsAvailablesouthHistory: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
         }
       })
     } catch (err) {
@@ -124,7 +160,25 @@ function Dashboard() {
         id: comic.id,
         type: comic.type,
         showsAvailabledowntown: comic.showsAvailabledowntown,
-        showsAvailablesouth: comic.showsAvailablesouth
+        showsAvailablesouth: comic.showsAvailablesouth,
+        showsAvailabledowntownHistory: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        },
+        showsAvailablesouthHistory: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        }
       })
     } catch (err) {
       console.error(err) 
