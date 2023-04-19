@@ -202,3 +202,7 @@ label {
   color: black;
   background-color: #dc3545
 }
+
+.available-comic {
+  border: #dc3545 solid 2px
+}

@@ -106,7 +106,6 @@ function Dashboard() {
       const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
       const doc = await (getDocs(docRef))
       setShows(doc.docs[0].data().thisWeek)
-      console.log(doc.docs[0].data())
     } catch (err) {
       console.error(err) 
       alert("An error occured while fetching user data") 
@@ -117,10 +116,8 @@ function Dashboard() {
 
   if (name.length > 0) {
     try {
-      console.log(user?.displayName)
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
-      console.log(doc.docs[0].data().comedianInfo.showsAvailabledowntown)
       const comic = await doc.docs[0].data().comedianInfo
       setComedian({
         name: comic.name,
@@ -129,7 +126,6 @@ function Dashboard() {
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth
       })
-      console.log(comedian, comic)
     } catch (err) {
       console.error(err) 
       // alert("An error occured while fetching user data") 
@@ -158,7 +154,6 @@ const viewAllComicsAvailableSouth = async () => {
   const southShows = shows.filter((show: { club: string }) => show.club === 'south')
     
   for (var key in comedian.showsAvailablesouth) {
-    console.log(key, comedian.showsAvailablesouth[key])
     southShows.map((show: any) => {
       comedian.showsAvailablesouth[key].map((comicShow: any) => {
         if (comicShow == show.id) {
