@@ -186,3 +186,19 @@ label {
   color: #17a2b8;
   border-bottom: #dc3545 double 10px;
 }
+
+.not-available-example {
+  font-weight: 800;
+  padding: .5%;
+  font-size: 1.3rem;
+  color: aliceblue;
+  background-color: #17a2b8;
+}
+
+.available-example {
+  font-weight: 800;
+  padding: .5%;
+  font-size: 1.3rem;
+  color: black;
+  background-color: #dc3545
+}

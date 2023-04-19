@@ -15,6 +15,8 @@ function App() {
         <p className='comedian-signup'> 
           Comedian Sign Up
         </p>
+        <p className='available-example'>This red color means you are AVAILABLE to be booked for the this show</p>
+        <p className='not-available-example'>This blue color means you are NOT available to be booked for this show</p>
         <Routes>
           <Route path='/' element={<Login/>}/>
           <Route path='/reset' element={<Reset/>}/>
