@@ -223,6 +223,8 @@ const viewAllComicsAvailableSouth = async () => {
 
   return (
     <div className="dashboard">
+      <p className='available-example'>This red color means you are AVAILABLE to be booked for the this show</p>
+      <p className='not-available-example'>This blue color means you are NOT available to be booked for this show</p>
       <Week comedian={comedian} weeklyShowTimes={shows}/>
       {admin && <Admin shows={shows} setShows={setShows}
       setWeekSchedule={setWeekSchedule}/>}
