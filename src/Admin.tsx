@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
-import { ShowToBook, WeekInter } from './interface'
-import { doc, addDoc, collection, query, getDocs, collectionGroup, DocumentData, where } from "firebase/firestore";
+import { ShowToBook } from './interface'
+import { addDoc, collection, query, getDocs, DocumentData } from "firebase/firestore";
 import {db} from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 
@@ -16,7 +16,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [time, setTime] = useState('')
   const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
   const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
-  // const [trigger, setTrigger] = useState(true)
+  const [specificComicHistoryDowntown, setSpecificComicHistoryDowntown] = useState<any[]>([])
+  const [specificComicHistorySouth, setSpecificComicHistorySouth] = useState<any[]>([])
+  const [comicForHistory, setcomicForHistory] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -87,7 +89,27 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                     friday: [],
                     saturday: [],
                     sunday: []
-                  }}
+                  },
+                  showsAvailabledowntownHistory: {
+                    monday: [],
+                    tuesday: [],
+                    wednesday: [],
+                    thursday: [], 
+                    friday: [],
+                    saturday: [],
+                    sunday: []
+                  },
+                  showsAvailablesouthHistory: {
+                    monday: [],
+                    tuesday: [],
+                    wednesday: [],
+                    thursday: [], 
+                    friday: [],
+                    saturday: [],
+                    sunday: []
+                  }
+                }
+                  
                 }
                 date={newShow.date}
                 headliner={newShow.headliner}
@@ -108,15 +130,20 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const showTime = (rawTime: string) => {
     const numTime = parseInt(rawTime)
+    console.log(numTime, rawTime)
     if (numTime === 0) {
       setTime(`12:${rawTime.substring(3)}AM`)
+      return `12:${rawTime.substring(3)}AM`
     } else if (numTime > 12) {
       const newNum = numTime - 12
       setTime(`${newNum.toString()}:${rawTime.substring(3)}PM`)
+      return `${newNum.toString()}:${rawTime.substring(3)}PM`
     } else if (numTime == 12) {
       setTime(`${rawTime}PM`)
+      return `${rawTime}PM`
     } else {
       setTime(`${rawTime}AM`)
+      return `${rawTime}AM`
     }
   }
 
@@ -145,6 +172,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           const showFinals = downtownShows.map((finalfForm, index) => {
             return <ShowWithAvails
             key={index}
+            setSpecificComicHistoryDowntown={setSpecificComicHistoryDowntown}
+            setSpecificComicHistorySouth={setSpecificComicHistorySouth}
+            setcomicForHistory={setcomicForHistory}
+            showTime={showTime}
             headliner={finalfForm.headliner}
             time={finalfForm.time}
             day={finalfForm.day}
@@ -180,13 +211,17 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           })
           const showFinals = southShows.map((finalfForm, index) => {
             return <ShowWithAvails
+            key={index}
+            showTime={showTime}
+            setSpecificComicHistoryDowntown={setSpecificComicHistoryDowntown}
+            setSpecificComicHistorySouth={setSpecificComicHistorySouth}
+            setcomicForHistory={setcomicForHistory}
             headliner={finalfForm.headliner}
             time={finalfForm.time}
             day={finalfForm.day}
             club={finalfForm.club}
             id={finalfForm.id}
             availableComics={finalfForm.availableComics} 
-            key={index}
           />
         })
         setSignedShowsSouth(showFinals)
@@ -224,6 +259,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       <h2 className='south-available-header'>South Club Available Comics</h2>
       <div>{signedShowsSouth.map(availShow => availShow)}</div>
       </div>
+      {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
+      {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>}
+      {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
+      {comicForHistory && <h2 className='south-available-header'>South Club Availability History</h2>}
+      {specificComicHistorySouth.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
     </div>
   )
 }

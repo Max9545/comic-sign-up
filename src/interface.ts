@@ -19,6 +19,8 @@ export interface Comic {
   type: string;
   showsAvailabledowntown: WeekInter;
   showsAvailablesouth: WeekInter;
+  showsAvailabledowntownHistory: WeekInter;
+  showsAvailablesouthHistory: WeekInter;
 }
 
 export interface ShowToBook {

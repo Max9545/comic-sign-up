@@ -3,10 +3,7 @@ import { useEffect, useState } from 'react'
 import Show from './Show'
 import { Comic, ShowToBook } from './interface'
 import { setDoc, doc, addDoc, collection } from 'firebase/firestore'
-import { db, logout, auth } from './firebase'
-import { redirect } from 'react-router-dom'
-
-
+import { db, logout } from './firebase'
 
 function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
@@ -46,15 +43,18 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
                   />
               </div>
           
-      })
+        })
+      }
     }
-  }
 
   const submitForm = (event: any) => {
 
     event.preventDefault()
-    addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
     setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
+    // currentComedian.showsAvailabledowntownHistory
+    addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
+      comedianInfo: currentComedian, 
+      fireOrder: Date.now()})
     currentComedian.showsAvailabledowntown = {
       monday: [],
       tuesday: [],
@@ -73,8 +73,8 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       saturday: [],
       sunday: []
     } 
-    alert('Availability Submitted!! And you are now logged out')
-    logout()
+    alert('Availability Submitted!! Check your email and phone for verification of your latest availabilty')
+    // logout()
   }
 
     return (
