@@ -208,3 +208,11 @@ label {
 .available-comic {
   border: #dc3545 solid 2px
 }
+
+.comicHistory-show {
+  display: block;
+  font-size: 1.3rem;
+  color: aliceblue;
+  background-color: #17a2b8;
+
+}

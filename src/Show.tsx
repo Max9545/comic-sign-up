@@ -74,8 +74,13 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       event.preventDefault()
       setAvailability(!availability)
+      
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(props.id)) {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(props.id)
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
+        var dateTime = date + ' ' + time
         comedian[`showsAvailable${clubToSign}History`][dayOfWeek].push({
           id: props.id,
           day: dayOfWeek,
@@ -83,6 +88,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
           club: props.currentClub,
           date: props.date,
           headliner: props.headliner,
+          submissionDateTime: dateTime
         })
       } else {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice( comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))
