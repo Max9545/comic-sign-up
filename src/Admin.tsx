@@ -128,15 +128,20 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const showTime = (rawTime: string) => {
     const numTime = parseInt(rawTime)
+    console.log(numTime, rawTime)
     if (numTime === 0) {
       setTime(`12:${rawTime.substring(3)}AM`)
+      return `12:${rawTime.substring(3)}AM`
     } else if (numTime > 12) {
       const newNum = numTime - 12
       setTime(`${newNum.toString()}:${rawTime.substring(3)}PM`)
+      return `${newNum.toString()}:${rawTime.substring(3)}PM`
     } else if (numTime == 12) {
       setTime(`${rawTime}PM`)
+      return `${rawTime}PM`
     } else {
       setTime(`${rawTime}AM`)
+      return `${rawTime}AM`
     }
   }
 
@@ -166,6 +171,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
             return <ShowWithAvails
             key={index}
             setSpecificComicHistoryDowntown={setSpecificComicHistoryDowntown}
+            showTime={showTime}
             headliner={finalfForm.headliner}
             time={finalfForm.time}
             day={finalfForm.day}
@@ -202,6 +208,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
           const showFinals = southShows.map((finalfForm, index) => {
             return <ShowWithAvails
             key={index}
+            showTime={showTime}
             setSpecificComicHistoryDowntown={setSpecificComicHistoryDowntown}
             headliner={finalfForm.headliner}
             time={finalfForm.time}

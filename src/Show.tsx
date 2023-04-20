@@ -78,8 +78,8 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
       if (!comedian[`showsAvailable${clubToSign}`][dayOfWeek].includes(props.id)) {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(props.id)
         var today = new Date();
-        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
-        var time = today.getHours() + ":" +  String(today.getMinutes()).padStart(2, "0")
+        var date = today.getFullYear() + ' - ' + (today.getMonth()+1) + ' - ' + today.getDate()
+        var time = today.getHours() + " : " +  String(today.getMinutes()).padStart(2, "0")
         var dateTime = date + ' ' + time
         comedian[`showsAvailable${clubToSign}History`][dayOfWeek].push({
           id: props.id,
