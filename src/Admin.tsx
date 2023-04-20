@@ -17,6 +17,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
   const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
   const [specificComicHistoryDowntown, setSpecificComicHistoryDowntown] = useState<any[]>([])
+  const [specificComicHistorySouth, setSpecificComicHistorySouth] = useState<any[]>([])
   const [comicForHistory, setcomicForHistory] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
@@ -172,6 +173,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
             return <ShowWithAvails
             key={index}
             setSpecificComicHistoryDowntown={setSpecificComicHistoryDowntown}
+            setSpecificComicHistorySouth={setSpecificComicHistorySouth}
             setcomicForHistory={setcomicForHistory}
             showTime={showTime}
             headliner={finalfForm.headliner}
@@ -212,6 +214,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
             key={index}
             showTime={showTime}
             setSpecificComicHistoryDowntown={setSpecificComicHistoryDowntown}
+            setSpecificComicHistorySouth={setSpecificComicHistorySouth}
             setcomicForHistory={setcomicForHistory}
             headliner={finalfForm.headliner}
             time={finalfForm.time}
@@ -257,7 +260,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       <div>{signedShowsSouth.map(availShow => availShow)}</div>
       </div>
       {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
+      <h2 className='downtown-available-header'>Downtown Available History</h2>
       {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
+      <h2 className='south-available-header'>South Club Available History</h2>
+      {specificComicHistorySouth.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
     </div>
   )
 }

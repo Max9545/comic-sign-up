@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
 
 
-function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, showTime: any, setcomicForHistory: any}) {
+function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any}) {
   
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
@@ -13,10 +13,11 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   },[props])
 
   useEffect(() => {
-    showFinalComicHistory()
+    showFinalComicHistoryDowntown()
+    showFinalComicHistorySouth()
   }, [comicHistory])
 
-  const showFinalComicHistory = () => {
+  const showFinalComicHistoryDowntown = () => {
     const historyStrings = comicHistory.reduce((acc, show, hisIndex) => {
       console.log(show)
       // for (var key in show.showsAvailabledowntownHistory) {
@@ -46,6 +47,36 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     props.setSpecificComicHistoryDowntown(historyStrings)
   }
 
+  const showFinalComicHistorySouth = () => {
+    const historyStrings = comicHistory.reduce((acc, show, hisIndex) => {
+      console.log(show)
+      // for (var key in show.showsAvailabledowntownHistory) {
+        // console.log(Object.entries(show.showsAvailablesouthHistory))
+        Object.entries(show.showsAvailablesouthHistory).map((singleShow: any) => {
+          singleShow.splice(0,1)
+          console.log(singleShow)
+          if (!acc.includes(singleShow[0]) && singleShow[0].length > 0) {
+            // console.log(singleShow[0][0].submissionDateTime)
+            acc.push ({
+              key: hisIndex,
+              order: `${singleShow[0][0].submissionDateTime}`, 
+              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`${finalShow.date} at the ${finalShow.club} club for ${finalShow.headliner} at ${finalShow.time} on ${finalShow.day}`}</p></div>
+              )
+            })
+          }
+        })
+       
+        return acc
+      // }
+    }, [])
+    console.log(historyStrings)
+    historyStrings.sort((a: any, b: any) => {
+      console.log(a.order, b)
+      return a.order > b.order
+    })
+    props.setSpecificComicHistorySouth(historyStrings)
+  }
+
   const displayComicHistory = async (comic: string) => {
     
     props.setcomicForHistory(comic)
@@ -54,12 +85,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
     const doc = await (getDocs(docRef))
 
-    // const comicHistory = doc.docs.map(avail => avail.data().comedianInfo)
     setComicHistory(doc.docs.map(avail => avail.data().comedianInfo))
-    console.log(comicHistory)
-
-    
-    
   }
     
   return (
