@@ -93,9 +93,9 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
         })
       } else {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice( comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))
-
+        console.log(comedian[`showsAvailable${clubToSign}History`][dayOfWeek].findIndex((showToDelete: { id: string }) => showToDelete.id === props.id))
         comedian[`showsAvailable${clubToSign}History`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}History`][dayOfWeek].findIndex((showToDelete: { id: string }) => showToDelete.id === props.id))
-        
+        console.log(comedian[`showsAvailable${clubToSign}History`][dayOfWeek].findIndex((showToDelete: { id: string }) => showToDelete.id === props.id))
       }
   }
 

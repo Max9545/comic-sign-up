@@ -260,9 +260,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       <div>{signedShowsSouth.map(availShow => availShow)}</div>
       </div>
       {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
-      <h2 className='downtown-available-header'>Downtown Available History</h2>
+      {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>}
       {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
-      <h2 className='south-available-header'>South Club Available History</h2>
+      {comicForHistory && <h2 className='south-available-header'>South Club Availability History</h2>}
       {specificComicHistorySouth.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
     </div>
   )
