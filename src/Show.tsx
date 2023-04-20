@@ -79,7 +79,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].push(props.id)
         var today = new Date();
         var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
+        var time = today.getHours() + ":" +  String(today.getMinutes()).padStart(2, `0`) + ":" + today.getSeconds()
         var dateTime = date + ' ' + time
         comedian[`showsAvailable${clubToSign}History`][dayOfWeek].push({
           id: props.id,
@@ -88,7 +88,8 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
           club: props.currentClub,
           date: props.date,
           headliner: props.headliner,
-          submissionDateTime: dateTime
+          submissionDateTime: dateTime,
+          // fireOrder: Date.now()
         })
       } else {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice( comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))

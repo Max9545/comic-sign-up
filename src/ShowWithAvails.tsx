@@ -24,10 +24,11 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         Object.entries(show.showsAvailabledowntownHistory).map((singleShow: any) => {
           singleShow.splice(0,1)
           console.log(singleShow)
-          if (!acc.includes(singleShow[0])) {
-            console.log(singleShow[0])
+          if (!acc.includes(singleShow[0]) && singleShow[0].length > 0) {
+            // console.log(singleShow[0][0].submissionDateTime)
             acc.push ({
-              key: hisIndex, 
+              key: hisIndex,
+              order: `${singleShow[0][0].submissionDateTime}`, 
               showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time:${finalShow.submissionDateTime}`}</p><p>{`${finalShow.date} at the ${finalShow.club} club for ${finalShow.headliner} at ${finalShow.time} on ${finalShow.day}`}</p></div>
               )
             })
@@ -38,7 +39,10 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       // }
     }, [])
     console.log(historyStrings)
-
+    historyStrings.sort((a: any, b: any) => {
+      console.log(a.order, b)
+      return a.order > b.order
+    })
     props.setSpecificComicHistoryDowntown(historyStrings)
   }
 
