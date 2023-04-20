@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
 
 
-function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, showTime: any}) {
+function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, showTime: any, setcomicForHistory: any}) {
   
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
@@ -29,7 +29,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             acc.push ({
               key: hisIndex,
               order: `${singleShow[0][0].submissionDateTime}`, 
-              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 11)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`${finalShow.date} at the ${finalShow.club} club for ${finalShow.headliner} at ${finalShow.time} on ${finalShow.day}`}</p></div>
+              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`${finalShow.date} at the ${finalShow.club} club for ${finalShow.headliner} at ${finalShow.time} on ${finalShow.day}`}</p></div>
               )
             })
           }
@@ -48,6 +48,8 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
   const displayComicHistory = async (comic: string) => {
     
+    props.setcomicForHistory(comic)
+
     const docRef = query(collection(db, `comedians/comicStorage/${comic}`))
 
     const doc = await (getDocs(docRef))

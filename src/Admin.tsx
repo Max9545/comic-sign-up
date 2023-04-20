@@ -17,6 +17,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
   const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
   const [specificComicHistoryDowntown, setSpecificComicHistoryDowntown] = useState<any[]>([])
+  const [comicForHistory, setcomicForHistory] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -171,6 +172,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
             return <ShowWithAvails
             key={index}
             setSpecificComicHistoryDowntown={setSpecificComicHistoryDowntown}
+            setcomicForHistory={setcomicForHistory}
             showTime={showTime}
             headliner={finalfForm.headliner}
             time={finalfForm.time}
@@ -210,6 +212,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
             key={index}
             showTime={showTime}
             setSpecificComicHistoryDowntown={setSpecificComicHistoryDowntown}
+            setcomicForHistory={setcomicForHistory}
             headliner={finalfForm.headliner}
             time={finalfForm.time}
             day={finalfForm.day}
@@ -253,6 +256,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       <h2 className='south-available-header'>South Club Available Comics</h2>
       <div>{signedShowsSouth.map(availShow => availShow)}</div>
       </div>
+      {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
       {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
     </div>
   )
