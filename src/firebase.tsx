@@ -38,9 +38,21 @@ const signInWithGoogle = async () => {
   }
 };
 
-const logInWithEmailAndPassword = async (email: string, password: string) => {
+const logInWithEmailAndPassword = async (email: string, password: string, userName: string) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    const user = res.user;
+    console.log(user)
+    const q = query(collection(db, "users"), where("uid", "==", user.uid));
+    const docs = await getDocs(q);
+    if (docs.docs.length === 0) {
+      await addDoc(collection(db, "users"), {
+        uid: user.uid,
+        name: user.displayName || userName,
+        // authProvider: "google",
+        email: user.email,
+      });
+    }
   } catch (err: any) {
     console.error(err);
     alert(err.message);
@@ -53,9 +65,9 @@ const registerWithEmailAndPassword = async (name: string, email: string, passwor
     const user = res.user;
     await addDoc(collection(db, "users"), {
       uid: user.uid,
-      name,
+      name: email,
       authProvider: "local",
-      email,
+      email: email,
     });
   } catch (err: any) {
     console.error(err);

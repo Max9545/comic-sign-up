@@ -7,7 +7,8 @@ import "./Login.css"
 function Login() {
 
   const [email, setEmail] = useState("") 
-  const [password, setPassword] = useState("") 
+  const [password, setPassword] = useState("")
+  const [userName, setUserName] = useState("") 
   const [user, loading, error] = useAuthState(auth)
   
   const navigate = useNavigate() 
@@ -37,15 +38,22 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
+        <input
+          type="userName"
+          className="login__textBox userName"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          placeholder="User Name If First Time"
+        />
         <button
           className="login__btn"
-          onClick={() => logInWithEmailAndPassword(email, password)}
+          onClick={() => logInWithEmailAndPassword(email, password, userName)}
         >
           Login
         </button>
-        <button className="login__btn login__google" onClick={signInWithGoogle}>
+        {/* <button className="login__btn login__google" onClick={signInWithGoogle}>
           Login with Google
-        </button>
+        </button> */}
         <div>
           <Link to="/reset">Reset/Forgot Password</Link>
         </div>
