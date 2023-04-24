@@ -18,27 +18,27 @@ const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
 
-const signInWithGoogle = async () => {
-  try {
-    const res = await signInWithPopup(auth, googleProvider);
-    const user = res.user;
-    const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    const docs = await getDocs(q);
-    if (docs.docs.length === 0) {
-      await addDoc(collection(db, "users"), {
-        uid: user.uid,
-        name: user.displayName,
-        authProvider: "google",
-        email: user.email,
-      });
-    }
-  } catch (err: any) {
-    console.error(err);
-    alert(err.message);
-  }
-};
+// const signInWithGoogle = async () => {
+//   try {
+//     const res = await signInWithPopup(auth, googleProvider);
+//     const user = res.user;
+//     const q = query(collection(db, "users"), where("uid", "==", user.uid));
+//     const docs = await getDocs(q);
+//     if (docs.docs.length === 0) {
+//       await addDoc(collection(db, "users"), {
+//         uid: user.uid,
+//         name: user.displayName,
+//         authProvider: "google",
+//         email: user.email,
+//       });
+//     }
+//   } catch (err: any) {
+//     console.error(err);
+//     alert(err.message);
+//   }
+// };
 
-const logInWithEmailAndPassword = async (email: string, password: string, userName: string) => {
+const logInWithEmailAndPassword = async (email: string, password: string) => {
   try {
     const res = await signInWithEmailAndPassword(auth, email, password);
     const user = res.user;
@@ -48,14 +48,14 @@ const logInWithEmailAndPassword = async (email: string, password: string, userNa
     if (docs.docs.length === 0) {
       await addDoc(collection(db, "users"), {
         uid: user.uid,
-        name: user.displayName || userName,
+        name: user.displayName,
         // authProvider: "google",
         email: user.email,
       });
     }
   } catch (err: any) {
     console.error(err);
-    alert(err.message);
+    alert('Wrong email or password. Perhaps not an authorized comic. Hopefully soon!');
   }
 };
 
@@ -92,7 +92,7 @@ const logout = () => {
 export {
   auth,
   db,
-  signInWithGoogle,
+  // signInWithGoogle,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   sendPasswordReset,

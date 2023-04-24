@@ -221,3 +221,7 @@ label {
   font-size: 2rem;
   color: #dc3545;
 }
+
+.userName { 
+  display: none;
+}
