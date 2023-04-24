@@ -191,7 +191,6 @@ function Dashboard() {
       })
     } catch (err) {
       console.error(err) 
-      // alert("An error occured while fetching user data") 
     }  
   }
  }
@@ -220,7 +219,6 @@ const viewAllComicsAvailableSouth = async () => {
     southShows.map((show: any) => {
       comedian.showsAvailablesouth[key].map((comicShow: any) => {
         if (comicShow == show.id) {
-          // pastAvailsObj[key].push(show)
           show.availableComics.push(name)
           show.availability = true 
           }

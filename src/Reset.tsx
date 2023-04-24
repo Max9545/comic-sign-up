@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom"
-import { Link } from "react-router-dom";
 import { auth, sendPasswordReset } from "./firebase"
 import "./Reset.css"
 function Reset() {
@@ -32,9 +31,6 @@ function Reset() {
           Send password reset email
         </button>
         <button onClick={() => navigate("/dashboard")} className="login__btn">Back To Sign In</button>
-        {/* <div>
-          Don't have an account? <Link to="/register">Register</Link> now.
-        </div> */}
       </div>
     </div>
   );

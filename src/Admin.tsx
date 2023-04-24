@@ -159,7 +159,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
       downtownShows.map(show => {
           const availabeComedians: any[] = []
-          availableComics.map((comedian, index) => {
+          availableComics.map((comedian) => {
               
                 comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].map((downTownShow: string) => {
                   if (show.id == downTownShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
@@ -247,7 +247,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         <label>Headliner: </label>
         <input className='headliner-input' {...register('headliner')} required/>
         </div>
-        {/* <label className='add-show'>Add Show</label> */}
         <input type='submit' value='Add Show' className='add-show'/>
       </form>
       {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
