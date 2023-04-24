@@ -130,7 +130,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const showTime = (rawTime: string) => {
     const numTime = parseInt(rawTime)
-    console.log(numTime, rawTime)
     if (numTime === 0) {
       setTime(`12:${rawTime.substring(3)}AM`)
       return `12:${rawTime.substring(3)}AM`

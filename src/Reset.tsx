@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react"
+import { useAuthState } from "react-firebase-hooks/auth"
+import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom";
-import { auth, sendPasswordReset } from "./firebase";
-import "./Reset.css";
+import { auth, sendPasswordReset } from "./firebase"
+import "./Reset.css"
 function Reset() {
-  const [email, setEmail] = useState("");
-  const [user, loading, error] = useAuthState(auth);
-  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("")
+  const [user, loading, error] = useAuthState(auth)
+  const navigate = useNavigate()
+
   useEffect(() => {
-    if (loading) return;
-    if (user) navigate("/dashboard");
-  }, [user, loading]);
+    if (loading) return
+    if (user) navigate("/dashboard")
+  }, [user, loading])
+
   return (
     <div className="reset">
       <div className="reset__container">
@@ -28,6 +31,7 @@ function Reset() {
         >
           Send password reset email
         </button>
+        <button onClick={() => navigate("/dashboard")} className="login__btn">Back To Sign In</button>
         {/* <div>
           Don't have an account? <Link to="/register">Register</Link> now.
         </div> */}
@@ -35,4 +39,4 @@ function Reset() {
     </div>
   );
 }
-export default Reset;
+export default Reset
