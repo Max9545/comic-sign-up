@@ -24,7 +24,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           if (!acc.includes(singleShow[0]) && singleShow[0].length > 0) {
             acc.push ({
               key: hisIndex,
-              order: `${singleShow[0][0].submissionDateTime}`, 
+              fireOrder: `${singleShow[0][0].fireOrder}`, 
               showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} at the ${finalShow.club} club for ${finalShow.headliner} at ${finalShow.time} on ${finalShow.day}`}</p></div>
               )
             })
@@ -33,7 +33,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         return acc
     }, [])
     historyStrings.sort((a: any, b: any) => {
-      console.log(a.order.slice(0, 10), 'slice')
+      console.log(a.fireOrder, b.fireOrder)
       return a.fireOrder > b.fireOrder
     })
     props.setSpecificComicHistoryDowntown(historyStrings)
@@ -47,7 +47,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           if (!acc.includes(singleShow[0]) && singleShow[0].length > 0) {
             acc.push ({
               key: hisIndex,
-              order: `${singleShow[0][0].submissionDateTime}`, 
+              fireOrder: `${singleShow[0][0].fireOrder}`, 
               showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} at the ${finalShow.club} club for ${finalShow.headliner} at ${finalShow.time} on ${finalShow.day}`}</p></div>
               )
             })
@@ -57,6 +57,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         return acc
     }, [])
     historyStrings.sort((a: any, b: any) => {
+      console.log(a, b.fireOrder)
       return a.fireOrder > b.fireOrder
     })
     props.setSpecificComicHistorySouth(historyStrings)
