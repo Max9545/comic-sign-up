@@ -51,7 +51,6 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
     event.preventDefault()
     setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
-    // currentComedian.showsAvailabledowntownHistory
     addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
       comedianInfo: currentComedian, 
       fireOrder: Date.now()})
@@ -75,6 +74,11 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
     } 
     alert('Availability Submitted!! Check your email and phone for verification of your latest availabilty')
     // logout()
+    // event.preventDefault()
+    setTimeout(() => {
+      window.location.reload()
+      console.log('reloaded!!!')
+    }, 1000)
   }
 
     return (

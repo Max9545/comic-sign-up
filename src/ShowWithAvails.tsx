@@ -19,14 +19,9 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
   const showFinalComicHistoryDowntown = () => {
     const historyStrings = comicHistory.reduce((acc, show, hisIndex) => {
-      console.log(show)
-      // for (var key in show.showsAvailabledowntownHistory) {
-        console.log(Object.entries(show.showsAvailabledowntownHistory))
         Object.entries(show.showsAvailabledowntownHistory).map((singleShow: any) => {
           singleShow.splice(0,1)
-          console.log(acc.includes(singleShow[0]))
           if (!acc.includes(singleShow[0]) && singleShow[0].length > 0) {
-            // console.log(singleShow[0][0].submissionDateTime)
             acc.push ({
               key: hisIndex,
               order: `${singleShow[0][0].submissionDateTime}`, 
@@ -35,28 +30,21 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             })
           }
         })
-       
         return acc
-      // }
     }, [])
-    console.log(historyStrings)
     historyStrings.sort((a: any, b: any) => {
-      console.log(a.order, b)
-      return a.order > b.order
+      console.log(a.order.slice(0, 10), 'slice')
+      return a.fireOrder > b.fireOrder
     })
     props.setSpecificComicHistoryDowntown(historyStrings)
   }
 
   const showFinalComicHistorySouth = () => {
     const historyStrings = comicHistory.reduce((acc, show, hisIndex) => {
-      console.log(show)
-      // for (var key in show.showsAvailabledowntownHistory) {
-        // console.log(Object.entries(show.showsAvailablesouthHistory))
+
         Object.entries(show.showsAvailablesouthHistory).map((singleShow: any) => {
           singleShow.splice(0,1)
-          console.log(singleShow)
           if (!acc.includes(singleShow[0]) && singleShow[0].length > 0) {
-            // console.log(singleShow[0][0].submissionDateTime)
             acc.push ({
               key: hisIndex,
               order: `${singleShow[0][0].submissionDateTime}`, 
@@ -67,12 +55,9 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         })
        
         return acc
-      // }
     }, [])
-    console.log(historyStrings)
     historyStrings.sort((a: any, b: any) => {
-      console.log(a.order, b)
-      return a.order > b.order
+      return a.fireOrder > b.fireOrder
     })
     props.setSpecificComicHistorySouth(historyStrings)
   }

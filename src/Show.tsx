@@ -89,7 +89,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
           date: props.date,
           headliner: props.headliner,
           submissionDateTime: dateTime,
-          // fireOrder: Date.now()
+          fireOrder: Date.now()
         })
       } else {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice( comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))
