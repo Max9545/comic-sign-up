@@ -32,9 +32,8 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         })
         return acc
     }, [])
-    historyStrings.sort((a: any, b: any) => {
-      console.log(a.fireOrder, b.fireOrder)
-      return a.fireOrder > b.fireOrder
+    const sorted = historyStrings.sort((a: any, b: any) => {
+      return parseInt(a.fireOrder) - parseInt(b.fireOrder)
     })
     props.setSpecificComicHistoryDowntown(historyStrings)
   }
@@ -57,8 +56,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         return acc
     }, [])
     historyStrings.sort((a: any, b: any) => {
-      console.log(a, b.fireOrder)
-      return a.fireOrder > b.fireOrder
+      return parseInt(a.fireOrder) - parseInt(b.fireOrder)
     })
     props.setSpecificComicHistorySouth(historyStrings)
   }
