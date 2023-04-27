@@ -3,17 +3,16 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom" 
 import "./Dashboard.css" 
 import { auth, db, logout } from "./firebase" 
-import { query, collection, getDocs, where, orderBy, limit } from "firebase/firestore" 
+import { query, collection, getDocs, where, orderBy, limit, getFirestore, setDoc, doc } from "firebase/firestore"
 import Week  from './Week'
 import { Comic } from './interface'
 import Admin from './Admin'
-
-
+import { updateProfile } from "firebase/auth"
 
 function Dashboard() {
 
   const [user, loading, error] = useAuthState(auth) 
-  const [name, setName] = useState("")
+  const [name, setName] = useState('')
   const [admin, setAdmin] = useState(false)
   const [comedian, setComedian] = useState<Comic>({
     name: '',
@@ -70,8 +69,18 @@ function Dashboard() {
 
   useEffect(() => {
     if (loading) return 
-    if (!user) return navigate("/") 
-    fetchUserName() 
+    if (!user) return navigate("/")
+    if(!user.displayName) {
+      const db = getFirestore()
+      const newName = window.prompt('Please enter your first and last name as you want the club to see them')
+      setName(newName ? newName : '')
+      updateProfile(user, {displayName: newName})
+      setDoc(doc(db, `users/${user.uid}`), {name: newName, email: user.email, uid: user.uid, })
+      fetchUserName()
+    } else {
+      fetchUserName()
+    }
+     
   }, [user, loading]) 
 
   useEffect(() => {
@@ -182,7 +191,6 @@ function Dashboard() {
       })
     } catch (err) {
       console.error(err) 
-      // alert("An error occured while fetching user data") 
     }  
   }
  }
@@ -211,7 +219,6 @@ const viewAllComicsAvailableSouth = async () => {
     southShows.map((show: any) => {
       comedian.showsAvailablesouth[key].map((comicShow: any) => {
         if (comicShow == show.id) {
-          // pastAvailsObj[key].push(show)
           show.availableComics.push(name)
           show.availability = true 
           }
@@ -225,6 +232,13 @@ const viewAllComicsAvailableSouth = async () => {
     <div className="dashboard">
       <p className='available-example'>This red color means you are AVAILABLE to be booked for the this show</p>
       <p className='not-available-example'>This blue color means you are NOT available to be booked for this show</p>
+      <input
+          type="userName"
+          className="login__textBox userName"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="User Name If First Time"
+        />
       <Week comedian={comedian} weeklyShowTimes={shows}/>
       {admin && <Admin shows={shows} setShows={setShows}
       setWeekSchedule={setWeekSchedule}/>}

@@ -206,7 +206,8 @@ label {
 }
 
 .available-comic {
-  border: #dc3545 solid 2px
+  border: #dc3545 solid 2px;
+  cursor: pointer
 }
 
 .comicHistory-show {
@@ -220,4 +221,8 @@ label {
 .comic-of-history {
   font-size: 2rem;
   color: #dc3545;
+}
+
+.userName { 
+  display: none;
 }

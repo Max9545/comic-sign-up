@@ -19,47 +19,34 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
   const showFinalComicHistoryDowntown = () => {
     const historyStrings = comicHistory.reduce((acc, show, hisIndex) => {
-      console.log(show)
-      // for (var key in show.showsAvailabledowntownHistory) {
-        console.log(Object.entries(show.showsAvailabledowntownHistory))
         Object.entries(show.showsAvailabledowntownHistory).map((singleShow: any) => {
           singleShow.splice(0,1)
-          console.log(acc.includes(singleShow[0]))
           if (!acc.includes(singleShow[0]) && singleShow[0].length > 0) {
-            // console.log(singleShow[0][0].submissionDateTime)
             acc.push ({
               key: hisIndex,
-              order: `${singleShow[0][0].submissionDateTime}`, 
+              fireOrder: `${singleShow[0][0].fireOrder}`, 
               showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} at the ${finalShow.club} club for ${finalShow.headliner} at ${finalShow.time} on ${finalShow.day}`}</p></div>
               )
             })
           }
         })
-       
         return acc
-      // }
     }, [])
-    console.log(historyStrings)
-    historyStrings.sort((a: any, b: any) => {
-      console.log(a.order, b)
-      return a.order > b.order
+    const sorted = historyStrings.sort((a: any, b: any) => {
+      return parseInt(a.fireOrder) - parseInt(b.fireOrder)
     })
     props.setSpecificComicHistoryDowntown(historyStrings)
   }
 
   const showFinalComicHistorySouth = () => {
     const historyStrings = comicHistory.reduce((acc, show, hisIndex) => {
-      console.log(show)
-      // for (var key in show.showsAvailabledowntownHistory) {
-        // console.log(Object.entries(show.showsAvailablesouthHistory))
+
         Object.entries(show.showsAvailablesouthHistory).map((singleShow: any) => {
           singleShow.splice(0,1)
-          console.log(singleShow)
           if (!acc.includes(singleShow[0]) && singleShow[0].length > 0) {
-            // console.log(singleShow[0][0].submissionDateTime)
             acc.push ({
               key: hisIndex,
-              order: `${singleShow[0][0].submissionDateTime}`, 
+              fireOrder: `${singleShow[0][0].fireOrder}`, 
               showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} at the ${finalShow.club} club for ${finalShow.headliner} at ${finalShow.time} on ${finalShow.day}`}</p></div>
               )
             })
@@ -67,12 +54,9 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         })
        
         return acc
-      // }
     }, [])
-    console.log(historyStrings)
     historyStrings.sort((a: any, b: any) => {
-      console.log(a.order, b)
-      return a.order > b.order
+      return parseInt(a.fireOrder) - parseInt(b.fireOrder)
     })
     props.setSpecificComicHistorySouth(historyStrings)
   }

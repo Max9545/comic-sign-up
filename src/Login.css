@@ -31,3 +31,7 @@
 .login div {
   margin-top: 7px;
 }
+
+.userName {
+  font-size: .8rem;
+}
