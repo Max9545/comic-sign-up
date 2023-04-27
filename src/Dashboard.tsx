@@ -72,7 +72,7 @@ function Dashboard() {
     if (!user) return navigate("/")
     if(!user.displayName) {
       const db = getFirestore()
-      const newName = window.prompt('Please enter your first and last name as you want the club to them')
+      const newName = window.prompt('Please enter your first and last name as you want the club to see them')
       setName(newName ? newName : '')
       updateProfile(user, {displayName: newName})
       setDoc(doc(db, `users/${user.uid}`), {name: newName, email: user.email, uid: user.uid, })

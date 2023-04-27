@@ -1,3 +1,4 @@
+import { collection, getDocs, getFirestore, query, where } from "firebase/firestore"
 import React, { useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom"
@@ -14,6 +15,34 @@ function Reset() {
     if (user) navigate("/dashboard")
   }, [user, loading])
 
+  const passWordResetVerify = 
+  async (emailToReset: string) => {
+
+    try {
+    
+    const db = getFirestore()
+    
+    const docRef = query(collection(db, 'users'), where('email', '==', emailToReset))
+
+    const doc = await getDocs(docRef)
+
+    const data = doc.docs[0].data()
+    
+    sendPasswordReset(emailToReset)
+  
+    } catch (err) {
+      alert('You are not yet a verified user. Password reset not possible yet. You must first login at least once in order to reset password')
+    }
+
+    // console.log(data)
+
+    // if (data?.name) {
+    //   sendPasswordReset(emailToReset)
+    // } else if (!data) {
+    //   alert('You are not yet a verified user. Password reset not possible yet. You must first login at least once in order to reset password')
+    // }
+  }
+
   return (
     <div className="reset">
       <div className="reset__container">
@@ -26,7 +55,7 @@ function Reset() {
         />
         <button
           className="reset__btn"
-          onClick={() => sendPasswordReset(email)}
+          onClick={() => passWordResetVerify(email)}
         >
           Send password reset email
         </button>
