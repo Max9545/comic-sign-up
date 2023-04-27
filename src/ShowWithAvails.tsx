@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
 
 
-function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any}) {
+function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any, date: string}) {
   
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
@@ -71,11 +71,22 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
     setComicHistory(doc.docs.map(avail => avail.data().comedianInfo))
   }
+
+  const setComedianType = (show: { day: string; headliner: string; time: string, club: string, date: string }, typeOfComic: string, comic: any) => {
+    console.log(show, typeOfComic, comic)
+  }
     
   return (
     <div className='available'>
-      <h3>{`${props.day} ${props.headliner} at ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}:`}</h3>
-      <div>{props.availableComics.map(comic => <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}><p  key={comic}>{`${comic}`}</p></div>)}</div>
+      <h3>{`${props.day}(${props.date}) ${props.headliner} at ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}:`}</h3>
+      <div className='comic-type-box'>{props.availableComics.map(comic => 
+        <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
+          <p className='comic-avail' key={comic}>{`${comic}`}</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'MC', comic)}>MC</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'A', comic)}>A</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'B', comic)}>B</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'star7', comic)}>Star7</p></div>)}
+        </div>
     </div>
   )
 }

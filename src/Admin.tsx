@@ -180,7 +180,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
             day={finalfForm.day}
             club={finalfForm.club}
             id={finalfForm.id}
-            availableComics={finalfForm.availableComics} 
+            availableComics={finalfForm.availableComics}
+            date={finalfForm.date} 
           />
         })
         setSignedShowsDown(showFinals)
@@ -220,7 +221,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
             day={finalfForm.day}
             club={finalfForm.club}
             id={finalfForm.id}
-            availableComics={finalfForm.availableComics} 
+            availableComics={finalfForm.availableComics}
+            date={finalfForm.date} 
           />
         })
         setSignedShowsSouth(showFinals)

@@ -207,7 +207,29 @@ label {
 
 .available-comic {
   border: #dc3545 solid 2px;
-  cursor: pointer
+  cursor: pointer;
+  column-count: 5;
+  grid-row: 1fr; 
+}
+
+.comic-type-box {
+  display: flexbox;
+  /* justify-content: center; */
+  /* align-content: center; */
+}
+
+.comic-type {
+  border: #17a2b8 1px solid;
+  background-color: #dc3545;
+  color: black;
+  margin: 0%;
+  /* padding: 3%; */
+  align-self: center;
+}
+
+.comic-avail {
+  font-size: 1.1rem;
+  margin-bottom: 5vh;
 }
 
 .comicHistory-show {
