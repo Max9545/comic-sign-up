@@ -75,7 +75,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
     alert('Availability Submitted!! Check your email and phone for verification of your latest availabilty')
     setTimeout(() => {
       window.location.reload()
-    }, 1000)
+    }, 500)
   }
 
     return (
