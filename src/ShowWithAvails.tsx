@@ -1,4 +1,5 @@
 import { collection, getDocs, query } from 'firebase/firestore'
+import { type } from 'os'
 import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
 
@@ -7,6 +8,23 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
+  const [bookedShow, setBookedShow] = useState<any>({
+    show: {
+      day: '',
+      headliner: '',
+      time: '',
+      club: '', 
+      date: '',
+      mC: '',
+      a1: '',
+      b1: '',
+      starMC: '',
+      star7: '',
+      yes: ''
+    },
+    typeOfComic: '',
+    comic: ''
+  })
   
   useEffect(() => {
     setComics(props.availableComics)
@@ -74,18 +92,35 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
   const setComedianType = (show: { day: string; headliner: string; time: string, club: string, date: string }, typeOfComic: string, comic: any) => {
     console.log(show, typeOfComic, comic)
+    const newBooking = {...bookedShow, [typeOfComic]: comic}
+    // newBooking[typeOfComic] = comic
+    // if(newBookings.findIndex(bookedShow => `${bookedShow.date}${bookedShow.time}` === `${show.date}${show.time}`)!= -1) {
+    //   newBookings.splice(newBookings.findIndex(bookedShow => `${bookedShow.date}${bookedShow.time}` === `${show.date}${show.time}`), 1 , {show: show, typeOfComic: typeOfComic, comic: comic})
+    // } else {
+      // newBookings.push({show: show, typeOfComic: typeOfComic, comic: comic})
+    // }
+    setBookedShow(newBooking)
   }
     
   return (
     <div className='available'>
       <h3>{`${props.day}(${props.date}) ${props.headliner} at ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}:`}</h3>
+      <p>{bookedShow.mC &&`MC: ${bookedShow.mC}`}</p>
+      <p>{bookedShow.b1 &&`B1: ${bookedShow.b1}`}</p>
+      <p>{bookedShow.a1 &&`A1: ${bookedShow.a1}`}</p>
+      <p>{bookedShow.star7 &&`Star 7: ${bookedShow.star7}`}</p>
+      <p>{bookedShow.starMC &&`Star MC: ${bookedShow.starMC}`}</p>
       <div className='comic-type-box'>{props.availableComics.map(comic => 
         <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
           <p className='comic-avail' key={comic}>{`${comic}`}</p>
-          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'MC', comic)}>MC</p>
-          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'A', comic)}>A</p>
-          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'B', comic)}>B</p>
-          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'star7', comic)}>Star7</p></div>)}
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'mC', comic)}>MC</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'a1', comic)}>A</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'b1', comic)}>B</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'star7', comic)}>Star7</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'starMC', comic)}>StarMC</p>
+          <label>Yes</label>
+          <input type='text'></input>
+          </div>)}
         </div>
     </div>
   )
