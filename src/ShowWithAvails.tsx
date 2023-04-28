@@ -110,6 +110,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       <p>{bookedShow.a1 &&`A1: ${bookedShow.a1}`}</p>
       <p>{bookedShow.star7 &&`Star 7: ${bookedShow.star7}`}</p>
       <p>{bookedShow.starMC &&`Star MC: ${bookedShow.starMC}`}</p>
+      <p>{bookedShow.yes &&`Yes: ${bookedShow.yes}`}</p>
       <div className='comic-type-box'>{props.availableComics.map(comic => 
         <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
           <p className='comic-avail' key={comic}>{`${comic}`}</p>
@@ -118,10 +119,15 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'b1', comic)}>B1</p>
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'star7', comic)}>Star7</p>
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'starMC', comic)}>StarMC</p>
-          <label className='yes-spot'>Yes:</label>
-          <input type='text' className='yes-spot-input'></input>
+          
           </div>)}
+          <div className='yes-div'>
+            <label className='yes-spot'>Yes:</label>
+            <input type='text' className='yes-spot-input' onChange={(event) => setBookedShow({...bookedShow, yes: event?.target?.value})}/>
+          </div>
+          
         </div>
+        
     </div>
   )
 }

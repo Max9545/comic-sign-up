@@ -215,8 +215,6 @@ label {
 
 .comic-type-box {
   display: flexbox;
-  /* justify-content: center; */
-  /* align-content: center; */
 }
 
 .comic-type {
@@ -224,7 +222,6 @@ label {
   background-color: #dc3545;
   color: black;
   margin: 4%;
-  /* padding: 3%; */
   align-self: center;
 }
 
@@ -251,10 +248,19 @@ label {
 }
 
 .yes-spot {
-  font-size: .9rem;
+  font-size: 1.6rem;
   margin-right: 1vw;
+  align-self: center;
+  /* margin-top:1vh; */
 }
 
 .yes-spot-input {
-  width: 50%
+  width: 50%;
+  height: 4.1vh;
+  align-self: center;
+}
+
+.yes-div {
+  display: flex;
+  justify-content: center;
 }
