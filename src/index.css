@@ -264,3 +264,16 @@ label {
   display: flex;
   justify-content: center;
 }
+
+.other-spot {
+  display: block;
+}
+
+.other-block {
+  border: 1px solid red;
+  padding-bottom: 1%;
+}
+
+.other-div {
+  justify-content: center
+}

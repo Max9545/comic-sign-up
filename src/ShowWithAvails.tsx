@@ -8,6 +8,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
+  const [otherType, setOtherType] = useState('')
   const [bookedShow, setBookedShow] = useState<any>({
     // show: {
       day: props.day,
@@ -116,6 +117,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       <p>{bookedShow.a1 &&`A1: ${bookedShow.a1}`}</p>
       <p>{bookedShow.star7 &&`Star 7: ${bookedShow.star7}`}</p>
       <p>{bookedShow.yes &&`Yes: ${bookedShow.yes}`}</p>
+      <p>{bookedShow[otherType] &&`${otherType}: ${bookedShow[otherType]}`}</p>
       {(bookedShow.mC || bookedShow.starMC) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
       <div className='comic-type-box'>{props.availableComics.map(comic => 
         <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
@@ -130,7 +132,17 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <label className='yes-spot'>Yes (Guest):</label>
             <input type='text' className='yes-spot-input' onChange={(event) => setBookedShow({...bookedShow, yes: event?.target?.value})}/>
           </div>
-          
+          <div className='other-block'>
+            <label className='other-spot'>Other Type:</label>
+            <div className='other-div'>
+            <label>Comic Type: </label>
+            <input type='text' onChange={(event) => setOtherType(event?.target?.value)}/>
+            </div>
+            <div className='other-div'>
+            <label>Comic Name: </label>
+            <input type='text' onChange={(event) => setBookedShow({...bookedShow, [otherType]: event?.target?.value})}/>
+            </div>
+          </div>
         </div>
         
     </div>
