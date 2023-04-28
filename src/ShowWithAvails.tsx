@@ -100,6 +100,9 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     if (bookedShow[typeOfComic] == '') {
       const newBooking = {...bookedShow, [typeOfComic]: comic}
       setBookedShow(newBooking)
+    } else if (bookedShow[typeOfComic] !== comic){
+      const newBooking = {...bookedShow, [typeOfComic]: comic}
+      setBookedShow(newBooking)
     } else {
       const newBooking = {...bookedShow, [typeOfComic]: ''}
       setBookedShow(newBooking)
