@@ -208,8 +208,9 @@ label {
 .available-comic {
   border: #dc3545 solid 2px;
   cursor: pointer;
-  column-count: 5;
+  column-count: 4;
   grid-row: 1fr; 
+  padding: 1%;
 }
 
 .comic-type-box {
@@ -222,7 +223,7 @@ label {
   border: #17a2b8 1px solid;
   background-color: #dc3545;
   color: black;
-  margin: 0%;
+  margin: 4%;
   /* padding: 3%; */
   align-self: center;
 }
@@ -247,4 +248,13 @@ label {
 
 .userName { 
   display: none;
+}
+
+.yes-spot {
+  font-size: .9rem;
+  margin-right: 1vw;
+}
+
+.yes-spot-input {
+  width: 50%
 }

@@ -114,12 +114,12 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
           <p className='comic-avail' key={comic}>{`${comic}`}</p>
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'mC', comic)}>MC</p>
-          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'a1', comic)}>A</p>
-          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'b1', comic)}>B</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'a1', comic)}>A1</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'b1', comic)}>B1</p>
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'star7', comic)}>Star7</p>
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'starMC', comic)}>StarMC</p>
-          <label>Yes</label>
-          <input type='text'></input>
+          <label className='yes-spot'>Yes:</label>
+          <input type='text' className='yes-spot-input'></input>
           </div>)}
         </div>
     </div>
