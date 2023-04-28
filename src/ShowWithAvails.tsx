@@ -97,14 +97,22 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
   const setComedianType = (show: { day: string; headliner: string; time: string, club: string, date: string }, typeOfComic: string, comic: any) => {
     console.log(show, typeOfComic, comic)
-    const newBooking = {...bookedShow, [typeOfComic]: comic}
+    if (bookedShow[typeOfComic] == '') {
+      const newBooking = {...bookedShow, [typeOfComic]: comic}
+      setBookedShow(newBooking)
+    } else {
+      const newBooking = {...bookedShow, [typeOfComic]: ''}
+      setBookedShow(newBooking)
+    }
+    
     // newBooking[typeOfComic] = comic
     // if(newBookings.findIndex(bookedShow => `${bookedShow.date}${bookedShow.time}` === `${show.date}${show.time}`)!= -1) {
     //   newBookings.splice(newBookings.findIndex(bookedShow => `${bookedShow.date}${bookedShow.time}` === `${show.date}${show.time}`), 1 , {show: show, typeOfComic: typeOfComic, comic: comic})
     // } else {
       // newBookings.push({show: show, typeOfComic: typeOfComic, comic: comic})
     // }
-    setBookedShow(newBooking)
+
+    // setBookedShow(newBooking)
   }
 
   const publishShow = () => {
