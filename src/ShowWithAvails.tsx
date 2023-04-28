@@ -1,4 +1,4 @@
-import { collection, getDocs, query } from 'firebase/firestore'
+import { addDoc, collection, getDocs, query, doc, setDoc } from 'firebase/firestore'
 import { type } from 'os'
 import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
@@ -9,21 +9,22 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
   const [bookedShow, setBookedShow] = useState<any>({
-    show: {
-      day: '',
-      headliner: '',
-      time: '',
-      club: '', 
-      date: '',
+    // show: {
+      day: props.day,
+      headliner: props.headliner,
+      time: props.time,
+      club: props.club, 
+      date: props.date,
+      id: props.id,
       mC: '',
       a1: '',
       b1: '',
       starMC: '',
       star7: '',
-      yes: ''
-    },
-    typeOfComic: '',
-    comic: ''
+      yes: '',
+    // },
+    // typeOfComic: '',
+    // comic: ''
   })
   
   useEffect(() => {
@@ -101,16 +102,21 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     // }
     setBookedShow(newBooking)
   }
+
+  const publishShow = () => {
+    addDoc(collection(db, `publishedShows/${props.id}/show`), {bookedshow: bookedShow})
+  }
     
   return (
     <div className='available'>
       <h3>{`${props.day}(${props.date}) ${props.headliner} at ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}:`}</h3>
       <p>{bookedShow.mC &&`MC: ${bookedShow.mC}`}</p>
+      <p>{bookedShow.starMC &&`Star MC: ${bookedShow.starMC}`}</p>
       <p>{bookedShow.b1 &&`B1: ${bookedShow.b1}`}</p>
       <p>{bookedShow.a1 &&`A1: ${bookedShow.a1}`}</p>
       <p>{bookedShow.star7 &&`Star 7: ${bookedShow.star7}`}</p>
-      <p>{bookedShow.starMC &&`Star MC: ${bookedShow.starMC}`}</p>
       <p>{bookedShow.yes &&`Yes: ${bookedShow.yes}`}</p>
+      {(bookedShow.mC || bookedShow.starMC) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
       <div className='comic-type-box'>{props.availableComics.map(comic => 
         <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
           <p className='comic-avail' key={comic}>{`${comic}`}</p>
@@ -119,10 +125,9 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'b1', comic)}>B1</p>
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'star7', comic)}>Star7</p>
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'starMC', comic)}>StarMC</p>
-          
           </div>)}
           <div className='yes-div'>
-            <label className='yes-spot'>Yes:</label>
+            <label className='yes-spot'>Yes (Guest):</label>
             <input type='text' className='yes-spot-input' onChange={(event) => setBookedShow({...bookedShow, yes: event?.target?.value})}/>
           </div>
           
