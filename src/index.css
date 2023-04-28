@@ -270,10 +270,27 @@ label {
 }
 
 .other-block {
-  border: 1px solid red;
-  padding-bottom: 1%;
+  border: 1px solid #dc3545;
+  padding: 1% 0% -10% 0%;
 }
 
 .other-div {
   justify-content: center
+}
+
+.comic-type-input {
+  margin-left: 1vw;
+}
+
+.other-type-comic {
+  display: flex;
+  justify-content: space-evenly;
+  border: 1px solid #17a2b8;
+}
+
+.delete-comic {
+  height: 60%;
+  align-self: center;
+  background-color: #dc3545;
+  font-size: 1.2rem;
 }

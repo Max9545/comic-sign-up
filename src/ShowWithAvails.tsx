@@ -9,6 +9,8 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
   const [otherType, setOtherType] = useState('')
+  const [otherName, setOtherName] = useState('')
+  const [trigger, setTrigger] = useState(true)
   const [bookedShow, setBookedShow] = useState<any>({
     // show: {
       day: props.day,
@@ -23,6 +25,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       starMC: '',
       star7: '',
       yes: '',
+      other: []
     // },
     // typeOfComic: '',
     // comic: ''
@@ -117,7 +120,17 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       <p>{bookedShow.a1 &&`A1: ${bookedShow.a1}`}</p>
       <p>{bookedShow.star7 &&`Star 7: ${bookedShow.star7}`}</p>
       <p>{bookedShow.yes &&`Yes: ${bookedShow.yes}`}</p>
-      <p>{bookedShow[otherType] &&`${otherType}: ${bookedShow[otherType]}`}</p>
+      <div>{bookedShow.other.length > 0 && bookedShow.other.map((comic: { type: string; name: string }, index: string | number | null | undefined) => 
+        <div className='other-type-comic' key={index}>
+          <p>{`${comic.type}: ${comic.name}`}</p>
+          <button onClick={() => {
+            const booking = bookedShow
+            booking.other.splice(bookedShow.other.findIndex((type: { type: string }) => type.type === comic.type), 1)
+            setBookedShow(booking)
+            setTrigger(!trigger)
+          }} className='delete-comic'>Delete</button>
+        </div>
+      )}</div>
       {(bookedShow.mC || bookedShow.starMC) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
       <div className='comic-type-box'>{props.availableComics.map(comic => 
         <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
@@ -136,12 +149,13 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <label className='other-spot'>Other Type:</label>
             <div className='other-div'>
             <label>Comic Type: </label>
-            <input type='text' onChange={(event) => setOtherType(event?.target?.value)}/>
-            </div>
-            <div className='other-div'>
+            <input type='text' className='comic-type-input' onChange={(event) => setOtherType(event?.target?.value)}/>
+          </div>
+          <div className='other-div'>
             <label>Comic Name: </label>
-            <input type='text' onChange={(event) => setBookedShow({...bookedShow, [otherType]: event?.target?.value})}/>
-            </div>
+            <input type='text' onChange={(event) => setOtherName(event?.target?.value)}/>
+          </div>
+            <button className='add-show' onClick={() => setBookedShow({...bookedShow, other:[...bookedShow.other,{ type: otherType, name: otherName}]})}>Add</button>
           </div>
         </div>
         
