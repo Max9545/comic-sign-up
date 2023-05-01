@@ -96,7 +96,6 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   }
 
   const setComedianType = (show: { day: string; headliner: string; time: string, club: string, date: string }, typeOfComic: string, comic: any) => {
-    console.log(show, typeOfComic, comic)
     if (bookedShow[typeOfComic] == '') {
       const newBooking = {...bookedShow, [typeOfComic]: comic}
       setBookedShow(newBooking)
@@ -119,9 +118,10 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   }
 
   const publishShow = () => {
-    addDoc(collection(db, `publishedShows/${props.id}/show`), {bookedshow: bookedShow})
+    addDoc(collection(db, `publishedShows/${props.id}/show`), {bookedshow: bookedShow, fireOrder: Date.now()})
+    alert('Show saved!')
   }
-    
+
   return (
     <div className='available'>
       <h3>{`${props.day}(${props.date}) ${props.headliner} at ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}:`}</h3>
@@ -142,7 +142,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           }} className='delete-comic'>Delete</button>
         </div>
       )}</div>
-      {(bookedShow.mC || bookedShow.starMC) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
+      {(bookedShow.mC || bookedShow.starMC || bookedShow.a1 || bookedShow.b1 || bookedShow.other.length > 0 || bookedShow.yes || bookedShow.star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
       <div className='comic-type-box'>{props.availableComics.map(comic => 
         <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
           <p className='comic-avail' key={comic}>{`${comic}`}</p>
