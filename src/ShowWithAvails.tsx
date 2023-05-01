@@ -169,7 +169,6 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <button className='add-show' onClick={() => setBookedShow({...bookedShow, other:[...bookedShow.other,{ type: otherType, name: otherName}]})}>Add</button>
           </div>
         </div>
-        
     </div>
   )
 }

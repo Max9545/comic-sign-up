@@ -59,7 +59,17 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     }
   }
 
-  const displayPotentialShows = () => {setShowsToAdd(newSchedule.map((newShow, index) => {
+  const displayPotentialShows = () => {
+    
+    
+    if (newSchedule.length > 0) {
+      console.log(newSchedule[0].date)
+      newSchedule.sort((a,b) => {
+      return  parseFloat(a.date.replaceAll('-', '')) - parseFloat(b.date.replaceAll('-', ''))
+      })    
+    }
+    
+    setShowsToAdd(newSchedule.map((newShow, index) => {
             return (
             <div key={index + 1}>
               <Show
