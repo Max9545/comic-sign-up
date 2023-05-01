@@ -63,8 +63,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     
     
     if (newSchedule.length > 0) {
-      console.log(newSchedule[0].date)
       newSchedule.sort((a,b) => {
+      if (a.date == b.date) {
+        console.log(parseInt(a.time.replaceAll(':','')))
+        return parseInt(a.time.replaceAll(':','')) - parseInt(b.time.replaceAll(':',''))
+      }
       return  parseFloat(a.date.replaceAll('-', '')) - parseFloat(b.date.replaceAll('-', ''))
       })    
     }
