@@ -1,12 +1,35 @@
-import { collection, getDocs, query } from 'firebase/firestore'
+import { addDoc, collection, getDocs, query, doc, setDoc } from 'firebase/firestore'
+import { type } from 'os'
 import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
 
 
-function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any}) {
+function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any, date: string}) {
   
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
+  const [otherType, setOtherType] = useState('')
+  const [otherName, setOtherName] = useState('')
+  const [trigger, setTrigger] = useState(true)
+  const [bookedShow, setBookedShow] = useState<any>({
+    // show: {
+      day: props.day,
+      headliner: props.headliner,
+      time: props.time,
+      club: props.club, 
+      date: props.date,
+      id: props.id,
+      mC: '',
+      a1: '',
+      b1: '',
+      starMC: '',
+      star7: '',
+      yes: '',
+      other: []
+    // },
+    // typeOfComic: '',
+    // comic: ''
+  })
   
   useEffect(() => {
     setComics(props.availableComics)
@@ -71,11 +94,81 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
     setComicHistory(doc.docs.map(avail => avail.data().comedianInfo))
   }
+
+  const setComedianType = (show: { day: string; headliner: string; time: string, club: string, date: string }, typeOfComic: string, comic: any) => {
+    if (bookedShow[typeOfComic] == '') {
+      const newBooking = {...bookedShow, [typeOfComic]: comic}
+      setBookedShow(newBooking)
+    } else if (bookedShow[typeOfComic] !== comic){
+      const newBooking = {...bookedShow, [typeOfComic]: comic}
+      setBookedShow(newBooking)
+    } else {
+      const newBooking = {...bookedShow, [typeOfComic]: ''}
+      setBookedShow(newBooking)
+    }
     
+    // newBooking[typeOfComic] = comic
+    // if(newBookings.findIndex(bookedShow => `${bookedShow.date}${bookedShow.time}` === `${show.date}${show.time}`)!= -1) {
+    //   newBookings.splice(newBookings.findIndex(bookedShow => `${bookedShow.date}${bookedShow.time}` === `${show.date}${show.time}`), 1 , {show: show, typeOfComic: typeOfComic, comic: comic})
+    // } else {
+      // newBookings.push({show: show, typeOfComic: typeOfComic, comic: comic})
+    // }
+
+    // setBookedShow(newBooking)
+  }
+
+  const publishShow = () => {
+    addDoc(collection(db, `publishedShows/${props.id}/show`), {bookedshow: bookedShow, fireOrder: Date.now()})
+    alert('Show saved!')
+  }
+
   return (
     <div className='available'>
-      <h3>{`${props.day} ${props.headliner} at ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}:`}</h3>
-      <div>{props.availableComics.map(comic => <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}><p  key={comic}>{`${comic}`}</p></div>)}</div>
+      <h3>{`${props.day}(${props.date}) ${props.headliner} at ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}:`}</h3>
+      <p>{bookedShow.mC &&`MC: ${bookedShow.mC}`}</p>
+      <p>{bookedShow.starMC &&`Star MC: ${bookedShow.starMC}`}</p>
+      <p>{bookedShow.b1 &&`B1: ${bookedShow.b1}`}</p>
+      <p>{bookedShow.a1 &&`A1: ${bookedShow.a1}`}</p>
+      <p>{bookedShow.star7 &&`Star 7: ${bookedShow.star7}`}</p>
+      <p>{bookedShow.yes &&`Yes: ${bookedShow.yes}`}</p>
+      <div>{bookedShow.other.length > 0 && bookedShow.other.map((comic: { type: string; name: string }, index: string | number | null | undefined) => 
+        <div className='other-type-comic' key={index}>
+          <p>{`${comic.type}: ${comic.name}`}</p>
+          <button onClick={() => {
+            const booking = bookedShow
+            booking.other.splice(bookedShow.other.findIndex((type: { type: string }) => type.type === comic.type), 1)
+            setBookedShow(booking)
+            setTrigger(!trigger)
+          }} className='delete-comic'>Delete</button>
+        </div>
+      )}</div>
+      {(bookedShow.mC || bookedShow.starMC || bookedShow.a1 || bookedShow.b1 || bookedShow.other.length > 0 || bookedShow.yes || bookedShow.star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
+      <div className='comic-type-box'>{props.availableComics.map(comic => 
+        <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
+          <p className='comic-avail' key={comic}>{`${comic}`}</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'mC', comic)}>MC</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'a1', comic)}>A1</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'b1', comic)}>B1</p>
+          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'star7', comic)}>Star7</p>
+          <p className='comic-type starMC' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'starMC', comic)}>Star MC</p>
+          </div>)}
+          <div className='yes-div'>
+            <label className='yes-spot'>Yes (Guest):</label>
+            <input type='text' className='yes-spot-input' onChange={(event) => setBookedShow({...bookedShow, yes: event?.target?.value})}/>
+          </div>
+          <div className='other-block'>
+            <label className='other-spot'>Other Type:</label>
+            <div className='other-div'>
+            <label>Comic Type: </label>
+            <input type='text' className='comic-type-input' onChange={(event) => setOtherType(event?.target?.value)}/>
+          </div>
+          <div className='other-div'>
+            <label>Comic Name: </label>
+            <input type='text' onChange={(event) => setOtherName(event?.target?.value)}/>
+          </div>
+            <button className='add-show' onClick={() => setBookedShow({...bookedShow, other:[...bookedShow.other,{ type: otherType, name: otherName}]})}>Add</button>
+          </div>
+        </div>
     </div>
   )
 }

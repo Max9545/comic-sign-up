@@ -59,7 +59,18 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     }
   }
 
-  const displayPotentialShows = () => {setShowsToAdd(newSchedule.map((newShow, index) => {
+  const displayPotentialShows = () => {
+    
+    if (newSchedule.length > 0) {
+      newSchedule.sort((a,b) => {
+      if (a.date == b.date) {
+        return parseInt(a.time.replaceAll(':','')) - parseInt(b.time.replaceAll(':',''))
+      }
+      return  parseFloat(a.date.replaceAll('-', '')) - parseFloat(b.date.replaceAll('-', ''))
+      })    
+    }
+    
+    setShowsToAdd(newSchedule.map((newShow, index) => {
             return (
             <div key={index + 1}>
               <Show
@@ -180,7 +191,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
             day={finalfForm.day}
             club={finalfForm.club}
             id={finalfForm.id}
-            availableComics={finalfForm.availableComics} 
+            availableComics={finalfForm.availableComics}
+            date={finalfForm.date} 
           />
         })
         setSignedShowsDown(showFinals)
@@ -220,7 +232,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
             day={finalfForm.day}
             club={finalfForm.club}
             id={finalfForm.id}
-            availableComics={finalfForm.availableComics} 
+            availableComics={finalfForm.availableComics}
+            date={finalfForm.date} 
           />
         })
         setSignedShowsSouth(showFinals)
