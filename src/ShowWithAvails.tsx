@@ -150,7 +150,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'a1', comic)}>A1</p>
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'b1', comic)}>B1</p>
           <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'star7', comic)}>Star7</p>
-          <p className='comic-type' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'starMC', comic)}>StarMC</p>
+          <p className='comic-type starMC' onClick={() => setComedianType({day: props.day, headliner: props.headliner, time: props.time, club: props.club, date: props.date}, 'starMC', comic)}>Star MC</p>
           </div>)}
           <div className='yes-div'>
             <label className='yes-spot'>Yes (Guest):</label>
