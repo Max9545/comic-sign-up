@@ -81,10 +81,11 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
     return (
       <>
       <section className='show-container'>
-          {showShows()}
-          <button onClick={submitForm}type="submit" className='submit-btn'>
-          Submit Availability
-          </button>
+        {}
+        {showShows()}
+        <button onClick={submitForm}type="submit" className='submit-btn'>
+        Submit Availability
+        </button>
         </section>
       </>
     )

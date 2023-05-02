@@ -239,6 +239,7 @@ const viewAllComicsAvailableSouth = async () => {
           onChange={(e) => setName(e.target.value)}
           placeholder="User Name If First Time"
         />
+      {admin && <h2 className='admin-build'>Shows Visible To Comics</h2>}
       <Week comedian={comedian} weeklyShowTimes={shows}/>
       {admin && <Admin shows={shows} setShows={setShows}
       setWeekSchedule={setWeekSchedule}/>}
