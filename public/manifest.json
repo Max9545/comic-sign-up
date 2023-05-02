@@ -6,16 +6,6 @@
       "src": "https://nts.comedyworks.com/uploads/images/comedyworkslogo.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
-    },
-    {
-      "src": "https://nts.comedyworks.com/uploads/images/comedyworkslogo.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "https://nts.comedyworks.com/uploads/images/comedyworkslogo.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
   "start_url": ".",

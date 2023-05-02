@@ -56,7 +56,6 @@ header {
 }
 
 .admin-form {
-  
   width: 80%;
   align-self: center;
   justify-content: center; 
@@ -65,7 +64,6 @@ header {
 .available-comics {
   width: 80vw;
   display: flex;
-  /* justify-content: space-between; */
   flex-wrap: wrap;
   align-self: center;
   justify-content: center;
@@ -92,7 +90,7 @@ header {
 .admin-build {
   padding: 1%;
   border: #dc3545 groove;
-  align-self: flex-start;
+  align-self: center;
   width: 100%;
   background-color: #282c34;
   font-size: 2rem;
@@ -111,7 +109,6 @@ label {
   background-color:  #17a2b8;
   color: aliceblue;
   font-weight: 900;
-  /* align-self: center; */
 }
 
 .date {
@@ -294,4 +291,11 @@ label {
   align-self: center;
   background-color: #dc3545;
   font-size: 1.2rem;
+}
+
+.shows-visible-to-comics {
+  font-size: 1.8rem;
+  background-color: black;
+  color: #dc3545;
+  padding: 3%;
 }
