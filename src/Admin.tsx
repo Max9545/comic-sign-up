@@ -269,12 +269,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
               {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
               {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
               {pubShow.bookedshow.other.length > 0 && 
-              <div>
-                <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string; name: string}) => 
-                <p className='published-detail'>{comic.type}: {comic.name}</p>
-                )}
-              </div>
-              }   
+                <div>
+                  <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string; name: string}) => 
+                  <p className='published-detail'>{comic.type}: {comic.name}</p>)}
+                </div>}   
              </div>
     })
   }
