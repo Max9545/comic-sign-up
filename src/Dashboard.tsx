@@ -153,7 +153,7 @@ function Dashboard() {
       setShows(doc.docs[0].data().thisWeek)
     } catch (err) {
       console.error(err) 
-      alert("An error occured while fetching user data") 
+      // alert("An error occured while fetching user data") 
     }  
 }
 

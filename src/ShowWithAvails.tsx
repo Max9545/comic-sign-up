@@ -118,7 +118,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   }
 
   const publishShow = () => {
-    addDoc(collection(db, `publishedShows/${props.id}/show`), {bookedshow: bookedShow, fireOrder: Date.now()})
+    setDoc(doc(db, `publishedShows/${props.id}`), {bookedshow: bookedShow, fireOrder: Date.now()})
     alert('Show saved!')
   }
 
@@ -157,7 +157,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <input type='text' className='yes-spot-input' onChange={(event) => setBookedShow({...bookedShow, yes: event?.target?.value})}/>
           </div>
           <div className='other-block'>
-            <label className='other-spot'>Other Type:</label>
+            <label className='other-spot'>Other Type Comics:</label>
             <div className='other-div'>
             <label>Comic Type: </label>
             <input type='text' className='comic-type-input' onChange={(event) => setOtherType(event?.target?.value)}/>

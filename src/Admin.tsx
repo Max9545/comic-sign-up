@@ -19,6 +19,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [specificComicHistoryDowntown, setSpecificComicHistoryDowntown] = useState<any[]>([])
   const [specificComicHistorySouth, setSpecificComicHistorySouth] = useState<any[]>([])
   const [comicForHistory, setcomicForHistory] = useState('')
+  const [published, setPublished] = useState<any[]>([])
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -240,6 +241,43 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         })
   }
 
+  const fetchPublishedShows = async () => {
+    try {
+      const docRef = query(collection(db, `publishedShows`))
+
+      const doc = await (getDocs(docRef))
+
+      const published = doc.docs.map(document => {
+        return document.data()
+      })
+
+      setPublished(published)
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const showPublished = () => {
+    return published.map((pubShow, index) => {
+      return <div key={index}>
+              <h4>{pubShow.bookedshow.headliner}</h4>
+              {pubShow.bookedshow.mC && <p>MC: {pubShow.bookedshow.mC}</p>}
+              {pubShow.bookedshow.starMC && <p>Star MC: {pubShow.bookedshow.starMC}</p>}
+              {pubShow.bookedshow.star7 && <p>Star 7: {pubShow.bookedshow.star7}</p>}
+              {pubShow.bookedshow.b1 && <p>B1:{pubShow.bookedshow.b1}</p>}
+              {pubShow.bookedshow.a1 && <p>A1: {pubShow.bookedshow.a1}</p>}
+              {pubShow.bookedshow.yes && <p>Yes: {pubShow.bookedshow.yes}</p>}
+              {pubShow.bookedshow.other.length > 0 && <p>Other/s: {pubShow.bookedshow.other.map((comic: { type: string; name: string }) => 
+                <div>
+                <p>{comic.type}: {comic.name}</p>
+                </div>)}
+              </p>}
+              
+             </div>
+    })
+  }
+
   return (
     <div className='admin-form'>
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
@@ -265,10 +303,12 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
       {showsToAdd}
       <div>
-      <h2 className='downtown-available-header'>Downtown Available Comics</h2>
-      <div>{signedShowsDown.map(availShow => availShow)}</div>
-      <h2 className='south-available-header'>South Club Available Comics</h2>
-      <div>{signedShowsSouth.map(availShow => availShow)}</div>
+        <button className='build-week' onClick={() => fetchPublishedShows()}>See Published Shows</button>
+        {published && showPublished()}
+        <h2 className='downtown-available-header'>Downtown Available Comics</h2>
+        <div>{signedShowsDown.map(availShow => availShow)}</div>
+        <h2 className='south-available-header'>South Club Available Comics</h2>
+        <div>{signedShowsSouth.map(availShow => availShow)}</div>
       </div>
       {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
       {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>}
