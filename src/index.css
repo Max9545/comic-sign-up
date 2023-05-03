@@ -299,3 +299,26 @@ label {
   color: #dc3545;
   padding: 3%;
 }
+
+.published {
+  background-color: #282c34;
+  padding: 1%;
+  color: white;
+  border: #17a2b8 double 30px;
+  margin: 6%;
+}
+
+.published-detail {
+  border-bottom: #dc3545 solid 1px;
+  font-size: 1.2rem;
+  padding: 1%;
+}
+
+.published-shows {
+  background-color: #17a2b8;
+  color: white;
+  min-height: 10vh;
+  min-width: 30vw;
+  font-size: 2em;
+  margin-bottom: 5%;
+}

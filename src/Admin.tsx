@@ -260,20 +260,21 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const showPublished = () => {
     return published.map((pubShow, index) => {
-      return <div key={index}>
-              <h4>{pubShow.bookedshow.headliner}</h4>
-              {pubShow.bookedshow.mC && <p>MC: {pubShow.bookedshow.mC}</p>}
-              {pubShow.bookedshow.starMC && <p>Star MC: {pubShow.bookedshow.starMC}</p>}
-              {pubShow.bookedshow.star7 && <p>Star 7: {pubShow.bookedshow.star7}</p>}
-              {pubShow.bookedshow.b1 && <p>B1:{pubShow.bookedshow.b1}</p>}
-              {pubShow.bookedshow.a1 && <p>A1: {pubShow.bookedshow.a1}</p>}
-              {pubShow.bookedshow.yes && <p>Yes: {pubShow.bookedshow.yes}</p>}
-              {pubShow.bookedshow.other.length > 0 && <p>Other/s: {pubShow.bookedshow.other.map((comic: { type: string; name: string }) => 
-                <div>
-                <p>{comic.type}: {comic.name}</p>
-                </div>)}
-              </p>}
-              
+      return <div className='published' key={index}>
+              <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
+              {pubShow.bookedshow.mC && <p className='published-detail'>MC: {pubShow.bookedshow.mC}</p>}
+              {pubShow.bookedshow.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>}
+              {pubShow.bookedshow.star7 && <p className='published-detail'>Star 7: {pubShow.bookedshow.star7}</p>}
+              {pubShow.bookedshow.b1 && <p className='published-detail'>B1:{pubShow.bookedshow.b1}</p>}
+              {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
+              {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
+              {pubShow.bookedshow.other.length > 0 && 
+              <div>
+                <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string; name: string}) => 
+                <p className='published-detail'>{comic.type}: {comic.name}</p>
+                )}
+              </div>
+              }   
              </div>
     })
   }
@@ -292,7 +293,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         <div className='day-of-week' >{` which is a ${day}`}</div>
         <div>
         <label>Time: </label>
-        <input className='time-input' {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)}  required/>
+        <input className='time-input' {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)} required/>
         </div>
         <div>
         <label>Headliner: </label>
@@ -303,7 +304,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
       {showsToAdd}
       <div>
-        <button className='build-week' onClick={() => fetchPublishedShows()}>See Published Shows</button>
+        <button className='published-shows' onClick={() => fetchPublishedShows()}>See Published Shows</button>
         {published && showPublished()}
         <h2 className='downtown-available-header'>Downtown Available Comics</h2>
         <div>{signedShowsDown.map(availShow => availShow)}</div>
