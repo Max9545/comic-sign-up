@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app"
-import {GoogleAuthProvider, getAuth, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut} from "firebase/auth"
+import {GoogleAuthProvider, getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut} from "firebase/auth"
 import {getFirestore, query, getDocs, collection, where, addDoc} from "firebase/firestore"
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyACjnVDOd0PEK3E6hjTQTyTSmIlsBY75XI",
   authDomain: "comic-availability.firebaseapp.com",
