@@ -20,10 +20,8 @@ function App() {
           <Route path='/reset' element={<Reset/>}/>
           <Route path='/dashboard/*' element={<Dashboard/>}/>
         </Routes>
-        
-      
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

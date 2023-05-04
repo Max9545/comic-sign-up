@@ -80,7 +80,6 @@ function Dashboard() {
     } else {
       fetchUserName()
     }
-     
   }, [user, loading]) 
 
   useEffect(() => {
