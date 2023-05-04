@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img className="header-logo" alt='Comedy Works Logo' src={'https://nts.comedyworks.com/uploads/images/comedyworkslogo.png'}/>
+        <img className="header-logo" alt='Comedy Works Logo' src={require('./images/comedyworkslogo(1).png')}/>
         </header>
         <p className='comedian-signup'> 
           Comedian Sign Up
