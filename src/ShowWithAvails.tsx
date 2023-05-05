@@ -153,7 +153,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <input type='text' onChange={(event) => setOtherName(event?.target?.value)} required/>
           </div>
             <button className='add-show' onClick={() => {
-              if (otherName && otherType != '') {
+              if (otherName && otherType) {
                 setBookedShow({...bookedShow, other:[...bookedShow.other,{ type: otherType, name: otherName}]})
               }
             }}>Add</button>
