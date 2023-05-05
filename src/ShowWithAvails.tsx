@@ -146,13 +146,17 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <label className='other-spot'>Other Type Comics:</label>
             <div className='other-div'>
             <label>Comic Type: </label>
-            <input type='text' className='comic-type-input' onChange={(event) => setOtherType(event?.target?.value)}/>
+            <input type='text' className='comic-type-input' onChange={(event) => setOtherType(event?.target?.value)} required/>
           </div>
           <div className='other-div'>
             <label>Comic Name: </label>
-            <input type='text' onChange={(event) => setOtherName(event?.target?.value)}/>
+            <input type='text' onChange={(event) => setOtherName(event?.target?.value)} required/>
           </div>
-            <button className='add-show' onClick={() => setBookedShow({...bookedShow, other:[...bookedShow.other,{ type: otherType, name: otherName}]})}>Add</button>
+            <button className='add-show' onClick={() => {
+              if (otherName && otherType != '') {
+                setBookedShow({...bookedShow, other:[...bookedShow.other,{ type: otherType, name: otherName}]})
+              }
+            }}>Add</button>
           </div>
         </div>
     </div>
