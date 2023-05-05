@@ -43,7 +43,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             acc.push ({
               key: hisIndex,
               fireOrder: `${singleShow[0][0].fireOrder}`, 
-              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} at the ${finalShow.club} club for ${finalShow.headliner} at ${finalShow.time} on ${finalShow.day}`}</p></div>
+              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} ${finalShow.club} ${finalShow.headliner} ${finalShow.time} ${finalShow.day}`}</p></div>
               )
             })
           }
@@ -65,12 +65,11 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             acc.push ({
               key: hisIndex,
               fireOrder: `${singleShow[0][0].fireOrder}`, 
-              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} at the ${finalShow.club} club for ${finalShow.headliner} at ${finalShow.time} on ${finalShow.day}`}</p></div>
+              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} ${finalShow.club} ${finalShow.headliner} ${finalShow.time} ${finalShow.day}`}</p></div>
               )
             })
           }
         })
-       
         return acc
     }, [])
     historyStrings.sort((a: any, b: any) => {
@@ -146,11 +145,11 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <label className='other-spot'>Other Type Comics:</label>
             <div className='other-div'>
             <label>Comic Type: </label>
-            <input type='text' className='comic-type-input' onChange={(event) => setOtherType(event?.target?.value)} required/>
+            <input type='text' className='comic-type-input' onChange={(event) => setOtherType(event?.target?.value)}/>
           </div>
           <div className='other-div'>
             <label>Comic Name: </label>
-            <input type='text' onChange={(event) => setOtherName(event?.target?.value)} required/>
+            <input type='text' onChange={(event) => setOtherName(event?.target?.value)}/>
           </div>
             <button className='add-show' onClick={() => {
               if (otherName && otherType) {

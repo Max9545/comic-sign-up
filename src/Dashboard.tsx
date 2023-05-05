@@ -75,7 +75,7 @@ function Dashboard() {
       const newName = window.prompt('Please enter your first and last name as you want the club to see them')
       setName(newName ? newName : '')
       updateProfile(user, {displayName: newName})
-      setDoc(doc(db, `users/${user.uid}`), {name: newName, email: user.email, uid: user.uid, })
+      setDoc(doc(db, `users/${user.uid}`), {name: newName, email: user.email, uid: user.uid })
       fetchUserName()
     } else {
       fetchUserName()
@@ -140,7 +140,6 @@ function Dashboard() {
       })
     } catch (err) {
       console.error(err) 
-      alert("An error occured while fetching user data") 
     }
   }
 
@@ -236,7 +235,7 @@ const viewAllComicsAvailableSouth = async () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="User Name If First Time"
-        />
+      />
       {admin && <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>}
       <Week comedian={comedian} weeklyShowTimes={shows}/>
       {admin && <Admin shows={shows} setShows={setShows}
