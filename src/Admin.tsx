@@ -273,7 +273,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                   <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string; name: string}, index: string | number | null | undefined) => 
                   <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
                 </div>}
-                <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
+                <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>
+                <button>Email to comics</button>   
              </div>
     })
   }
@@ -281,9 +282,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const removePublishedShow = async (id: string) => {
     console.log(id)
     await deleteDoc(doc (db,"publishedShows", id))
-    // setTimeout(() => {
-    //   window.location.reload()
-    // }, 500)
+
     fetchPublishedShows()
     showPublished()
   }

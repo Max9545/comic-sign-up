@@ -104,7 +104,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
   const publishShow = () => {
     setDoc(doc(db, `publishedShows/${props.id}`), {bookedshow: bookedShow, fireOrder: Date.now()})
-    alert('Show saved!')
+    alert('Show queued!')
   }
 
   return (
