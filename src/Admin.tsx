@@ -281,6 +281,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const removePublishedShow = async (id: string) => {
     console.log(id)
     await deleteDoc(doc (db,"publishedShows", id))
+    // setTimeout(() => {
+    //   window.location.reload()
+    // }, 500)
+    fetchPublishedShows()
+    showPublished()
   }
 
   return (
