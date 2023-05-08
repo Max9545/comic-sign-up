@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook } from './interface'
-import { addDoc, collection, query, getDocs, DocumentData } from "firebase/firestore";
+import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc } from "firebase/firestore";
 import {db} from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 
@@ -272,9 +272,15 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                 <div>
                   <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string; name: string}, index: string | number | null | undefined) => 
                   <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
-                </div>}   
+                </div>}
+                <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
              </div>
     })
+  }
+
+  const removePublishedShow = async (id: string) => {
+    console.log(id)
+    await deleteDoc(doc (db,"publishedShows", id))
   }
 
   return (
