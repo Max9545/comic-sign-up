@@ -159,7 +159,7 @@ label {
   padding: 1%
 }
 
-.delete-show {
+.delete-show, .email-to-comics {
   background-color:red;
   border-radius: 20%;
   width: 30vw;
@@ -322,4 +322,10 @@ label {
   font-size: 2em;
   margin-bottom: 5%;
   margin-top: 8%;
+}
+
+.email-to-comics {
+  margin: 3%;
+  background-color: #17a2b8;
+  color: white
 }

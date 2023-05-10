@@ -274,7 +274,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                   <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
                 </div>}
                 <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>
-                <button>Email to comics</button>   
+                <button className='email-to-comics'>Email to comics</button>   
              </div>
     })
   }
