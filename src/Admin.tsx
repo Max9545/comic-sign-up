@@ -258,29 +258,40 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     }
   }
 
-  const emailComedians = async (showLineup: any) => {
+  const emailComedians = async () => {
+    const docRef = query(collection(db, `publishedShows`))
 
-    console.log(showLineup.bookedshow)
+    const doc = await (getDocs(docRef))
 
-    const nameList = Object.values(showLineup.bookedshow)
-
-    console.log(nameList)
+    const showList = doc.docs.map(show => show.data().bookedshow)
+    console.log(showList)
 
     const emailList: any[] = []
 
-    nameList.map(async name => {
-     if (typeof(name) === 'string') {
-      const q = query(collection(db, 'users'), where("name", '==', name))
-      const doc = await getDocs(q)
-      if(doc.empty === false) {
-        const data = doc.docs[0].data()
-        emailList.push(data.email)
-        console.log(emailList)
-      }
-     }
+    showList.map(show => {
+      const nameList = Object.values(show)
+      console.log(nameList)
+      nameList.map(async name => {
+        if (typeof(name) === 'string') {
+         const q = query(collection(db, 'users'), where("name", '==', name))
+         const doc = await getDocs(q)
+         if(doc.empty === false && !emailList.includes(doc.docs[0].data().email)) {
+           const data = doc.docs[0].data()
+           emailList.push(data.email)
+           console.log(emailList)
+         }
+        }
+       })
     })
+    
 
-    // console.log(emailList)
+    // console.log(nameList)
+
+    
+
+    
+
+    console.log(emailList)
   }
 
   const showPublished = () => {
@@ -298,8 +309,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                   <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string; name: string}, index: string | number | null | undefined) => 
                   <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
                 </div>}
-                <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>
-                <button className='email-to-comics' onClick={() => emailComedians(pubShow)}>Email to comics</button>   
+                <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
              </div>
     })
   }
@@ -337,8 +347,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
       {showsToAdd}
       <div>
-        <button className='published-shows' onClick={() => fetchPublishedShows()}>See Published Shows</button>
-        {published && showPublished()}
+        <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows</button>
+        {published.length > 0 && <div>{showPublished()}<button className='build-week' onClick={() => emailComedians()}>Email to all comics</button></div>}
         <h2 className='downtown-available-header'>Downtown Available Comics</h2>
         <div>{signedShowsDown.map(availShow => availShow)}</div>
         <h2 className='south-available-header'>South Club Available Comics</h2>
