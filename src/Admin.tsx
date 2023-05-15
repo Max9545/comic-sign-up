@@ -258,6 +258,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     }
   }
 
+  const emailComedians = (showLineup: object) => {
+    console.log(showLineup)
+  }
+
   const showPublished = () => {
     return published.map((pubShow, index) => {
       return <div className='published' key={index}>
@@ -274,7 +278,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                   <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
                 </div>}
                 <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>
-                <button className='email-to-comics'>Email to comics</button>   
+                <button className='email-to-comics' onClick={() => emailComedians(pubShow)}>Email to comics</button>   
              </div>
     })
   }
