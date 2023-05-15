@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook } from './interface'
-import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc } from "firebase/firestore";
+import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where } from "firebase/firestore";
 import {db} from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 
@@ -258,8 +258,29 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     }
   }
 
-  const emailComedians = (showLineup: object) => {
-    console.log(showLineup)
+  const emailComedians = async (showLineup: any) => {
+
+    console.log(showLineup.bookedshow)
+
+    const nameList = Object.values(showLineup.bookedshow)
+
+    console.log(nameList)
+
+    const emailList: any[] = []
+
+    nameList.map(async name => {
+     if (typeof(name) === 'string') {
+      const q = query(collection(db, 'users'), where("name", '==', name))
+      const doc = await getDocs(q)
+      if(doc.empty === false) {
+        const data = doc.docs[0].data()
+        emailList.push(data.email)
+        console.log(emailList)
+      }
+     }
+    })
+
+    // console.log(emailList)
   }
 
   const showPublished = () => {
