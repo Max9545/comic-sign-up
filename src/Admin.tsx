@@ -6,6 +6,8 @@ import { ShowToBook } from './interface'
 import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where } from "firebase/firestore";
 import {db} from './firebase'
 import ShowWithAvails from './ShowWithAvails'
+// const React = require('react');
+const ReactDOMServer = require('react-dom/server');
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
 
@@ -262,28 +264,82 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }
 
   const sendEmail = (comicsEmail: any) => {
-    const emailData = {
-      to: `${comicsEmail}`,
-      from: 'bregmanmax91@gmail.com',
-      subject: 'Test Email',
-      text: `Test email ${Date.now()} ${comicsEmail}`,
-    };
+
+
+
+
+
+    const showsForEmailRaw = published.map(pubShow => {
+
+      const a1 = pubShow.bookedshow.a1 && `A1: ${pubShow.bookedshow.a1}`
+      const b1 = pubShow.bookedshow.b1 && `B1: ${pubShow.bookedshow.b1}`
+      const star7 = pubShow.bookedshow.star7 && `Star 7: ${pubShow.bookedshow.star7}`
+
+      const showString = `${pubShow.bookedshow.headliner}
+              ${pubShow.bookedshow.time}
+              ${a1}
+              ${b1}
+              ${star7}
+      `
+    
+      console.log(showString)
+      return showString
+    }
+    )
+    
+    }
+
+
+
+
+
+      // `${<>
+      //   <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
+      // <p>MC: {pubShow.bookedshow.mC}</p>
+      // <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>
+      // <p className='published-detail'>Star 7: {pubShow.bookedshow.star7}</p>
+      // <p className='published-detail'>B1:{pubShow.bookedshow.b1}</p>
+      // <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>
+      // <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p> 
+      //   <div>
+      //     <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string; name: string}, index: string | number | null | undefined) => 
+      //     <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
+      //   </div>
+      // </>
+    // }`
+  // })
+
+    // const showsForEmail = ReactDOMServer.renderToString(showsForEmailRaw)
+
+
+    // const divElement = document.getElementById('seen-published');
+    // const divContent = divElement.innerHTML;
+    // console.log(divElement);
+
+    // console.log(showsForEmailRaw)
+
+    // const emailData = {
+    //   to: `${comicsEmail}`,
+    //   from: 'bregmanmax91@gmail.com',
+    //   subject: 'Test Email',
+    //   text: `Test email ${divElement} ${comicsEmail}`,
+    // };
   
-    fetch('http://localhost:3001/send-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(emailData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.message);
-      })
-      .catch((error) => {
-        console.error('Error sending email', error);
-      });
-  };
+    // fetch('http://localhost:3001/send-email', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(emailData),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(data.message);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error sending email', error);
+    //   });
+  // };
   
 
   const setComicEmailList = async () => {
@@ -373,7 +429,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       {showsToAdd}
       <div>
         <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows</button>
-        {published.length > 0 && <div>{showPublished()}<button className='build-week' onClick={() => sendEmails()}>Email to all comics</button></div>}
+        {published.length > 0 && <div id='seen-published'>{showPublished()}<button className='build-week' onClick={() => sendEmails()}>Email to all comics</button></div>}
         <h2 className='downtown-available-header'>Downtown Available Comics</h2>
         <div>{signedShowsDown.map(availShow => availShow)}</div>
         <h2 className='south-available-header'>South Club Available Comics</h2>
