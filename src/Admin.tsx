@@ -276,8 +276,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       const a1 = pubShow.bookedshow.a1 && `A1: ${pubShow.bookedshow.a1}`
       const b1 = pubShow.bookedshow.b1 && `B1: ${pubShow.bookedshow.b1}`
       const star7 = pubShow.bookedshow.star7 && `Star 7: ${pubShow.bookedshow.star7}`
+      const yes = pubShow.bookedshow.yes && `Yes: ${pubShow.bookedshow.yes}`
+      const other = pubShow.bookedshow.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
 
-      const arrayLineup = [mC, starMC, a1, b1, star7].filter(line => line != '').join('\n')
+      const arrayLineup = [mC, starMC, a1, b1, star7, yes, other].filter(line => line != '').join('\n')
 
       const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
 
