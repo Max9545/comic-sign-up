@@ -288,8 +288,8 @@ ${arrayLineup}
     // const emailData = {
     //   to: `${comicsEmail}`,
     //   from: 'bregmanmax91@gmail.com',
-    //   subject: 'Test Email',
-    //   text: `Test email ${showsForEmailRaw} ${comicsEmail}`,
+    //   subject: 'This week\'s lineup at Comedy Works',
+    //   text: `${showsForEmailRaw}`,
     // }
   
     // fetch('http://localhost:3001/send-email', {
