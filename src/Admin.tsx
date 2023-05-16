@@ -20,6 +20,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [specificComicHistorySouth, setSpecificComicHistorySouth] = useState<any[]>([])
   const [comicForHistory, setcomicForHistory] = useState('')
   const [published, setPublished] = useState<any[]>([])
+  const [emailList, setEmailList] = useState<any[]>([])
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -256,9 +257,36 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     } catch (err) {
       console.log(err)
     }
+
+    await setComicEmailList()
   }
 
-  const emailComedians = async () => {
+  const sendEmail = (comicsEmail: any) => {
+    const emailData = {
+      to: `${comicsEmail}`,
+      from: 'bregmanmax91@gmail.com',
+      subject: 'Test Email',
+      text: `Test email ${Date.now()} ${comicsEmail}`,
+    };
+  
+    fetch('http://localhost:3001/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(emailData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message);
+      })
+      .catch((error) => {
+        console.error('Error sending email', error);
+      });
+  };
+  
+
+  const setComicEmailList = async () => {
     const docRef = query(collection(db, `publishedShows`))
 
     const doc = await (getDocs(docRef))
@@ -266,9 +294,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     const showList = doc.docs.map(show => show.data().bookedshow)
     console.log(showList)
 
-    const emailList: any[] = []
+    // const emailList: any[] = []
 
-    showList.map(show => {
+    showList.map(async show => {
       const nameList = Object.values(show)
       console.log(nameList)
       nameList.map(async name => {
@@ -278,20 +306,17 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
          if(doc.empty === false && !emailList.includes(doc.docs[0].data().email)) {
            const data = doc.docs[0].data()
            emailList.push(data.email)
+           setEmailList(emailList)
            console.log(emailList)
          }
         }
        })
-    })
-    
+      })
+  }
 
-    // console.log(nameList)
-
-    
-
-    
-
-    console.log(emailList)
+  const sendEmails = () => {
+    console.log('hi', emailList)
+    emailList.map(email => sendEmail(email))
   }
 
   const showPublished = () => {
@@ -348,7 +373,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       {showsToAdd}
       <div>
         <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows</button>
-        {published.length > 0 && <div>{showPublished()}<button className='build-week' onClick={() => emailComedians()}>Email to all comics</button></div>}
+        {published.length > 0 && <div>{showPublished()}<button className='build-week' onClick={() => sendEmails()}>Email to all comics</button></div>}
         <h2 className='downtown-available-header'>Downtown Available Comics</h2>
         <div>{signedShowsDown.map(availShow => availShow)}</div>
         <h2 className='south-available-header'>South Club Available Comics</h2>
