@@ -262,34 +262,14 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     await setComicEmailList()
   }
 
-  const sendEmail = (comicsEmail: any) => {
+  const sendEmail = (comicsEmail: any, showsForEmail: string[]) => {
 
-    const showsForEmailRaw = published.map(pubShow => {
-
-      const mC = pubShow.bookedshow.mC && `MC: ${pubShow.bookedshow.mC}`
-      const starMC = pubShow.bookedshow.starMC && `Star MC: ${pubShow.bookedshow.starMC}`
-      const a1 = pubShow.bookedshow.a1 && `A1: ${pubShow.bookedshow.a1}`
-      const b1 = pubShow.bookedshow.b1 && `B1: ${pubShow.bookedshow.b1}`
-      const star7 = pubShow.bookedshow.star7 && `Star 7: ${pubShow.bookedshow.star7}`
-      const yes = pubShow.bookedshow.yes && `Yes: ${pubShow.bookedshow.yes}`
-      const other = pubShow.bookedshow.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
-
-      const arrayLineup = [mC, starMC, star7, a1, b1, yes, other].filter(line => line != '').join('\n')
-
-      const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
-
-${arrayLineup}
-      `
-      return showString
-    })
-
-    console.log(showsForEmailRaw.join('\n'))
-
+    console.log(comicsEmail,showsForEmail.join('\n'))
     // const emailData = {
     //   to: `${comicsEmail}`,
     //   from: 'bregmanmax91@gmail.com',
     //   subject: 'This week\'s lineup at Comedy Works',
-    //   text: `${showsForEmailRaw}`,
+    //   text: `${showsForEmail}`,
     // }
   
     // fetch('http://localhost:3001/send-email', {
@@ -338,7 +318,26 @@ ${arrayLineup}
 
   const sendEmails = () => {
     console.log('hi', emailList)
-    emailList.map(email => sendEmail(email))
+    const showsForEmailRaw = published.map(pubShow => {
+
+      const mC = pubShow.bookedshow.mC && `MC: ${pubShow.bookedshow.mC}`
+      const starMC = pubShow.bookedshow.starMC && `Star MC: ${pubShow.bookedshow.starMC}`
+      const a1 = pubShow.bookedshow.a1 && `A1: ${pubShow.bookedshow.a1}`
+      const b1 = pubShow.bookedshow.b1 && `B1: ${pubShow.bookedshow.b1}`
+      const star7 = pubShow.bookedshow.star7 && `Star 7: ${pubShow.bookedshow.star7}`
+      const yes = pubShow.bookedshow.yes && `Yes: ${pubShow.bookedshow.yes}`
+      const other = pubShow.bookedshow.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
+
+      const arrayLineup = [mC, starMC, star7, a1, b1, yes, other].filter(line => line != '').join('\n')
+
+      const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
+
+${arrayLineup}
+      `
+      return showString
+    })
+
+    emailList.map(email => sendEmail(email, showsForEmailRaw))
   }
 
   const showPublished = () => {
