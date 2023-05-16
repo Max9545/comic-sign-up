@@ -264,10 +264,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const sendEmail = (comicsEmail: any) => {
 
-
-
-
-
     const showsForEmailRaw = published.map(pubShow => {
 
       const mC = pubShow.bookedshow.mC && `MC: ${pubShow.bookedshow.mC}`
@@ -284,7 +280,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
 ${arrayLineup}
       `
-      console.log(showString)
       return showString
     })
 
@@ -314,10 +309,6 @@ ${arrayLineup}
   }
 
 
-
-    
-  
-
   const setComicEmailList = async () => {
     const docRef = query(collection(db, `publishedShows`))
 
@@ -330,7 +321,6 @@ ${arrayLineup}
 
     showList.map(async show => {
       const nameList = Object.values(show)
-      console.log(nameList)
       nameList.map(async name => {
         if (typeof(name) === 'string') {
          const q = query(collection(db, 'users'), where("name", '==', name))
