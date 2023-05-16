@@ -271,16 +271,23 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
     const showsForEmailRaw = published.map(pubShow => {
 
+      const mC = pubShow.bookedshow.mC && `MC: ${pubShow.bookedshow.mC}`
+      const starMC = pubShow.bookedshow.starMC && `Star MC: ${pubShow.bookedshow.starMC}`
       const a1 = pubShow.bookedshow.a1 && `A1: ${pubShow.bookedshow.a1}`
       const b1 = pubShow.bookedshow.b1 && `B1: ${pubShow.bookedshow.b1}`
       const star7 = pubShow.bookedshow.star7 && `Star 7: ${pubShow.bookedshow.star7}`
 
-      const showString = `${pubShow.bookedshow.headliner}
-              ${pubShow.bookedshow.time}
-              ${a1}
-              ${b1}
-              ${star7}
+      const arrayLineup = [mC, starMC, a1, b1, star7].filter(line => line != '').join('\n')
+
+      const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
+
+${arrayLineup}
       `
+      // ${mC && mC}
+      // ${starMC && starMC}
+      // ${a1 && a1}
+      // ${b1 && b1}
+      // ${star7 && star7}
     
       console.log(showString)
       return showString
