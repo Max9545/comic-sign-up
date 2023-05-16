@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook } from './interface'
 import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where } from "firebase/firestore"
-import {db} from './firebase'
+import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
-const ReactDOMServer = require('react-dom/server')
+// const ReactDOMServer = require('react-dom/server')
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
 
@@ -265,11 +265,12 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const sendEmail = (comicsEmail: any, showsForEmail: string[]) => {
 
     console.log(comicsEmail,showsForEmail.join('\n'))
+
     // const emailData = {
     //   to: `${comicsEmail}`,
     //   from: 'bregmanmax91@gmail.com',
     //   subject: 'This week\'s lineup at Comedy Works',
-    //   text: `${showsForEmail}`,
+    //   text: `${showsForEmail.join('\n')}`,
     // }
   
     // fetch('http://localhost:3001/send-email', {
@@ -295,9 +296,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     const doc = await (getDocs(docRef))
 
     const showList = doc.docs.map(show => show.data().bookedshow)
-    console.log(showList)
-
-    // const emailList: any[] = []
 
     showList.map(async show => {
       const nameList = Object.values(show)
@@ -309,7 +307,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
            const data = doc.docs[0].data()
            emailList.push(data.email)
            setEmailList(emailList)
-           console.log(emailList)
          }
         }
        })
@@ -317,7 +314,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   }
 
   const sendEmails = () => {
-    console.log('hi', emailList)
+
     const showsForEmailRaw = published.map(pubShow => {
 
       const mC = pubShow.bookedshow.mC && `MC: ${pubShow.bookedshow.mC}`
@@ -361,7 +358,7 @@ ${arrayLineup}
   }
 
   const removePublishedShow = async (id: string) => {
-    console.log(id)
+
     await deleteDoc(doc (db,"publishedShows", id))
 
     fetchPublishedShows()
