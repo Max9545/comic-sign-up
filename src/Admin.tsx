@@ -266,34 +266,34 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
     console.log(comicsEmail,showsForEmail.join('\n'))
 
-    // const emailData = {
-    //   to: `${comicsEmail}`,
-    //   from: 'bregmanmax91@gmail.com',
-    //   subject: 'This week\'s lineup at Comedy Works',
-    //   text: `${showsForEmail.join('\n')}`,
-    // }
+    const emailData = {
+      to: `${comicsEmail}`,
+      from: 'bregmanmax91@gmail.com',
+      subject: 'This week\'s lineup at Comedy Works',
+      text: `${showsForEmail.join('\n')}`,
+    }
   
-    // fetch('http://localhost:3001/send-email', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(emailData),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data.message)
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error sending email', error)
-    //   })
+    fetch('http://localhost:3001/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(emailData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message)
+      })
+      .catch((error) => {
+        console.error('Error sending email', error)
+      })
   }
 
 
   const setComicEmailList = async () => {
 
     setEmailList([])
-    
+
     const docRef = query(collection(db, `publishedShows`))
 
     const doc = await (getDocs(docRef))
