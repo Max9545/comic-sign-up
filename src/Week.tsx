@@ -72,22 +72,19 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       saturday: [],
       sunday: []
     } 
-    alert('Availability Submitted!! Check your email and phone for verification of your latest availabilty')
-    setTimeout(() => {
-      window.location.reload()
-    }, 500)
+    alert('Availability Submitted!! Check your email for verification of your latest availabilty')
+    // setTimeout(() => {
+    //   window.location.reload()
+    // }, 500)
   }
 
     return (
-      <>
-      <section className='show-container'>
-        {}
-        {showShows()}
-        <button onClick={submitForm}type="submit" className='submit-btn'>
-        Submit Availability
-        </button>
+        <section className='show-container'>
+          {showShows()}
+          <button onClick={submitForm}type="submit" className='submit-btn'>
+          Submit Availability
+          </button>
         </section>
-      </>
     )
 }
 

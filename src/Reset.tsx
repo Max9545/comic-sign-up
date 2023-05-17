@@ -4,6 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom"
 import { auth, sendPasswordReset } from "./firebase"
 import "./Reset.css"
+
 function Reset() {
 
   const [email, setEmail] = useState("")
@@ -33,14 +34,6 @@ function Reset() {
     } catch (err) {
       alert('You are not yet a verified user. Password reset not possible yet. You must first login at least once in order to reset password')
     }
-
-    // console.log(data)
-
-    // if (data?.name) {
-    //   sendPasswordReset(emailToReset)
-    // } else if (!data) {
-    //   alert('You are not yet a verified user. Password reset not possible yet. You must first login at least once in order to reset password')
-    // }
   }
 
   return (

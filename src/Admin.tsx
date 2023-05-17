@@ -3,9 +3,10 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { ShowToBook } from './interface'
-import { addDoc, collection, query, getDocs, DocumentData } from "firebase/firestore";
-import {db} from './firebase'
+import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where } from "firebase/firestore"
+import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
+// const ReactDOMServer = require('react-dom/server')
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
 
@@ -19,6 +20,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [specificComicHistoryDowntown, setSpecificComicHistoryDowntown] = useState<any[]>([])
   const [specificComicHistorySouth, setSpecificComicHistorySouth] = useState<any[]>([])
   const [comicForHistory, setcomicForHistory] = useState('')
+  const [published, setPublished] = useState<any[]>([])
+  const [emailList, setEmailList] = useState<any[]>([])
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -240,6 +243,132 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         })
   }
 
+  const fetchPublishedShows = async () => {
+    try {
+      const docRef = query(collection(db, `publishedShows`))
+
+      const doc = await (getDocs(docRef))
+
+      const published = doc.docs.map(document => {
+        return document.data()
+      })
+
+      setPublished(published)
+
+    } catch (err) {
+      console.log(err)
+    }
+
+    await setComicEmailList()
+  }
+
+  const sendEmail = (comicsEmail: any, showsForEmail: string[]) => {
+
+    console.log(comicsEmail,showsForEmail.join('\n'))
+
+    const emailData = {
+      to: `${comicsEmail}`,
+      from: 'bregmanmax91@gmail.com',
+      subject: 'This week\'s lineup at Comedy Works',
+      text: `${showsForEmail.join('\n')}`,
+    }
+  
+    fetch('http://localhost:3001/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(emailData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message)
+      })
+      .catch((error) => {
+        console.error('Error sending email', error)
+      })
+  }
+
+
+  const setComicEmailList = async () => {
+
+    setEmailList([])
+
+    const docRef = query(collection(db, `publishedShows`))
+
+    const doc = await (getDocs(docRef))
+
+    const showList = doc.docs.map(show => show.data().bookedshow)
+
+    showList.map(async show => {
+      const nameList = Object.values(show)
+      nameList.map(async name => {
+        if (typeof(name) === 'string') {
+         const q = query(collection(db, 'users'), where("name", '==', name))
+         const doc = await getDocs(q)
+         if(doc.empty === false && !emailList.includes(doc.docs[0].data().email)) {
+           const data = doc.docs[0].data()
+           emailList.push(data.email)
+           setEmailList(emailList)
+         }
+        }
+       })
+      })
+  }
+
+  const sendEmails = () => {
+
+    const showsForEmailRaw = published.map(pubShow => {
+
+      const mC = pubShow.bookedshow.mC && `MC: ${pubShow.bookedshow.mC}`
+      const starMC = pubShow.bookedshow.starMC && `Star MC: ${pubShow.bookedshow.starMC}`
+      const a1 = pubShow.bookedshow.a1 && `A1: ${pubShow.bookedshow.a1}`
+      const b1 = pubShow.bookedshow.b1 && `B1: ${pubShow.bookedshow.b1}`
+      const star7 = pubShow.bookedshow.star7 && `Star 7: ${pubShow.bookedshow.star7}`
+      const yes = pubShow.bookedshow.yes && `Yes: ${pubShow.bookedshow.yes}`
+      const other = pubShow.bookedshow.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
+
+      const arrayLineup = [mC, starMC, star7, a1, b1, yes, other].filter(line => line != '').join('\n')
+
+      const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
+
+${arrayLineup}
+      `
+      return showString
+    })
+
+    emailList.map(email => sendEmail(email, showsForEmailRaw))
+  }
+
+  const showPublished = () => {
+    return published.map((pubShow, index) => {
+      return <div className='published' key={index}>
+              <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
+              {pubShow.bookedshow.mC && <p className='published-detail'>MC: {pubShow.bookedshow.mC}</p>}
+              {pubShow.bookedshow.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>}
+              {pubShow.bookedshow.star7 && <p className='published-detail'>Star 7: {pubShow.bookedshow.star7}</p>}
+              {pubShow.bookedshow.b1 && <p className='published-detail'>B1:{pubShow.bookedshow.b1}</p>}
+              {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
+              {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
+              {pubShow.bookedshow.other.length > 0 && 
+                <div>
+                  <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
+                  <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
+                </div>}
+                <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
+             </div>
+    })
+  }
+
+  const removePublishedShow = async (id: string) => {
+
+    await deleteDoc(doc (db,"publishedShows", id))
+
+    fetchPublishedShows()
+    showPublished()
+    await setComicEmailList()
+  }
+
   return (
     <div className='admin-form'>
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
@@ -254,7 +383,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
         <div className='day-of-week' >{` which is a ${day}`}</div>
         <div>
         <label>Time: </label>
-        <input className='time-input' {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)}  required/>
+        <input className='time-input' {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)} required/>
         </div>
         <div>
         <label>Headliner: </label>
@@ -265,10 +394,12 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
       {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
       {showsToAdd}
       <div>
-      <h2 className='downtown-available-header'>Downtown Available Comics</h2>
-      <div>{signedShowsDown.map(availShow => availShow)}</div>
-      <h2 className='south-available-header'>South Club Available Comics</h2>
-      <div>{signedShowsSouth.map(availShow => availShow)}</div>
+        <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows</button>
+        {published.length > 0 && <div id='seen-published'>{showPublished()}<button className='build-week' onClick={() => sendEmails()}>Email to all comics</button></div>}
+        <h2 className='downtown-available-header'>Downtown Available Comics</h2>
+        <div>{signedShowsDown.map(availShow => availShow)}</div>
+        <h2 className='south-available-header'>South Club Available Comics</h2>
+        <div>{signedShowsSouth.map(availShow => availShow)}</div>
       </div>
       {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
       {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>}
