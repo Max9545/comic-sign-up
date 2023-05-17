@@ -291,6 +291,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
 
   const setComicEmailList = async () => {
+
+    setEmailList([])
+    
     const docRef = query(collection(db, `publishedShows`))
 
     const doc = await (getDocs(docRef))
@@ -363,6 +366,7 @@ ${arrayLineup}
 
     fetchPublishedShows()
     showPublished()
+    await setComicEmailList()
   }
 
   return (
