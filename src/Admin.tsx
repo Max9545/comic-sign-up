@@ -86,6 +86,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
                   name: 'admin',
                   id: '',
                   type: '',
+                  email: '',
                   showsAvailabledowntown: {
                     monday: [],
                     tuesday: [],

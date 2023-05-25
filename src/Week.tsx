@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import Show from './Show'
 import { Comic, ShowToBook } from './interface'
-import { setDoc, doc, addDoc, collection } from 'firebase/firestore'
+import { setDoc, doc, addDoc, collection, query, getDocs, orderBy, limit } from 'firebase/firestore'
 import { db } from './firebase'
 
 function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
@@ -47,32 +47,96 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       }
     }
 
+    const sendConfirmationEmail = async () => {
+
+      console.log(currentComedian)
+
+      const docRef = query(collection(db, `comedians/comicStorage/${currentComedian.name}`), orderBy('fireOrder', 'desc'), limit(1))
+
+      const doc = await (getDocs(docRef))
+
+
+      console.log(doc.docs[0].data())
+
+      const comicHistory = doc.docs[0].data().comedianInfo
+
+      const downtownArrays = Object.keys(comicHistory.showsAvailabledowntown).map(day => {
+        // console.log(currentComedian.showsAvailabledowntown)
+        return currentComedian.showsAvailabledowntownHistory[day].map((show: any) => `${show.day} ${show.date} ${show.club} ${show.headliner} ${show.time}`)
+      })
+
+      const downtownString = downtownArrays.map(day => {
+        if (day !== '') {
+          return day.toString()
+        }
+      }).join('\n')
+      // for (var key in currentComedian.showsAvailabledowntown) {
+      //   downtownShows.map((show: any) => {
+      //     comedian.showsAvailabledowntown[key].map((comicShow: any) => {
+      //       if (comicShow == show.id) {
+      //         show.availableComics.push(name)
+      //         show.availability = true 
+      //       }
+      //     })
+      //   })
+      // }
+
+      console.log(downtownString)
+      // const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}`
+  
+      // const emailData = {
+      //   to: `${props.comedian.email}`,
+      //   from: 'bregmanmax91@gmail.com',
+      //   subject: 'This week\'s lineup at Comedy Works',
+      //   text: `${showsForEmail.join('\n')}`,
+      // }
+    
+      // fetch('http://localhost:3001/send-email', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(emailData),
+      // })
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     console.log(data.message)
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error sending email', error)
+      //   })
+    }
+
   const submitForm = (event: any) => {
 
     event.preventDefault()
+    
     setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
     addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
       comedianInfo: currentComedian, 
       fireOrder: Date.now()})
-    currentComedian.showsAvailabledowntown = {
-      monday: [],
-      tuesday: [],
-      wednesday: [],
-      thursday: [], 
-      friday: [],
-      saturday: [],
-      sunday: []
-    }
-    currentComedian.showsAvailablesouth = {
-      monday: [],
-      tuesday: [],
-      wednesday: [],
-      thursday: [], 
-      friday: [],
-      saturday: [],
-      sunday: []
-    } 
+    // currentComedian.showsAvailabledowntown = {
+    //   monday: [],
+    //   tuesday: [],
+    //   wednesday: [],
+    //   thursday: [], 
+    //   friday: [],
+    //   saturday: [],
+    //   sunday: []
+    // }
+    // currentComedian.showsAvailablesouth = {
+    //   monday: [],
+    //   tuesday: [],
+    //   wednesday: [],
+    //   thursday: [], 
+    //   friday: [],
+    //   saturday: [],
+    //   sunday: []
+    // } 
+    sendConfirmationEmail()
     alert('Availability Submitted!! Check your email for verification of your latest availabilty')
+
+    
     // setTimeout(() => {
     //   window.location.reload()
     // }, 500)

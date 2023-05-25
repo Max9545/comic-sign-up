@@ -18,6 +18,7 @@ function Dashboard() {
     name: '',
     id: '',
     type: '',
+    email: '',
     showsAvailabledowntown: {
       monday: [],
       tuesday: [],
@@ -100,6 +101,7 @@ function Dashboard() {
       setComedian({
         name: data.name,
         id: data.uid,
+        email: data.email,
         type: '',
         showsAvailabledowntown: {
           monday: [],
@@ -161,31 +163,28 @@ function Dashboard() {
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
+      console.log(comic)
       setComedian({
         name: comic.name,
         id: comic.id,
         type: comic.type,
+        email: user?.email,
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
-        showsAvailabledowntownHistory: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
-        },
-        showsAvailablesouthHistory: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
-        }
+        showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory
+        // {
+        //   monday: [],
+        //   tuesday: [],
+        //   wednesday: [],
+        //   thursday: [], 
+        //   friday: [],
+        //   saturday: [],
+        //   sunday: []
+        // }
+        ,
+        showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
+      console.log(user?.email)
     } catch (err) {
       console.error(err) 
     }  
