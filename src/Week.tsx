@@ -60,29 +60,29 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
       const comicHistory = doc.docs[0].data().comedianInfo
 
-      const downtownArrays = Object.keys(comicHistory.showsAvailabledowntown).map(day => {
+      const downtownArrays = Object.keys(comicHistory.showsAvailabledowntownHistory).map(day => {
         // console.log(currentComedian.showsAvailabledowntown)
         return currentComedian.showsAvailabledowntownHistory[day].map((show: any) => `${show.day} ${show.date} ${show.club} ${show.headliner} ${show.time}`)
       })
 
-      const downtownString = downtownArrays.map(day => {
-        if (day !== '') {
-          return day.toString()
+       downtownArrays.map(show => {
+        if (show[0] != undefined) {
+          return show.order = parseInt(show[0].replaceAll('-','').replace(/\D/g,''))
         }
-      }).join('\n')
-      // for (var key in currentComedian.showsAvailabledowntown) {
-      //   downtownShows.map((show: any) => {
-      //     comedian.showsAvailabledowntown[key].map((comicShow: any) => {
-      //       if (comicShow == show.id) {
-      //         show.availableComics.push(name)
-      //         show.availability = true 
-      //       }
-      //     })
-      //   })
-      // }
+      }).filter(show => show != undefined)
+      
+      const sortedDown = downtownArrays.sort((a,b) => a.order - b.order)
+
+      const downtownString = sortedDown.map(day => {
+        if (day != '') {
+          return `${day.toString()}`
+        }
+      }).join('\n').replaceAll(',', '\n').replace(/(^[ \t]*\n)/gm, "")
 
       console.log(downtownString)
-      // const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}`
+     
+      
+
   
       // const emailData = {
       //   to: `${props.comedian.email}`,
