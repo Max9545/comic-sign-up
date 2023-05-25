@@ -69,9 +69,14 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
         if (show[0] != undefined) {
           return show.order = parseInt(show[0].replaceAll('-','').replace(/\D/g,''))
         }
-      }).filter(show => show != undefined)
-      
-      const sortedDown = downtownArrays.sort((a,b) => a.order - b.order)
+      })
+
+      const filteredDown = downtownArrays.filter(show => show[0] != undefined)
+
+      const sortedDown = filteredDown.sort((a,b) => {
+        console.log(a.order,b.order)
+        return a.order - b.order
+      })
 
       const downtownString = sortedDown.map(day => {
         if (day != '') {
@@ -79,7 +84,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
         }
       }).join('\n').replaceAll(',', '\n').replace(/(^[ \t]*\n)/gm, "")
 
-      console.log(downtownString)
+      console.log(downtownString, downtownArrays, sortedDown)
      
       
 
