@@ -61,7 +61,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       const comicHistory = doc.docs[0].data().comedianInfo
 
       const downtownArrays = Object.keys(comicHistory.showsAvailabledowntownHistory).map(day => {
-        return currentComedian.showsAvailabledowntownHistory[day].map((show: any) => `${show.day} ${show.date} ${show.club} ${show.headliner} ${show.time}`)
+        return currentComedian.showsAvailabledowntownHistory[day].map((show: any) => `${show.day.charAt(0).toUpperCase() + show.day.slice(1)} ${show.date} ${show.headliner} ${show.time} ${show.club.charAt(0).toUpperCase() + show.club.slice(1)}`)
       })
 
        downtownArrays.map(show => {
@@ -86,7 +86,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       console.log(downtownString, downtownArrays, sortedDown)
   
       const southArrays = Object.keys(comicHistory.showsAvailablesouthHistory).map(day => {
-        return currentComedian.showsAvailablesouthHistory[day].map((show: any) => `${show.day} ${show.date} ${show.club} ${show.headliner} ${show.time}`)
+        return currentComedian.showsAvailablesouthHistory[day].map((show: any) => `${show.day.charAt(0).toUpperCase() + show.day.slice(1)} ${show.date} $ ${show.headliner} ${show.time} ${show.club.charAt(0).toUpperCase() + show.club.slice(1)}`)
       })
 
        southArrays.map(show => {
