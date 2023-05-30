@@ -61,7 +61,6 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       const comicHistory = doc.docs[0].data().comedianInfo
 
       const downtownArrays = Object.keys(comicHistory.showsAvailabledowntownHistory).map(day => {
-        // console.log(currentComedian.showsAvailabledowntown)
         return currentComedian.showsAvailabledowntownHistory[day].map((show: any) => `${show.day} ${show.date} ${show.club} ${show.headliner} ${show.time}`)
       })
 
@@ -74,7 +73,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       const filteredDown = downtownArrays.filter(show => show[0] != undefined)
 
       const sortedDown = filteredDown.sort((a,b) => {
-        console.log(a.order,b.order)
+        console.log(a,b)
         return a.order - b.order
       })
 
@@ -85,16 +84,40 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       }).join('\n').replaceAll(',', '\n').replace(/(^[ \t]*\n)/gm, "")
 
       console.log(downtownString, downtownArrays, sortedDown)
-     
-      
-
   
+      const southArrays = Object.keys(comicHistory.showsAvailablesouthHistory).map(day => {
+        return currentComedian.showsAvailablesouthHistory[day].map((show: any) => `${show.day} ${show.date} ${show.club} ${show.headliner} ${show.time}`)
+      })
+
+       southArrays.map(show => {
+        if (show[0] != undefined) {
+          return show.order = parseInt(show[0].replaceAll('-','').replace(/\D/g,''))
+        }
+      })
+
+      const filteredSouth = southArrays.filter(show => show[0] != undefined)
+
+      const sortedSouth = filteredSouth.sort((a,b) => {
+        console.log(a.order,b.order)
+        return a.order - b.order
+      })
+
+      const southString = sortedSouth.map(day => {
+        if (day != '') {
+          return `${day.toString()}`
+        }
+      }).join('\n').replaceAll(',', '\n').replace(/(^[ \t]*\n)/gm, "")
+
+
       const emailData = {
         to: `${props.comedian.email}`,
         from: 'bregmanmax91@gmail.com',
-        subject: 'This week\'s lineup at Comedy Works',
-        text: `Here is the availability you submitted: 
-        ${downtownString}`,
+        subject: 'Comedy Works availability you submitted:',
+        text: `Downtown: 
+${downtownString}
+
+South: 
+${southString}`,
       }
     
       fetch('http://localhost:3001/send-email', {

@@ -93,6 +93,10 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
           submissionDateTime: dateTime,
           fireOrder: Date.now()
         })
+        comedian[`showsAvailable${clubToSign}History`][dayOfWeek] = comedian[`showsAvailable${clubToSign}History`][dayOfWeek].sort((a: { time: number },b: { time: number }) => {
+          console.log(a.time, b.time, 'hi')
+          return a.time - b.time
+        })
       } else {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))
         comedian[`showsAvailable${clubToSign}History`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}History`][dayOfWeek].findIndex((showToDelete: { id: string }) => showToDelete.id === props.id))
