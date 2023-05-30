@@ -94,9 +94,10 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
           fireOrder: Date.now()
         })
         comedian[`showsAvailable${clubToSign}History`][dayOfWeek] = comedian[`showsAvailable${clubToSign}History`][dayOfWeek].sort((a: { time: number },b: { time: number }) => {
-          console.log(a.time, b.time, 'hi')
-          return a.time - b.time
+          console.log(parseInt(a.time.replaceAll(':','')), b.time, 'hi')
+          return parseInt(a.time.replaceAll(':','')) - parseInt(b.time.replaceAll(':',''))
         })
+        console.log(comedian[`showsAvailable${clubToSign}History`][dayOfWeek])
       } else {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))
         comedian[`showsAvailable${clubToSign}History`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}History`][dayOfWeek].findIndex((showToDelete: { id: string }) => showToDelete.id === props.id))
