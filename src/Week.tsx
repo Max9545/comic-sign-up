@@ -89,27 +89,28 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       
 
   
-      // const emailData = {
-      //   to: `${props.comedian.email}`,
-      //   from: 'bregmanmax91@gmail.com',
-      //   subject: 'This week\'s lineup at Comedy Works',
-      //   text: `${showsForEmail.join('\n')}`,
-      // }
+      const emailData = {
+        to: `${props.comedian.email}`,
+        from: 'bregmanmax91@gmail.com',
+        subject: 'This week\'s lineup at Comedy Works',
+        text: `Here is the availability you submitted: 
+        ${downtownString}`,
+      }
     
-      // fetch('http://localhost:3001/send-email', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(emailData),
-      // })
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     console.log(data.message)
-      //   })
-      //   .catch((error) => {
-      //     console.error('Error sending email', error)
-      //   })
+      fetch('http://localhost:3001/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.message)
+        })
+        .catch((error) => {
+          console.error('Error sending email', error)
+        })
     }
 
   const submitForm = (event: any) => {
