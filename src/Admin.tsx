@@ -6,7 +6,6 @@ import { ShowToBook } from './interface'
 import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where } from "firebase/firestore"
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
-// const ReactDOMServer = require('react-dom/server')
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
 
@@ -270,7 +269,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     const emailData = {
       to: `${comicsEmail}`,
       from: 'bregmanmax91@gmail.com',
-      subject: 'This week\'s lineup at Comedy Works',
+      subject: 'Upcoming lineup at Comedy Works',
       text: `${showsForEmail.join('\n')}`,
     }
   
