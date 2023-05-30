@@ -93,7 +93,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
           submissionDateTime: dateTime,
           fireOrder: Date.now()
         })
-        comedian[`showsAvailable${clubToSign}History`][dayOfWeek] = comedian[`showsAvailable${clubToSign}History`][dayOfWeek].sort((a: { time: number },b: { time: number }) => {
+        comedian[`showsAvailable${clubToSign}History`][dayOfWeek] = comedian[`showsAvailable${clubToSign}History`][dayOfWeek].sort((a: { time: string },b: { time: string }) => {
           console.log(parseInt(a.time.replaceAll(':','')), b.time, 'hi')
           return parseInt(a.time.replaceAll(':','')) - parseInt(b.time.replaceAll(':',''))
         })
