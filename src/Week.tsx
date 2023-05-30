@@ -49,14 +49,9 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
 
     const sendConfirmationEmail = async () => {
 
-      console.log(currentComedian)
-
       const docRef = query(collection(db, `comedians/comicStorage/${currentComedian.name}`), orderBy('fireOrder', 'desc'), limit(1))
 
       const doc = await (getDocs(docRef))
-
-
-      console.log(doc.docs[0].data())
 
       const comicHistory = doc.docs[0].data().comedianInfo
 
@@ -73,7 +68,6 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       const filteredDown = downtownArrays.filter(show => show[0] != undefined)
 
       const sortedDown = filteredDown.sort((a,b) => {
-        console.log(a,b)
         return a.order - b.order
       })
 
@@ -82,8 +76,6 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
           return `${day.toString()}`
         }
       }).join('\n').replaceAll(',', '\n').replace(/(^[ \t]*\n)/gm, "")
-
-      console.log(downtownString, downtownArrays, sortedDown)
   
       const southArrays = Object.keys(comicHistory.showsAvailablesouthHistory).map(day => {
         return currentComedian.showsAvailablesouthHistory[day].map((show: any) => `${show.day.charAt(0).toUpperCase() + show.day.slice(1)} ${show.date} $ ${show.headliner} ${show.time} ${show.club.charAt(0).toUpperCase() + show.club.slice(1)}`)
@@ -98,7 +90,6 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       const filteredSouth = southArrays.filter(show => show[0] != undefined)
 
       const sortedSouth = filteredSouth.sort((a,b) => {
-        console.log(a.order,b.order)
         return a.order - b.order
       })
 
@@ -144,28 +135,11 @@ ${southString}`,
     addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
       comedianInfo: currentComedian, 
       fireOrder: Date.now()})
-    // currentComedian.showsAvailabledowntown = {
-    //   monday: [],
-    //   tuesday: [],
-    //   wednesday: [],
-    //   thursday: [], 
-    //   friday: [],
-    //   saturday: [],
-    //   sunday: []
-    // }
-    // currentComedian.showsAvailablesouth = {
-    //   monday: [],
-    //   tuesday: [],
-    //   wednesday: [],
-    //   thursday: [], 
-    //   friday: [],
-    //   saturday: [],
-    //   sunday: []
-    // } 
+   
     sendConfirmationEmail()
+    
     alert('Availability Submitted!! Check your email for verification of your latest availabilty')
 
-    
     // setTimeout(() => {
     //   window.location.reload()
     // }, 500)

@@ -65,73 +65,73 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     
     if (newSchedule.length > 0) {
       newSchedule.sort((a,b) => {
-      if (a.date == b.date) {
-        return parseInt(a.time.replaceAll(':','')) - parseInt(b.time.replaceAll(':',''))
-      }
-      return  parseFloat(a.date.replaceAll('-', '')) - parseFloat(b.date.replaceAll('-', ''))
-      })    
+        if (a.date == b.date) {
+          return parseInt(a.time.replaceAll(':','')) - parseInt(b.time.replaceAll(':',''))
+        }
+        return  parseFloat(a.date.replaceAll('-', '')) - parseFloat(b.date.replaceAll('-', ''))
+        })    
     }
     
     setShowsToAdd(newSchedule.map((newShow, index) => {
             return (
-            <div key={index + 1}>
-              <Show
-                key={index}
-                id={newShow.id}
-                day={newShow.day}
-                time={newShow.time}
-                currentClub={newShow.club}
-                availableComedian={{
-                  name: 'admin',
-                  id: '',
-                  type: '',
-                  email: '',
-                  showsAvailabledowntown: {
-                    monday: [],
-                    tuesday: [],
-                    wednesday: [],
-                    thursday: [], 
-                    friday: [],
-                    saturday: [],
-                    sunday: []
-                  },
-                  showsAvailablesouth: {
-                    monday: [],
-                    tuesday: [],
-                    wednesday: [],
-                    thursday: [], 
-                    friday: [],
-                    saturday: [],
-                    sunday: []
-                  },
-                  showsAvailabledowntownHistory: {
-                    monday: [],
-                    tuesday: [],
-                    wednesday: [],
-                    thursday: [], 
-                    friday: [],
-                    saturday: [],
-                    sunday: []
-                  },
-                  showsAvailablesouthHistory: {
-                    monday: [],
-                    tuesday: [],
-                    wednesday: [],
-                    thursday: [], 
-                    friday: [],
-                    saturday: [],
-                    sunday: []
+              <div key={index + 1}>
+                <Show
+                  key={index}
+                  id={newShow.id}
+                  day={newShow.day}
+                  time={newShow.time}
+                  currentClub={newShow.club}
+                  availableComedian={{
+                    name: 'admin',
+                    id: '',
+                    type: '',
+                    email: '',
+                    showsAvailabledowntown: {
+                      monday: [],
+                      tuesday: [],
+                      wednesday: [],
+                      thursday: [], 
+                      friday: [],
+                      saturday: [],
+                      sunday: []
+                    },
+                    showsAvailablesouth: {
+                      monday: [],
+                      tuesday: [],
+                      wednesday: [],
+                      thursday: [], 
+                      friday: [],
+                      saturday: [],
+                      sunday: []
+                    },
+                    showsAvailabledowntownHistory: {
+                      monday: [],
+                      tuesday: [],
+                      wednesday: [],
+                      thursday: [], 
+                      friday: [],
+                      saturday: [],
+                      sunday: []
+                    },
+                    showsAvailablesouthHistory: {
+                      monday: [],
+                      tuesday: [],
+                      wednesday: [],
+                      thursday: [], 
+                      friday: [],
+                      saturday: [],
+                      sunday: []
+                    }
                   }
-                }
-                  
-                }
-                date={newShow.date}
-                headliner={newShow.headliner}
-                availability={false}
-                availableComics={newShow.availableComics}
-              />
-              <button className='delete-show' onClick={() => deleteShow(newShow.id)}>Delete</button>
-            </div>
+                    
+                  }
+                  date={newShow.date}
+                  headliner={newShow.headliner}
+                  availability={false}
+                  availableComics={newShow.availableComics}
+                />
+                <button className='delete-show' onClick={() => deleteShow(newShow.id)}>Delete</button>
+              </div>
           )
 }))}
 
@@ -209,7 +209,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     const docRef = query(collection(db, `comediansForAdmin`))
     const doc = await (getDocs(docRef))
     
-      const availableComics: DocumentData[] = []
+    const availableComics: DocumentData[] = []
       
       doc.docs.forEach(comic => availableComics.push(comic.data()))
       southShows.map(show => {
@@ -264,12 +264,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const sendEmail = (comicsEmail: any, showsForEmail: string[]) => {
 
-    console.log(comicsEmail,showsForEmail.join('\n'))
-
     const emailData = {
       to: `${comicsEmail}`,
       from: 'bregmanmax91@gmail.com',
-      subject: 'Upcoming lineup at Comedy Works',
+      subject: 'Comedy Works upcoming lineup',
       text: `${showsForEmail.join('\n')}`,
     }
   
