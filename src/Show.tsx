@@ -12,6 +12,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
     name: 'admin',
     id: '',
     type: '',
+    email: '',
     showsAvailabledowntown: {
       monday: [],
       tuesday: [],
@@ -91,6 +92,9 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
           headliner: props.headliner,
           submissionDateTime: dateTime,
           fireOrder: Date.now()
+        })
+        comedian[`showsAvailable${clubToSign}History`][dayOfWeek] = comedian[`showsAvailable${clubToSign}History`][dayOfWeek].sort((a: { time: string },b: { time: string }) => {
+          return parseInt(a.time.replaceAll(':','')) - parseInt(b.time.replaceAll(':',''))
         })
       } else {
         comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))

@@ -6,7 +6,6 @@ import { ShowToBook } from './interface'
 import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where } from "firebase/firestore"
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
-// const ReactDOMServer = require('react-dom/server')
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
 
@@ -66,72 +65,73 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     
     if (newSchedule.length > 0) {
       newSchedule.sort((a,b) => {
-      if (a.date == b.date) {
-        return parseInt(a.time.replaceAll(':','')) - parseInt(b.time.replaceAll(':',''))
-      }
-      return  parseFloat(a.date.replaceAll('-', '')) - parseFloat(b.date.replaceAll('-', ''))
-      })    
+        if (a.date == b.date) {
+          return parseInt(a.time.replaceAll(':','')) - parseInt(b.time.replaceAll(':',''))
+        }
+        return  parseFloat(a.date.replaceAll('-', '')) - parseFloat(b.date.replaceAll('-', ''))
+        })    
     }
     
     setShowsToAdd(newSchedule.map((newShow, index) => {
             return (
-            <div key={index + 1}>
-              <Show
-                key={index}
-                id={newShow.id}
-                day={newShow.day}
-                time={newShow.time}
-                currentClub={newShow.club}
-                availableComedian={{
-                  name: 'admin',
-                  id: '',
-                  type: '',
-                  showsAvailabledowntown: {
-                    monday: [],
-                    tuesday: [],
-                    wednesday: [],
-                    thursday: [], 
-                    friday: [],
-                    saturday: [],
-                    sunday: []
-                  },
-                  showsAvailablesouth: {
-                    monday: [],
-                    tuesday: [],
-                    wednesday: [],
-                    thursday: [], 
-                    friday: [],
-                    saturday: [],
-                    sunday: []
-                  },
-                  showsAvailabledowntownHistory: {
-                    monday: [],
-                    tuesday: [],
-                    wednesday: [],
-                    thursday: [], 
-                    friday: [],
-                    saturday: [],
-                    sunday: []
-                  },
-                  showsAvailablesouthHistory: {
-                    monday: [],
-                    tuesday: [],
-                    wednesday: [],
-                    thursday: [], 
-                    friday: [],
-                    saturday: [],
-                    sunday: []
+              <div key={index + 1}>
+                <Show
+                  key={index}
+                  id={newShow.id}
+                  day={newShow.day}
+                  time={newShow.time}
+                  currentClub={newShow.club}
+                  availableComedian={{
+                    name: 'admin',
+                    id: '',
+                    type: '',
+                    email: '',
+                    showsAvailabledowntown: {
+                      monday: [],
+                      tuesday: [],
+                      wednesday: [],
+                      thursday: [], 
+                      friday: [],
+                      saturday: [],
+                      sunday: []
+                    },
+                    showsAvailablesouth: {
+                      monday: [],
+                      tuesday: [],
+                      wednesday: [],
+                      thursday: [], 
+                      friday: [],
+                      saturday: [],
+                      sunday: []
+                    },
+                    showsAvailabledowntownHistory: {
+                      monday: [],
+                      tuesday: [],
+                      wednesday: [],
+                      thursday: [], 
+                      friday: [],
+                      saturday: [],
+                      sunday: []
+                    },
+                    showsAvailablesouthHistory: {
+                      monday: [],
+                      tuesday: [],
+                      wednesday: [],
+                      thursday: [], 
+                      friday: [],
+                      saturday: [],
+                      sunday: []
+                    }
                   }
-                }
-                  
-                }
-                date={newShow.date}
-                headliner={newShow.headliner}
-                availability={false}
-                availableComics={newShow.availableComics}
-              />
-              <button className='delete-show' onClick={() => deleteShow(newShow.id)}>Delete</button>
-            </div>
+                    
+                  }
+                  date={newShow.date}
+                  headliner={newShow.headliner}
+                  availability={false}
+                  availableComics={newShow.availableComics}
+                />
+                <button className='delete-show' onClick={() => deleteShow(newShow.id)}>Delete</button>
+              </div>
           )
 }))}
 
@@ -209,7 +209,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     const docRef = query(collection(db, `comediansForAdmin`))
     const doc = await (getDocs(docRef))
     
-      const availableComics: DocumentData[] = []
+    const availableComics: DocumentData[] = []
       
       doc.docs.forEach(comic => availableComics.push(comic.data()))
       southShows.map(show => {
@@ -264,12 +264,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
 
   const sendEmail = (comicsEmail: any, showsForEmail: string[]) => {
 
-    console.log(comicsEmail,showsForEmail.join('\n'))
-
     const emailData = {
       to: `${comicsEmail}`,
       from: 'bregmanmax91@gmail.com',
-      subject: 'This week\'s lineup at Comedy Works',
+      subject: 'Comedy Works Upcoming Lineup',
       text: `${showsForEmail.join('\n')}`,
     }
   
@@ -338,6 +336,7 @@ ${arrayLineup}
     })
 
     emailList.map(email => sendEmail(email, showsForEmailRaw))
+    // alert('Comics have been notified')
   }
 
   const showPublished = () => {
@@ -347,7 +346,7 @@ ${arrayLineup}
               {pubShow.bookedshow.mC && <p className='published-detail'>MC: {pubShow.bookedshow.mC}</p>}
               {pubShow.bookedshow.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>}
               {pubShow.bookedshow.star7 && <p className='published-detail'>Star 7: {pubShow.bookedshow.star7}</p>}
-              {pubShow.bookedshow.b1 && <p className='published-detail'>B1:{pubShow.bookedshow.b1}</p>}
+              {pubShow.bookedshow.b1 && <p className='published-detail'>B1: {pubShow.bookedshow.b1}</p>}
               {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
               {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
               {pubShow.bookedshow.other.length > 0 && 
