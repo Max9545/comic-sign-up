@@ -336,6 +336,7 @@ ${arrayLineup}
     })
 
     emailList.map(email => sendEmail(email, showsForEmailRaw))
+    // alert('Comics have been notified')
   }
 
   const showPublished = () => {
