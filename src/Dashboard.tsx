@@ -170,17 +170,16 @@ function Dashboard() {
         email: user?.email,
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
-        showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory
-        // {
-        //   monday: [],
-        //   tuesday: [],
-        //   wednesday: [],
-        //   thursday: [], 
-        //   friday: [],
-        //   saturday: [],
-        //   sunday: []
-        // }
-        ,
+        showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
+          // {
+          //   monday: [],
+          //   tuesday: [],
+          //   wednesday: [],
+          //   thursday: [], 
+          //   friday: [],
+          //   saturday: [],
+          //   sunday: []
+          // }
         showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
       console.log(user?.email)

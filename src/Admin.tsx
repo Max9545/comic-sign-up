@@ -267,7 +267,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
     const emailData = {
       to: `${comicsEmail}`,
       from: 'bregmanmax91@gmail.com',
-      subject: 'Comedy Works upcoming lineup',
+      subject: 'Comedy Works Upcoming Lineup',
       text: `${showsForEmail.join('\n')}`,
     }
   
