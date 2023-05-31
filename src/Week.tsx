@@ -78,7 +78,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       }).join('\n').replaceAll(',', '\n').replace(/(^[ \t]*\n)/gm, "")
   
       const southArrays = Object.keys(comicHistory.showsAvailablesouthHistory).map(day => {
-        return currentComedian.showsAvailablesouthHistory[day].map((show: any) => `${show.day.charAt(0).toUpperCase() + show.day.slice(1)} ${show.date} $ ${show.headliner} ${show.time} ${show.club.charAt(0).toUpperCase() + show.club.slice(1)}`)
+        return currentComedian.showsAvailablesouthHistory[day].map((show: any) => `${show.day.charAt(0).toUpperCase() + show.day.slice(1)} ${show.date} ${show.headliner} ${show.time} ${show.club.charAt(0).toUpperCase() + show.club.slice(1)}`)
       })
 
        southArrays.map(show => {
@@ -137,12 +137,12 @@ ${southString}`,
       fireOrder: Date.now()})
    
     sendConfirmationEmail()
-    
+
     alert('Availability Submitted!! Check your email for verification of your latest availabilty')
 
-    // setTimeout(() => {
-    //   window.location.reload()
-    // }, 500)
+    setTimeout(() => {
+      window.location.reload()
+    }, 500)
   }
 
     return (
