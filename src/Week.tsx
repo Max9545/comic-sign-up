@@ -103,7 +103,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       const emailData = {
         to: `${props.comedian.email}`,
         from: 'bregmanmax91@gmail.com',
-        subject: 'Comedy Works availability you submitted:',
+        subject: 'Comedy Works availability you submitted',
         text: `Downtown: 
 ${downtownString}
 
