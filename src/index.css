@@ -323,3 +323,18 @@ label {
   margin-bottom: 5%;
   margin-top: 8%;
 }
+
+.submit-mask {
+  min-width: 15vw;
+  height: 10.3vh;
+  margin: 5% 0% 5% 0%;
+  background-color:  #17a2b8;
+  color: white;
+  font-weight: 900;
+  font-size: 1.5rem;
+  align-self: center;
+}
+
+.mask-container {
+  border: red double 5px;
+}

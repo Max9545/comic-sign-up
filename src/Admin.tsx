@@ -404,10 +404,14 @@ ${arrayLineup}
 
   return (
     <div className='admin-form'>
-      <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
-      <input type='text' onChange={(e) => setComicEmail(e.target.value)}/>
-      <input type='submit' onClick={() => maskAsComic()}/>
+      
+      <div className='mask-container'>
+        <h3 className='shows-visible-to-comics'>Enter availabilty for comic</h3>
+        <input type='text' className='yes-spot' onChange={(e) => setComicEmail(e.target.value)}/>
+      <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
+      </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
+  <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
       <Week comedian={comedianMask} weeklyShowTimes={props.shows}/>
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
       <button className='clear-form' onClick={() => reset()}>Clear/Reset Form</button>
