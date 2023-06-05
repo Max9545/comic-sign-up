@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
-import { ShowToBook } from './interface'
+import { Comic, ShowToBook } from './interface'
 import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where } from "firebase/firestore"
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
+import Week from './Week'
 
-function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}) {
+function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any}) {
 
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
@@ -21,6 +22,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any}
   const [comicForHistory, setcomicForHistory] = useState('')
   const [published, setPublished] = useState<any[]>([])
   const [emailList, setEmailList] = useState<any[]>([])
+  const [comicEmail, setComicEmail] = useState('')
+  const [comedianMask, setComedianMask] = useState<Comic>(props.comedian)
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -368,8 +371,44 @@ ${arrayLineup}
     await setComicEmailList()
   }
 
+  const maskAsComic = async () => {
+    console.log(comicEmail)
+    try {
+      const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.email", "==", comicEmail))
+      const doc = await (getDocs(docRef))
+      const comic = await doc.docs[0].data().comedianInfo
+      console.log(comic)
+      setComedianMask({
+        name: comic.name,
+        id: comic.id,
+        type: comic.type,
+        email: comicEmail,
+        showsAvailabledowntown: comic.showsAvailabledowntown,
+        showsAvailablesouth: comic.showsAvailablesouth,
+        showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
+          // {
+          //   monday: [],
+          //   tuesday: [],
+          //   wednesday: [],
+          //   thursday: [], 
+          //   friday: [],
+          //   saturday: [],
+          //   sunday: []
+          // }
+        showsAvailablesouthHistory: comic.showsAvailablesouthHistory
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div className='admin-form'>
+      <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
+      <input type='text' onChange={(e) => setComicEmail(e.target.value)}/>
+      <input type='submit' onClick={() => maskAsComic()}/>
+      
+      <Week comedian={comedianMask} weeklyShowTimes={props.shows}/>
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
       <button className='clear-form' onClick={() => reset()}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>

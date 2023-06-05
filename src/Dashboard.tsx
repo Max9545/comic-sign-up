@@ -96,6 +96,8 @@ function Dashboard() {
       const q = query(collection(db, "users"), where("uid", "==", user?.uid)) 
       const doc = await getDocs(q)
       const data = doc.docs[0].data()
+      console.log(data)
+
       setName(data.name)
       setAdmin(data.admin)
       setComedian({
@@ -163,6 +165,7 @@ function Dashboard() {
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
+      console.log(comic)
       setComedian({
         name: comic.name,
         id: comic.id,
@@ -233,10 +236,10 @@ const viewAllComicsAvailableSouth = async () => {
           onChange={(e) => setName(e.target.value)}
           placeholder="User Name If First Time"
       />
-      {admin && <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>}
-      <Week comedian={comedian} weeklyShowTimes={shows}/>
+      {/* {admin && <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>}
+      <Week comedian={comedian} weeklyShowTimes={shows}/> */}
       {admin && <Admin shows={shows} setShows={setShows}
-      setWeekSchedule={setWeekSchedule}/>}
+      setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows}/>}
        <div className="dashboard__container">
         Logged in as
          <div>{name}</div>

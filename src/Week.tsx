@@ -140,9 +140,9 @@ ${southString}`,
 
     alert('Availability Submitted!! Check your email for verification of your latest availabilty')
 
-    setTimeout(() => {
-      window.location.reload()
-    }, 500)
+    // setTimeout(() => {
+    //   window.location.reload()
+    // }, 500)
   }
 
     return (
