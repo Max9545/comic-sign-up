@@ -407,7 +407,7 @@ ${arrayLineup}
       <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
       <input type='text' onChange={(e) => setComicEmail(e.target.value)}/>
       <input type='submit' onClick={() => maskAsComic()}/>
-      
+  <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
       <Week comedian={comedianMask} weeklyShowTimes={props.shows}/>
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
       <button className='clear-form' onClick={() => reset()}>Clear/Reset Form</button>
