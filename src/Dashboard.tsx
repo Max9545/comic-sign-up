@@ -96,8 +96,6 @@ function Dashboard() {
       const q = query(collection(db, "users"), where("uid", "==", user?.uid)) 
       const doc = await getDocs(q)
       const data = doc.docs[0].data()
-      console.log(data)
-
       setName(data.name)
       setAdmin(data.admin)
       setComedian({
@@ -165,7 +163,6 @@ function Dashboard() {
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
-      console.log(comic)
       setComedian({
         name: comic.name,
         id: comic.id,
@@ -185,7 +182,6 @@ function Dashboard() {
           // }
         showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
-      console.log(user?.email)
     } catch (err) {
       console.error(err) 
     }  

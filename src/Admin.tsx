@@ -397,12 +397,10 @@ ${arrayLineup}
   }
 
   const maskAsComic = async () => {
-    console.log(comicEmail)
     try {
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.email", "==", comicEmail))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
-      console.log(comic)
       setComedianMask({
         name: comic.name,
         id: comic.id,
@@ -411,15 +409,6 @@ ${arrayLineup}
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
         showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
-          // {
-          //   monday: [],
-          //   tuesday: [],
-          //   wednesday: [],
-          //   thursday: [], 
-          //   friday: [],
-          //   saturday: [],
-          //   sunday: []
-          // }
         showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
     } catch (err) {
