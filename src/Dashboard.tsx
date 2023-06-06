@@ -238,6 +238,7 @@ const viewAllComicsAvailableSouth = async () => {
       />
       {/* {admin && <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>}
       <Week comedian={comedian} weeklyShowTimes={shows}/> */}
+      {!admin && <Week comedian={comedian} weeklyShowTimes={shows}/>}
       {admin && <Admin shows={shows} setShows={setShows}
       setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows}/>}
        <div className="dashboard__container">

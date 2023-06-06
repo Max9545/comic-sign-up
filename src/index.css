@@ -175,11 +175,13 @@ label {
 }
 
 .downtown-available-header {
+  font-size: 3rem;
   color: #dc3545;
   border-bottom: #17a2b8 double 10px;
 }
 
 .south-available-header {
+  font-size: 3rem;
   color: #17a2b8;
   border-bottom: #dc3545 double 10px;
 }

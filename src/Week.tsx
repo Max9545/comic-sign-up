@@ -20,14 +20,16 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
   }, [props.weeklyShowTimes])
 
   useEffect(() => {
-    showShows()
+    showDowntownShows()
+    showSouthShows()
   }, [props])
 
 
-  const showShows = () => {
+  const showDowntownShows = () => {
     if(shows.length > 0) {
       return props.weeklyShowTimes.map((show, index) => { 
-        return <div key={index}>
+        if (show.club === 'downtown') {
+          return <div key={index}>
                   <Show
                       key={index}
                       id={show.id}
@@ -42,10 +44,34 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
                       availableComics={show.availableComics}
                   />
               </div>
-          
+        } 
         })
       }
     }
+
+    const showSouthShows = () => {
+      if(shows.length > 0) {
+        return props.weeklyShowTimes.map((show, index) => { 
+          if (show.club === 'south') {
+            return <div key={index}>
+                    <Show
+                        key={index}
+                        id={show.id}
+                        day={show.day}
+                        time={show.time}
+                        currentClub={show.club}
+                        availableComedian={currentComedian}
+                        date={show.date}
+                        headliner={show.headliner}
+                        availability={show.availableComics.includes(props.comedian.name)}
+                        setAllAvailability={setAllAvailability}
+                        availableComics={show.availableComics}
+                    />
+                </div>
+          } 
+          })
+        }
+      }
 
     const sendConfirmationEmail = async () => {
 
@@ -147,7 +173,10 @@ ${southString}`,
 
     return (
         <section className='show-container'>
-          {showShows()}
+          <h1 className='downtown-available-header'>Downtown</h1>
+          {showDowntownShows()}
+          <h1 className='south-available-header'>South</h1>
+          {showSouthShows()}
           <button onClick={submitForm}type="submit" className='submit-btn'>
           Submit Availability
           </button>
