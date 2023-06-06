@@ -108,7 +108,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   }
 
   return (
-    <div className='available'>
+    <div className={`available-${props.club}`}>
       <h3>{`${props.day}(${props.date}) ${props.headliner} ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}`}</h3>
       <p>{bookedShow.mC &&`MC: ${bookedShow.mC}`}</p>
       <p>{bookedShow.starMC &&`Star MC: ${bookedShow.starMC}`}</p>

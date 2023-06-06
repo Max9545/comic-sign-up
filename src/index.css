@@ -70,8 +70,17 @@ header {
   
 }
 
-.available {
-  border: bisque solid;
+.available-downtown {
+  border: #dc3545 solid 10px;
+  color: white;
+  margin: 1%;
+  min-width: 20vw;
+  padding: 2%;
+  background-color: #282c34;
+}
+
+.available-south {
+  border: #17a2b8 solid 10px;
   color: white;
   margin: 1%;
   min-width: 20vw;
