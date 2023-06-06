@@ -406,7 +406,7 @@ ${arrayLineup}
     <div className='admin-form'>
       
       <div className='mask-container'>
-        <h3 className='shows-visible-to-comics'>Enter availabilty for comic</h3>
+        <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their email</h3>
         <input type='text' className='yes-spot' onChange={(e) => setComicEmail(e.target.value)}/>
       <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
       </div>
