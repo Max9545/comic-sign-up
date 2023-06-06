@@ -227,6 +227,13 @@ const viewAllComicsAvailableSouth = async () => {
 
   return (
     <div className="dashboard">
+      <div className="dashboard__container">
+        Logged in as {name}
+         <div>{user?.email}</div>
+         <button className="dashboard__btn" onClick={logout}>
+          Logout
+         </button>
+       </div>
       <p className='available-example'>This red color means you are AVAILABLE to be booked for the this show</p>
       <p className='not-available-example'>This blue color means you are NOT available to be booked for this show</p>
       <input
@@ -239,14 +246,7 @@ const viewAllComicsAvailableSouth = async () => {
       {!admin && <Week comedian={comedian} weeklyShowTimes={shows}/>}
       {admin && <Admin shows={shows} setShows={setShows}
       setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows}/>}
-       <div className="dashboard__container">
-        Logged in as
-         <div>{name}</div>
-         <div>{user?.email}</div>
-         <button className="dashboard__btn" onClick={logout}>
-          Logout
-         </button>
-       </div>
+       
      </div>
   ) 
 } 
