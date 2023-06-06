@@ -342,9 +342,10 @@ ${arrayLineup}
     // alert('Comics have been notified')
   }
 
-  const showPublished = () => {
+  const showPublishedDowntown = () => {
     return published.map((pubShow, index) => {
-      return <div className='published' key={index}>
+      if (pubShow.bookedshow.club === 'downtown') {
+        return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
               <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
               {pubShow.bookedshow.mC && <p className='published-detail'>MC: {pubShow.bookedshow.mC}</p>}
               {pubShow.bookedshow.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>}
@@ -359,6 +360,29 @@ ${arrayLineup}
                 </div>}
                 <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
              </div>
+      }
+    })
+  }
+
+  const showPublishedSouth = () => {
+    return published.map((pubShow, index) => {
+      if (pubShow.bookedshow.club === 'south') {
+        return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
+              <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
+              {pubShow.bookedshow.mC && <p className='published-detail'>MC: {pubShow.bookedshow.mC}</p>}
+              {pubShow.bookedshow.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>}
+              {pubShow.bookedshow.star7 && <p className='published-detail'>Star 7: {pubShow.bookedshow.star7}</p>}
+              {pubShow.bookedshow.b1 && <p className='published-detail'>B1: {pubShow.bookedshow.b1}</p>}
+              {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
+              {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
+              {pubShow.bookedshow.other.length > 0 && 
+                <div>
+                  <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
+                  <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
+                </div>}
+                <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
+             </div>
+      }
     })
   }
 
@@ -367,7 +391,8 @@ ${arrayLineup}
     await deleteDoc(doc (db,"publishedShows", id))
 
     fetchPublishedShows()
-    showPublished()
+    showPublishedDowntown()
+    showPublishedSouth()
     await setComicEmailList()
   }
 
@@ -437,7 +462,12 @@ ${arrayLineup}
       {showsToAdd}
       <div>
         <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows</button>
-        {published.length > 0 && <div id='seen-published'>{showPublished()}<button className='build-week' onClick={() => sendEmails()}>Email to all comics</button></div>}
+        {published.length > 0 && <div id='seen-published'>
+        <h2 className='downtown-available-header'>Downtown Bookings</h2>  
+        {showPublishedDowntown()}
+        <h2 className='south-available-header'>South Bookings</h2>
+        {showPublishedSouth()}
+        <button className='build-week' onClick={() => sendEmails()}>Email to all comics</button></div>}
         <h2 className='downtown-available-header'>Downtown Available Comics</h2>
         <div>{signedShowsDown.map(availShow => availShow)}</div>
         <h2 className='south-available-header'>South Club Available Comics</h2>

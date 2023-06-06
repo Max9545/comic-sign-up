@@ -311,11 +311,19 @@ label {
   padding: 3%;
 }
 
-.published {
+.published-south {
   background-color: #282c34;
   padding: 1%;
   color: white;
   border: #17a2b8 double 30px;
+  margin: 6%;
+}
+
+.published-downtown {
+  background-color: #282c34;
+  padding: 1%;
+  color: white;
+  border: #dc3545 double 30px;
   margin: 6%;
 }
 
