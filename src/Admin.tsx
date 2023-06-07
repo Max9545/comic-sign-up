@@ -229,7 +229,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
             date={finalForm.date}
             alreadyBooked={alreadyBooked} 
           />
-          {/* {alreadyBooked} */}
         </div>
         })
         setSignedShowsDown(showFinals)
@@ -504,7 +503,8 @@ ${arrayLineup}
       {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
       {showsToAdd}
       <div>
-        <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows</button>
+        <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to all comics</button>
+        {/* <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows Page</button> */}
         {/* {published.length > 0 && <div id='seen-published'>
         <h2 className='downtown-available-header'>Downtown Bookings</h2>  
         {showPublishedDowntown()}
