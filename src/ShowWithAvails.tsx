@@ -1,9 +1,9 @@
-import { collection, getDocs, query, doc, setDoc } from 'firebase/firestore'
+import { collection, getDocs, query, doc, setDoc, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
 
 
-function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any, date: string}) {
+function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any, date: string, alreadyBooked: any}) {
   
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
@@ -28,6 +28,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   
   useEffect(() => {
     setComics(props.availableComics)
+    showIfAlreadyPublished()
   },[props])
 
   useEffect(() => {
@@ -107,35 +108,46 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     alert('Show queued!')
   }
 
+  const showIfAlreadyPublished = async () => {
+console.log(props.id)
+    const q = query(collection(db, `publishedShows`))
+    // where("id", '==', props.id))
+         const doc = await getDocs(q)
+         const shows =  doc.docs.map((show: { data: () => any} ) => show.data()) 
+         console.log(shows)
+  }
+
   return (
-    <div className={`available-${props.club}`}>
-      <h3>{`${props.day} (${props.date}) ${props.headliner} ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}`}</h3>
-      <p>{bookedShow.mC &&`MC: ${bookedShow.mC}`}</p>
-      <p>{bookedShow.starMC &&`Star MC: ${bookedShow.starMC}`}</p>
-      <p>{bookedShow.b1 &&`B1: ${bookedShow.b1}`}</p>
-      <p>{bookedShow.a1 &&`A1: ${bookedShow.a1}`}</p>
-      <p>{bookedShow.star7 &&`Star 7: ${bookedShow.star7}`}</p>
-      <p>{bookedShow.yes &&`Yes: ${bookedShow.yes}`}</p>
-      <div>{bookedShow.other.length > 0 && bookedShow.other.map((comic: { type: string; name: string }, index: string | number | null | undefined) => 
-        <div className='other-type-comic' key={index}>
-          <p>{`${comic.type}: ${comic.name}`}</p>
-          <button onClick={() => {
-            const booking = bookedShow
-            booking.other.splice(bookedShow.other.findIndex((type: { type: string }) => type.type === comic.type), 1)
-            setBookedShow(booking)
-            setTrigger(!trigger)
-          }} className='delete-comic'>Delete</button>
-        </div>
-      )}</div>
-      {(bookedShow.mC || bookedShow.starMC || bookedShow.a1 || bookedShow.b1 || bookedShow.other.length > 0 || bookedShow.yes || bookedShow.star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
-      <div className='comic-type-box'>{props.availableComics.map(comic => 
-        <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
-          <p className='comic-avail' key={comic}>{`${comic}`}</p>
-          <p className='comic-type' onClick={() => setComedianType('mC', comic)}>MC</p>
-          <p className='comic-type' onClick={() => setComedianType('a1', comic)}>A1</p>
-          <p className='comic-type' onClick={() => setComedianType('b1', comic)}>B1</p>
-          <p className='comic-type' onClick={() => setComedianType('star7', comic)}>Star7</p>
-          <p className='comic-type starMC' onClick={() => setComedianType('starMC', comic)}>Star MC</p>
+    <div className={`available-${props.club} avail-box`}>
+      {props.alreadyBooked}
+      <div>
+        <h3>{`${props.day} (${props.date}) ${props.headliner} ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}`}</h3>
+        <p>{bookedShow.mC &&`MC: ${bookedShow.mC}`}</p>
+        <p>{bookedShow.starMC &&`Star MC: ${bookedShow.starMC}`}</p>
+        <p>{bookedShow.b1 &&`B1: ${bookedShow.b1}`}</p>
+        <p>{bookedShow.a1 &&`A1: ${bookedShow.a1}`}</p>
+        <p>{bookedShow.star7 &&`Star 7: ${bookedShow.star7}`}</p>
+        <p>{bookedShow.yes &&`Yes: ${bookedShow.yes}`}</p>
+        <div>{bookedShow.other.length > 0 && bookedShow.other.map((comic: { type: string; name: string }, index: string | number | null | undefined) => 
+          <div className='other-type-comic' key={index}>
+            <p>{`${comic.type}: ${comic.name}`}</p>
+            <button onClick={() => {
+              const booking = bookedShow
+              booking.other.splice(bookedShow.other.findIndex((type: { type: string }) => type.type === comic.type), 1)
+              setBookedShow(booking)
+              setTrigger(!trigger)
+            }} className='delete-comic'>Delete</button>
+          </div>
+        )}</div>
+        {(bookedShow.mC || bookedShow.starMC || bookedShow.a1 || bookedShow.b1 || bookedShow.other.length > 0 || bookedShow.yes || bookedShow.star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
+        <div className='comic-type-box'>{props.availableComics.map(comic => 
+          <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
+            <p className='comic-avail' key={comic}>{`${comic}`}</p>
+            <p className='comic-type' onClick={() => setComedianType('mC', comic)}>MC</p>
+            <p className='comic-type' onClick={() => setComedianType('a1', comic)}>A1</p>
+            <p className='comic-type' onClick={() => setComedianType('b1', comic)}>B1</p>
+            <p className='comic-type' onClick={() => setComedianType('star7', comic)}>Star7</p>
+            <p className='comic-type starMC' onClick={() => setComedianType('starMC', comic)}>Star MC</p>
           </div>)}
           <div className='yes-div'>
             <label className='yes-spot'>Yes (Guest):</label>
@@ -158,6 +170,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             }}>Add</button>
           </div>
         </div>
+      </div>
     </div>
   )
 }
