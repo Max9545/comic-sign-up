@@ -109,12 +109,10 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   }
 
   const showIfAlreadyPublished = async () => {
-console.log(props.id)
     const q = query(collection(db, `publishedShows`))
     // where("id", '==', props.id))
          const doc = await getDocs(q)
          const shows =  doc.docs.map((show: { data: () => any} ) => show.data()) 
-         console.log(shows)
   }
 
   return (

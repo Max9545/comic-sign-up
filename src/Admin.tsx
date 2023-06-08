@@ -193,7 +193,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
 
             const alreadyBooked = published.map(show => {
               if (show.bookedshow.id == finalForm.id) {
-                console.log(show.bookedshow, finalForm)
                 return <div className={`published-${show.bookedshow.club}`} key={index}>
               <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
               {show.bookedshow.mC && <p className='published-detail'>MC: {show.bookedshow.mC}</p>}
@@ -213,8 +212,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
             })
 
             
-            return <div className='show-avail-container'>
-            <ShowWithAvails
+            return <ShowWithAvails
             key={index}
             setSpecificComicHistoryDowntown={setSpecificComicHistoryDowntown}
             setSpecificComicHistorySouth={setSpecificComicHistorySouth}
@@ -229,7 +227,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
             date={finalForm.date}
             alreadyBooked={alreadyBooked} 
           />
-        </div>
         })
         setSignedShowsDown(showFinals)
         })
