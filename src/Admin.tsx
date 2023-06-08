@@ -36,6 +36,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     fetchPublishedShows()
   }, [props])
 
+  useEffect(() => {
+    viewAllComicsAvailableSouth()
+    viewAllComicsAvailableDowntown()
+  }, [published])
+
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
     setNewSchedule(newSchedule)
