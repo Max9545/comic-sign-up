@@ -24,6 +24,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [emailList, setEmailList] = useState<any[]>([])
   const [comicEmail, setComicEmail] = useState('')
   const [comedianMask, setComedianMask] = useState<Comic>(props.comedian)
+  const [adTrigger, setAdTrigger] = useState(true)
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -34,7 +35,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
     fetchPublishedShows()
-  }, [props])
+  }, [props, adTrigger])
 
   useEffect(() => {
     viewAllComicsAvailableSouth()
@@ -231,6 +232,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
             availableComics={finalForm.availableComics}
             date={finalForm.date}
             alreadyBooked={alreadyBooked} 
+            setAdTrigger={setAdTrigger}
+            adTrigger={adTrigger}
           />
         })
         setSignedShowsDown(showFinals)
@@ -295,6 +298,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
             availableComics={finalForm.availableComics}
             date={finalForm.date} 
             alreadyBooked={alreadyBooked}
+            setAdTrigger={setAdTrigger}
+            adTrigger={adTrigger}
           />
         })
         setSignedShowsSouth(showFinals)

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
 
 
-function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any, date: string, alreadyBooked: any}) {
+function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any, date: string, alreadyBooked: any, setAdTrigger: any, adTrigger: any}) {
   
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
@@ -28,7 +28,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   
   useEffect(() => {
     setComics(props.availableComics)
-    showIfAlreadyPublished()
+    // showIfAlreadyPublished()
   },[props])
 
   useEffect(() => {
@@ -103,17 +103,27 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     }
   }
 
-  const publishShow = () => {
+  const publishShow = async () => {
     setDoc(doc(db, `publishedShows/${props.id}`), {bookedshow: bookedShow, fireOrder: Date.now()})
     alert('Show queued!')
+    props.setAdTrigger(!props.adTrigger)
+    setBookedShow({...bookedShow, 
+      mC: '',
+      a1: '',
+      b1: '',
+      starMC: '',
+      star7: '',
+      yes: '',
+      other: []
+    })  
   }
 
-  const showIfAlreadyPublished = async () => {
-    const q = query(collection(db, `publishedShows`))
-    // where("id", '==', props.id))
-         const doc = await getDocs(q)
-         const shows =  doc.docs.map((show: { data: () => any} ) => show.data()) 
-  }
+  // const showIfAlreadyPublished = async () => {
+  //   const q = query(collection(db, `publishedShows`))
+  //   // where("id", '==', props.id))
+  //        const doc = await getDocs(q)
+  //        const shows =  doc.docs.map((show: { data: () => any} ) => show.data()) 
+  // }
 
   return (
     <div className={`available-${props.club} avail-box`}>
