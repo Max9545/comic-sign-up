@@ -73,7 +73,7 @@ header {
 .available-downtown {
   border: #dc3545 solid 10px;
   color: white;
-  margin: 1%;
+  margin: 1% 1% 10% 1%;
   min-width: 20vw;
   padding: 2%;
   background-color: #282c34;
@@ -82,7 +82,7 @@ header {
 .available-south {
   border: #17a2b8 solid 10px;
   color: white;
-  margin: 1%;
+  margin: 1% 1% 10% 1%;
   min-width: 20vw;
   padding: 2%;
   background-color: #282c34;
