@@ -115,17 +115,17 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     setDoc(doc(db, `publishedShows/${props.id}`), {bookedshow: bookedShow, fireOrder: Date.now()})
     alert('Show queued!')
     props.setAdTrigger(!props.adTrigger)
-    setBookedShow({...bookedShow, 
-      comics: {
-        mC: '',
-        a1: '',
-        b1: '',
-        starMC: '',
-        star7: '',
-        yes: '',
-        other: []
-      }
-    })  
+    // setBookedShow({...bookedShow, 
+    //   comics: {
+    //     mC: '',
+    //     a1: '',
+    //     b1: '',
+    //     starMC: '',
+    //     star7: '',
+    //     yes: '',
+    //     other: []
+    //   }
+    // })  
   }
 
   // const showIfAlreadyPublished = async () => {

@@ -40,6 +40,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   useEffect(() => {
     viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
+    showPublishedDowntown()
   }, [published])
 
   const deleteShow = (showId: string) => {
@@ -201,7 +202,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               if (show.bookedshow.id == finalForm.id) {
                 return <div className={`published-${show.bookedshow.club}`} key={index}>
               <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-              {show.bookedshow.comics.mC && <p className='published-detail'>MC: {show.bookedshow.comics.mC}</p>}
+              {Object.keys(show.bookedshow.comics).map((key, index) => {
+                return  <p>{show.bookedshow.comics[key] && `${key}: ${show.bookedshow.comics[key]}`}</p>
+              })}
+              {/* {show.bookedshow.comics.mC && <p className='published-detail'>MC: {show.bookedshow.comics.mC}</p>}
               {show.bookedshow.comics.starMC && <p className='published-detail'>Star MC: {show.bookedshow.comics.starMC}</p>}
               {show.bookedshow.comics.star7 && <p className='published-detail'>Star 7: {show.bookedshow.comics.star7}</p>}
               {show.bookedshow.comics.b1 && <p className='published-detail'>B1: {show.bookedshow.comics.b1}</p>}
@@ -211,7 +215,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                 <div>
                   <h4>Other/s: </h4>{show.bookedshow.comics.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
                   <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
-                </div>}
+                </div>} */}
                 <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
              </div>
               }
@@ -378,16 +382,16 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   }
 
   const sendEmails = () => {
-
+console.log('emails')
     const showsForEmailRaw = published.map(pubShow => {
 
-      const mC = pubShow.bookedshow.mC && `MC: ${pubShow.bookedshow.mC}`
-      const starMC = pubShow.bookedshow.starMC && `Star MC: ${pubShow.bookedshow.starMC}`
-      const a1 = pubShow.bookedshow.a1 && `A1: ${pubShow.bookedshow.a1}`
-      const b1 = pubShow.bookedshow.b1 && `B1: ${pubShow.bookedshow.b1}`
-      const star7 = pubShow.bookedshow.star7 && `Star 7: ${pubShow.bookedshow.star7}`
-      const yes = pubShow.bookedshow.yes && `Yes: ${pubShow.bookedshow.yes}`
-      const other = pubShow.bookedshow.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
+      const mC = pubShow.bookedshow.comics.mC && `MC: ${pubShow.bookedshow.comics.mC}`
+      const starMC = pubShow.bookedshow.comics.starMC && `Star MC: ${pubShow.bookedshow.comics.starMC}`
+      const a1 = pubShow.bookedshow.comics.a1 && `A1: ${pubShow.bookedshow.comics.a1}`
+      const b1 = pubShow.bookedshow.comics.b1 && `B1: ${pubShow.bookedshow.comics.b1}`
+      const star7 = pubShow.bookedshow.comics.star7 && `Star 7: ${pubShow.bookedshow.comics.star7}`
+      const yes = pubShow.bookedshow.comics.yes && `Yes: ${pubShow.bookedshow.comics.yes}`
+      const other = pubShow.bookedshow.comics.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
 
       const arrayLineup = [mC, starMC, star7, a1, b1, yes, other].filter(line => line != '').join('\n')
 
@@ -395,15 +399,17 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
 
 ${arrayLineup}
       `
+      console.log(arrayLineup)
       return showString
     })
-
+console.log(emailList)
     emailList.map(email => sendEmail(email, showsForEmailRaw))
     // alert('Comics have been notified')
   }
 
   const showPublishedDowntown = () => {
     return published.map((pubShow, index) => {
+      console.log(published, '408')
       if (pubShow.bookedshow.club === 'downtown') {
         return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
               <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
