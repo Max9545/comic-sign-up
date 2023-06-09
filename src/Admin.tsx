@@ -201,15 +201,15 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               if (show.bookedshow.id == finalForm.id) {
                 return <div className={`published-${show.bookedshow.club}`} key={index}>
               <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-              {show.bookedshow.mC && <p className='published-detail'>MC: {show.bookedshow.mC}</p>}
-              {show.bookedshow.starMC && <p className='published-detail'>Star MC: {show.bookedshow.starMC}</p>}
-              {show.bookedshow.star7 && <p className='published-detail'>Star 7: {show.bookedshow.star7}</p>}
-              {show.bookedshow.b1 && <p className='published-detail'>B1: {show.bookedshow.b1}</p>}
-              {show.bookedshow.a1 && <p className='published-detail'>A1: {show.bookedshow.a1}</p>}
-              {show.bookedshow.yes && <p className='published-detail'>Yes: {show.bookedshow.yes}</p>}
-              {show.bookedshow.other.length > 0 && 
+              {show.bookedshow.comics.mC && <p className='published-detail'>MC: {show.bookedshow.comics.mC}</p>}
+              {show.bookedshow.comics.starMC && <p className='published-detail'>Star MC: {show.bookedshow.comics.starMC}</p>}
+              {show.bookedshow.comics.star7 && <p className='published-detail'>Star 7: {show.bookedshow.comics.star7}</p>}
+              {show.bookedshow.comics.b1 && <p className='published-detail'>B1: {show.bookedshow.comics.b1}</p>}
+              {show.bookedshow.comics.a1 && <p className='published-detail'>A1: {show.bookedshow.comics.a1}</p>}
+              {show.bookedshow.comics.yes && <p className='published-detail'>Yes: {show.bookedshow.comics.yes}</p>}
+              {show.bookedshow.comics.other.length > 0 && 
                 <div>
-                  <h4>Other/s: </h4>{show.bookedshow.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
+                  <h4>Other/s: </h4>{show.bookedshow.comics.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
                   <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
                 </div>}
                 <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
@@ -407,17 +407,23 @@ ${arrayLineup}
       if (pubShow.bookedshow.club === 'downtown') {
         return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
               <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
-              {pubShow.bookedshow.mC && <p className='published-detail'>MC: {pubShow.bookedshow.mC}</p>}
-              {pubShow.bookedshow.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>}
-              {pubShow.bookedshow.star7 && <p className='published-detail'>Star 7: {pubShow.bookedshow.star7}</p>}
-              {pubShow.bookedshow.b1 && <p className='published-detail'>B1: {pubShow.bookedshow.b1}</p>}
-              {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
-              {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
-              {pubShow.bookedshow.other.length > 0 && 
+              {/* {pubShow.bookedshow.comics.mC && <p className='published-detail'>MC: {pubShow.bookedshow.comics.mC}</p>}
+              {pubShow.bookedshow.comics.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.comics.starMC}</p>}
+              {pubShow.bookedshow.comics.star7 && <p className='published-detail'>Star 7: {pubShow.bookedshow.comics.star7}</p>}
+              {pubShow.bookedshow.comics.b1 && <p className='published-detail'>B1: {pubShow.bookedshow.comics.b1}</p>}
+              {pubShow.bookedshow.comics.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.comics.a1}</p>}
+              {pubShow.bookedshow.comics.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.comics.yes}</p>}
+              {pubShow.bookedshow.comics.other.length > 0 && 
                 <div>
-                  <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
+                  <h4>Other/s: </h4>{pubShow.bookedshow.comics.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
                   <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
-                </div>}
+                </div>} */}
+                {Object.keys(pubShow.bookedshow.comics).map((key, index) => {
+                  return pubShow.bookedshow.comics[key] && <p className='published-detail'>{`${key}: ${pubShow.bookedshow.comics[key]}`}</p>})
+                }
+       
+          
+
                 <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
              </div>
       }

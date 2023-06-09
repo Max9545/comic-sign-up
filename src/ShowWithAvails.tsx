@@ -17,13 +17,15 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       club: props.club, 
       date: props.date,
       id: props.id,
-      mC: '',
-      a1: '',
-      b1: '',
-      starMC: '',
-      star7: '',
-      yes: '',
-      other: []
+      comics: {
+        mC: '',
+        a1: '',
+        b1: '',
+        starMC: '',
+        star7: '',
+        yes: '',
+        other: []
+      }
   })
   
   useEffect(() => {
@@ -91,16 +93,22 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   }
 
   const setComedianType = (typeOfComic: string, comic: any) => {
-    if (bookedShow[typeOfComic] == '') {
-      const newBooking = {...bookedShow, [typeOfComic]: comic}
-      setBookedShow(newBooking)
+    if (bookedShow.comics[typeOfComic] == '') {
+      console.log('should create')
+      // const newBooking = {...bookedShow, [typeOfComic]: comic}
+      bookedShow.comics[typeOfComic] = comic
+      setBookedShow(bookedShow)
+    } else if (bookedShow.comics[typeOfComic] === comic) {
+        console.log('should be empty')
+        // const newBooking = {...bookedShow, [typeOfComic]: ''}
+        bookedShow.comics[typeOfComic] = ''
+        setBookedShow(bookedShow)
     } else if (bookedShow[typeOfComic] !== comic){
-      const newBooking = {...bookedShow, [typeOfComic]: comic}
-      setBookedShow(newBooking)
-    } else {
-      const newBooking = {...bookedShow, [typeOfComic]: ''}
-      setBookedShow(newBooking)
-    }
+      console.log('should replace')
+      // const newBooking = {...bookedShow, [typeOfComic]: comic}
+      bookedShow.comics[typeOfComic] = comic
+      setBookedShow(bookedShow)
+    } 
   }
 
   const publishShow = async () => {
@@ -108,13 +116,15 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     alert('Show queued!')
     props.setAdTrigger(!props.adTrigger)
     setBookedShow({...bookedShow, 
-      mC: '',
-      a1: '',
-      b1: '',
-      starMC: '',
-      star7: '',
-      yes: '',
-      other: []
+      comics: {
+        mC: '',
+        a1: '',
+        b1: '',
+        starMC: '',
+        star7: '',
+        yes: '',
+        other: []
+      }
     })  
   }
 
@@ -125,12 +135,36 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   //        const shows =  doc.docs.map((show: { data: () => any} ) => show.data()) 
   // }
 
+  const handleDrag = (event: React.DragEvent<HTMLDivElement>, key: string) => {
+    event.dataTransfer.setData('text/plain', key);
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const key = event.dataTransfer.getData('text/plain');
+    const newData = { ...bookedShow.comics };
+    const keys = Object.keys(newData);
+    const index = keys.indexOf(key);
+    keys.splice(index, 1);
+    keys.splice(Number(event.currentTarget.dataset.index), 0, key);
+    const orderedData: { [key: string]: string } = {};
+    keys.forEach((k) => {
+      orderedData[k] = newData[k];
+    });
+    setBookedShow({...bookedShow, comics: orderedData});
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  };
+
+
   return (
     <div className={`available-${props.club} avail-box`}>
       {props.alreadyBooked}
       <div>
         <h3>Available {`${props.day} (${props.date}) ${props.headliner} ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}`}</h3>
-        <p>{bookedShow.mC &&`MC: ${bookedShow.mC}`}</p>
+        {/* <p>{bookedShow.mC &&`MC: ${bookedShow.mC}`}</p>
         <p>{bookedShow.starMC &&`Star MC: ${bookedShow.starMC}`}</p>
         <p>{bookedShow.b1 &&`B1: ${bookedShow.b1}`}</p>
         <p>{bookedShow.a1 &&`A1: ${bookedShow.a1}`}</p>
@@ -146,8 +180,22 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
               setTrigger(!trigger)
             }} className='delete-comic'>Delete</button>
           </div>
-        )}</div>
-        {(bookedShow.mC || bookedShow.starMC || bookedShow.a1 || bookedShow.b1 || bookedShow.other.length > 0 || bookedShow.yes || bookedShow.star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
+        )}</div> */}
+        <div>
+      {Object.keys(bookedShow.comics).map((key, index) => (
+        <div
+          key={key}
+          draggable
+          onDragStart={(event) => handleDrag(event, key)}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          data-index={index}
+        >
+          {bookedShow.comics[key] && `${key}: ${bookedShow.comics[key]}`}
+        </div>
+      ))}
+    </div>
+        {(bookedShow.comics.mC || bookedShow.comics.starMC || bookedShow.comics.a1 || bookedShow.comics.b1 || bookedShow.comics.other.length > 0 || bookedShow.comics.yes || bookedShow.comics.star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
         <div className='comic-type-box'>{props.availableComics.map(comic => 
           <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
             <p className='comic-avail' key={comic}>{`${comic}`}</p>
@@ -173,7 +221,9 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           </div>
             <button className='add-show' onClick={() => {
               if (otherName && otherType) {
-                setBookedShow({...bookedShow, other:[...bookedShow.other,{ type: otherType, name: otherName}]})
+                console.log(bookedShow.comics.other)
+                bookedShow.comics.other = [...bookedShow.other, { type: otherType, name: otherName}]
+                setBookedShow(bookedShow)
               }
             }}>Add</button>
           </div>
