@@ -25,13 +25,11 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         starMC: '',
         star7: '',
         yes: '',
-        // other: []
       }
   })
   
   useEffect(() => {
     setComics(props.availableComics)
-    // showIfAlreadyPublished()
   },[props])
 
   useEffect(() => {
