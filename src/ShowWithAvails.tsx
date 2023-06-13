@@ -185,6 +185,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         <div>
       {Object.keys(bookedShow.comics).map((key, index) => (
         <div
+          className='draggable'
           key={key}
           draggable
           onDragStart={(event) => handleDrag(event, key)}
@@ -192,7 +193,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           onDrop={handleDrop}
           data-index={index}
         >
-          {bookedShow.comics[key].length > 0 && `${key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}
+          {bookedShow.comics[key].length > 0 && <div className='potential-booked-comic'>{`${key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}<button className='delete-potential-comic'>Delete</button></div>}
         </div>
       ))}
     </div>
