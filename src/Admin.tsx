@@ -203,7 +203,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                 return <div className={`published-${show.bookedshow.club}`} key={index}>
               <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
               {Object.keys(show.bookedshow.comics).map((key, index) => {
-                return  <p>{show.bookedshow.comics[key] && `${key}: ${show.bookedshow.comics[key]}`}</p>
+                return  <p>{show.bookedshow.comics[key] && `${key.charAt(0).toUpperCase() + key.slice(1)}: ${show.bookedshow.comics[key]}`}</p>
               })}
               {/* {show.bookedshow.comics.mC && <p className='published-detail'>MC: {show.bookedshow.comics.mC}</p>}
               {show.bookedshow.comics.starMC && <p className='published-detail'>Star MC: {show.bookedshow.comics.starMC}</p>}

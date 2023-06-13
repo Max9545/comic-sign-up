@@ -191,11 +191,11 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           onDrop={handleDrop}
           data-index={index}
         >
-          {bookedShow.comics[key] && `${key}: ${bookedShow.comics[key]}`}
+          {bookedShow.comics[key] && `${key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}
         </div>
       ))}
     </div>
-        {(bookedShow.comics.mC || bookedShow.comics.starMC || bookedShow.comics.a1 || bookedShow.comics.b1 || bookedShow.comics.other.length > 0 || bookedShow.comics.yes || bookedShow.comics.star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}
+        {(bookedShow.comics.mC || bookedShow.comics.starMC || bookedShow.comics.a1 || bookedShow.comics.b1 || bookedShow.comics.other.length > 0 || bookedShow.comics.yes || bookedShow.comics.star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}  
         <div className='comic-type-box'>{props.availableComics.map(comic => 
           <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
             <p className='comic-avail' key={comic}>{`${comic}`}</p>
@@ -222,7 +222,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <button className='add-show' onClick={() => {
               if (otherName && otherType) {
                 console.log(bookedShow.comics.other)
-                bookedShow.comics.other = [...bookedShow.other, { type: otherType, name: otherName}]
+                bookedShow.comics.other = [...bookedShow.comics.other, { type: otherType, name: otherName}]
                 setBookedShow(bookedShow)
               }
             }}>Add</button>
