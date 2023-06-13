@@ -95,18 +95,12 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
   const setComedianType = (typeOfComic: string, comic: any) => {
     if (bookedShow.comics[typeOfComic] == '') {
-      console.log('should create')
-      // const newBooking = {...bookedShow, [typeOfComic]: comic}
       bookedShow.comics[typeOfComic] = comic
       setBookedShow(bookedShow)
     } else if (bookedShow.comics[typeOfComic] === comic) {
-        console.log('should be empty')
-        // const newBooking = {...bookedShow, [typeOfComic]: ''}
         bookedShow.comics[typeOfComic] = ''
         setBookedShow(bookedShow)
     } else if (bookedShow[typeOfComic] !== comic){
-      console.log('should replace')
-      // const newBooking = {...bookedShow, [typeOfComic]: comic}
       bookedShow.comics[typeOfComic] = comic
       setBookedShow(bookedShow)
     } 
@@ -116,28 +110,9 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     setDoc(doc(db, `publishedShows/${props.id}`), {bookedshow: bookedShow, fireOrder: Date.now()})
     alert('Show queued!')
     props.setAdTrigger(!props.adTrigger)
-    // setBookedShow({...bookedShow, 
-    //   comics: {
-    //     mC: '',
-    //     a1: '',
-    //     b1: '',
-    //     starMC: '',
-    //     star7: '',
-    //     yes: '',
-    //     other: []
-    //   }
-    // })  
   }
 
-  // const showIfAlreadyPublished = async () => {
-  //   const q = query(collection(db, `publishedShows`))
-  //   // where("id", '==', props.id))
-  //        const doc = await getDocs(q)
-  //        const shows =  doc.docs.map((show: { data: () => any} ) => show.data()) 
-  // }
-
   const removeComic = (comicKey: string) => {
-    console.log(comicKey)
     bookedShow.comics[comicKey] = ''
     setBookedShow(bookedShow)
     setTrigger(!trigger)
@@ -218,11 +193,9 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <label className='yes-spot'>Yes (Guest):</label>
             <input type='text' className='yes-spot-input' onChange={(event) => setYes(event?.target?.value)}/>
             <button className='add-show' onClick={() => {
-                console.log('hi')
                 bookedShow.comics.yes = yes
                 setBookedShow(bookedShow)
                 setTrigger(!trigger)
-                console.log(bookedShow.comics)
             }}>Add</button>
           </div>
           <div className='other-block'>
@@ -237,11 +210,9 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           </div>
             <button className='add-show' onClick={() => {
               if (otherName && otherType) {
-                // bookedShow.comics.other = [...bookedShow.comics.other, { type: otherType, name: otherName}]
                 bookedShow.comics[otherType] = otherName
                 setBookedShow(bookedShow)
                 setTrigger(!trigger)
-                console.log(bookedShow.comics)
               }
             }}>Add</button>
           </div>
