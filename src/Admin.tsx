@@ -205,17 +205,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               {Object.keys(show.bookedshow.comics).map((key, index) => {
                 return  <p>{show.bookedshow.comics[key] && `${key.charAt(0).toUpperCase() + key.slice(1)}: ${show.bookedshow.comics[key]}`}</p>
               })}
-              {/* {show.bookedshow.comics.mC && <p className='published-detail'>MC: {show.bookedshow.comics.mC}</p>}
-              {show.bookedshow.comics.starMC && <p className='published-detail'>Star MC: {show.bookedshow.comics.starMC}</p>}
-              {show.bookedshow.comics.star7 && <p className='published-detail'>Star 7: {show.bookedshow.comics.star7}</p>}
-              {show.bookedshow.comics.b1 && <p className='published-detail'>B1: {show.bookedshow.comics.b1}</p>}
-              {show.bookedshow.comics.a1 && <p className='published-detail'>A1: {show.bookedshow.comics.a1}</p>}
-              {show.bookedshow.comics.yes && <p className='published-detail'>Yes: {show.bookedshow.comics.yes}</p>}
-              {show.bookedshow.comics.other.length > 0 && 
-                <div>
-                  <h4>Other/s: </h4>{show.bookedshow.comics.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
-                  <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
-                </div>} */}
                 <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
              </div>
               }
@@ -251,9 +240,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     const docRef = query(collection(db, `comediansForAdmin`))
     const doc = await (getDocs(docRef))
     
-    const availableComics: DocumentData[] = []
+      const availableComics: DocumentData[] = []
       
       doc.docs.forEach(comic => availableComics.push(comic.data()))
+
       southShows.map(show => {
           const availabeComedians: any[] = []
           availableComics.map((comedian) => {
@@ -265,43 +255,38 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                   }
                 })
           })
+
+         
+
           const showFinals = southShows.map((finalForm, index) => {
 
             const alreadyBooked = published.map(show => {
               if (show.bookedshow.id == finalForm.id) {
-                console.log(show.bookedshow, finalForm)
                 return <div className={`published-${show.bookedshow.club}`} key={index}>
               <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-              {show.bookedshow.mC && <p className='published-detail'>MC: {show.bookedshow.mC}</p>}
-              {show.bookedshow.starMC && <p className='published-detail'>Star MC: {show.bookedshow.starMC}</p>}
-              {show.bookedshow.star7 && <p className='published-detail'>Star 7: {show.bookedshow.star7}</p>}
-              {show.bookedshow.b1 && <p className='published-detail'>B1: {show.bookedshow.b1}</p>}
-              {show.bookedshow.a1 && <p className='published-detail'>A1: {show.bookedshow.a1}</p>}
-              {show.bookedshow.yes && <p className='published-detail'>Yes: {show.bookedshow.yes}</p>}
-              {/* {show.bookedshow.other.length > 0 && 
-                <div>
-                  <h4>Other/s: </h4>{show.bookedshow.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
-                  <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
-                </div>} */}
+              {Object.keys(show.bookedshow.comics).map((key, index) => {
+                return  <p>{show.bookedshow.comics[key] && `${key.charAt(0).toUpperCase() + key.slice(1)}: ${show.bookedshow.comics[key]}`}</p>
+              })}
                 <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
              </div>
               }
-            }) 
+            })
 
+            
             return <ShowWithAvails
             key={index}
-            showTime={showTime}
             setSpecificComicHistoryDowntown={setSpecificComicHistoryDowntown}
             setSpecificComicHistorySouth={setSpecificComicHistorySouth}
             setcomicForHistory={setcomicForHistory}
+            showTime={showTime}
             headliner={finalForm.headliner}
             time={finalForm.time}
             day={finalForm.day}
             club={finalForm.club}
             id={finalForm.id}
             availableComics={finalForm.availableComics}
-            date={finalForm.date} 
-            alreadyBooked={alreadyBooked}
+            date={finalForm.date}
+            alreadyBooked={alreadyBooked} 
             setAdTrigger={setAdTrigger}
             adTrigger={adTrigger}
           />
