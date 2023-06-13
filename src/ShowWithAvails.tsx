@@ -136,6 +136,13 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   //        const shows =  doc.docs.map((show: { data: () => any} ) => show.data()) 
   // }
 
+  const removeComic = (comicKey: string) => {
+    console.log(comicKey)
+    bookedShow.comics[comicKey] = ''
+    setBookedShow(bookedShow)
+    setTrigger(!trigger)
+  }
+
   const handleDrag = (event: React.DragEvent<HTMLDivElement>, key: string) => {
     event.dataTransfer.setData('text/plain', key);
   };
@@ -193,7 +200,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           onDrop={handleDrop}
           data-index={index}
         >
-          {bookedShow.comics[key].length > 0 && <div className='potential-booked-comic'>{`${key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}<button className='delete-potential-comic'>Delete</button></div>}
+          {bookedShow.comics[key].length > 0 && <div className='potential-booked-comic'>{`${key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}<button className='delete-potential-comic' onClick={() => removeComic(key)}>Delete</button></div>}
         </div>
       ))}
     </div>
