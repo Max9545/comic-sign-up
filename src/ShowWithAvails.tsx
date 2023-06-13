@@ -9,6 +9,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   const [comicHistory, setComicHistory] = useState<any[]>([])
   const [otherType, setOtherType] = useState('')
   const [otherName, setOtherName] = useState('')
+  const [yes, setYes] = useState('')
   const [trigger, setTrigger] = useState(true)
   const [bookedShow, setBookedShow] = useState<any>({
       day: props.day,
@@ -207,7 +208,14 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           </div>)}
           <div className='yes-div'>
             <label className='yes-spot'>Yes (Guest):</label>
-            <input type='text' className='yes-spot-input' onChange={(event) => setBookedShow({...bookedShow, yes: event?.target?.value})}/>
+            <input type='text' className='yes-spot-input' onChange={(event) => setYes(event?.target?.value)}/>
+            <button className='add-show' onClick={() => {
+                console.log('hi')
+                bookedShow.comics.yes = yes
+                setBookedShow(bookedShow)
+                setTrigger(!trigger)
+                console.log(bookedShow.comics)
+            }}>Add</button>
           </div>
           <div className='other-block'>
             <label className='other-spot'>Other Type Comics:</label>
