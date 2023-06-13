@@ -278,11 +278,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               {show.bookedshow.b1 && <p className='published-detail'>B1: {show.bookedshow.b1}</p>}
               {show.bookedshow.a1 && <p className='published-detail'>A1: {show.bookedshow.a1}</p>}
               {show.bookedshow.yes && <p className='published-detail'>Yes: {show.bookedshow.yes}</p>}
-              {show.bookedshow.other.length > 0 && 
+              {/* {show.bookedshow.other.length > 0 && 
                 <div>
                   <h4>Other/s: </h4>{show.bookedshow.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
                   <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
-                </div>}
+                </div>} */}
                 <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
              </div>
               }
@@ -391,9 +391,9 @@ console.log('emails')
       const b1 = pubShow.bookedshow.comics.b1 && `B1: ${pubShow.bookedshow.comics.b1}`
       const star7 = pubShow.bookedshow.comics.star7 && `Star 7: ${pubShow.bookedshow.comics.star7}`
       const yes = pubShow.bookedshow.comics.yes && `Yes: ${pubShow.bookedshow.comics.yes}`
-      const other = pubShow.bookedshow.comics.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
+      // const other = pubShow.bookedshow.comics.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
 
-      const arrayLineup = [mC, starMC, star7, a1, b1, yes, other].filter(line => line != '').join('\n')
+      const arrayLineup = [mC, starMC, star7, a1, b1, yes].filter(line => line != '').join('\n')
 
       const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
 
@@ -447,11 +447,11 @@ console.log(emailList)
               {pubShow.bookedshow.b1 && <p className='published-detail'>B1: {pubShow.bookedshow.b1}</p>}
               {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
               {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
-              {pubShow.bookedshow.other.length > 0 && 
+              {/* {pubShow.bookedshow.other.length > 0 && 
                 <div>
                   <h4>Other/s: </h4>{pubShow.bookedshow.other.map((comic: {type: string, name: string}, index: string | number | null | undefined) => 
                   <p className='published-detail' key={index}>{comic.type}: {comic.name}</p>)}
-                </div>}
+                </div>} */}
                 <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
              </div>
       }
