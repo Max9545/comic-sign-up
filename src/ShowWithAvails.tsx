@@ -145,23 +145,6 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       {props.alreadyBooked}
       <div>
         <h3>Available {`${props.day} (${props.date}) ${props.headliner} ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}`}</h3>
-        {/* <p>{bookedShow.mC &&`MC: ${bookedShow.mC}`}</p>
-        <p>{bookedShow.starMC &&`Star MC: ${bookedShow.starMC}`}</p>
-        <p>{bookedShow.b1 &&`B1: ${bookedShow.b1}`}</p>
-        <p>{bookedShow.a1 &&`A1: ${bookedShow.a1}`}</p>
-        <p>{bookedShow.star7 &&`Star 7: ${bookedShow.star7}`}</p>
-        <p>{bookedShow.yes &&`Yes: ${bookedShow.yes}`}</p>
-        <div>{bookedShow.other.length > 0 && bookedShow.other.map((comic: { type: string; name: string }, index: string | number | null | undefined) => 
-          <div className='other-type-comic' key={index}>
-            <p>{`${comic.type}: ${comic.name}`}</p>
-            <button onClick={() => {
-              const booking = bookedShow
-              booking.other.splice(bookedShow.other.findIndex((type: { type: string }) => type.type === comic.type), 1)
-              setBookedShow(booking)
-              setTrigger(!trigger)
-            }} className='delete-comic'>Delete</button>
-          </div>
-        )}</div> */}
         <div>
       {Object.keys(bookedShow.comics).map((key, index) => (
         <div

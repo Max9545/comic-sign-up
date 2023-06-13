@@ -171,15 +171,6 @@ function Dashboard() {
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
         showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
-          // {
-          //   monday: [],
-          //   tuesday: [],
-          //   wednesday: [],
-          //   thursday: [], 
-          //   friday: [],
-          //   saturday: [],
-          //   sunday: []
-          // }
         showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
     } catch (err) {
