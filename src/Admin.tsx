@@ -40,7 +40,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   useEffect(() => {
     viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
-    showPublishedDowntown()
+    // showPublishedDowntown()
   }, [published])
 
   const deleteShow = (showId: string) => {
@@ -367,7 +367,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   }
 
   const sendEmails = () => {
-console.log('emails')
     const showsForEmailRaw = published.map(pubShow => {
 
       const mC = pubShow.bookedshow.comics.mC && `MC: ${pubShow.bookedshow.comics.mC}`

@@ -235,7 +235,9 @@ label {
 
 .comic-avail {
   font-size: 1.1rem;
-  margin-bottom: 5vh;
+  margin: 1vh 0vh 5vh 0vh;
+  font-weight: bolder;
+  align-self: center;
 }
 
 .comicHistory-show {
