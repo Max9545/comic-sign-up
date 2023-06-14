@@ -344,47 +344,65 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
 
     setEmailList([])
 
-    const docRef = query(collection(db, `publishedShows`))
+    const docRef = query(collection(db, `users`))
 
     const doc = await (getDocs(docRef))
 
-    const showList = doc.docs.map(show => show.data().bookedshow)
+    const emails = doc.docs.map(user => user.data().email)
 
-    showList.map(async show => {
-      const nameList = Object.values(show)
-      nameList.map(async name => {
-        if (typeof(name) === 'string') {
-         const q = query(collection(db, 'users'), where("name", '==', name))
-         const doc = await getDocs(q)
-         if(doc.empty === false && !emailList.includes(doc.docs[0].data().email)) {
-           const data = doc.docs[0].data()
-           emailList.push(data.email)
-           setEmailList(emailList)
-         }
-        }
-       })
-      })
+    console.log(emails)
+
+    setEmailList(emails)
+    // const showList = doc.docs.map(show => show.data().bookedshow)
+
+    // showList.map(async show => {
+    //   const nameList = Object.values(show)
+    //   nameList.map(async name => {
+    //     if (typeof(name) === 'string') {
+    //      const q = query(collection(db, 'users'), where("name", '==', name))
+    //      const doc = await getDocs(q)
+    //      if(doc.empty === false && !emailList.includes(doc.docs[0].data().email)) {
+    //        const data = doc.docs[0].data()
+    //        emailList.push(data.email)
+    //        setEmailList(emailList)
+    //      }
+    //     }
+    //    })
+    //   })
   }
 
   const sendEmails = () => {
     const showsForEmailRaw = published.map(pubShow => {
 
-      const mC = pubShow.bookedshow.comics.mC && `MC: ${pubShow.bookedshow.comics.mC}`
-      const starMC = pubShow.bookedshow.comics.starMC && `Star MC: ${pubShow.bookedshow.comics.starMC}`
-      const a1 = pubShow.bookedshow.comics.a1 && `A1: ${pubShow.bookedshow.comics.a1}`
-      const b1 = pubShow.bookedshow.comics.b1 && `B1: ${pubShow.bookedshow.comics.b1}`
-      const star7 = pubShow.bookedshow.comics.star7 && `Star 7: ${pubShow.bookedshow.comics.star7}`
-      const yes = pubShow.bookedshow.comics.yes && `Yes: ${pubShow.bookedshow.comics.yes}`
+      // const mC = pubShow.bookedshow.comics.mC && `MC: ${pubShow.bookedshow.comics.mC}`
+      // const starMC = pubShow.bookedshow.comics.starMC && `Star MC: ${pubShow.bookedshow.comics.starMC}`
+      // const a1 = pubShow.bookedshow.comics.a1 && `A1: ${pubShow.bookedshow.comics.a1}`
+      // const b1 = pubShow.bookedshow.comics.b1 && `B1: ${pubShow.bookedshow.comics.b1}`
+      // const star7 = pubShow.bookedshow.comics.star7 && `Star 7: ${pubShow.bookedshow.comics.star7}`
+      // const yes = pubShow.bookedshow.comics.yes && `Yes: ${pubShow.bookedshow.comics.yes}`
       // const other = pubShow.bookedshow.comics.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
+      
+      // const arrayLineup = [mC, starMC, star7, a1, b1, yes].filter(line => line != '').join('\n')
+      console.log(pubShow)
+      const arrayLineup = Object.keys(pubShow.bookedshow.comics).map((key, index) => {
+        if (pubShow.bookedshow.comics[key] != '') {
 
-      const arrayLineup = [mC, starMC, star7, a1, b1, yes].filter(line => line != '').join('\n')
+          return `${key}: ${pubShow.bookedshow.comics[key]}`
+        }
+      }
+      
+        //  `${pubShow.comics[key].charAt(0).toUpperCase() + pubShow.comics[key].slice(1)}: ${pubShow.comics[key]}`
+  
+      ).filter(line => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
 
       const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
 
 ${arrayLineup}
       `
+      console.log(arrayLineup)
       return showString
     })
+    console.log(emailList, showsForEmailRaw)
     emailList.map(email => sendEmail(email, showsForEmailRaw))
     alert('Comics have been notified')
   }
@@ -428,7 +446,7 @@ ${arrayLineup}
     fetchPublishedShows()
     showPublishedDowntown()
     showPublishedSouth()
-    await setComicEmailList()
+    // await setComicEmailList()
   }
 
   const maskAsComic = async () => {
