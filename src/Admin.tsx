@@ -387,16 +387,18 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
       
       // const arrayLineup = [mC, starMC, star7, a1, b1, yes].filter(line => line != '').join('\n')
       console.log(pubShow)
-      const arrayLineup = Object.keys(pubShow.bookedshow.comics).map((key, index) => {
-        if (pubShow.bookedshow.comics[key] != '') {
+      // const arrayLineup = Object.keys(pubShow.bookedshow.comics).map((key, index) => {
+      //   if (pubShow.bookedshow.comics[key] != '') {
 
-          return `${key.charAt(0).toUpperCase() + key.slice(1)}: ${pubShow.bookedshow.comics[key]}`
-        }
-      }
+      //     return `${key.charAt(0).toUpperCase() + key.slice(1)}: ${pubShow.bookedshow.comics[key]}`
+      //   }
+      // }
       
-        //  `${pubShow.comics[key].charAt(0).toUpperCase() + pubShow.comics[key].slice(1)}: ${pubShow.comics[key]}`
+      //   //  `${pubShow.comics[key].charAt(0).toUpperCase() + pubShow.comics[key].slice(1)}: ${pubShow.comics[key]}`
   
-      ).filter(line => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
+      // ).filter(line => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
+
+      const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
 
       const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
 
