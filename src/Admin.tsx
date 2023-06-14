@@ -202,10 +202,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               if (show.bookedshow.id == finalForm.id) {
                 return <div className={`published-${show.bookedshow.club}`} key={index}>
               <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-              {/* {Object.keys(show.bookedshow.comics).map((key, index) => {
-                return  <p key={index} >{show.bookedshow.comics[key] && `${key.charAt(0).toUpperCase() + key.slice(1)}: ${show.bookedshow.comics[key]}`}</p>
-              })} */}
-              {console.log(show.comicArray)}
               {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={pinDext} >{`${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
                 <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
              </div>
@@ -352,8 +348,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     const doc = await (getDocs(docRef))
 
     const emails = doc.docs.map(user => user.data().email)
-
-    console.log(emails)
 
     setEmailList(emails)
     // const showList = doc.docs.map(show => show.data().bookedshow)
