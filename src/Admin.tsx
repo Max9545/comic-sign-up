@@ -387,7 +387,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
       const arrayLineup = Object.keys(pubShow.bookedshow.comics).map((key, index) => {
         if (pubShow.bookedshow.comics[key] != '') {
 
-          return `${key}: ${pubShow.bookedshow.comics[key]}`
+          return `${key.charAt(0).toUpperCase() + key.slice(1)}: ${pubShow.bookedshow.comics[key]}`
         }
       }
       
