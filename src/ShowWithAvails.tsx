@@ -105,7 +105,13 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   }
 
   const publishShow = async () => {
-    setDoc(doc(db, `publishedShows/${props.id}`), {bookedshow: bookedShow, fireOrder: Date.now()})
+    const comicArray = Object.keys(bookedShow.comics).map((key, index) => {
+      if (bookedShow.comics[key] != '')
+      return {type: key, comic: bookedShow.comics[key]}
+    }).filter(type => type != undefined)
+
+    console.log(comicArray)
+    setDoc(doc(db, `publishedShows/${props.id}`), {bookedshow: bookedShow, fireOrder: Date.now(), comicArray: comicArray})
     alert('Show queued!')
     props.setAdTrigger(!props.adTrigger)
   }
