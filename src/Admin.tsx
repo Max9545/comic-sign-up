@@ -317,13 +317,13 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     await setComicEmailList()
   }
 
-  const sendEmail = (comicsEmail: any, showsForEmail: string[]) => {
+  const sendEmail = (comicsEmail: any, showsForEmail: any) => {
 
     const emailData = {
       to: `${comicsEmail}`,
       from: 'bregmanmax91@gmail.com',
       subject: 'Comedy Works Upcoming Lineup',
-      text: `${showsForEmail.join('\n')}`,
+      text: `${showsForEmail}`,
     }
   
     fetch('http://localhost:3001/send-email', {
@@ -375,7 +375,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   }
 
   const sendEmails = () => {
-    const showsForEmailRaw = published.map(pubShow => {
+    
+    const showsForEmailRawDowntown = published.map(pubShow => {
 
       // const mC = pubShow.bookedshow.comics.mC && `MC: ${pubShow.bookedshow.comics.mC}`
       // const starMC = pubShow.bookedshow.comics.starMC && `Star MC: ${pubShow.bookedshow.comics.starMC}`
@@ -397,16 +398,48 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
       //   //  `${pubShow.comics[key].charAt(0).toUpperCase() + pubShow.comics[key].slice(1)}: ${pubShow.comics[key]}`
   
       // ).filter(line => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
-
-      const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
-
-      const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
-
+      if (pubShow.bookedshow.club === 'downtown') {
+        const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
+  
+        const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
+  
 ${arrayLineup}
-      `
-      console.log(arrayLineup)
-      return showString
-    })
+        `
+        console.log(arrayLineup)
+      return `
+${showString}`
+      }
+
+      })
+
+      const showsForEmailRawSouth = published.map(pubShow => {
+
+       
+        if (pubShow.bookedshow.club === 'south') {
+          const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
+    
+          const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
+    
+${arrayLineup}
+          `
+          console.log(arrayLineup)
+        return `
+${showString}`
+        }
+  
+        })
+
+    const showsForEmailDowntown = `Downtown Shows----------------
+${showsForEmailRawDowntown}`.replace(/,/g, '')
+
+    const showsForEmailSouth = `South Shows----------------
+${showsForEmailRawSouth}`.replace(/,/g, '')
+
+    const showsForEmailRaw = `${showsForEmailDowntown}
+
+
+${showsForEmailSouth}`
+
     console.log(emailList, showsForEmailRaw)
     emailList.map(email => sendEmail(email, showsForEmailRaw))
     alert('Comics have been notified')
