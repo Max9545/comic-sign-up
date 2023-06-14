@@ -206,7 +206,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                 return  <p key={index} >{show.bookedshow.comics[key] && `${key.charAt(0).toUpperCase() + key.slice(1)}: ${show.bookedshow.comics[key]}`}</p>
               })} */}
               {console.log(show.comicArray)}
-              {show.comicArray.map((comic: { type: string; comic: string }) =>  <p key={index} >{`${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
+              {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={pinDext} >{`${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
                 <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
              </div>
               }
@@ -262,14 +262,14 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
 
           const showFinals = southShows.map((finalForm, index) => {
 
-            const alreadyBooked = published.map(show => {
+            const alreadyBooked = published.map((show) => {
               if (show.bookedshow.id == finalForm.id) {
                 return <div className={`published-${show.bookedshow.club}`} key={index}>
               <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
               {/* {Object.keys(show.bookedshow.comics).map((key, index) => {
                 return  <p key={index}>{show.bookedshow.comics[key] && `${key.charAt(0).toUpperCase() + key.slice(1)}: ${show.bookedshow.comics[key]}`}</p>
               })} */}
-              {show.comicArray.map((comic: { type: string; comic: string }) =>  <p key={index} >{`${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
+              {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={`${pinDext}`} >{`${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
                 <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
              </div>
               }
@@ -445,45 +445,45 @@ ${showsForEmailSouth}`
     alert('Comics have been notified')
   }
 
-  const showPublishedDowntown = () => {
-    return published.map((pubShow, index) => {
-      if (pubShow.bookedshow.club === 'downtown') {
-        return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
-              <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
+  // const showPublishedDowntown = () => {
+  //   return published.map((pubShow, index) => {
+  //     if (pubShow.bookedshow.club === 'downtown') {
+  //       return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
+  //             <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
               
-                {Object.keys(pubShow.bookedshow.comics).map((key, index) => {
-                  return pubShow.bookedshow.comics[key] && <p className='published-detail'>{`${key}: ${pubShow.bookedshow.comics[key]}`}</p>})
-                }
-                <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
-             </div>
-      }
-    })
-  }
+  //               {Object.keys(pubShow.bookedshow.comics).map((key, index) => {
+  //                 return pubShow.bookedshow.comics[key] && <p className='published-detail'>{`${key}: ${pubShow.bookedshow.comics[key]}`}</p>})
+  //               }
+  //               <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
+  //            </div>
+  //     }
+  //   })
+  // }
 
-  const showPublishedSouth = () => {
-    return published.map((pubShow, index) => {
-      if (pubShow.bookedshow.club === 'south') {
-        return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
-              <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
-              {pubShow.bookedshow.mC && <p className='published-detail'>MC: {pubShow.bookedshow.mC}</p>}
-              {pubShow.bookedshow.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>}
-              {pubShow.bookedshow.star7 && <p className='published-detail'>Star 7: {pubShow.bookedshow.star7}</p>}
-              {pubShow.bookedshow.b1 && <p className='published-detail'>B1: {pubShow.bookedshow.b1}</p>}
-              {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
-              {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
-                <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
-             </div>
-      }
-    })
-  }
+  // const showPublishedSouth = () => {
+  //   return published.map((pubShow, index) => {
+  //     if (pubShow.bookedshow.club === 'south') {
+  //       return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
+  //             <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
+  //             {pubShow.bookedshow.mC && <p className='published-detail'>MC: {pubShow.bookedshow.mC}</p>}
+  //             {pubShow.bookedshow.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>}
+  //             {pubShow.bookedshow.star7 && <p className='published-detail'>Star 7: {pubShow.bookedshow.star7}</p>}
+  //             {pubShow.bookedshow.b1 && <p className='published-detail'>B1: {pubShow.bookedshow.b1}</p>}
+  //             {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
+  //             {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
+  //               <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
+  //            </div>
+  //     }
+  //   })
+  // }
 
   const removePublishedShow = async (id: string) => {
 
     await deleteDoc(doc (db,"publishedShows", id))
 
     fetchPublishedShows()
-    showPublishedDowntown()
-    showPublishedSouth()
+    // showPublishedDowntown()
+    // showPublishedSouth()
     // await setComicEmailList()
   }
 
