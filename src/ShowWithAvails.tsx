@@ -45,7 +45,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             acc.push ({
               key: hisIndex,
               fireOrder: `${singleShow[0][0].fireOrder}`, 
-              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} ${finalShow.club} ${finalShow.headliner} ${finalShow.time} ${finalShow.day}`}</p></div>
+              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} ${finalShow.club.charAt(0).toUpperCase() + finalShow.club.slice(1)} ${finalShow.headliner} ${finalShow.time} ${finalShow.day.charAt(0).toUpperCase() + finalShow.day.slice(1)}`}</p></div>
               )
             })
           }
@@ -67,7 +67,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             acc.push ({
               key: hisIndex,
               fireOrder: `${singleShow[0][0].fireOrder}`, 
-              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} ${finalShow.club} ${finalShow.headliner} ${finalShow.time} ${finalShow.day}`}</p></div>
+              showMap: singleShow[0].map((finalShow: { date: string; club: string; headliner: string; time: string; day: string, submissionDateTime: string, id: string}, index: number ) => <div key={`${index}${finalShow.id}`}><p key={index}>{`Submission Date and Time: ${finalShow.submissionDateTime.slice(0, 10)} ${props.showTime(finalShow.submissionDateTime.slice(-5))}`}</p><p>{`Show Signed Up For: ${finalShow.date} ${finalShow.club.charAt(0).toUpperCase() + finalShow.club.slice(1)} ${finalShow.headliner} ${finalShow.time} ${finalShow.day.charAt(0).toUpperCase() + finalShow.day.slice(1)}`}</p></div>
               )
             })
           }
