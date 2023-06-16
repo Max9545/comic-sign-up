@@ -22,11 +22,16 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [comicForHistory, setcomicForHistory] = useState('')
   const [published, setPublished] = useState<any[]>([])
   const [emailList, setEmailList] = useState<any[]>([])
+  const [emailListWithOutTowners, setEmailListWithOutTowners] = useState<any[]>([])
   const [comicEmail, setComicEmail] = useState('')
   const [comedianMask, setComedianMask] = useState<Comic>(props.comedian)
   const [outOfTowners, setOutOfTowners] = useState(false)
   const [adTrigger, setAdTrigger] = useState(true)
   const { register, handleSubmit, reset } = useForm()
+
+  useEffect(() => {
+    setComicEmailList()
+  }, [])
 
   useEffect(() => {
     displayPotentialShows()
@@ -311,7 +316,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
       console.log(err)
     }
 
-    await setComicEmailList()
+    // await setComicEmailList()
   }
 
   const sendEmail = (comicsEmail: any, showsForEmail: any) => {
@@ -351,8 +356,23 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     const emails = doc.docs.map(user => user.data().email)
 
     setEmailList(emails)
-    // const showList = doc.docs.map(show => show.data().bookedshow)
 
+    setEmailListWithOutTowners([])
+
+    const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'outOfTown')
+
+    const emailsWithoutOutTowners = withoutOutTowners.map((comic: any ) => comic.data().email)
+
+    setEmailListWithOutTowners(emailsWithoutOutTowners)
+    // const docRefOut = query(collection(db, `users`), where('type', '!=', 'outOfTown'))
+
+    // const docOut = await (getDocs(docRefOut))
+
+    // const emailsOut = docOut.docs.map(user => user.data().email)
+
+    // setEmailListWithOutTowners(emailsOut)
+    // console.log(emailListWithOutTowners, emailList)
+    // const showList = doc.docs.map(show => show.data().bookedshow)
     // showList.map(async show => {
     //   const nameList = Object.values(show)
     //   nameList.map(async name => {
@@ -382,7 +402,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
       // const other = pubShow.bookedshow.comics.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
       
       // const arrayLineup = [mC, starMC, star7, a1, b1, yes].filter(line => line != '').join('\n')
-      console.log(pubShow)
       // const arrayLineup = Object.keys(pubShow.bookedshow.comics).map((key, index) => {
       //   if (pubShow.bookedshow.comics[key] != '') {
 
@@ -436,7 +455,13 @@ ${showsForEmailRawSouth}`.replace(/,/g, '')
 ${showsForEmailSouth}`
 
     console.log(emailList, showsForEmailRaw)
-    emailList.map(email => sendEmail(email, showsForEmailRaw))
+    if (outOfTowners) {
+      console.log('out of towners',emailList )
+      emailList.map(email => sendEmail(email, showsForEmailRaw))
+    } else {
+      console.log('just pros', emailListWithOutTowners)
+      emailListWithOutTowners.map(email => sendEmail(email, showsForEmailRaw))
+    }
     alert('Comics have been notified')
   }
 
@@ -536,10 +561,12 @@ ${showsForEmailSouth}`
       {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
       {showsToAdd}
       <div>
-        <div>
-        <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to all comics</button>  <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
-        onChange={() => setOutOfTowners(!outOfTowners)}/></label>
-        </div>
+        {/* <div> */}
+          <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to all comics</button> 
+          <br></br>
+          <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
+          onChange={() => setOutOfTowners(!outOfTowners)}/></label>
+        {/* </div> */}
 
         {/* <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows Page</button> */}
         {/* {published.length > 0 && <div id='seen-published'>
