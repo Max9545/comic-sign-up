@@ -24,6 +24,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [emailList, setEmailList] = useState<any[]>([])
   const [comicEmail, setComicEmail] = useState('')
   const [comedianMask, setComedianMask] = useState<Comic>(props.comedian)
+  const [outOfTowners, setOutOfTowners] = useState(false)
   const [adTrigger, setAdTrigger] = useState(true)
   const { register, handleSubmit, reset } = useForm()
 
@@ -535,7 +536,11 @@ ${showsForEmailSouth}`
       {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
       {showsToAdd}
       <div>
-        <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to all comics</button>
+        <div>
+        <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to all comics</button>  <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
+        onChange={() => setOutOfTowners(!outOfTowners)}/></label>
+        </div>
+
         {/* <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows Page</button> */}
         {/* {published.length > 0 && <div id='seen-published'>
         <h2 className='downtown-available-header'>Downtown Bookings</h2>  

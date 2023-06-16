@@ -98,11 +98,12 @@ function Dashboard() {
       const data = doc.docs[0].data()
       setName(data.name)
       setAdmin(data.admin)
+      console.log(data)
       setComedian({
         name: data.name,
         id: data.uid,
         email: data.email,
-        type: '',
+        type: data.type,
         showsAvailabledowntown: {
           monday: [],
           tuesday: [],
@@ -157,16 +158,17 @@ function Dashboard() {
 }
 
  const fetchComicInfo = async () => {
-
-  if (name.length > 0) {
-    try {
+   
+   if (name.length > 0) {
+     try {
+     
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
       setComedian({
         name: comic.name,
         id: comic.id,
-        type: comic.type,
+        type: comedian.type,
         email: user?.email,
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
