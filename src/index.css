@@ -219,10 +219,10 @@ label {
   grid-row: 1fr; 
   padding: 1%;
 }
-
+/* 
 .comic-type-box {
   display: flexbox;
-}
+} */
 
 .comic-type {
   border: #17a2b8 1px solid;
