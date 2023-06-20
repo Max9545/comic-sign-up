@@ -561,13 +561,10 @@ ${showsForEmailSouth}`
       {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
       {showsToAdd}
       <div>
-        {/* <div> */}
-          <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to all comics</button> 
+          <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button> 
           <br></br>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
           onChange={() => setOutOfTowners(!outOfTowners)}/></label>
-        {/* </div> */}
-
         {/* <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows Page</button> */}
         {/* {published.length > 0 && <div id='seen-published'>
         <h2 className='downtown-available-header'>Downtown Bookings</h2>  

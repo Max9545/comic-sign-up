@@ -394,3 +394,10 @@ label {
   /* display: flex;
   align-content: flex-end; */
 }
+
+
+@media (max-width: 540px) {
+  .available-comic {
+    column-count: 1;
+  }
+}
