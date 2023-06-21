@@ -14,6 +14,7 @@ function Dashboard() {
   const [user, loading, error] = useAuthState(auth) 
   const [name, setName] = useState('')
   const [admin, setAdmin] = useState(false)
+  const [weekOrder, setWeekOrder] = useState('')
   const [comedian, setComedian] = useState<Comic>({
     name: '',
     id: '',
@@ -151,7 +152,9 @@ function Dashboard() {
     try {
       const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
       const doc = await (getDocs(docRef))
+      console.log(doc.docs[0].data())
       setShows(doc.docs[0].data().thisWeek)
+      setWeekOrder(doc.docs[0].data().fireOrder)
     } catch (err) {
       console.error(err) 
     }  
@@ -232,9 +235,9 @@ const viewAllComicsAvailableSouth = async () => {
           onChange={(e) => setName(e.target.value)}
           placeholder="User Name If First Time"
       />
-      {!admin && <Week comedian={comedian} weeklyShowTimes={shows} admin={admin}/>}
+      {!admin && <Week comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder}/>}
       {admin && <Admin shows={shows} setShows={setShows}
-      setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin}/>}
+      setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder}/>}
        
      </div>
   ) 

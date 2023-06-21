@@ -8,7 +8,7 @@ import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
 
-function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean}) {
+function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string}) {
 
   const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
@@ -537,7 +537,7 @@ ${showsForEmailSouth}`
       </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
   <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
-      <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin}/>
+      <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
       <button className='clear-form' onClick={() => reset()}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>

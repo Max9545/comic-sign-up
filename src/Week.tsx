@@ -2,10 +2,10 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import Show from './Show'
 import { Comic, ShowToBook } from './interface'
-import { setDoc, doc, addDoc, collection, query, getDocs, orderBy, limit } from 'firebase/firestore'
+import { setDoc, doc, addDoc, collection, query, getDocs, orderBy, limit, deleteDoc, where } from 'firebase/firestore'
 import { db } from './firebase'
 
-function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boolean}) {
+function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boolean, fetchWeekForComedian: any, weekOrder: string}) {
 
   const [shows, setShows] = useState<ShowToBook[]>([])
   const [currentComedian, setCurrentComedian] = useState(props.comedian)
@@ -24,6 +24,18 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
     showSouthShows()
   }, [props])
 
+
+  const removePotentialShow = async (id: string) => {
+
+    console.log(id)
+    // await deleteDoc(doc (db,"shows for week", id),where('type', '!=', 'outOfTown'))
+    // const weekRef = doc(db, "show for week"), orderBy('fireOrder', 'desc'), limit(1);
+
+    props.fetchWeekForComedian()
+    // showPublishedDowntown()
+    // showPublishedSouth()
+    // await setComicEmailList()
+  }
 
   const showDowntownShows = () => {
     if(shows.length > 0) {
@@ -44,6 +56,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                       availableComics={show.availableComics}
                   />
                   {props.admin && <button className='edit-published'>Edit</button>}
+                  {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
               </div>
         } 
         })
@@ -69,6 +82,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                         availableComics={show.availableComics}
                     />
                     {props.admin && <button className='edit-published'>Edit</button>}
+                    {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
                 </div>
           } 
           })
@@ -172,6 +186,8 @@ ${southString}`,
     //   window.location.reload()
     // }, 500)
   }
+
+  
 
     return (
         <section className='show-container'>
