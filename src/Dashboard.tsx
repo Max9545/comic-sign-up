@@ -232,9 +232,9 @@ const viewAllComicsAvailableSouth = async () => {
           onChange={(e) => setName(e.target.value)}
           placeholder="User Name If First Time"
       />
-      {!admin && <Week comedian={comedian} weeklyShowTimes={shows}/>}
+      {!admin && <Week comedian={comedian} weeklyShowTimes={shows} admin={admin}/>}
       {admin && <Admin shows={shows} setShows={setShows}
-      setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows}/>}
+      setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin}/>}
        
      </div>
   ) 

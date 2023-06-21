@@ -5,7 +5,7 @@ import { Comic, ShowToBook } from './interface'
 import { setDoc, doc, addDoc, collection, query, getDocs, orderBy, limit } from 'firebase/firestore'
 import { db } from './firebase'
 
-function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
+function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boolean}) {
 
   const [shows, setShows] = useState<ShowToBook[]>([])
   const [currentComedian, setCurrentComedian] = useState(props.comedian)
@@ -29,7 +29,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
     if(shows.length > 0) {
       return props.weeklyShowTimes.map((show, index) => { 
         if (show.club === 'downtown') {
-          return <div key={index}>
+          return <div key={index} className='show-div'>
                   <Show
                       key={index}
                       id={show.id}
@@ -43,6 +43,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
                       setAllAvailability={setAllAvailability}
                       availableComics={show.availableComics}
                   />
+                  {props.admin && <button className='edit-published'>Edit</button>}
               </div>
         } 
         })
@@ -53,7 +54,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
       if(shows.length > 0) {
         return props.weeklyShowTimes.map((show, index) => { 
           if (show.club === 'south') {
-            return <div key={index}>
+            return <div key={index} className='show-div'>
                     <Show
                         key={index}
                         id={show.id}
@@ -67,6 +68,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
                         setAllAvailability={setAllAvailability}
                         availableComics={show.availableComics}
                     />
+                    {props.admin && <button className='edit-published'>Edit</button>}
                 </div>
           } 
           })

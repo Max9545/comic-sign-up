@@ -401,3 +401,18 @@ label {
     column-count: 1;
   }
 }
+
+.show-div {
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+}
+
+.edit-published {
+  width: 6vw;
+  font-weight: 700;
+  /* color: white; */
+  height: 7vh;
+  font-size: 1.1rem;
+  align-self: center;
+}
