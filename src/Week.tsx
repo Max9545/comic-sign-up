@@ -2,12 +2,12 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import Show from './Show'
 import { Comic, ShowToBook } from './interface'
-import { setDoc, doc, addDoc, collection, query, getDocs, orderBy, limit, deleteDoc, where } from 'firebase/firestore'
+import { setDoc, doc, addDoc, collection, query, getDocs, orderBy, limit, deleteDoc, where, updateDoc } from 'firebase/firestore'
 import { db } from './firebase'
 
 function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boolean, fetchWeekForComedian: any, weekOrder: string}) {
 
-  const [shows, setShows] = useState<ShowToBook[]>([])
+  const [shows, setShows] = useState<any[]>([])
   const [currentComedian, setCurrentComedian] = useState(props.comedian)
   const [allAvailablity, setAllAvailability] = useState(false)
 
@@ -29,8 +29,16 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
 
     console.log(id)
     // await deleteDoc(doc (db,"shows for week", id),where('type', '!=', 'outOfTown'))
-    // const weekRef = doc(db, "show for week"), orderBy('fireOrder', 'desc'), limit(1);
-
+    // const weekRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
+    // const doc = await (getDocs(weekRef))
+    // console.log(doc.docs[0].data())
+    // const week = doc.docs[0].data()
+    // await updateDoc(week,{
+    //   thisWeek:
+    // })
+    console.log(shows.indexOf(shows.find((show) => show.id === id)))
+    shows.splice(shows.indexOf(shows.find((show) => show.id === id)), 1)
+    addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: shows})
     props.fetchWeekForComedian()
     // showPublishedDowntown()
     // showPublishedSouth()

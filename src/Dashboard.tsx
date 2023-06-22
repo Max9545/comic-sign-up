@@ -152,12 +152,12 @@ function Dashboard() {
     try {
       const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
       const doc = await (getDocs(docRef))
-      console.log(doc.docs[0].data())
+      console.log(doc.docs)
       setShows(doc.docs[0].data().thisWeek)
       setWeekOrder(doc.docs[0].data().fireOrder)
     } catch (err) {
       console.error(err) 
-    }  
+    }   
 }
 
  const fetchComicInfo = async () => {
