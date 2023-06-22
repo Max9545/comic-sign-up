@@ -11,7 +11,8 @@ import Week from './Week'
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string}) {
 
   const [newSchedule, setNewSchedule] = useState<any[]>([])
-  const [showsToAdd, setShowsToAdd] = useState<any[]>([])
+  const [showsToAddDowntown, setShowsToAddDowntown] = useState<any[]>([])
+  const [showsToAddSouth, setShowsToAddSouth] = useState<any[]>([])
   const [day, setDay] = useState('')
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
@@ -76,7 +77,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
       props.setShows(newSchedule)
       addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: newSchedule})
       setNewSchedule([])
-      setShowsToAdd([])
+      setShowsToAddDowntown([])
+      setShowsToAddSouth([])
     }
   }
 
@@ -91,68 +93,138 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
         })    
     }
     
-    setShowsToAdd(newSchedule.map((newShow, index) => {
-            return (
-              <div key={index + 1}>
-                <Show
-                  key={index}
-                  id={newShow.id}
-                  day={newShow.day}
-                  time={newShow.time}
-                  currentClub={newShow.club}
-                  availableComedian={{
-                    name: 'admin',
-                    id: '',
-                    type: '',
-                    email: '',
-                    showsAvailabledowntown: {
-                      monday: [],
-                      tuesday: [],
-                      wednesday: [],
-                      thursday: [], 
-                      friday: [],
-                      saturday: [],
-                      sunday: []
-                    },
-                    showsAvailablesouth: {
-                      monday: [],
-                      tuesday: [],
-                      wednesday: [],
-                      thursday: [], 
-                      friday: [],
-                      saturday: [],
-                      sunday: []
-                    },
-                    showsAvailabledowntownHistory: {
-                      monday: [],
-                      tuesday: [],
-                      wednesday: [],
-                      thursday: [], 
-                      friday: [],
-                      saturday: [],
-                      sunday: []
-                    },
-                    showsAvailablesouthHistory: {
-                      monday: [],
-                      tuesday: [],
-                      wednesday: [],
-                      thursday: [], 
-                      friday: [],
-                      saturday: [],
-                      sunday: []
+    setShowsToAddDowntown(newSchedule.map((newShow, index) => {
+            if (newShow.club == 'downtown') {
+
+              return (
+                <div key={index + 1}>
+                  <Show
+                    key={index}
+                    id={newShow.id}
+                    day={newShow.day}
+                    time={newShow.time}
+                    currentClub={newShow.club}
+                    availableComedian={{
+                      name: 'admin',
+                      id: '',
+                      type: '',
+                      email: '',
+                      showsAvailabledowntown: {
+                        monday: [],
+                        tuesday: [],
+                        wednesday: [],
+                        thursday: [], 
+                        friday: [],
+                        saturday: [],
+                        sunday: []
+                      },
+                      showsAvailablesouth: {
+                        monday: [],
+                        tuesday: [],
+                        wednesday: [],
+                        thursday: [], 
+                        friday: [],
+                        saturday: [],
+                        sunday: []
+                      },
+                      showsAvailabledowntownHistory: {
+                        monday: [],
+                        tuesday: [],
+                        wednesday: [],
+                        thursday: [], 
+                        friday: [],
+                        saturday: [],
+                        sunday: []
+                      },
+                      showsAvailablesouthHistory: {
+                        monday: [],
+                        tuesday: [],
+                        wednesday: [],
+                        thursday: [], 
+                        friday: [],
+                        saturday: [],
+                        sunday: []
+                      }
                     }
-                  }
-                    
-                  }
-                  date={newShow.date}
-                  headliner={newShow.headliner}
-                  availability={false}
-                  availableComics={newShow.availableComics}
-                />
-                <button className='delete-show' onClick={() => deleteShow(newShow.id)}>Delete</button>
-              </div>
-          )
-}))}
+                      
+                    }
+                    date={newShow.date}
+                    headliner={newShow.headliner}
+                    availability={false}
+                    availableComics={newShow.availableComics}
+                  />
+                  <button className='delete-show' onClick={() => deleteShow(newShow.id)}>Delete</button>
+                </div>
+            )
+            }
+    }).filter(show => show != undefined))
+    setShowsToAddSouth(newSchedule.map((newShow, index) => {
+      if (newShow.club == 'south') {
+
+        return (
+          <div key={index + 1}>
+            <Show
+              key={index}
+              id={newShow.id}
+              day={newShow.day}
+              time={newShow.time}
+              currentClub={newShow.club}
+              availableComedian={{
+                name: 'admin',
+                id: '',
+                type: '',
+                email: '',
+                showsAvailabledowntown: {
+                  monday: [],
+                  tuesday: [],
+                  wednesday: [],
+                  thursday: [], 
+                  friday: [],
+                  saturday: [],
+                  sunday: []
+                },
+                showsAvailablesouth: {
+                  monday: [],
+                  tuesday: [],
+                  wednesday: [],
+                  thursday: [], 
+                  friday: [],
+                  saturday: [],
+                  sunday: []
+                },
+                showsAvailabledowntownHistory: {
+                  monday: [],
+                  tuesday: [],
+                  wednesday: [],
+                  thursday: [], 
+                  friday: [],
+                  saturday: [],
+                  sunday: []
+                },
+                showsAvailablesouthHistory: {
+                  monday: [],
+                  tuesday: [],
+                  wednesday: [],
+                  thursday: [], 
+                  friday: [],
+                  saturday: [],
+                  sunday: []
+                }
+              }
+                
+              }
+              date={newShow.date}
+              headliner={newShow.headliner}
+              availability={false}
+              availableComics={newShow.availableComics}
+            />
+            <button className='delete-show' onClick={() => deleteShow(newShow.id)}>Delete</button>
+          </div>
+        )
+      }
+    }
+  ).filter(show => show != undefined)
+)}
 
   const showDay = (numDate: string) => {
     setDate(numDate)
@@ -575,7 +647,10 @@ ${showsForEmailSouth}`
       <button onClick={() => addToWeek()} className='build-week'>Add Show to Week</button>
      {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
      </div>
-      {showsToAdd}
+     {showsToAddDowntown.length > 0 && <h2 className='downtown-available-header'>Downtown</h2>}
+      {showsToAddDowntown}
+      {showsToAddSouth.length > 0 && <h2 className='south-available-header'>South</h2>}
+      {showsToAddSouth}
       <div>
           <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button> 
           <br></br>
