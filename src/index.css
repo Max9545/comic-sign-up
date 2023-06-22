@@ -405,15 +405,16 @@ label {
 .show-div {
   display: flex;
   justify-content: space-evenly;
-  align-content: center;
+  align-content: flex-end;
 }
 
 .edit-published {
-  width: 6vw;
+  min-width: 6vw;
   font-weight: 700;
   /* color: white; */
-  height: 7vh;
+  height: 5vh;
   /* font-size: 1.1rem; */
+  margin: 0;
   align-self: center;
 }
 

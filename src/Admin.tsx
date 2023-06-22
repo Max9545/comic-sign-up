@@ -532,13 +532,12 @@ ${showsForEmailSouth}`
   const addToWeek = () => {
     console.log(potentialShow)
     const idCheck = props.shows.map(show => show.id)
-    if(!idCheck.includes(potentialShow?.id)) {
+    if(!idCheck.includes(potentialShow?.id) ) {
       setNewSchedule([...props.shows, potentialShow])
       addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: props.shows})
       fetchPublishedShows()
+      reset()
     }
-
-    // shows.push()
   }
 
   return (
