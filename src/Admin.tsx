@@ -10,7 +10,7 @@ import Week from './Week'
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string}) {
 
-  const [newSchedule, setNewSchedule] = useState<ShowToBook[]>([])
+  const [newSchedule, setNewSchedule] = useState<any[]>([])
   const [showsToAdd, setShowsToAdd] = useState<any[]>([])
   const [day, setDay] = useState('')
   const [date, setDate] = useState('')
@@ -27,6 +27,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [comedianMask, setComedianMask] = useState<Comic>(props.comedian)
   const [outOfTowners, setOutOfTowners] = useState(false)
   const [adTrigger, setAdTrigger] = useState(true)
+  const [potentialShow, setPotentialShow] = useState({id:''})
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -65,6 +66,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
           const idCheck = newSchedule.map(show => show.id)
           if(!idCheck.includes(potentialShow.id)) {
             setNewSchedule([...newSchedule, potentialShow])
+            setPotentialShow(potentialShow)
           }
         displayPotentialShows()
   }
@@ -527,6 +529,18 @@ ${showsForEmailSouth}`
     }
   }
 
+  const addToWeek = () => {
+    console.log(potentialShow)
+    const idCheck = props.shows.map(show => show.id)
+    if(!idCheck.includes(potentialShow?.id)) {
+      setNewSchedule([...props.shows, potentialShow])
+      addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: props.shows})
+      fetchPublishedShows()
+    }
+
+    // shows.push()
+  }
+
   return (
     <div className='admin-form'>
       
@@ -556,9 +570,12 @@ ${showsForEmailSouth}`
         <label>Headliner: </label>
         <input className='headliner-input' {...register('headliner')} required/>
         </div>
-        <input type='submit' value='Add Show' className='add-show'/>
+        <input type='submit' value='Queue Show' className='add-show'/>
       </form>
-      {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
+     <div className='add-build'>
+      <button onClick={() => addToWeek()} className='build-week'>Add Show to Week</button>
+     {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
+     </div>
       {showsToAdd}
       <div>
           <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button> 
