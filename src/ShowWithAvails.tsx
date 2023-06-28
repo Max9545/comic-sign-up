@@ -19,12 +19,12 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       date: props.date,
       id: props.id,
       comics: {
-        mC: '',
-        a1: '',
-        b1: '',
-        starMC: '',
-        star7: '',
-        yes: '',
+        // mC: '',
+        // a1: '',
+        // b1: '',
+        // starMC: '',
+        // star7: '',
+        // yes: '',
       }
   })
   

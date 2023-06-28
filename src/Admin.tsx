@@ -158,6 +158,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
             )
             }
     }).filter(show => show != undefined))
+    
     setShowsToAddSouth(newSchedule.map((newShow, index) => {
       if (newShow.club == 'south') {
 
@@ -223,8 +224,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
         )
       }
     }
-  ).filter(show => show != undefined)
-)}
+  ).filter(show => show != undefined))
+}
 
   const showDay = (numDate: string) => {
     setDate(numDate)
