@@ -30,6 +30,12 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   
   useEffect(() => {
     setComics(props.availableComics)
+    // const pos = props.alreadyBooked.filter((booked: any) => booked != undefined)
+    // if (pos[0]) {
+    //   const childArray = pos[0].props.children.filter((child: any) => child.length)[0]
+    //   console.log(childArray.map((child: { props: any }) => child.props.children))
+    // }
+    
   },[props])
 
   useEffect(() => {
@@ -99,8 +105,8 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         bookedShow.comics[typeOfComic] = ''
         setBookedShow(bookedShow)
     } else if (bookedShow[typeOfComic] !== comic){
-      bookedShow.comics[typeOfComic] = comic
-      setBookedShow(bookedShow)
+        bookedShow.comics[typeOfComic] = comic
+        setBookedShow(bookedShow)
     } 
   }
 
@@ -145,10 +151,26 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     event.preventDefault();
   };
 
+  const editBooked = () => {
+    const pos = props.alreadyBooked.filter((booked: any) => booked != undefined)
+    if (pos[0]) {
+      const childArray = pos[0].props.children.filter((child: any) => child.length)[0]
+      const performers = childArray.map((child: { props: any }) => child.props.children)
+      console.log(performers)
+      performers.map((performer: any) => {
+        bookedShow.comics[performer.split(':')[0].replace(/\s+/g, '')] = performer.split(':')[1].slice(1)
+        
+        console.log(performer.split(':')[1].slice(1))
+      })
+    }
+    setBookedShow(bookedShow)
+    setTrigger(!trigger)
+  }
 
   return (
     <div className={`available-${props.club} avail-box`}>
       {props.alreadyBooked}
+      <button className='edit-show' onClick={() => editBooked()}>Edit Booked</button>
       <div>
         <h3>Available {`${props.day} (${props.date}) ${props.headliner} ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}`}</h3>
         <div>
