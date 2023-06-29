@@ -98,14 +98,19 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   }
 
   const setComedianType = (typeOfComic: string, comic: any) => {
-    if (bookedShow.comics[typeOfComic] == '') {
-      bookedShow.comics[typeOfComic] = comic
+    if (bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] == '') {
+      console.log('new', typeOfComic, comic, bookedShow)
+      bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] = comic
       setBookedShow(bookedShow)
-    } else if (bookedShow.comics[typeOfComic] === comic) {
-        bookedShow.comics[typeOfComic] = ''
+    } else if (bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] === comic) {
+      console.log('delete', typeOfComic, comic, bookedShow)
+
+        bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] = ''
         setBookedShow(bookedShow)
-    } else if (bookedShow[typeOfComic] !== comic){
-        bookedShow.comics[typeOfComic] = comic
+    } else if (bookedShow[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] !== comic) {
+      console.log('replace', typeOfComic, comic, bookedShow)
+
+        bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] = comic
         setBookedShow(bookedShow)
     } 
   }
