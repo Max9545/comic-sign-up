@@ -35,7 +35,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     //   const childArray = pos[0].props.children.filter((child: any) => child.length)[0]
     //   console.log(childArray.map((child: { props: any }) => child.props.children))
     // }
-    
+    console.log(props.alreadyBooked.filter((show: any) => show != undefined).length)
   },[props])
 
   useEffect(() => {
@@ -175,7 +175,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   return (
     <div className={`available-${props.club} avail-box`}>
       {props.alreadyBooked}
-      <button className='edit-show' onClick={() => editBooked()}>Edit Booked</button>
+      {props.alreadyBooked.filter((show: any) => show != undefined).length > 0 && <button className='edit-show' onClick={() => editBooked()}>Edit Booked</button>}
       <div>
         <h3>Available {`${props.day} (${props.date}) ${props.headliner} ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}`}</h3>
         <div>
@@ -193,7 +193,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         </div>
       ))}
     </div>
-        {(bookedShow.comics.mC || bookedShow.comics.starMC || bookedShow.comics.a1 || bookedShow.comics.b1 || bookedShow.comics.yes || bookedShow.comics.star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}  
+        {(bookedShow.comics.MC || bookedShow.comics.StarMC || bookedShow.comics.A1 || bookedShow.comics.B1 || bookedShow.comics.Yes || bookedShow.comics.Star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}  
         <div className='comic-type-box'>{props.availableComics.map(comic => 
           <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
             <p className='comic-avail' key={comic}>{`${comic}`}</p>
@@ -207,7 +207,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <label className='yes-spot'>Yes (Guest):</label>
             <input type='text' className='yes-spot-input' onChange={(event) => setYes(event?.target?.value)}/>
             <button className='add-show' onClick={() => {
-                bookedShow.comics.yes = yes
+                bookedShow.comics.Yes = yes
                 setBookedShow(bookedShow)
                 setTrigger(!trigger)
             }}>Add</button>
