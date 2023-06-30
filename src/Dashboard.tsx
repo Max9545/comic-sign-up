@@ -99,7 +99,6 @@ function Dashboard() {
       const data = doc.docs[0].data()
       setName(data.name)
       setAdmin(data.admin)
-      console.log(data)
       setComedian({
         name: data.name,
         id: data.uid,
@@ -152,7 +151,6 @@ function Dashboard() {
     try {
       const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
       const doc = await (getDocs(docRef))
-      console.log(doc.docs)
       setShows(doc.docs[0].data().thisWeek)
       setWeekOrder(doc.docs[0].data().fireOrder)
     } catch (err) {

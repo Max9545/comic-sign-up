@@ -255,7 +255,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const editPublishedShow = (show: any) => {
     const bookedComics = show[0].props.children.filter((position: any) => position.length > 0)
     const bookedArray = bookedComics[0]
-    console.log(bookedArray, 'hi', bookedArray.map((comic: { props: any }) => comic.props.children))
   }
 
   const viewAllComicsAvailableDowntown = async () => {
@@ -500,7 +499,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   
 ${arrayLineup}
         `
-        console.log(arrayLineup)
       return `
 ${showString}`
       }
@@ -517,7 +515,6 @@ ${showString}`
     
 ${arrayLineup}
           `
-          console.log(arrayLineup)
         return `
 ${showString}`
         }
@@ -535,12 +532,9 @@ ${showsForEmailRawSouth}`.replace(/,/g, '')
 
 ${showsForEmailSouth}`
 
-    console.log(emailList, showsForEmailRaw)
     if (outOfTowners) {
-      console.log('out of towners',emailList )
       emailList.map(email => sendEmail(email, showsForEmailRaw))
     } else {
-      console.log('just pros', emailListWithOutTowners)
       emailListWithOutTowners.map(email => sendEmail(email, showsForEmailRaw))
     }
     alert('Comics have been notified')
@@ -609,7 +603,6 @@ ${showsForEmailSouth}`
   }
 
   const addToWeek = () => {
-    console.log(potentialShow)
     const idCheck = props.shows.map(show => show.id)
     if(!idCheck.includes(potentialShow?.id) ) {
       setNewSchedule([...props.shows, potentialShow])

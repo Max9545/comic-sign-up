@@ -35,7 +35,6 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     //   const childArray = pos[0].props.children.filter((child: any) => child.length)[0]
     //   console.log(childArray.map((child: { props: any }) => child.props.children))
     // }
-    console.log(props.alreadyBooked.filter((show: any) => show != undefined).length)
   },[props])
 
   useEffect(() => {
@@ -99,17 +98,12 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
   const setComedianType = (typeOfComic: string, comic: any) => {
     if (bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] == '') {
-      console.log('new', typeOfComic, comic, bookedShow)
       bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] = comic
       setBookedShow(bookedShow)
     } else if (bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] === comic) {
-      console.log('delete', typeOfComic, comic, bookedShow)
-
         bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] = ''
         setBookedShow(bookedShow)
     } else if (bookedShow[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] !== comic) {
-      console.log('replace', typeOfComic, comic, bookedShow)
-
         bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] = comic
         setBookedShow(bookedShow)
     } 
@@ -121,7 +115,6 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       return {type: key, comic: bookedShow.comics[key]}
     }).filter(type => type != undefined)
 
-    console.log(comicArray)
     setDoc(doc(db, `publishedShows/${props.id}`), {bookedshow: bookedShow, fireOrder: Date.now(), comicArray: comicArray})
     alert('Show queued!')
     props.setAdTrigger(!props.adTrigger)
@@ -161,11 +154,9 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     if (pos[0]) {
       const childArray = pos[0].props.children.filter((child: any) => child.length)[0]
       const performers = childArray.map((child: { props: any }) => child.props.children)
-      console.log(performers)
       performers.map((performer: any) => {
         bookedShow.comics[performer.split(':')[0].replace(/\s+/g, '')] = performer.split(':')[1].slice(1)
         
-        console.log(performer.split(':')[1].slice(1))
       })
     }
     setBookedShow(bookedShow)
