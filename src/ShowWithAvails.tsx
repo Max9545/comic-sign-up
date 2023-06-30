@@ -134,27 +134,27 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   }
 
   const handleDrag = (event: React.DragEvent<HTMLDivElement>, key: string) => {
-    event.dataTransfer.setData('text/plain', key);
-  };
+    event.dataTransfer.setData('text/plain', key)
+  }
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const key = event.dataTransfer.getData('text/plain');
-    const newData = { ...bookedShow.comics };
-    const keys = Object.keys(newData);
-    const index = keys.indexOf(key);
-    keys.splice(index, 1);
-    keys.splice(Number(event.currentTarget.dataset.index), 0, key);
-    const orderedData: { [key: string]: string } = {};
+    event.preventDefault()
+    const key = event.dataTransfer.getData('text/plain')
+    const newData = { ...bookedShow.comics }
+    const keys = Object.keys(newData)
+    const index = keys.indexOf(key)
+    keys.splice(index, 1)
+    keys.splice(Number(event.currentTarget.dataset.index), 0, key)
+    const orderedData: { [key: string]: string } = {}
     keys.forEach((k) => {
-      orderedData[k] = newData[k];
-    });
-    setBookedShow({...bookedShow, comics: orderedData});
-  };
+      orderedData[k] = newData[k]
+    })
+    setBookedShow({...bookedShow, comics: orderedData})
+  }
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
+    event.preventDefault()
+  }
 
   const editBooked = () => {
     const pos = props.alreadyBooked.filter((booked: any) => booked != undefined)
