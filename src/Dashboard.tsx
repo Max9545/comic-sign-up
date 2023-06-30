@@ -14,6 +14,7 @@ function Dashboard() {
   const [user, loading, error] = useAuthState(auth) 
   const [name, setName] = useState('')
   const [admin, setAdmin] = useState(false)
+  const [weekOrder, setWeekOrder] = useState('')
   const [comedian, setComedian] = useState<Comic>({
     name: '',
     id: '',
@@ -102,7 +103,7 @@ function Dashboard() {
         name: data.name,
         id: data.uid,
         email: data.email,
-        type: '',
+        type: data.type,
         showsAvailabledowntown: {
           monday: [],
           tuesday: [],
@@ -151,38 +152,30 @@ function Dashboard() {
       const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
       const doc = await (getDocs(docRef))
       setShows(doc.docs[0].data().thisWeek)
+      setWeekOrder(doc.docs[0].data().fireOrder)
     } catch (err) {
       console.error(err) 
-    }  
+    }   
 }
 
  const fetchComicInfo = async () => {
-
-  if (name.length > 0) {
-    try {
+   
+   if (name.length > 0) {
+     try {
+     
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
       setComedian({
         name: comic.name,
         id: comic.id,
-        type: comic.type,
+        type: comedian.type,
         email: user?.email,
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
         showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
-          // {
-          //   monday: [],
-          //   tuesday: [],
-          //   wednesday: [],
-          //   thursday: [], 
-          //   friday: [],
-          //   saturday: [],
-          //   sunday: []
-          // }
         showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
-      console.log(user?.email)
     } catch (err) {
       console.error(err) 
     }  
@@ -224,6 +217,13 @@ const viewAllComicsAvailableSouth = async () => {
 
   return (
     <div className="dashboard">
+      <div className="dashboard__container">
+        Logged in as {name}
+         <div>{user?.email}</div>
+         <button className="dashboard__btn" onClick={logout}>
+          Logout
+         </button>
+       </div>
       <p className='available-example'>This red color means you are AVAILABLE to be booked for the this show</p>
       <p className='not-available-example'>This blue color means you are NOT available to be booked for this show</p>
       <input
@@ -233,18 +233,10 @@ const viewAllComicsAvailableSouth = async () => {
           onChange={(e) => setName(e.target.value)}
           placeholder="User Name If First Time"
       />
-      {admin && <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>}
-      <Week comedian={comedian} weeklyShowTimes={shows}/>
+      {!admin && <Week comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder}/>}
       {admin && <Admin shows={shows} setShows={setShows}
-      setWeekSchedule={setWeekSchedule}/>}
-       <div className="dashboard__container">
-        Logged in as
-         <div>{name}</div>
-         <div>{user?.email}</div>
-         <button className="dashboard__btn" onClick={logout}>
-          Logout
-         </button>
-       </div>
+      setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder}/>}
+       
      </div>
   ) 
 } 

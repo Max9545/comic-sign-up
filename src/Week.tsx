@@ -2,12 +2,12 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import Show from './Show'
 import { Comic, ShowToBook } from './interface'
-import { setDoc, doc, addDoc, collection, query, getDocs, orderBy, limit } from 'firebase/firestore'
+import { setDoc, doc, addDoc, collection, query, getDocs, orderBy, limit, deleteDoc, where, updateDoc } from 'firebase/firestore'
 import { db } from './firebase'
 
-function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
+function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boolean, fetchWeekForComedian: any, weekOrder: string}) {
 
-  const [shows, setShows] = useState<ShowToBook[]>([])
+  const [shows, setShows] = useState<any[]>([])
   const [currentComedian, setCurrentComedian] = useState(props.comedian)
   const [allAvailablity, setAllAvailability] = useState(false)
 
@@ -20,14 +20,34 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
   }, [props.weeklyShowTimes])
 
   useEffect(() => {
-    showShows()
+    showDowntownShows()
+    showSouthShows()
   }, [props])
 
 
-  const showShows = () => {
+  const removePotentialShow = async (id: string) => {
+
+    // await deleteDoc(doc (db,"shows for week", id),where('type', '!=', 'outOfTown'))
+    // const weekRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
+    // const doc = await (getDocs(weekRef))
+    // console.log(doc.docs[0].data())
+    // const week = doc.docs[0].data()
+    // await updateDoc(week,{
+    //   thisWeek:
+    // })
+    shows.splice(shows.indexOf(shows.find((show) => show.id === id)), 1)
+    addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: shows})
+    props.fetchWeekForComedian()
+    // showPublishedDowntown()
+    // showPublishedSouth()
+    // await setComicEmailList()
+  }
+
+  const showDowntownShows = () => {
     if(shows.length > 0) {
       return props.weeklyShowTimes.map((show, index) => { 
-        return <div key={index}>
+        if (show.club === 'downtown') {
+          return <div key={index} className='show-div'>
                   <Show
                       key={index}
                       id={show.id}
@@ -41,11 +61,37 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook]}) {
                       setAllAvailability={setAllAvailability}
                       availableComics={show.availableComics}
                   />
+                  {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
               </div>
-          
+        } 
         })
       }
     }
+
+    const showSouthShows = () => {
+      if(shows.length > 0) {
+        return props.weeklyShowTimes.map((show, index) => { 
+          if (show.club === 'south') {
+            return <div key={index} className='show-div'>
+                    <Show
+                        key={index}
+                        id={show.id}
+                        day={show.day}
+                        time={show.time}
+                        currentClub={show.club}
+                        availableComedian={currentComedian}
+                        date={show.date}
+                        headliner={show.headliner}
+                        availability={show.availableComics.includes(props.comedian.name)}
+                        setAllAvailability={setAllAvailability}
+                        availableComics={show.availableComics}
+                    />
+                    {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+                </div>
+          } 
+          })
+        }
+      }
 
     const sendConfirmationEmail = async () => {
 
@@ -140,14 +186,19 @@ ${southString}`,
 
     alert('Availability Submitted!! Check your email for verification of your latest availabilty')
 
-    setTimeout(() => {
-      window.location.reload()
-    }, 500)
+    // setTimeout(() => {
+    //   window.location.reload()
+    // }, 500)
   }
+
+  
 
     return (
         <section className='show-container'>
-          {showShows()}
+          <h1 className='downtown-available-header'>Downtown</h1>
+          {showDowntownShows()}
+          <h1 className='south-available-header'>South</h1>
+          {showSouthShows()}
           <button onClick={submitForm}type="submit" className='submit-btn'>
           Submit Availability
           </button>
