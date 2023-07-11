@@ -20,8 +20,16 @@ function Login() {
     if (user) navigate("/dashboard")
   }, [user, loading]) 
 
+  document.getElementById('login')?.addEventListener('keyup', function(event) {
+    event.preventDefault()
+    if (event.keyCode === 13) {
+      document.getElementById('login__btn')?.click()
+      console.log('enter key', event)
+    }
+  })
+
   return (
-    <div className="login">
+    <div className="login" id="login">
       <div className="login__container">
         <input
           type="text"
@@ -39,6 +47,7 @@ function Login() {
         />
         <button
           className="login__btn"
+          id="login__btn"
           onClick={() => logInWithEmailAndPassword(email, password)}
         >
           Login
