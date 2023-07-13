@@ -21,6 +21,7 @@ function Login() {
   }, [user, loading]) 
 
   document.getElementById('login')?.addEventListener('keyup', function(event) {
+    console.log('outside')
     event.preventDefault()
     if (event.keyCode === 13) {
       document.getElementById('login__btn')?.click()
@@ -28,6 +29,7 @@ function Login() {
     }
   })
 
+  
   return (
     <div className="login" id="login">
       <div className="login__container">
@@ -48,6 +50,7 @@ function Login() {
         <button
           className="login__btn"
           id="login__btn"
+          // type="submit"
           onClick={() => logInWithEmailAndPassword(email, password)}
         >
           Login
