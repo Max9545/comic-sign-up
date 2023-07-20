@@ -20,14 +20,18 @@ function Login() {
     if (user) navigate("/dashboard")
   }, [user, loading]) 
 
-  document.getElementById('login')?.addEventListener('keyup', function(event) {
-    console.log('outside')
-    event.preventDefault()
-    if (event.keyCode === 13) {
-      document.getElementById('login__btn')?.click()
-      console.log('enter key', event)
-    }
-  })
+  // let lastEvent: KeyboardEvent
+
+  // document.getElementById('login')?.addEventListener('keyup', function(event) {
+  //   console.log('outside', lastEvent, event)
+  //   event.preventDefault()
+  //   // event.keyCode === 13 
+  //   if (event.key === "Enter") {
+  //     lastEvent = event
+  //     document.getElementById('login__btn')?.click()
+  //     console.log('enter key', event.timeStamp)
+  //   }
+  // })
 
   
   return (

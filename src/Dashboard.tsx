@@ -77,7 +77,7 @@ function Dashboard() {
       const newName = window.prompt('Please enter your first and last name as you want the club to see them')
       setName(newName ? newName : '')
       updateProfile(user, {displayName: newName})
-      setDoc(doc(db, `users/${user.uid}`), {name: newName, email: user.email, uid: user.uid })
+      setDoc(doc(db, `users/${user.uid}`), {name: newName, email: user.email, uid: user.uid,type: 'pro' })
       fetchUserName()
     } else {
       fetchUserName()
@@ -166,6 +166,7 @@ function Dashboard() {
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
+      console.log(comic, 'hi')
       setComedian({
         name: comic.name,
         id: comic.id,
