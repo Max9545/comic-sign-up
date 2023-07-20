@@ -152,11 +152,12 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   const editBooked = () => {
     const pos = props.alreadyBooked.filter((booked: any) => booked != undefined)
     if (pos[0]) {
+      console.log(pos)
       const childArray = pos[0].props.children.filter((child: any) => child.length)[0]
       const performers = childArray.map((child: { props: any }) => child.props.children)
       performers.map((performer: any) => {
-        bookedShow.comics[performer.split(':')[0].replace(/\s+/g, '')] = performer.split(':')[1].slice(1)
-        
+        bookedShow.comics[performer.split(':')[0]] = performer.split(':')[1].slice(1)
+        // .replace(/\s+/g, '')
       })
     }
     setBookedShow(bookedShow)
