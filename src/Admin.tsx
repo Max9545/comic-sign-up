@@ -3,12 +3,13 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { Comic, ShowToBook } from './interface'
-import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where } from "firebase/firestore"
+import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where, getFirestore, setDoc } from "firebase/firestore"
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
+import { updateProfile } from 'firebase/auth'
 
-function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string}) {
+function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any}) {
 
   const [newSchedule, setNewSchedule] = useState<any[]>([])
   const [showsToAddDowntown, setShowsToAddDowntown] = useState<any[]>([])
@@ -34,6 +35,14 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   useEffect(() => {
     setComicEmailList()
   }, [])
+  
+  // useEffect(() => {
+  //   const proButton = document.getElementById('pro-radio')
+
+    // proButton.checked
+    
+    // .checked = props.comedian.type === 'pro'
+  // }, [])
 
   useEffect(() => {
     displayPotentialShows()
@@ -50,6 +59,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     viewAllComicsAvailableDowntown()
     // showPublishedDowntown()
   }, [published])
+
+  
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -252,10 +263,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     }
   }
 
-  const editPublishedShow = (show: any) => {
-    const bookedComics = show[0].props.children.filter((position: any) => position.length > 0)
-    const bookedArray = bookedComics[0]
-  }
+  // const editPublishedShow = (show: any) => {
+  //   const bookedComics = show[0].props.children.filter((position: any) => position.length > 0)
+  //   const bookedArray = bookedComics[0]
+  // }
 
   const viewAllComicsAvailableDowntown = async () => {
 
@@ -605,11 +616,28 @@ ${showsForEmailSouth}`
   const addToWeek = () => {
     const idCheck = props.shows.map(show => show.id)
     if(!idCheck.includes(potentialShow?.id) ) {
-      setNewSchedule([...props.shows, potentialShow])
+
+      setNewSchedule([...props.shows, ...newSchedule])
       addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: props.shows})
       fetchPublishedShows()
       reset()
     }
+  }
+
+  const proButton = document.getElementById('pro-radio')
+  const outOfTownButton = document.getElementById('outOfTown')
+
+  const changeComedianType = () => {
+    // if (proButton?.checked) {
+    //   console.log(proButton?.value)
+    //   const db = getFirestore()
+    //   setDoc(doc(db, `users/${props.user.uid}`), {...props.user, type: 'pro' })
+    // } else if (outOfTownButton?.checked) {
+    //   console.log(outOfTownButton?.value)
+    //   const db = getFirestore()
+    //   updateProfile(props.user, {type: 'outOfTown'})
+    //   setDoc(doc(db, `users/${props.user.uid}`), {...props.user,  })
+    // }
   }
 
   return (
@@ -621,6 +649,18 @@ ${showsForEmailSouth}`
       <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
       </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
+  <div className='shows-visible-to-comics'>
+  <h3 className='change-type-header'>{`Comic Type: ${props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
+    <div>
+      <input type='radio' id='pro-radio' name='type' value='pro'/>
+      <label htmlFor='pro-radio'>Pro</label>
+    </div>
+    <div>
+      <input type='radio' id='outOfTown' name='type' value='outOfTown'/>
+      <label htmlFor='outOfTown' >Out of Town Pro</label>
+    </div>
+    <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
+  </div>
   <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
       <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
