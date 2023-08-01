@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { Comic, ShowToBook } from './interface'
-import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where, getFirestore, setDoc } from "firebase/firestore"
+import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where, getFirestore, setDoc, updateDoc } from "firebase/firestore"
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
@@ -17,6 +17,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [day, setDay] = useState('')
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
+  const [type, setType] = useState('')
   const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
   const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
   const [specificComicHistoryDowntown, setSpecificComicHistoryDowntown] = useState<any[]>([])
@@ -616,7 +617,6 @@ ${showsForEmailSouth}`
   const addToWeek = () => {
     const idCheck = props.shows.map(show => show.id)
     if(!idCheck.includes(potentialShow?.id) ) {
-
       setNewSchedule([...props.shows, ...newSchedule])
       addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: props.shows})
       fetchPublishedShows()
@@ -624,19 +624,27 @@ ${showsForEmailSouth}`
     }
   }
 
-  const proButton = document.getElementById('pro-radio')
-  const outOfTownButton = document.getElementById('outOfTown')
+  // const proButton = document.getElementById('pro-radio')
+  // const outOfTownButton = document.getElementById('outOfTown')
 
-  const changeComedianType = () => {
+  const changeComedianType = async () => {
     // if (proButton?.checked) {
     //   console.log(proButton?.value)
     //   const db = getFirestore()
     //   setDoc(doc(db, `users/${props.user.uid}`), {...props.user, type: 'pro' })
     // } else if (outOfTownButton?.checked) {
     //   console.log(outOfTownButton?.value)
-    //   const db = getFirestore()
-    //   updateProfile(props.user, {type: 'outOfTown'})
-    //   setDoc(doc(db, `users/${props.user.uid}`), {...props.user,  })
+    console.log(props.comedian)
+      const db = getFirestore()
+      const q = query(collection(db, "users"), where("uid", "==", comedianMask?.id)) 
+      const docUser = await getDocs(q)
+      const data = docUser.docs[0].data()
+      console.log(data)
+      // updateProfile(props.user, {admin: false})
+      data.type = type
+      updateDoc(doc(db, `users/${comedianMask?.id}`), {...data, type: type})
+      // setDoc(doc(db, `users/${props.comedian?.id}`), {...data, type: type})
+      // console.log(props.user)
     // }
   }
 
@@ -652,11 +660,11 @@ ${showsForEmailSouth}`
   <div className='shows-visible-to-comics'>
   <h3 className='change-type-header'>{`Comic Type: ${props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
     <div>
-      <input type='radio' id='pro-radio' name='type' value='pro'/>
+      <input type='radio' id='pro-radio' name='type' value='pro' onClick={() => setType('pro')}/>
       <label htmlFor='pro-radio'>Pro</label>
     </div>
     <div>
-      <input type='radio' id='outOfTown' name='type' value='outOfTown'/>
+      <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => setType('OutOfTown')}/>
       <label htmlFor='outOfTown' >Out of Town Pro</label>
     </div>
     <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
