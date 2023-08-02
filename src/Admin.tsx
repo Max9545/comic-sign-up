@@ -7,7 +7,6 @@ import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
-import { updateProfile } from 'firebase/auth'
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any}) {
 
@@ -36,14 +35,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   useEffect(() => {
     setComicEmailList()
   }, [])
-  
-  // useEffect(() => {
-  //   const proButton = document.getElementById('pro-radio')
-
-    // proButton.checked
-    
-    // .checked = props.comedian.type === 'pro'
-  // }, [])
 
   useEffect(() => {
     displayPotentialShows()
@@ -58,7 +49,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   useEffect(() => {
     viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
-    // showPublishedDowntown()
   }, [published])
 
   
@@ -264,11 +254,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     }
   }
 
-  // const editPublishedShow = (show: any) => {
-  //   const bookedComics = show[0].props.children.filter((position: any) => position.length > 0)
-  //   const bookedArray = bookedComics[0]
-  // }
-
   const viewAllComicsAvailableDowntown = async () => {
 
     const downtownShows = props.shows.filter(show => show.club === 'downtown')
@@ -291,8 +276,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                   }
                 })
           })
-
-         
 
           const showFinals = downtownShows.map((finalForm, index) => {
 
@@ -360,9 +343,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               if (show.bookedshow.id == finalForm.id) {
                 return <div className={`published-${show.bookedshow.club}`} key={index}>
               <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-              {/* {Object.keys(show.bookedshow.comics).map((key, index) => {
-                return  <p key={index}>{show.bookedshow.comics[key] && `${key.charAt(0).toUpperCase() + key.slice(1)}: ${show.bookedshow.comics[key]}`}</p>
-              })} */}
+
               {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={`${pinDext}`} >{`${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
                 <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
              </div>
@@ -407,8 +388,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     } catch (err) {
       console.log(err)
     }
-
-    // await setComicEmailList()
   }
 
   const sendEmail = (comicsEmail: any, showsForEmail: any) => {
@@ -552,46 +531,10 @@ ${showsForEmailSouth}`
     alert('Comics have been notified')
   }
 
-  // const showPublishedDowntown = () => {
-  //   return published.map((pubShow, index) => {
-  //     if (pubShow.bookedshow.club === 'downtown') {
-  //       return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
-  //             <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
-              
-  //               {Object.keys(pubShow.bookedshow.comics).map((key, index) => {
-  //                 return pubShow.bookedshow.comics[key] && <p className='published-detail'>{`${key}: ${pubShow.bookedshow.comics[key]}`}</p>})
-  //               }
-  //               <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
-  //            </div>
-  //     }
-  //   })
-  // }
-
-  // const showPublishedSouth = () => {
-  //   return published.map((pubShow, index) => {
-  //     if (pubShow.bookedshow.club === 'south') {
-  //       return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
-  //             <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
-  //             {pubShow.bookedshow.mC && <p className='published-detail'>MC: {pubShow.bookedshow.mC}</p>}
-  //             {pubShow.bookedshow.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>}
-  //             {pubShow.bookedshow.star7 && <p className='published-detail'>Star 7: {pubShow.bookedshow.star7}</p>}
-  //             {pubShow.bookedshow.b1 && <p className='published-detail'>B1: {pubShow.bookedshow.b1}</p>}
-  //             {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
-  //             {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
-  //               <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
-  //            </div>
-  //     }
-  //   })
-  // }
-
   const removePublishedShow = async (id: string) => {
 
     await deleteDoc(doc (db,"publishedShows", id))
-
     fetchPublishedShows()
-    // showPublishedDowntown()
-    // showPublishedSouth()
-    // await setComicEmailList()
   }
 
   const maskAsComic = async () => {
@@ -670,9 +613,6 @@ ${showsForEmailSouth}`
     }
   }
 
-  // const proButton = document.getElementById('pro-radio')
-  // const outOfTownButton = document.getElementById('outOfTown')
-
   const changeComedianType = async () => {
    
       const db = getFirestore()
@@ -687,7 +627,6 @@ ${showsForEmailSouth}`
 
   return (
     <div className='admin-form'>
-      
       <div className='mask-container'>
         <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their email</h3>
         <input type='text' className='yes-spot' onChange={(e) => setComicEmail(e.target.value)}/>

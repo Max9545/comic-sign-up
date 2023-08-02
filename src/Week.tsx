@@ -27,20 +27,9 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
 
   const removePotentialShow = async (id: string) => {
 
-    // await deleteDoc(doc (db,"shows for week", id),where('type', '!=', 'outOfTown'))
-    // const weekRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1))
-    // const doc = await (getDocs(weekRef))
-    // console.log(doc.docs[0].data())
-    // const week = doc.docs[0].data()
-    // await updateDoc(week,{
-    //   thisWeek:
-    // })
     shows.splice(shows.indexOf(shows.find((show) => show.id === id)), 1)
     addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: shows})
     props.fetchWeekForComedian()
-    // showPublishedDowntown()
-    // showPublishedSouth()
-    // await setComicEmailList()
   }
 
   const showDowntownShows = () => {
@@ -185,13 +174,7 @@ ${southString}`,
     sendConfirmationEmail()
 
     alert('Availability Submitted!! Check your email for verification of your latest availabilty')
-
-    // setTimeout(() => {
-    //   window.location.reload()
-    // }, 500)
   }
-
-  
 
     return (
         <section className='show-container'>

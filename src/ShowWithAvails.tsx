@@ -30,11 +30,6 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   
   useEffect(() => {
     setComics(props.availableComics)
-    // const pos = props.alreadyBooked.filter((booked: any) => booked != undefined)
-    // if (pos[0]) {
-    //   const childArray = pos[0].props.children.filter((child: any) => child.length)[0]
-    //   console.log(childArray.map((child: { props: any }) => child.props.children))
-    // }
   },[props])
 
   useEffect(() => {
