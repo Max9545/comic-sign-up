@@ -630,8 +630,6 @@ ${showsForEmailSouth}`
       <div className='mask-container'
       onKeyUp={(e) => {
         if (e.key === "Enter") {
-          // console.log(e.target?.value)
-          // setComicEmail(e.target.value)
           maskAsComic()        
         }
       }}

@@ -199,7 +199,15 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
                 setTrigger(!trigger)
             }}>Add</button>
           </div>
-          <div className='other-block'>
+          <div className='other-block'
+            onKeyUp={(e) => {
+              if (e.key === "Enter" && otherName && otherType) {
+                bookedShow.comics[otherType] = otherName
+                setBookedShow(bookedShow)
+                setTrigger(!trigger)        
+              }
+            }}
+          >
             <label className='other-spot'>Other Type Comics:</label>
             <div className='other-div'>
             <label>Comic Type: </label>
