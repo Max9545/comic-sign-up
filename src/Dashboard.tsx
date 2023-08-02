@@ -166,7 +166,6 @@ function Dashboard() {
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
-      console.log(comic, 'hi')
       setComedian({
         name: comic.name,
         id: comic.id,

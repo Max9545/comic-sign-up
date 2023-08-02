@@ -556,7 +556,6 @@ ${showsForEmailSouth}`
       const docRef = query(collection(db, `users`), where("email", "==", comicEmail))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data()
-      console.log(comic)
       setComedianMask({
         name: comic.name,
         id: comic.uid,
@@ -619,7 +618,6 @@ ${showsForEmailSouth}`
       const q = query(collection(db, "users"), where("uid", "==", comedianMask?.id)) 
       const docUser = await getDocs(q)
       const data = docUser.docs[0].data()
-      console.log(data)
       data.type = type
       updateDoc(doc(db, `users/${comedianMask?.id}`), {...data, type: type})
       alert(`${comedianMask.name} is now filed as ${type}`)
