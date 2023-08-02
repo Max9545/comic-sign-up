@@ -720,9 +720,7 @@ ${showsForEmailSouth}`
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
       <button className='clear-form' onClick={() => {
         reset()
-        // setDate('')
-        // setDay('')
-        // setTime('')
+        maskAsComic()
         }}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
         <select className='club-select' {...register('club')}>
@@ -738,7 +736,7 @@ ${showsForEmailSouth}`
         </div>
         <div>
         <label>Headliner: </label>
-        <input className='headliner-input' {...register('headliner')} required/>
+        <input className='headliner-input' id='headliner-input'{...register('headliner')} required/>
         </div>
         <input type='submit' value='Queue Show' className='add-show'/>
       </form>
