@@ -627,7 +627,15 @@ ${showsForEmailSouth}`
 
   return (
     <div className='admin-form'>
-      <div className='mask-container'>
+      <div className='mask-container'
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          // console.log(e.target?.value)
+          // setComicEmail(e.target.value)
+          maskAsComic()        
+        }
+      }}
+      >
         <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their email</h3>
         <input type='text' className='yes-spot' onChange={(e) => setComicEmail(e.target.value)}/>
       <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
