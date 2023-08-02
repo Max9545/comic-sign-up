@@ -176,7 +176,7 @@ ${southString}`,
   const submitForm = (event: any) => {
 
     event.preventDefault()
-    
+    console.log(currentComedian)
     setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
     addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
       comedianInfo: currentComedian, 

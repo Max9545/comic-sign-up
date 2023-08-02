@@ -610,6 +610,52 @@ ${showsForEmailSouth}`
         showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
     } catch (err) {
+      const docRef = query(collection(db, `users`), where("email", "==", comicEmail))
+      const doc = await (getDocs(docRef))
+      const comic = await doc.docs[0].data()
+      console.log(comic)
+      setComedianMask({
+        name: comic.name,
+        id: comic.uid,
+        type: comic.type,
+        email: comicEmail,
+        showsAvailabledowntown: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        }, 
+        showsAvailablesouth: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        },
+        showsAvailabledowntownHistory: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        },
+        showsAvailablesouthHistory: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        }
+      })
       console.log(err)
     }
   }
@@ -672,7 +718,12 @@ ${showsForEmailSouth}`
   <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
       <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
-      <button className='clear-form' onClick={() => reset()}>Clear/Reset Form</button>
+      <button className='clear-form' onClick={() => {
+        reset()
+        // setDate('')
+        // setDay('')
+        // setTime('')
+        }}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
         <select className='club-select' {...register('club')}>
           <option value='downtown'>Downtown</option>
