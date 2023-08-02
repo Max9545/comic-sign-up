@@ -640,16 +640,29 @@ ${showsForEmailSouth}`
       </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
   <div className='shows-visible-to-comics'>
-  <h3 className='change-type-header'>{`Comic Type: ${props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
+  <h3 className='change-type-header'>{`Comic Type: ${type.charAt(0).toUpperCase() + type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
+  <div
+    onKeyUp={(e) => {
+      if (e.key === "Enter" && type != '') {
+        changeComedianType()  
+        setAdTrigger(!adTrigger)      
+      }
+    }}
+  >
     <div>
-      <input type='radio' id='pro-radio' name='type' value='pro' onClick={() => setType('pro')}/>
-      <label htmlFor='pro-radio'>Pro</label>
+        <input type='radio' id='pro-radio' name='type' value='pro' onClick={() => setType('pro')}/>
+        <label htmlFor='pro-radio'>Pro</label>
+      </div>
+      <div>
+        <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {
+          if (type != '') {
+            setType('OutOfTown')
+          }
+        }}/>
+        <label htmlFor='outOfTown' >Out of Town Pro</label>
+      </div>
+      <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
     </div>
-    <div>
-      <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => setType('OutOfTown')}/>
-      <label htmlFor='outOfTown' >Out of Town Pro</label>
-    </div>
-    <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
   </div>
   <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
       <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>
