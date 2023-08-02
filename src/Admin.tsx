@@ -674,24 +674,15 @@ ${showsForEmailSouth}`
   // const outOfTownButton = document.getElementById('outOfTown')
 
   const changeComedianType = async () => {
-    // if (proButton?.checked) {
-    //   console.log(proButton?.value)
-    //   const db = getFirestore()
-    //   setDoc(doc(db, `users/${props.user.uid}`), {...props.user, type: 'pro' })
-    // } else if (outOfTownButton?.checked) {
-    //   console.log(outOfTownButton?.value)
-    console.log(props.comedian)
+   
       const db = getFirestore()
       const q = query(collection(db, "users"), where("uid", "==", comedianMask?.id)) 
       const docUser = await getDocs(q)
       const data = docUser.docs[0].data()
       console.log(data)
-      // updateProfile(props.user, {admin: false})
       data.type = type
       updateDoc(doc(db, `users/${comedianMask?.id}`), {...data, type: type})
-      // setDoc(doc(db, `users/${props.comedian?.id}`), {...data, type: type})
-      // console.log(props.user)
-    // }
+      alert(`${comedianMask.name} is now filed as ${type}`)
   }
 
   return (
