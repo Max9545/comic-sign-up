@@ -20,13 +20,14 @@ function Login() {
     if (user) navigate("/dashboard")
   }, [user, loading]) 
 
-  // let lastEvent: KeyboardEvent
+  let lastEvent: KeyboardEvent
 
   // document.getElementById('login')?.addEventListener('keyup', function(event) {
   //   console.log('outside', lastEvent, event)
   //   event.preventDefault()
   //   // event.keyCode === 13 
-  //   if (event.key === "Enter") {
+  //   if (event.key === "Enter" && lastEvent != event) {
+  //     event.preventDefault()
   //     lastEvent = event
   //     document.getElementById('login__btn')?.click()
   //     console.log('enter key', event.timeStamp)
@@ -36,13 +37,20 @@ function Login() {
   
   return (
     <div className="login" id="login">
-      <div className="login__container">
+      <div className="login__container" 
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          logInWithEmailAndPassword(email, password)
+        }
+      }}
+      >
         <input
           type="text"
           className="login__textBox"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="E-mail Address"
+          autoFocus
         />
         <input
           type="password"

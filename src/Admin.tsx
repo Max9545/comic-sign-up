@@ -3,12 +3,12 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { Comic, ShowToBook } from './interface'
-import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where } from "firebase/firestore"
+import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where, getFirestore, setDoc, updateDoc } from "firebase/firestore"
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
 
-function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string}) {
+function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any}) {
 
   const [newSchedule, setNewSchedule] = useState<any[]>([])
   const [showsToAddDowntown, setShowsToAddDowntown] = useState<any[]>([])
@@ -16,6 +16,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [day, setDay] = useState('')
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
+  const [type, setType] = useState('')
   const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
   const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
   const [specificComicHistoryDowntown, setSpecificComicHistoryDowntown] = useState<any[]>([])
@@ -48,8 +49,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   useEffect(() => {
     viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
-    // showPublishedDowntown()
   }, [published])
+
+  
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -252,11 +254,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     }
   }
 
-  const editPublishedShow = (show: any) => {
-    const bookedComics = show[0].props.children.filter((position: any) => position.length > 0)
-    const bookedArray = bookedComics[0]
-  }
-
   const viewAllComicsAvailableDowntown = async () => {
 
     const downtownShows = props.shows.filter(show => show.club === 'downtown')
@@ -279,8 +276,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                   }
                 })
           })
-
-         
 
           const showFinals = downtownShows.map((finalForm, index) => {
 
@@ -348,9 +343,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               if (show.bookedshow.id == finalForm.id) {
                 return <div className={`published-${show.bookedshow.club}`} key={index}>
               <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-              {/* {Object.keys(show.bookedshow.comics).map((key, index) => {
-                return  <p key={index}>{show.bookedshow.comics[key] && `${key.charAt(0).toUpperCase() + key.slice(1)}: ${show.bookedshow.comics[key]}`}</p>
-              })} */}
+
               {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={`${pinDext}`} >{`${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
                 <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
              </div>
@@ -395,8 +388,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     } catch (err) {
       console.log(err)
     }
-
-    // await setComicEmailList()
   }
 
   const sendEmail = (comicsEmail: any, showsForEmail: any) => {
@@ -540,46 +531,10 @@ ${showsForEmailSouth}`
     alert('Comics have been notified')
   }
 
-  // const showPublishedDowntown = () => {
-  //   return published.map((pubShow, index) => {
-  //     if (pubShow.bookedshow.club === 'downtown') {
-  //       return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
-  //             <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
-              
-  //               {Object.keys(pubShow.bookedshow.comics).map((key, index) => {
-  //                 return pubShow.bookedshow.comics[key] && <p className='published-detail'>{`${key}: ${pubShow.bookedshow.comics[key]}`}</p>})
-  //               }
-  //               <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
-  //            </div>
-  //     }
-  //   })
-  // }
-
-  // const showPublishedSouth = () => {
-  //   return published.map((pubShow, index) => {
-  //     if (pubShow.bookedshow.club === 'south') {
-  //       return <div className={`published-${pubShow.bookedshow.club}`} key={index}>
-  //             <h3>{pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)} {pubShow.bookedshow.headliner} {pubShow.bookedshow.time} {pubShow.bookedshow.day} {pubShow.bookedshow.date}</h3>
-  //             {pubShow.bookedshow.mC && <p className='published-detail'>MC: {pubShow.bookedshow.mC}</p>}
-  //             {pubShow.bookedshow.starMC && <p className='published-detail'>Star MC: {pubShow.bookedshow.starMC}</p>}
-  //             {pubShow.bookedshow.star7 && <p className='published-detail'>Star 7: {pubShow.bookedshow.star7}</p>}
-  //             {pubShow.bookedshow.b1 && <p className='published-detail'>B1: {pubShow.bookedshow.b1}</p>}
-  //             {pubShow.bookedshow.a1 && <p className='published-detail'>A1: {pubShow.bookedshow.a1}</p>}
-  //             {pubShow.bookedshow.yes && <p className='published-detail'>Yes: {pubShow.bookedshow.yes}</p>}
-  //               <button className='delete-show' onClick={() => removePublishedShow(pubShow.bookedshow.id)}>Unpublish</button>   
-  //            </div>
-  //     }
-  //   })
-  // }
-
   const removePublishedShow = async (id: string) => {
 
     await deleteDoc(doc (db,"publishedShows", id))
-
     fetchPublishedShows()
-    // showPublishedDowntown()
-    // showPublishedSouth()
-    // await setComicEmailList()
   }
 
   const maskAsComic = async () => {
@@ -598,6 +553,51 @@ ${showsForEmailSouth}`
         showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
     } catch (err) {
+      const docRef = query(collection(db, `users`), where("email", "==", comicEmail))
+      const doc = await (getDocs(docRef))
+      const comic = await doc.docs[0].data()
+      setComedianMask({
+        name: comic.name,
+        id: comic.uid,
+        type: comic.type,
+        email: comicEmail,
+        showsAvailabledowntown: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        }, 
+        showsAvailablesouth: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        },
+        showsAvailabledowntownHistory: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        },
+        showsAvailablesouthHistory: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [], 
+          friday: [],
+          saturday: [],
+          sunday: []
+        }
+      })
       console.log(err)
     }
   }
@@ -605,26 +605,70 @@ ${showsForEmailSouth}`
   const addToWeek = () => {
     const idCheck = props.shows.map(show => show.id)
     if(!idCheck.includes(potentialShow?.id) ) {
-      setNewSchedule([...props.shows, potentialShow])
+      setNewSchedule([...props.shows, ...newSchedule])
       addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: props.shows})
       fetchPublishedShows()
       reset()
     }
   }
 
+  const changeComedianType = async () => {
+   
+      const db = getFirestore()
+      const q = query(collection(db, "users"), where("uid", "==", comedianMask?.id)) 
+      const docUser = await getDocs(q)
+      const data = docUser.docs[0].data()
+      data.type = type
+      updateDoc(doc(db, `users/${comedianMask?.id}`), {...data, type: type})
+      alert(`${comedianMask.name} is now filed as ${type}`)
+  }
+
   return (
     <div className='admin-form'>
-      
-      <div className='mask-container'>
+      <div className='mask-container'
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          maskAsComic()        
+        }
+      }}
+      >
         <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their email</h3>
         <input type='text' className='yes-spot' onChange={(e) => setComicEmail(e.target.value)}/>
       <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
       </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
+  <div className='shows-visible-to-comics'>
+  <h3 className='change-type-header'>{`Comic Type: ${type.charAt(0).toUpperCase() + type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
+  <div
+    onKeyUp={(e) => {
+      if (e.key === "Enter" && type != '') {
+        changeComedianType()  
+        setAdTrigger(!adTrigger)      
+      }
+    }}
+  >
+    <div>
+        <input type='radio' id='pro-radio' name='type' value='pro' onClick={() => setType('pro')}/>
+        <label htmlFor='pro-radio'>Pro</label>
+      </div>
+      <div>
+        <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {
+          if (type != '') {
+            setType('OutOfTown')
+          }
+        }}/>
+        <label htmlFor='outOfTown' >Out of Town Pro</label>
+      </div>
+      <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
+    </div>
+  </div>
   <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
       <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
-      <button className='clear-form' onClick={() => reset()}>Clear/Reset Form</button>
+      <button className='clear-form' onClick={() => {
+        reset()
+        maskAsComic()
+        }}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
         <select className='club-select' {...register('club')}>
           <option value='downtown'>Downtown</option>
@@ -639,7 +683,7 @@ ${showsForEmailSouth}`
         </div>
         <div>
         <label>Headliner: </label>
-        <input className='headliner-input' {...register('headliner')} required/>
+        <input className='headliner-input' id='headliner-input'{...register('headliner')} required/>
         </div>
         <input type='submit' value='Queue Show' className='add-show'/>
       </form>

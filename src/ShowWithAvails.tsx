@@ -30,11 +30,6 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   
   useEffect(() => {
     setComics(props.availableComics)
-    // const pos = props.alreadyBooked.filter((booked: any) => booked != undefined)
-    // if (pos[0]) {
-    //   const childArray = pos[0].props.children.filter((child: any) => child.length)[0]
-    //   console.log(childArray.map((child: { props: any }) => child.props.children))
-    // }
   },[props])
 
   useEffect(() => {
@@ -152,7 +147,6 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   const editBooked = () => {
     const pos = props.alreadyBooked.filter((booked: any) => booked != undefined)
     if (pos[0]) {
-      console.log(pos)
       const childArray = pos[0].props.children.filter((child: any) => child.length)[0]
       const performers = childArray.map((child: { props: any }) => child.props.children)
       performers.map((performer: any) => {
@@ -195,7 +189,15 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <p className='comic-type' onClick={() => setComedianType('star7', comic)}>Star7</p>
             <p className='comic-type starMC' onClick={() => setComedianType('starMC', comic)}>Star MC</p>
           </div>)}
-          <div className='yes-div'>
+          <div className='yes-div'
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                bookedShow.comics.Yes = yes
+                setBookedShow(bookedShow)
+                setTrigger(!trigger)       
+              }
+            }}
+          >
             <label className='yes-spot'>Yes (Guest):</label>
             <input type='text' className='yes-spot-input' onChange={(event) => setYes(event?.target?.value)}/>
             <button className='add-show' onClick={() => {
@@ -204,7 +206,15 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
                 setTrigger(!trigger)
             }}>Add</button>
           </div>
-          <div className='other-block'>
+          <div className='other-block'
+            onKeyUp={(e) => {
+              if (e.key === "Enter" && otherName && otherType) {
+                bookedShow.comics[otherType] = otherName
+                setBookedShow(bookedShow)
+                setTrigger(!trigger)        
+              }
+            }}
+          >
             <label className='other-spot'>Other Type Comics:</label>
             <div className='other-div'>
             <label>Comic Type: </label>
