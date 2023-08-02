@@ -190,7 +190,15 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <p className='comic-type' onClick={() => setComedianType('star7', comic)}>Star7</p>
             <p className='comic-type starMC' onClick={() => setComedianType('starMC', comic)}>Star MC</p>
           </div>)}
-          <div className='yes-div'>
+          <div className='yes-div'
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                bookedShow.comics.Yes = yes
+                setBookedShow(bookedShow)
+                setTrigger(!trigger)       
+              }
+            }}
+          >
             <label className='yes-spot'>Yes (Guest):</label>
             <input type='text' className='yes-spot-input' onChange={(event) => setYes(event?.target?.value)}/>
             <button className='add-show' onClick={() => {
