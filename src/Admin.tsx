@@ -25,7 +25,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [published, setPublished] = useState<any[]>([])
   const [emailList, setEmailList] = useState<any[]>([])
   const [emailListWithOutTowners, setEmailListWithOutTowners] = useState<any[]>([])
-  const [comicEmail, setComicEmail] = useState('')
+  // const [comicEmail, setComicEmail] = useState('')
+  const [comicName, setComicName] = useState('')
   const [comedianMask, setComedianMask] = useState<Comic>(props.comedian)
   const [outOfTowners, setOutOfTowners] = useState(false)
   const [adTrigger, setAdTrigger] = useState(true)
@@ -539,28 +540,33 @@ ${showsForEmailSouth}`
 
   const maskAsComic = async () => {
     try {
-      const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.email", "==", comicEmail))
+      const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.name", "==", comicName))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
       setComedianMask({
         name: comic.name,
         id: comic.id,
         type: comic.type,
-        email: comicEmail,
+        email: comic.email,
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
         showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
         showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
     } catch (err) {
-      const docRef = query(collection(db, `users`), where("email", "==", comicEmail))
+      const docRef = query(collection(db, `users`), where("name", "==", comicName))
+      console.log(docRef.converter == null)
+      if (docRef.converter == null) {
+        console.log('559')
+        return alert('Comedian does not exist or incorrect name has been Entered')
+      }
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data()
       setComedianMask({
         name: comic.name,
         id: comic.uid,
         type: comic.type,
-        email: comicEmail,
+        email: comic.email,
         showsAvailabledowntown: {
           monday: [],
           tuesday: [],
@@ -598,6 +604,7 @@ ${showsForEmailSouth}`
           sunday: []
         }
       })
+      
       console.log(err)
     }
   }
@@ -633,7 +640,9 @@ ${showsForEmailSouth}`
       }}
       >
         <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their email</h3>
-        <input type='text' className='yes-spot' onChange={(e) => setComicEmail(e.target.value)}/>
+        <input type='text' className='yes-spot' onChange={(e) => {
+          setComicName(e.target.value)
+          }}/>
       <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
       </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>

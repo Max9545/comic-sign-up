@@ -3,11 +3,11 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom" 
 import "./Dashboard.css" 
 import { auth, db, logout } from "./firebase" 
-import { query, collection, getDocs, where, orderBy, limit, getFirestore, setDoc, doc } from "firebase/firestore"
+import { query, collection, getDocs, where, orderBy, limit, getFirestore, setDoc, doc, deleteDoc } from "firebase/firestore"
 import Week  from './Week'
 import { Comic } from './interface'
 import Admin from './Admin'
-import { updateProfile } from "firebase/auth"
+import { updateProfile, User } from "firebase/auth"
 
 function Dashboard() {
 
@@ -74,11 +74,14 @@ function Dashboard() {
     if (!user) return navigate("/")
     if(!user.displayName) {
       const db = getFirestore()
-      const newName = window.prompt('Please enter your first and last name as you want the club to see them')
+      const newName = window.prompt('Please enter your first and last name as you want the club to see them. This is requiered to move forward and enter the website')
       setName(newName ? newName : '')
-      updateProfile(user, {displayName: newName})
-      setDoc(doc(db, `users/${user.uid}`), {name: newName, email: user.email, uid: user.uid, type: 'pro' })
-      fetchUserName()
+      if (newName == '' || newName == null) return navigate("/")
+      if (newName.length > 0 && newName != '' && newName != null) {
+        makeUserName(user, newName)
+      } else {
+        navigate("/")
+      }
     } else {
       fetchUserName()
     }
@@ -91,6 +94,15 @@ function Dashboard() {
   useEffect(() => {
     fetchComicInfo()
   }, [name])
+
+  const makeUserName = async (user: any, newNameToUse: any) => {
+    const docToDelete = query(collection(db, `users`), where("email", "==", user?.email))
+    const docD = await (getDocs(docToDelete))
+    await deleteDoc(doc (db,"users", docD.docs[0].id))
+    updateProfile(user, {displayName: newNameToUse})
+    setDoc(doc(db, `users/${user.uid}`), {name: newNameToUse, email: user.email, uid: user.uid, type: 'pro' })
+    fetchUserName()
+  }
 
   const fetchUserName = async () => {
     try {
