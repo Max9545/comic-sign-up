@@ -20,7 +20,7 @@ function Login() {
     if (user) navigate("/dashboard")
   }, [user, loading]) 
 
-  let lastEvent: KeyboardEvent
+  // let lastEvent: KeyboardEvent
 
   // document.getElementById('login')?.addEventListener('keyup', function(event) {
   //   console.log('outside', lastEvent, event)
