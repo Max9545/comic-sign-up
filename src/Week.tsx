@@ -27,9 +27,13 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
 
   const removePotentialShow = async (id: string) => {
 
-    shows.splice(shows.indexOf(shows.find((show) => show.id === id)), 1)
-    addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: shows})
-    props.fetchWeekForComedian()
+    console.log('in Week')
+    if (window.confirm("Are you Sure you want to delete this published show?")) {
+      console.log('in confirm')
+      shows.splice(shows.indexOf(shows.find((show) => show.id === id)), 1)
+      addDoc(collection(db, `shows for week`), {fireOrder: Date.now(), thisWeek: shows})
+      props.fetchWeekForComedian()
+    }
   }
 
   const showDowntownShows = () => {
@@ -49,6 +53,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                       availability={show.availableComics.includes(props.comedian.name)}
                       setAllAvailability={setAllAvailability}
                       availableComics={show.availableComics}
+                      supportStatus={show.supportStatus}
                   />
                   {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
               </div>
@@ -74,6 +79,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                         availability={show.availableComics.includes(props.comedian.name)}
                         setAllAvailability={setAllAvailability}
                         availableComics={show.availableComics}
+                        supportStatus={show.supportStatus}
                     />
                     {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
                 </div>

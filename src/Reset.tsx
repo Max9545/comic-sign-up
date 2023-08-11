@@ -21,9 +21,15 @@ function Reset() {
 
     try {
     
+    const caseCorrectBeginning = emailToReset.slice(0, emailToReset.indexOf('@')).toLowerCase()
+
+    const caseCorrectEnd = emailToReset.slice(emailToReset.indexOf('@'))
+
+    console.log(`${caseCorrectBeginning + caseCorrectEnd}`)
+
     const db = getFirestore()
     
-    const docRef = query(collection(db, 'users'), where('email', '==', emailToReset))
+    const docRef = query(collection(db, 'users'), where('email', '==', `${caseCorrectBeginning + caseCorrectEnd}`))
 
     const doc = await getDocs(docRef)
 
@@ -37,7 +43,13 @@ function Reset() {
   }
 
   return (
-    <div className="reset">
+    <div className="reset" 
+    onKeyUp={(e) => {
+      if (e.key === "Enter") {
+        passWordResetVerify(email)
+      }}
+    }
+    >
       <div className="reset__container">
         <input
           type="text"

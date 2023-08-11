@@ -107,6 +107,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                     day={newShow.day}
                     time={newShow.time}
                     currentClub={newShow.club}
+                    supportStatus={newShow.support}
                     availableComedian={{
                       name: 'admin',
                       id: '',
@@ -173,6 +174,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               day={newShow.day}
               time={newShow.time}
               currentClub={newShow.club}
+              supportStatus={newShow.support}
               availableComedian={{
                 name: 'admin',
                 id: '',
@@ -536,6 +538,7 @@ ${showsForEmailSouth}`
 
     await deleteDoc(doc (db,"publishedShows", id))
     fetchPublishedShows()
+    setAdTrigger(!adTrigger)
   }
 
   const maskAsComic = async () => {
@@ -555,9 +558,7 @@ ${showsForEmailSouth}`
       })
     } catch (err) {
       const docRef = query(collection(db, `users`), where("name", "==", comicName))
-      console.log(docRef.converter == null)
       if (docRef.converter == null) {
-        console.log('559')
         return alert('Comedian does not exist or incorrect name has been Entered')
       }
       const doc = await (getDocs(docRef))
@@ -694,6 +695,11 @@ ${showsForEmailSouth}`
         <label>Headliner: </label>
         <input className='headliner-input' id='headliner-input'{...register('headliner')} required/>
         </div>
+        <select className='club-select' {...register('supportStatus')}>
+          <option value='support'>Support Is Needed</option>
+          <option value='no-support'>No Support Needed</option>
+        </select>
+        <br></br>
         <input type='submit' value='Queue Show' className='add-show'/>
       </form>
      <div className='add-build'>
