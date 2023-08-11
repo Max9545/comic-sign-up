@@ -536,6 +536,7 @@ ${showsForEmailSouth}`
 
     await deleteDoc(doc (db,"publishedShows", id))
     fetchPublishedShows()
+    setAdTrigger(!adTrigger)
   }
 
   const maskAsComic = async () => {
