@@ -558,9 +558,7 @@ ${showsForEmailSouth}`
       })
     } catch (err) {
       const docRef = query(collection(db, `users`), where("name", "==", comicName))
-      console.log(docRef.converter == null)
       if (docRef.converter == null) {
-        console.log('559')
         return alert('Comedian does not exist or incorrect name has been Entered')
       }
       const doc = await (getDocs(docRef))
@@ -698,7 +696,7 @@ ${showsForEmailSouth}`
         <input className='headliner-input' id='headliner-input'{...register('headliner')} required/>
         </div>
         <select className='club-select' {...register('supportStatus')}>
-          <option value='support'>Support Needed</option>
+          <option value='support'>Support Is Needed</option>
           <option value='no-support'>No Support Needed</option>
         </select>
         <br></br>
