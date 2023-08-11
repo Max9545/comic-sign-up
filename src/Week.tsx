@@ -17,12 +17,12 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
 
   useEffect(() => {
     setShows(props.weeklyShowTimes)
-  }, [props])
+  })
 
   useEffect(() => {
     showDowntownShows()
     showSouthShows()
-  }, [props])
+  })
 
 
   const removePotentialShow = async (id: string) => {
