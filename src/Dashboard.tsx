@@ -75,7 +75,7 @@ function Dashboard() {
     if(!user.displayName) {
       console.log('76')
       const db = getFirestore()
-      const newName = window.prompt('Please enter your first and last name as you want the club to see them')
+      const newName = window.prompt('Please enter your first and last name as you want the club to see them. This is requiered to move forward and enter the website')
       setName(newName ? newName : '')
       if (newName == '' || newName == null) return navigate("/")
       if (newName.length > 0 && newName != '' && newName != null) {
