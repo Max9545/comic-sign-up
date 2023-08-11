@@ -17,7 +17,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
 
   useEffect(() => {
     setShows(props.weeklyShowTimes)
-  }, [props.weeklyShowTimes])
+  }, [props])
 
   useEffect(() => {
     showDowntownShows()

@@ -80,11 +80,9 @@ function Dashboard() {
       if (newName.length > 0 && newName != '' && newName != null) {
         makeUserName(user, newName)
       } else {
-        console.log('navigate /')
         navigate("/")
       }
     } else {
-      console.log('has display name')
       fetchUserName()
     }
   }, [user, loading]) 
