@@ -25,6 +25,7 @@ export interface Comic {
 }
 
 export interface ShowToBook {
+  supportStatus: string;
   key: number, 
   day: string, 
   time: string, 

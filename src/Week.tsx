@@ -53,6 +53,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                       availability={show.availableComics.includes(props.comedian.name)}
                       setAllAvailability={setAllAvailability}
                       availableComics={show.availableComics}
+                      supportStatus={show.supportStatus}
                   />
                   {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
               </div>
@@ -78,6 +79,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                         availability={show.availableComics.includes(props.comedian.name)}
                         setAllAvailability={setAllAvailability}
                         availableComics={show.availableComics}
+                        supportStatus={show.supportStatus}
                     />
                     {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
                 </div>

@@ -107,6 +107,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                     day={newShow.day}
                     time={newShow.time}
                     currentClub={newShow.club}
+                    supportStatus={newShow.support}
                     availableComedian={{
                       name: 'admin',
                       id: '',
@@ -173,6 +174,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               day={newShow.day}
               time={newShow.time}
               currentClub={newShow.club}
+              supportStatus={newShow.support}
               availableComedian={{
                 name: 'admin',
                 id: '',
@@ -695,6 +697,11 @@ ${showsForEmailSouth}`
         <label>Headliner: </label>
         <input className='headliner-input' id='headliner-input'{...register('headliner')} required/>
         </div>
+        <select className='club-select' {...register('supportStatus')}>
+          <option value='support'>Support Needed</option>
+          <option value='no-support'>No Support Needed</option>
+        </select>
+        <br></br>
         <input type='submit' value='Queue Show' className='add-show'/>
       </form>
      <div className='add-build'>
