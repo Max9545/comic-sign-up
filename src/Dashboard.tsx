@@ -73,7 +73,6 @@ function Dashboard() {
     if (loading) return 
     if (!user) return navigate("/")
     if(!user.displayName) {
-      console.log('76')
       const db = getFirestore()
       const newName = window.prompt('Please enter your first and last name as you want the club to see them. This is requiered to move forward and enter the website')
       setName(newName ? newName : '')
@@ -99,13 +98,8 @@ function Dashboard() {
   }, [name])
 
   const makeUserName = async (user: any, newNameToUse: any) => {
-    console.log(newNameToUse, user.uid, user)
     const docToDelete = query(collection(db, `users`), where("email", "==", user?.email))
     const docD = await (getDocs(docToDelete))
-    console.log(docToDelete, docD,  docD.docs[0].data())
-    const docE = docD.docs[0].data()
-    console.log(docD.docs[0].id)
-    // await deleteDoc(docD)
     await deleteDoc(doc (db,"users", docD.docs[0].id))
     updateProfile(user, {displayName: newNameToUse})
     setDoc(doc(db, `users/${user.uid}`), {name: newNameToUse, email: user.email, uid: user.uid, type: 'pro' })
