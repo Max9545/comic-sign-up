@@ -74,7 +74,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
-      if(props.supportStatus == 'support') {
+      // if(props.supportStatus == 'support') {
         event.preventDefault()
         setAvailability(!availability)
         
@@ -101,7 +101,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
           comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))
           comedian[`showsAvailable${clubToSign}History`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}History`][dayOfWeek].findIndex((showToDelete: { id: string }) => showToDelete.id === props.id))
         }
-      }
+      // }
       
   }
 
@@ -110,8 +110,8 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
     {props.headliner && <button onClick={(event) => handleClick(event)} 
       className={`${availability} show-button`}>{`${props.day} (${props.date}) ${props.time} ${props.currentClub.charAt(0).toUpperCase() + props.currentClub.slice(1)} ${props.headliner}`}: 
       <br></br>
-      {props.supportStatus == 'no-support' &&  'Support Not Needed'}
-      {props.supportStatus === 'support' && (availability   ? `Available` : `Not Available`)}</button>}
+      {/* {props.supportStatus == 'no-support' &&  'Support Not Needed'} */}
+      {availability   ? `Available` : `Not Available`}</button>}
   </div>
   )
 }
