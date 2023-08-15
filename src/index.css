@@ -28,7 +28,7 @@ header {
 .show-button {
   font-weight: 700;
   color: white;
-  width: 60vw;
+  min-width: 60vw;
   min-height: 7vh;
   font-size: 1.1rem;
 }
@@ -409,7 +409,7 @@ label {
   align-content: flex-end;
 }
 
-.edit-published {
+.edit-published, .no-support {
   min-width: 6vw;
   font-weight: 700;
   /* color: white; */
@@ -435,4 +435,14 @@ label {
 
 .change-type-header {
   margin: 0%
+}
+
+.no-support {
+  background: #dc3545;
+  color: black;
+  height: 5vh;
+  padding: .5% .5% 0% .5%;
+  font-size: .9em;
+  align-self: center;
+  border: 3px dotted black
 }

@@ -41,6 +41,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
       return props.weeklyShowTimes.map((show, index) => { 
         if (show.club === 'downtown') {
           return <div key={index} className='show-div'>
+                  {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>No Support <br></br>Needed</p>}
                   <Show
                       key={index}
                       id={show.id}
@@ -55,7 +56,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                       availableComics={show.availableComics}
                       supportStatus={show.supportStatus}
                   />
-                  {show.supportStatus === 'no-support' && <p>No Support Needed</p>}
+                  
                   {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
               </div>
         } 
@@ -68,6 +69,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
         return props.weeklyShowTimes.map((show, index) => { 
           if (show.club === 'south') {
             return <div key={index} className='show-div'>
+                    {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>No Support Needed</p>}  
                     <Show
                         key={index}
                         id={show.id}
@@ -82,7 +84,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                         availableComics={show.availableComics}
                         supportStatus={show.supportStatus}
                     />
-                    {show.supportStatus === 'no-support' && <p>No Support Needed</p>}
+                    
                     {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
                 </div>
           } 
