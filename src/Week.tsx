@@ -69,7 +69,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
         return props.weeklyShowTimes.map((show, index) => { 
           if (show.club === 'south') {
             return <div key={index} className='show-div'>
-                    {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>No Support Needed</p>}  
+                    {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>No Support <br></br> Needed</p>}  
                     <Show
                         key={index}
                         id={show.id}
