@@ -437,7 +437,7 @@ label {
   margin: 0%
 }
 
-.no-support {
+.no-support, .no-support-booked {
   background: #dc3545;
   color: black;
   height: 5vh;
@@ -447,4 +447,8 @@ label {
   /* align-self: center; */
   border: 3px dotted black;
   font-weight: 700;
+}
+
+.no-support-booked {
+  font-size: 2em;
 }

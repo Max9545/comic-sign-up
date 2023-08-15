@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
 
 
-function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any, date: string, alreadyBooked: any, setAdTrigger: any, adTrigger: any}) {
+function ShowWithAvails(props: {availableComics: [], headliner: string, time: string, day: string, club: string, id: string, setSpecificComicHistoryDowntown: any, setSpecificComicHistorySouth: any, showTime: any, setcomicForHistory: any, date: string, alreadyBooked: any, setAdTrigger: any, adTrigger: any, supportStatus: string}) {
   
   const [comics, setComics] = useState<any[]>(props.availableComics)
   const [comicHistory, setComicHistory] = useState<any[]>([])
@@ -30,6 +30,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   
   useEffect(() => {
     setComics(props.availableComics)
+    console.log(props)
   },[props])
 
   useEffect(() => {
@@ -163,6 +164,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       {props.alreadyBooked}
       {props.alreadyBooked.filter((show: any) => show != undefined).length > 0 && <button className='edit-show' onClick={() => editBooked()}>Edit Booked</button>}
       <div>
+        {props.supportStatus == 'no-support' && <p className='no-support-booked'>No Support Needed</p>}
         <h3>Available {`${props.day} (${props.date}) ${props.headliner} ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}`}</h3>
         <div>
       {Object.keys(bookedShow.comics).map((key, index) => (

@@ -309,6 +309,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
             alreadyBooked={alreadyBooked} 
             setAdTrigger={setAdTrigger}
             adTrigger={adTrigger}
+            supportStatus={finalForm.supportStatus}
           />
         })
         setSignedShowsDown(showFinals)
@@ -370,6 +371,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
             alreadyBooked={alreadyBooked} 
             setAdTrigger={setAdTrigger}
             adTrigger={adTrigger}
+            supportStatus={finalForm.supportStatus}
           />
         })
         setSignedShowsSouth(showFinals)
