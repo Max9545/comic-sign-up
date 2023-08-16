@@ -452,3 +452,13 @@ label {
 .no-support-booked {
   font-size: 2em;
 }
+
+@media (max-width: 540px) {
+  .edit-published {
+    min-width: 15vw;
+  }
+
+  .no-support {
+    align-self: center;
+  }
+}
