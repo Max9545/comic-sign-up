@@ -163,7 +163,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
       {props.alreadyBooked}
       {props.alreadyBooked.filter((show: any) => show != undefined).length > 0 && <button className='edit-show' onClick={() => editBooked()}>Edit Booked</button>}
       <div>
-        {props.supportStatus == 'no-support' && <p className='no-support-booked'>No Support Needed</p>}
+        {props.supportStatus == 'no-support' && <p className='no-support-booked'>Self Contained Show</p>}
         <h3>Available {`${props.day} (${props.date}) ${props.headliner} ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}`}</h3>
         <div>
       {Object.keys(bookedShow.comics).map((key, index) => (
