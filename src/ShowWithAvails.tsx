@@ -30,7 +30,6 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   
   useEffect(() => {
     setComics(props.availableComics)
-    console.log(props)
   },[props])
 
   useEffect(() => {

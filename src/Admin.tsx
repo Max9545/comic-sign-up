@@ -26,7 +26,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [emailList, setEmailList] = useState<any[]>([])
   const [emailListWithOutTowners, setEmailListWithOutTowners] = useState<any[]>([])
   // const [comicEmail, setComicEmail] = useState('')
-  const [comicName, setComicName] = useState('')
+  const [comicSearch, setComicSearch] = useState('')
   const [comedianMask, setComedianMask] = useState<Comic>(props.comedian)
   const [outOfTowners, setOutOfTowners] = useState(false)
   const [adTrigger, setAdTrigger] = useState(true)
@@ -544,8 +544,11 @@ ${showsForEmailSouth}`
   }
 
   const maskAsComic = async () => {
+
+    const searchType = comicSearch.includes('@') ? 'email' : 'name'
+
     try {
-      const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.name", "==", comicName))
+      const docRef = query(collection(db, `comediansForAdmin`), where(`comedianInfo.${searchType}`, "==", comicSearch))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
       setComedianMask({
@@ -559,7 +562,7 @@ ${showsForEmailSouth}`
         showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
     } catch (err) {
-      const docRef = query(collection(db, `users`), where("name", "==", comicName))
+      const docRef = query(collection(db, `users`), where("name", "==", comicSearch))
       if (docRef.converter == null) {
         return alert('Comedian does not exist or incorrect name has been Entered')
       }
@@ -642,9 +645,9 @@ ${showsForEmailSouth}`
         }
       }}
       >
-        <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their email</h3>
+        <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their name or email</h3>
         <input type='text' className='yes-spot' onChange={(e) => {
-          setComicName(e.target.value)
+          setComicSearch(e.target.value)
           }}/>
       <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
       </div>
