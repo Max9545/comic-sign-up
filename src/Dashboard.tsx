@@ -99,10 +99,10 @@ function Dashboard() {
     const docToDelete = query(collection(db, `users`), where("email", "==", user?.email))
     const docD = await (getDocs(docToDelete))
     await deleteDoc(doc (db,"users", docD.docs[0].id))
-    updateProfile(user, {displayName: newNameToUse})
-    setDoc(doc(db, `users/${user.uid}`), {name: newNameToUse, email: user.email, uid: user.uid, type: 'pro' })
-    fetchUserName()
-  }
+    await updateProfile(user, {displayName: newNameToUse})
+    await setDoc(doc(db, `users/${user.uid}`), {name: newNameToUse, email: user.email, uid: user.uid, type: 'pro' })
+    await fetchUserName()
+  }   
 
   const fetchUserName = async () => {
     try {
