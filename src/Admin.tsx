@@ -31,6 +31,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [outOfTowners, setOutOfTowners] = useState(false)
   const [adTrigger, setAdTrigger] = useState(true)
   const [potentialShow, setPotentialShow] = useState({id:''})
+  const [createNewComicEmail, setCreateNewComicEmail] = useState('')
+  const [createNewComicName, setCreateNewComicName] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -727,6 +729,17 @@ ${showsForEmailSouth}`
         <h2 className='south-available-header'>South Bookings</h2>
         {showPublishedSouth()} */}
         {/* <button className='build-week' onClick={() => sendEmails()}>Email to all comics</button></div>} */}
+        <div>
+          <label> New Comic Email
+            <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
+          </label>
+          <br></br>
+          <label> New Comic Password
+            <input type='text' onChange={e => setCreateNewComicName(e.target.value)}/>
+          </label>
+          <br></br>
+          <button>Create Comic Profile</button>
+        </div>
         <h2 className='downtown-available-header'>Downtown Available Comics</h2>
         <div>{signedShowsDown.map(availShow => availShow)}</div>
         <h2 className='south-available-header'>South Club Available Comics</h2>
