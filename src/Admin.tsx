@@ -7,6 +7,10 @@ import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
+// import { getAuth, createUser } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
+const auth = getAuth();
+
 
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any}) {
 
@@ -32,7 +36,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [adTrigger, setAdTrigger] = useState(true)
   const [potentialShow, setPotentialShow] = useState({id:''})
   const [createNewComicEmail, setCreateNewComicEmail] = useState('')
-  const [createNewComicName, setCreateNewComicName] = useState('')
+  const [createNewComicPassword, setCreateNewComicPassword] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -638,6 +642,41 @@ ${showsForEmailSouth}`
       alert(`${comedianMask.name} is now filed as ${type}`)
   }
 
+  const createNewComic = () => {
+
+    console.log(createNewComicEmail, createNewComicPassword)
+
+    createUserWithEmailAndPassword(auth, createNewComicEmail, createNewComicPassword)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+    });
+
+  // getAuth()
+  // .createUser({
+  //   email: 'user@example.com',
+  //   emailVerified: false,
+  //   phoneNumber: '+11234567890',
+  //   password: 'secretPassword',
+  //   displayName: 'John Doe',
+  //   photoURL: 'http://www.example.com/12345678/photo.png',
+  //   disabled: false,
+  // })
+  // .then((userRecord) => {
+  //   // See the UserRecord reference doc for the contents of userRecord.
+  //   console.log('Successfully created new user:', userRecord.uid);
+  // })
+  // .catch((error) => {
+  //   console.log('Error creating new user:', error);
+  // });
+  }
+
   return (
     <div className='admin-form'>
       <div className='mask-container'
@@ -735,10 +774,10 @@ ${showsForEmailSouth}`
           </label>
           <br></br>
           <label> New Comic Password
-            <input type='text' onChange={e => setCreateNewComicName(e.target.value)}/>
+            <input type='text' onChange={e => setCreateNewComicPassword(e.target.value)}/>
           </label>
           <br></br>
-          <button>Create Comic Profile</button>
+          <button onClick={() => createNewComic()}>Create Comic Profile</button>
         </div>
         <h2 className='downtown-available-header'>Downtown Available Comics</h2>
         <div>{signedShowsDown.map(availShow => availShow)}</div>
