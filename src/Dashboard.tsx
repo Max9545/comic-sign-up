@@ -72,7 +72,7 @@ function Dashboard() {
   useEffect(() => {
     if (loading) return 
     if (!user) return navigate("/")
-    if(!user.displayName) {
+    if(!user.displayName && !admin) {
       const db = getFirestore()
       const newName = window.prompt('Please enter your first and last name as you want the club to see them. This is requiered to move forward and enter the website')
       setName(newName ? newName : '')

@@ -8,7 +8,7 @@ import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
 // import { getAuth, createUser } from 'firebase/auth'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateCurrentUser } from "firebase/auth"
 const auth = getAuth();
 
 
@@ -645,12 +645,15 @@ ${showsForEmailSouth}`
   const createNewComic = () => {
 
     console.log(createNewComicEmail, createNewComicPassword)
-
+    let originalUser = props.user
     createUserWithEmailAndPassword(auth, createNewComicEmail, createNewComicPassword)
     .then((userCredential) => {
       // Signed in 
-      const user = userCredential.user;
-      // ...
+      // const user = userCredential.user;
+      // signOut(auth)
+      console.log(props.user)
+      // signInWithEmailAndPassword(auth, props.user.email, props.user.password)
+      updateCurrentUser(auth, props.user)
     })
     .catch((error) => {
       const errorCode = error.code;
