@@ -734,6 +734,17 @@ ${showsForEmailSouth}`
       {showsToAddSouth.length > 0 && <h2 className='south-available-header'>South</h2>}
       {showsToAddSouth}
       <div>
+      <div className='create-new-comic'>
+          <label> New Comic Email
+          <br></br>
+            <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
+          </label>
+          <label> New Comic Password
+          <br></br>
+            <input type='text' onChange={e => setCreateNewComicPassword(e.target.value)}/>
+          </label>
+          <button onClick={() => createNewComic()} className='create-comic-button'>Create Comic Profile</button>
+        </div>
           <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button> 
           <br></br>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
@@ -745,17 +756,7 @@ ${showsForEmailSouth}`
         <h2 className='south-available-header'>South Bookings</h2>
         {showPublishedSouth()} */}
         {/* <button className='build-week' onClick={() => sendEmails()}>Email to all comics</button></div>} */}
-        <div className='create-new-comic'>
-          <label> New Comic Email
-            <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
-          </label>
-          <br></br>
-          <label> New Comic Password
-            <input type='text' onChange={e => setCreateNewComicPassword(e.target.value)}/>
-          </label>
-          <br></br>
-          <button onClick={() => createNewComic()}>Create Comic Profile</button>
-        </div>
+        
         <h2 className='downtown-available-header'>Downtown Available Comics</h2>
         <div>{signedShowsDown.map(availShow => availShow)}</div>
         <h2 className='south-available-header'>South Club Available Comics</h2>

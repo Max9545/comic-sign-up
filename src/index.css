@@ -465,5 +465,21 @@ label {
 
 .create-new-comic {
   border: 4px solid red;
-  /* margin-top: 350px; */
+  padding: 2%;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* align-content: flex-start; */
+}
+
+.create-comic-button {
+  background-color:red;
+  border-radius: 30%;
+  width: 40vw;
+  height: 5vh;
+  font-weight: 900;
+  margin: 2%;
+  align-self: center;
+  font-size: 1.3rem;
 }
