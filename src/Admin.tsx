@@ -647,10 +647,14 @@ ${showsForEmailSouth}`
     createUserWithEmailAndPassword(auth, createNewComicEmail, createNewComicPassword)
     .then((userCredential) => {
       updateCurrentUser(auth, props.user)
+      console.log(userCredential)
+      alert(`${userCredential.user.email} has been added`)
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+      console.log(errorCode)
+      alert(`Comic not added due to error: ${errorMessage}`)
     })
   }
 
@@ -734,7 +738,13 @@ ${showsForEmailSouth}`
       {showsToAddSouth.length > 0 && <h2 className='south-available-header'>South</h2>}
       {showsToAddSouth}
       <div>
-      <div className='create-new-comic'>
+      <div className='create-new-comic'
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          createNewComic()        
+        }
+      }}
+      >
           <label> New Comic Email
           <br></br>
             <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
