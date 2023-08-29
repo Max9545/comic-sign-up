@@ -28,7 +28,7 @@ header {
 .show-button {
   font-weight: 700;
   color: white;
-  min-width: 60vw;
+  width: 60vw;
   min-height: 7vh;
   font-size: 1.1rem;
 }
@@ -465,7 +465,7 @@ label {
 
 .create-new-comic {
   border: 4px solid red;
-  padding: 2%;
+  padding: 1%;
   background-color: black;
   display: flex;
   flex-direction: column;
@@ -482,4 +482,8 @@ label {
   margin: 2%;
   align-self: center;
   font-size: 1.3rem;
+}
+
+.new-comic-password {
+  margin-top: 1%;
 }
