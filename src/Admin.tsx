@@ -1,3 +1,6 @@
+// import { initializeApp } from 'firebase-admin/app';
+// const app = initializeApp();
+// import * as firebase from 'firebase/app';
 import { useEffect, useState } from 'react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -7,8 +10,7 @@ import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
-// import { getAuth, createUser } from 'firebase/auth'
-import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateCurrentUser } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateCurrentUser, deleteUser } from "firebase/auth"
 const auth = getAuth();
 
 
@@ -37,6 +39,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [potentialShow, setPotentialShow] = useState({id:''})
   const [createNewComicEmail, setCreateNewComicEmail] = useState('')
   const [createNewComicPassword, setCreateNewComicPassword] = useState('')
+  const [comicToDelete, setComicToDelete] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -658,6 +661,44 @@ ${showsForEmailSouth}`
     })
   }
 
+  // const deleteComic = async () => {
+
+  //   const docRef = query(collection(db, `users`), where(`name`, "==", comicToDelete))
+  //   const doc = await (getDocs(docRef))
+  //   const comicUid = await doc.docs[0].data().uid
+  //   console.log(comicToDelete, comicUid)
+  
+  //   const auth = getAuth();
+  //   const user = auth.currentUser;
+
+  //   // admin
+  // deleteUser(comicUid)
+  // .then(() => {
+  //   console.log('Successfully deleted user');
+  // })
+  // .catch((error) => {
+  //   console.log('Error deleting user:', error);
+  // });
+    
+
+  // deleteUser(props.user)
+  // .then(() => {
+  //   console.log('Successfully deleted user');
+  // })
+  // .catch((error) => {
+  //   console.log('Error deleting user:', error);
+  // });
+
+    // deleteUser(comicEmail).then(() => {
+    //   // User deleted.
+    //   // updateCurrentUser(auth, props.user)
+    // }).catch((error: any) => {
+    //   // An error ocurred
+    //   console.log(error)
+    //   // ...
+    // })
+  // }
+
   return (
     <div className='admin-form'>
       <div className='mask-container'
@@ -749,12 +790,25 @@ ${showsForEmailSouth}`
           <br></br>
             <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
           </label>
-          <label> New Comic Password
+          <label className='new-comic-password'> New Comic Password
           <br></br>
             <input type='text' onChange={e => setCreateNewComicPassword(e.target.value)}/>
           </label>
           <button onClick={() => createNewComic()} className='create-comic-button'>Create Comic Profile</button>
         </div>
+        {/* <div className='create-new-comic'
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          // deleteComic()        
+        }
+      }}
+      >
+          <label> Comic To Delete
+          <br></br>
+            <input type='text' onChange={e => setComicToDelete(e.target.value)}/>
+          </label>
+          <button onClick={() => deleteComic()} className='create-comic-button'>Delete Comic Profile</button>
+        </div> */}
           <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button> 
           <br></br>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
