@@ -23,7 +23,7 @@
   min-width: 15vw;
   font-size: .7rem
 }
-.dashboard__btn {
+.dashboard__btn, .name-change__btn {
   padding: 4px;
   font-size: .7rem;
   margin-top: 2px;
@@ -33,5 +33,9 @@
 }
 .dashboard div {
   margin-top: 7px;
+}
+
+.name-change__btn {
+  background-color: #dc3545;
 }
 

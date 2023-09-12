@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom" 
 import "./Dashboard.css" 
 import { auth, db, logout } from "./firebase" 
-import { query, collection, getDocs, where, orderBy, limit, getFirestore, setDoc, doc, deleteDoc } from "firebase/firestore"
+import { query, collection, getDocs, where, orderBy, limit, getFirestore, setDoc, doc, deleteDoc, updateDoc } from "firebase/firestore"
 import Week  from './Week'
 import { Comic } from './interface'
 import Admin from './Admin'
@@ -73,7 +73,7 @@ function Dashboard() {
     if (loading) return 
     if (!user) return navigate("/")
     if(!user.displayName && !admin) {
-      const db = getFirestore()
+      // const db = getFirestore()
       const newName = window.prompt('Please enter your first and last name as you want the club to see them. This is requiered to move forward and enter the website')
       setName(newName ? newName : '')
       if (newName == '' || newName == null) return navigate("/")
@@ -104,6 +104,18 @@ function Dashboard() {
     await fetchUserName()
   }   
 
+  const makeNewUserName = async () => {
+      const db = getFirestore()
+      const newName = window.prompt('Please enter your first and last name as you want the club to see them.')
+      setName(newName ? newName : '')
+      if (newName == '' || newName == null) return navigate("/")
+      if (newName.length > 0 && newName != '' && newName != null) {
+        makeUserName(user, newName)
+      }
+      await updateDoc(doc(db, `comediansForAdmin/${user?.uid}`), {"comedianInfo.name": newName})
+      fetchComicInfo()
+  }
+
   const fetchUserName = async () => {
     try {
       const q = query(collection(db, "users"), where("uid", "==", user?.uid)) 
@@ -111,6 +123,7 @@ function Dashboard() {
       const data = doc.docs[0].data()
       setName(data.name)
       setAdmin(data.admin)
+      console.log(data.name, name, 'name')
       setComedian({
         name: data.name,
         id: data.uid,
@@ -178,6 +191,7 @@ function Dashboard() {
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
+      console.log(comic)
       setComedian({
         name: comic.name,
         id: comic.id,
@@ -232,9 +246,14 @@ const viewAllComicsAvailableSouth = async () => {
       <div className="dashboard__container">
         Logged in as {name}
          <div>{user?.email}</div>
+         <div>
          <button className="dashboard__btn" onClick={logout}>
           Logout
          </button>
+         <button className="name-change__btn" onClick={makeNewUserName}>
+          Change Name
+         </button>
+         </div>
        </div>
       <p className='available-example'>This red color means you are AVAILABLE to be booked for the this show</p>
       <p className='not-available-example'>This blue color means you are NOT available to be booked for this show</p>
