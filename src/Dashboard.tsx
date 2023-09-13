@@ -244,15 +244,17 @@ const viewAllComicsAvailableSouth = async () => {
   return (
     <div className="dashboard">
       <div className="dashboard__container">
-        Logged in as {name}
-         <div>{user?.email}</div>
-         <div>
-         <button className="dashboard__btn" onClick={logout}>
-          Logout
-         </button>
-         <button className="name-change__btn" onClick={makeNewUserName}>
-          Change Name
-         </button>
+        <div>
+          Logged in as {name}
+          <div>{user?.email}</div>
+         </div>
+         <div className='logout-buttons'>
+          <button className="name-change__btn" onClick={makeNewUserName}>
+            Change Name
+          </button>
+          <button className="dashboard__btn" onClick={logout}>
+            Logout
+          </button>
          </div>
        </div>
       <p className='available-example'>This red color means you are AVAILABLE to be booked for the this show</p>

@@ -12,16 +12,18 @@
 }
 .dashboard__container {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
+  align-items: center;
   text-align: center;
   background-color: #dcdcdc;
-  padding: 3px;
+  padding: 0px 3px 3px 3px;
   color: black;
   position: absolute;
   top: 0px;
   right: 1px;
   min-width: 15vw;
-  font-size: .7rem
+  font-size: .6rem;
+  font-weight: 800;
 }
 .dashboard__btn, .name-change__btn {
   padding: 4px;
@@ -37,5 +39,11 @@
 
 .name-change__btn {
   background-color: #dc3545;
+}
+
+.logout-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1vw;
 }
 
