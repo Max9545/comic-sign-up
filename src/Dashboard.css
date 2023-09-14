@@ -28,17 +28,19 @@
 .dashboard__btn, .name-change__btn {
   padding: 4px;
   font-size: .7rem;
-  margin-top: 2px;
+  margin-bottom: 2px;
   border: none;
   color: white;
   background-color: black;
 }
+
 .dashboard div {
   margin-top: 7px;
 }
 
 .name-change__btn {
   background-color: #dc3545;
+  margin-bottom: 6px;
 }
 
 .logout-buttons {
