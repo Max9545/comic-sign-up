@@ -44,6 +44,6 @@
 .logout-buttons {
   display: flex;
   flex-direction: column;
-  margin-left: 1vw;
+  margin: 0vh 0vw 0vh 1vw;
 }
 
