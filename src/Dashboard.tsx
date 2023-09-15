@@ -15,6 +15,7 @@ function Dashboard() {
   const [name, setName] = useState('')
   const [admin, setAdmin] = useState(false)
   const [weekOrder, setWeekOrder] = useState('')
+  const [allowed, setAllowed] = useState(false)
   const [comedian, setComedian] = useState<Comic>({
     name: '',
     id: '',
@@ -100,7 +101,7 @@ function Dashboard() {
     const docD = await (getDocs(docToDelete))
     await deleteDoc(doc (db,"users", docD.docs[0].id))
     await updateProfile(user, {displayName: newNameToUse})
-    await setDoc(doc(db, `users/${user.uid}`), {name: newNameToUse, email: user.email, uid: user.uid, type: 'pro' })
+    await setDoc(doc(db, `users/${user.uid}`), {name: newNameToUse, email: user.email, uid: user.uid, type: 'pro', allowed: true })
     await fetchUserName()
   }   
 
@@ -123,7 +124,8 @@ function Dashboard() {
       const data = doc.docs[0].data()
       setName(data.name)
       setAdmin(data.admin)
-      console.log(data.name, name, 'name')
+      setAllowed(data.allowed)
+      console.log(data, name, 'name')
       setComedian({
         name: data.name,
         id: data.uid,
@@ -242,35 +244,40 @@ const viewAllComicsAvailableSouth = async () => {
 
 
   return (
-    <div className="dashboard">
+    <>
       <div className="dashboard__container">
-        <div>
-          Logged in as {name}
-          <div>{user?.email}</div>
-         </div>
-         <div className='logout-buttons'>
-          <button className="name-change__btn" onClick={makeNewUserName}>
-            Change Name
-          </button>
-          <button className="dashboard__btn" onClick={logout}>
-            Logout
-          </button>
-         </div>
-       </div>
-      <p className='available-example'>This red color means you are AVAILABLE to be booked for the this show</p>
-      <p className='not-available-example'>This blue color means you are NOT available to be booked for this show</p>
-      <input
-          type="userName"
-          className="login__textBox userName"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="User Name If First Time"
-      />
-      {!admin && <Week comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder}/>}
-      {admin && <Admin shows={shows} setShows={setShows}
-      setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder} user={user}/>}
-       
-     </div>
+          <div>
+            Logged in as {name}
+            <div>{user?.email}</div>
+          </div>
+          <div className='logout-buttons'>
+          {allowed && <button className="name-change__btn" onClick={makeNewUserName}>
+              Change Name
+            </button>}
+            <button className="dashboard__btn" onClick={logout}>
+              Logout
+            </button>
+          </div>
+        </div>
+      
+      {allowed && <div className="dashboard">
+        
+        <p className='available-example'>This red color means you are AVAILABLE to be booked for the this show</p>
+        <p className='not-available-example'>This blue color means you are NOT available to be booked for this show</p>
+        <input
+            type="userName"
+            className="login__textBox userName"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="User Name If First Time"
+        />
+        {!admin && <Week comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder}/>}
+        {admin && <Admin shows={shows} setShows={setShows}
+        setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder} user={user}/>}
+        
+      </div>}
+      {!allowed && <p>No longer available</p>}
+     </>
   ) 
 } 
 export default Dashboard 

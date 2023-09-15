@@ -10,7 +10,7 @@ function Login() {
   const [email, setEmail] = useState("") 
   const [password, setPassword] = useState("")
   const [user, loading, error] = useAuthState(auth)
-  const [allowed, setAllowed] = useState()
+  
   
   const navigate = useNavigate() 
   
@@ -21,20 +21,20 @@ function Login() {
       // maybe trigger a loading screen
       return 
     }
-    retrieveUser()
-    console.log(allowed)
-    if (user && allowed) navigate("/dashboard")
-  }, [user, loading, allowed]) 
+    // retrieveUser()
+    
+    if (user) navigate("/dashboard")
+  }, [user, loading]) 
 
 
-  const retrieveUser = async () => {
-    const docRef = query(collection(db, `users`), where(`name`, "==", user?.displayName))
-    const doc = (getDocs(docRef))
-    const comic = (await doc).docs[0].data()
-    console.log(comic.allowed, comic)
-    const allowed = comic.allowed
-    setAllowed(allowed)
-  }
+  // const retrieveUser = async () => {
+  //   const docRef = query(collection(db, `users`), where(`name`, "==", user?.displayName))
+  //   const doc = (getDocs(docRef))
+  //   const comic = (await doc).docs[0].data()
+  //   console.log(comic.allowed, comic)
+  //   const allowed = comic.allowed
+  //   setAllowed(allowed)
+  // }
   // let lastEvent: KeyboardEvent
 
   // document.getElementById('login')?.addEventListener('keyup', function(event) {
