@@ -129,13 +129,15 @@ function Dashboard() {
       if (!data.allowed) {
         const auth = getAuth();
         const user = auth.currentUser;
-        deleteUser(user)
-        .then(() => {
-          console.log('Successfully deleted user');
-        })
-        .catch((error) => {
-          console.log('Error deleting user:', error);
-        });
+        if (user != null) {
+          deleteUser(user)
+          .then(() => {
+            console.log('Successfully deleted user');
+          })
+          .catch((error) => {
+            console.log('Error deleting user:', error);
+          });
+        }
       }
       console.log(data, name, 'name')
       setComedian({
