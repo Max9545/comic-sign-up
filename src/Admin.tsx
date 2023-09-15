@@ -10,7 +10,7 @@ import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
-import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateCurrentUser, deleteUser } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateCurrentUser, deleteUser, updateProfile } from "firebase/auth"
 const auth = getAuth();
 
 
@@ -661,15 +661,34 @@ ${showsForEmailSouth}`
     })
   }
 
-  // const deleteComic = async () => {
+  const deleteComic = async () => {
+    
+  // updateUser(uid, {     password: 'newPassword' })
+   
+    // const docRef = query(collection(db, `users`), where(`name`, "==", comicToDelete))
+    // const doc = await (getDocs(docRef))
+    // const comic = await doc.docs[0].data()
+    // console.log(comicToDelete, comic)
+    
+    // updateDoc(doc(db, `users/${comic.uid}`), {allowed: false})
 
-  //   const docRef = query(collection(db, `users`), where(`name`, "==", comicToDelete))
-  //   const doc = await (getDocs(docRef))
-  //   const comicUid = await doc.docs[0].data().uid
-  //   console.log(comicToDelete, comicUid)
-  
-  //   const auth = getAuth();
-  //   const user = auth.currentUser;
+    const db = getFirestore()
+      const q = query(collection(db, "users"), where(`name`, "==", comicToDelete)) 
+      const docUser = await getDocs(q)
+      const data = docUser.docs[0].data()
+      updateDoc(doc(db, `users/${data.uid}`), {allowed: false})
+      alert(`${comicToDelete} is no longer allowed access`)
+  // const auth = getAuth();
+  // const user = auth.currentUser;
+  // deleteUser(user)
+  // .then(() => {
+  //   console.log('Successfully deleted user');
+  // })
+  // .catch((error) => {
+  //   console.log('Error deleting user:', error);
+  // });
+
+
 
   //   // admin
   // deleteUser(comicUid)
@@ -697,7 +716,7 @@ ${showsForEmailSouth}`
     //   console.log(error)
     //   // ...
     // })
-  // }
+  }
 
   return (
     <div className='admin-form'>
@@ -796,7 +815,7 @@ ${showsForEmailSouth}`
           </label>
           <button onClick={() => createNewComic()} className='create-comic-button'>Create Comic Profile</button>
         </div>
-        {/* <div className='create-new-comic'
+        <div className='create-new-comic'
       onKeyUp={(e) => {
         if (e.key === "Enter") {
           // deleteComic()        
@@ -808,7 +827,7 @@ ${showsForEmailSouth}`
             <input type='text' onChange={e => setComicToDelete(e.target.value)}/>
           </label>
           <button onClick={() => deleteComic()} className='create-comic-button'>Delete Comic Profile</button>
-        </div> */}
+        </div>
           <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button> 
           <br></br>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
