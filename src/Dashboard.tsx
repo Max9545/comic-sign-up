@@ -290,7 +290,7 @@ const viewAllComicsAvailableSouth = async () => {
         setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder} user={user}/>}
         
       </div>}
-      {!allowed && <p>No longer available</p>}
+      {/* {!allowed && <p>No longer available</p>} */}
      </>
   ) 
 } 
