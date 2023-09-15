@@ -1,26 +1,40 @@
 import React, { useEffect, useState } from "react" 
 import { Link, useNavigate } from "react-router-dom" 
-import { auth, logInWithEmailAndPassword } from "./firebase" 
+import { auth, db, logInWithEmailAndPassword } from "./firebase" 
 import { useAuthState } from "react-firebase-hooks/auth" 
 import "./Login.css" 
+import { collection, getDocs, query, where } from "firebase/firestore"
 
 function Login() {
 
   const [email, setEmail] = useState("") 
   const [password, setPassword] = useState("")
   const [user, loading, error] = useAuthState(auth)
+  const [allowed, setAllowed] = useState()
   
   const navigate = useNavigate() 
   
-  useEffect(() => {
-    console.log(user)
+  useEffect(() => {   
+  console.log(user)
+
     if (loading) {
       // maybe trigger a loading screen
       return 
     }
-    if (user) navigate("/dashboard")
-  }, [user, loading]) 
+    retrieveUser()
+    console.log(allowed)
+    if (user && allowed) navigate("/dashboard")
+  }, [user, loading, allowed]) 
 
+
+  const retrieveUser = async () => {
+    const docRef = query(collection(db, `users`), where(`name`, "==", user?.displayName))
+    const doc = (getDocs(docRef))
+    const comic = (await doc).docs[0].data()
+    console.log(comic.allowed, comic)
+    const allowed = comic.allowed
+    setAllowed(allowed)
+  }
   // let lastEvent: KeyboardEvent
 
   // document.getElementById('login')?.addEventListener('keyup', function(event) {
