@@ -7,7 +7,7 @@ import { query, collection, getDocs, where, orderBy, limit, getFirestore, setDoc
 import Week  from './Week'
 import { Comic } from './interface'
 import Admin from './Admin'
-import { updateProfile, User } from "firebase/auth"
+import { deleteUser, getAuth, updateProfile, User } from "firebase/auth"
 
 function Dashboard() {
 
@@ -15,7 +15,7 @@ function Dashboard() {
   const [name, setName] = useState('')
   const [admin, setAdmin] = useState(false)
   const [weekOrder, setWeekOrder] = useState('')
-  const [allowed, setAllowed] = useState(false)
+  const [allowed, setAllowed] = useState()
   const [comedian, setComedian] = useState<Comic>({
     name: '',
     id: '',
@@ -69,6 +69,7 @@ function Dashboard() {
     viewAllComicsAvailableDowntown()
     viewAllComicsAvailableSouth()
   }, [comedian])
+  
 
   useEffect(() => {
     if (loading) return 
@@ -125,6 +126,17 @@ function Dashboard() {
       setName(data.name)
       setAdmin(data.admin)
       setAllowed(data.allowed)
+      if (!data.allowed) {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        deleteUser(user)
+        .then(() => {
+          console.log('Successfully deleted user');
+        })
+        .catch((error) => {
+          console.log('Error deleting user:', error);
+        });
+      }
       console.log(data, name, 'name')
       setComedian({
         name: data.name,
