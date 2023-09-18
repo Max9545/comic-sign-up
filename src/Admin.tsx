@@ -665,13 +665,16 @@ ${showsForEmailSouth}`
     
     const searchPhrase = comicToDelete.includes('@') ? 'email' : 'name'
 
-    console.log(searchPhrase)
-    const db = getFirestore()
-    const q = query(collection(db, "users"), where(`${searchPhrase}`, "==", comicToDelete)) 
-    const docUser = await getDocs(q)
-    const data = docUser.docs[0].data()
-    updateDoc(doc(db, `users/${data.uid}`), {allowed: false})
-    alert(`${comicToDelete} is no longer allowed access`)
+    const confirmation = window.confirm(`Are you sure you want to remove ${comicToDelete}\'s access to the site?`)
+    console.log(confirmation)
+    if (confirmation) {
+      const db = getFirestore()
+      const q = query(collection(db, "users"), where(`${searchPhrase}`, "==", comicToDelete)) 
+      const docUser = await getDocs(q)
+      const data = docUser.docs[0].data()
+      updateDoc(doc(db, `users/${data.uid}`), {allowed: false})
+      alert(`${comicToDelete} is no longer allowed access`)
+    }
   }
 
   return (
