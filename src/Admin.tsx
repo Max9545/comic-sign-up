@@ -663,59 +663,15 @@ ${showsForEmailSouth}`
 
   const deleteComic = async () => {
     
-  // updateUser(uid, {     password: 'newPassword' })
-   
-    // const docRef = query(collection(db, `users`), where(`name`, "==", comicToDelete))
-    // const doc = await (getDocs(docRef))
-    // const comic = await doc.docs[0].data()
-    // console.log(comicToDelete, comic)
-    
-    // updateDoc(doc(db, `users/${comic.uid}`), {allowed: false})
+    const searchPhrase = comicToDelete.includes('@') ? 'email' : 'name'
 
+    console.log(searchPhrase)
     const db = getFirestore()
-      const q = query(collection(db, "users"), where(`name`, "==", comicToDelete)) 
-      const docUser = await getDocs(q)
-      const data = docUser.docs[0].data()
-      updateDoc(doc(db, `users/${data.uid}`), {allowed: false})
-      alert(`${comicToDelete} is no longer allowed access`)
-  // const auth = getAuth();
-  // const user = auth.currentUser;
-  // deleteUser(user)
-  // .then(() => {
-  //   console.log('Successfully deleted user');
-  // })
-  // .catch((error) => {
-  //   console.log('Error deleting user:', error);
-  // });
-
-
-
-  //   // admin
-  // deleteUser(comicUid)
-  // .then(() => {
-  //   console.log('Successfully deleted user');
-  // })
-  // .catch((error) => {
-  //   console.log('Error deleting user:', error);
-  // });
-    
-
-  // deleteUser(props.user)
-  // .then(() => {
-  //   console.log('Successfully deleted user');
-  // })
-  // .catch((error) => {
-  //   console.log('Error deleting user:', error);
-  // });
-
-    // deleteUser(comicEmail).then(() => {
-    //   // User deleted.
-    //   // updateCurrentUser(auth, props.user)
-    // }).catch((error: any) => {
-    //   // An error ocurred
-    //   console.log(error)
-    //   // ...
-    // })
+    const q = query(collection(db, "users"), where(`${searchPhrase}`, "==", comicToDelete)) 
+    const docUser = await getDocs(q)
+    const data = docUser.docs[0].data()
+    updateDoc(doc(db, `users/${data.uid}`), {allowed: false})
+    alert(`${comicToDelete} is no longer allowed access`)
   }
 
   return (
