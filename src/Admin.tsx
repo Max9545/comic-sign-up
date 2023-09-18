@@ -650,7 +650,6 @@ ${showsForEmailSouth}`
     createUserWithEmailAndPassword(auth, createNewComicEmail, createNewComicPassword)
     .then((userCredential) => {
       updateCurrentUser(auth, props.user)
-      console.log(userCredential)
       alert(`${userCredential.user.email} has been added`)
     })
     .catch((error) => {
