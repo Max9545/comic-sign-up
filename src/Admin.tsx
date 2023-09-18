@@ -774,7 +774,7 @@ ${showsForEmailSouth}`
         <div className='create-new-comic'
       onKeyUp={(e) => {
         if (e.key === "Enter") {
-          // deleteComic()        
+          deleteComic()        
         }
       }}
       >
