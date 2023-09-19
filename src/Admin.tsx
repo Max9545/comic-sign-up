@@ -166,6 +166,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                     availability={false}
                     availableComics={newShow.availableComics}
                   />
+                  {newShow.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
                   <button className='delete-show' onClick={() => deleteShow(newShow.id)}>Delete</button>
                 </div>
             )
@@ -233,6 +234,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               availability={false}
               availableComics={newShow.availableComics}
             />
+            {newShow.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
             <button className='delete-show' onClick={() => deleteShow(newShow.id)}>Delete</button>
           </div>
         )
