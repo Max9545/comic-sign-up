@@ -139,7 +139,6 @@ function Dashboard() {
           });
         }
       }
-      console.log(data, name, 'name')
       setComedian({
         name: data.name,
         id: data.uid,
@@ -207,7 +206,6 @@ function Dashboard() {
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", user?.uid))
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data().comedianInfo
-      console.log(comic)
       setComedian({
         name: comic.name,
         id: comic.id,

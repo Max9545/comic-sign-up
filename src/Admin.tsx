@@ -665,7 +665,6 @@ ${showsForEmailSouth}`
     const searchPhrase = comicToDelete.includes('@') ? 'email' : 'name'
 
     const confirmation = window.confirm(`Are you sure you want to remove ${comicToDelete}\'s access to the site?`)
-    console.log(confirmation)
     if (confirmation) {
       const db = getFirestore()
       const q = query(collection(db, "users"), where(`${searchPhrase}`, "==", comicToDelete)) 
