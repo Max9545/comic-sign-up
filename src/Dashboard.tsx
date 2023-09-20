@@ -16,6 +16,7 @@ function Dashboard() {
   const [admin, setAdmin] = useState(false)
   const [weekOrder, setWeekOrder] = useState('')
   const [allowed, setAllowed] = useState()
+  const [trigger, setTrigger] = useState(false)
   const [comedian, setComedian] = useState<Comic>({
     name: '',
     id: '',
@@ -92,7 +93,7 @@ function Dashboard() {
 
   useEffect(() => {
     fetchWeekForComedian()
-  }, [user, comedian])  
+  }, [user])  
 
   useEffect(() => {
     fetchComicInfo()
@@ -102,11 +103,12 @@ function Dashboard() {
     // const docToDelete = query(collection(db, `users`), where("email", "==", user?.email))
     // const docD = await (getDocs(docToDelete))
     // console.log(docToDelete, docD.docs[0].id)
-    // await deleteDoc(doc (db,"users", docD.docs[0].id))
+    // await deleteDoc(doc (db,"users", user.id))
     await updateProfile(user, {displayName: newNameToUse})
     await setDoc(doc(db, `users/${user.uid}`), {name: newNameToUse, email: user.email, uid: user.uid, type: 'pro', allowed: true })
     // console.log(docD, name)
     await fetchUserName()
+    setTrigger(!trigger)
   }   
 
   const makeNewUserName = async () => {
