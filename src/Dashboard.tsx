@@ -75,11 +75,12 @@ function Dashboard() {
     if (loading) return 
     if (!user) return navigate("/")
     if(!user.displayName && !admin) {
-      // const db = getFirestore()
+      const db = getFirestore()
       const newName = window.prompt('Please enter your first and last name as you want the club to see them. This is requiered to move forward and enter the website')
       setName(newName ? newName : '')
       if (newName == '' || newName == null) return navigate("/")
       if (newName.length > 0 && newName != '' && newName != null) {
+        console.log(user,newName)
         makeUserName(user, newName)
       } else {
         navigate("/")
@@ -91,18 +92,20 @@ function Dashboard() {
 
   useEffect(() => {
     fetchWeekForComedian()
-  }, [user])  
+  }, [user, comedian])  
 
   useEffect(() => {
     fetchComicInfo()
-  }, [name])
+  }, [name, user])
 
   const makeUserName = async (user: any, newNameToUse: any) => {
-    const docToDelete = query(collection(db, `users`), where("email", "==", user?.email))
-    const docD = await (getDocs(docToDelete))
-    await deleteDoc(doc (db,"users", docD.docs[0].id))
+    // const docToDelete = query(collection(db, `users`), where("email", "==", user?.email))
+    // const docD = await (getDocs(docToDelete))
+    // console.log(docToDelete, docD.docs[0].id)
+    // await deleteDoc(doc (db,"users", docD.docs[0].id))
     await updateProfile(user, {displayName: newNameToUse})
     await setDoc(doc(db, `users/${user.uid}`), {name: newNameToUse, email: user.email, uid: user.uid, type: 'pro', allowed: true })
+    // console.log(docD, name)
     await fetchUserName()
   }   
 

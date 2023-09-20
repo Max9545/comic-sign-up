@@ -650,9 +650,11 @@ ${showsForEmailSouth}`
   const createNewComic = () => {
 
     createUserWithEmailAndPassword(auth, createNewComicEmail, createNewComicPassword)
-    .then((userCredential) => {
-      updateCurrentUser(auth, props.user)
+    .then(async (userCredential) => {
+      await updateCurrentUser(auth, props.user)
+      setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: 'pro', allowed: true })
       alert(`${userCredential.user.email} has been added`)
+      // console.log(userCredential.user, props.user)
     })
     .catch((error) => {
       const errorCode = error.code;
