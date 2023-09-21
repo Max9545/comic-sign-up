@@ -477,11 +477,12 @@ label {
   background-color:red;
   border-radius: 30%;
   width: 40vw;
-  height: 5vh;
+  min-height: 5vh;
   font-weight: 900;
   margin: 2%;
   align-self: center;
   font-size: 1.3rem;
+  /* padding: 1%; */
 }
 
 .new-comic-password {

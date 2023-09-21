@@ -777,14 +777,31 @@ ${showsForEmailSouth}`
           <button onClick={() => createNewComic()} className='create-comic-button'>Create Comic Profile</button>
         </div>
         <div className='create-new-comic'
-      onKeyUp={(e) => {
-        if (e.key === "Enter") {
-          deleteComic()        
-        }
-      }}
-      >
-          <label> Comic To Delete
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              deleteComic()        
+            }
+          }}
+        >
+          <label> Comic Email
+            <br></br>
+            <input type='text' onChange={e => setComicToDelete(e.target.value)}/>
+          </label>
+          <label> New Comic Name
           <br></br>
+            <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
+          </label>
+          <button onClick={() => deleteComic()} className='create-comic-button'>Add Name to Comic Profile</button>
+        </div>
+        <div className='create-new-comic'
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              deleteComic()        
+            }
+          }}
+        >
+          <label> Comic To Delete
+            <br></br>
             <input type='text' onChange={e => setComicToDelete(e.target.value)}/>
           </label>
           <button onClick={() => deleteComic()} className='create-comic-button'>Delete Comic Profile</button>
