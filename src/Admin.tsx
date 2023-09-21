@@ -39,6 +39,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [potentialShow, setPotentialShow] = useState({id:''})
   const [createNewComicEmail, setCreateNewComicEmail] = useState('')
   const [createNewComicPassword, setCreateNewComicPassword] = useState('')
+  const [createNewComicName, setCreateNewComicName] = useState('')
   const [comicToDelete, setComicToDelete] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
@@ -573,7 +574,7 @@ ${showsForEmailSouth}`
         showsAvailablesouthHistory: comic.showsAvailablesouthHistory
       })
     } catch (err) {
-      const docRef = query(collection(db, `users`), where("name", "==", comicSearch))
+      const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
       if (docRef.converter == null) {
         return alert('Comedian does not exist or incorrect name has been Entered')
       }
@@ -679,6 +680,23 @@ ${showsForEmailSouth}`
     }
   }
 
+  const addNameToProfile = async () => {
+    console.log(createNewComicEmail, createNewComicName)
+    
+    // const docToChange = query(collection(db, `users`), where("email", "==", createNewComicEmail))
+    // const docD = await (getDocs(docToChange))
+    // // const cityRef = db.collection('users').doc(docD.docs[0].id);
+    // const q = query(collection(db, "users"), where("uid", "==", docD.docs[0].id))
+    // const docOne = await getDocs(q)
+    // const data = docOne.docs[0].data()
+    // console.log(data)
+    // await updateDoc(doc(db, `users/${data?.uid}`), {"name": createNewComicName})
+
+    // await updateProfile(user, {displayName: createNewComicName})
+    
+    // await setDoc(doc(db, `users/${docD.docs[0].id}`), {name: createNewComicName, email: data.email, uid: data.uid, type: 'pro', allowed: true })
+  }
+
   return (
     <div className='admin-form'>
       <div className='mask-container'
@@ -779,19 +797,19 @@ ${showsForEmailSouth}`
         <div className='create-new-comic'
           onKeyUp={(e) => {
             if (e.key === "Enter") {
-              deleteComic()        
+              addNameToProfile()        
             }
           }}
         >
-          <label> Comic Email
+          <label>Comic Email
             <br></br>
-            <input type='text' onChange={e => setComicToDelete(e.target.value)}/>
+            <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
           </label>
           <label> New Comic Name
           <br></br>
-            <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
+            <input type='text' onChange={e => setCreateNewComicName(e.target.value)}/>
           </label>
-          <button onClick={() => deleteComic()} className='create-comic-button'>Add Name to Comic Profile</button>
+          <button onClick={() => addNameToProfile()} className='create-comic-button'>Add Name to Comic</button>
         </div>
         <div className='create-new-comic'
           onKeyUp={(e) => {
