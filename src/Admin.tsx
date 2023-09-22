@@ -649,13 +649,14 @@ ${showsForEmailSouth}`
   }
 
   const createNewComic = () => {
-
+console.log(props.user)
     createUserWithEmailAndPassword(auth, createNewComicEmail, createNewComicPassword)
     .then(async (userCredential) => {
+      await updateProfile(userCredential.user, {displayName: createNewComicName})
       await updateCurrentUser(auth, props.user)
-      setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: 'pro', allowed: true })
+      setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: 'pro', allowed: true, name:  createNewComicName})
       alert(`${userCredential.user.email} has been added`)
-      // console.log(userCredential.user, props.user)
+      console.log(userCredential.user, props.user)
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -683,14 +684,14 @@ ${showsForEmailSouth}`
   const addNameToProfile = async () => {
     console.log(createNewComicEmail, createNewComicName)
     
-    // const docToChange = query(collection(db, `users`), where("email", "==", createNewComicEmail))
-    // const docD = await (getDocs(docToChange))
-    // // const cityRef = db.collection('users').doc(docD.docs[0].id);
+    const docToChange = query(collection(db, `users`), where("email", "==", createNewComicEmail))
+    const docD = await (getDocs(docToChange))
+    // const cityRef = db.collection('users').doc(docD.docs[0].id);
     // const q = query(collection(db, "users"), where("uid", "==", docD.docs[0].id))
     // const docOne = await getDocs(q)
-    // const data = docOne.docs[0].data()
-    // console.log(data)
-    // await updateDoc(doc(db, `users/${data?.uid}`), {"name": createNewComicName})
+    const data = docD.docs[0].data()
+    console.log(data)
+    await updateDoc(doc(db, `users/${data?.uid}`), {"name": createNewComicName})
 
     // await updateProfile(user, {displayName: createNewComicName})
     
