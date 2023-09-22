@@ -787,31 +787,32 @@ console.log(props.user)
       >
           <label> New Comic Email
           <br></br>
-            <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
+            <input type='text' required onChange={e => setCreateNewComicEmail(e.target.value)}/>
+          </label>
+          <label> New Comic Name
+          <br></br>
+            <input type='text' required onChange={e => setCreateNewComicName(e.target.value)}/>
           </label>
           <label className='new-comic-password'> New Comic Password
           <br></br>
-            <input type='text' onChange={e => setCreateNewComicPassword(e.target.value)}/>
+            <input type='text' required onChange={e => setCreateNewComicPassword(e.target.value)}/>
           </label>
-          <button onClick={() => createNewComic()} className='create-comic-button'>Create Comic Profile</button>
+          <input type='submit' value='Create Comic Profile' onClick={() => createNewComic()} className='create-comic-button'/>
         </div>
-        <div className='create-new-comic'
+        {/* <div className='create-new-comic'
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               addNameToProfile()        
             }
           }}
-        >
-          <label>Comic Email
+        > */}
+          {/* <label>Comic Email
             <br></br>
             <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
           </label>
-          <label> New Comic Name
-          <br></br>
-            <input type='text' onChange={e => setCreateNewComicName(e.target.value)}/>
-          </label>
-          <button onClick={() => addNameToProfile()} className='create-comic-button'>Add Name to Comic</button>
-        </div>
+          
+          <button onClick={() => addNameToProfile()} className='create-comic-button'>Add Name to Comic</button> */}
+        {/* </div> */}
         <div className='create-new-comic'
           onKeyUp={(e) => {
             if (e.key === "Enter") {
