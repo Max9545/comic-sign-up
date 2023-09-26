@@ -633,15 +633,17 @@ ${showsForEmailSouth}`
     }
   }
 
-  const changeComedianType = async () => {
+  const changeComedianType = async () => {  
    
+      comedianMask.type = type
       const db = getFirestore()
       const q = query(collection(db, "users"), where("uid", "==", comedianMask?.id)) 
       const docUser = await getDocs(q)
       const data = docUser.docs[0].data()
       data.type = type
       updateDoc(doc(db, `users/${comedianMask?.id}`), {...data, type: type})
-      alert(`${comedianMask.name} is now filed as ${type}`)
+      // updateDoc(doc(db, `comedians/comicStorage/${comedianMask.name}`), {"comedianInfo.type": type})
+      alert(`${comedianMask.name} is now filed as ${type}`) 
   }
 
   const createNewComic = () => {
