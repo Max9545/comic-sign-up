@@ -801,7 +801,9 @@ ${showsForEmailSouth}`
           <br></br>
             <input type='text' required onChange={e => setCreateNewComicPassword(e.target.value)}/>
           </label>
-          <input type='submit' value='Create Comic Profile' onClick={() => createNewComic()} className='create-comic-button'/>
+          <button value='Create Comic Profile' onClick={() => createNewComic()} className='create-comic-button'>
+            Create Comic Profile
+          </button>
         </div>
         {/* <div className='create-new-comic'
           onKeyUp={(e) => {
