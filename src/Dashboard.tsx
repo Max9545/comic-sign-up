@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom" 
 import "./Dashboard.css" 
 import { auth, db, logout } from "./firebase" 
-import { query, collection, getDocs, where, orderBy, limit, getFirestore, setDoc, doc, deleteDoc, updateDoc } from "firebase/firestore"
+import { query, collection, getDocs, where, orderBy, limit, getFirestore, setDoc, doc, deleteDoc, updateDoc, addDoc } from "firebase/firestore"
 import Week  from './Week'
 import { Comic } from './interface'
 import Admin from './Admin'
@@ -118,6 +118,10 @@ function Dashboard() {
         makeUserName(user, newName)
       }
       await updateDoc(doc(db, `comediansForAdmin/${user?.uid}`), {"comedianInfo.name": newName})
+      await addDoc(collection(db, `comedians/comicStorage/${comedian.name}`), {
+        comedianInfo: comedian, 
+        fireOrder: Date.now()
+      })
       fetchComicInfo()
   }
 
