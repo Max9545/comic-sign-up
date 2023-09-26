@@ -657,12 +657,10 @@ ${showsForEmailSouth}`
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: 'pro', allowed: true, name:  createNewComicName})
         alert(`${createNewComicName} at ${userCredential.user.email} has been added`)
-        console.log(userCredential.user, props.user)
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode)
         alert(`Comic not added due to error: ${errorMessage}`)
       })
     } else {
@@ -684,23 +682,6 @@ ${showsForEmailSouth}`
       alert(`${comicToDelete} is no longer allowed access`)
     }
   }
-
-  // const addNameToProfile = async () => {
-  //   console.log(createNewComicEmail, createNewComicName)
-    
-  //   const docToChange = query(collection(db, `users`), where("email", "==", createNewComicEmail))
-  //   const docD = await (getDocs(docToChange))
-  //   // const cityRef = db.collection('users').doc(docD.docs[0].id);
-  //   // const q = query(collection(db, "users"), where("uid", "==", docD.docs[0].id))
-  //   // const docOne = await getDocs(q)
-  //   const data = docD.docs[0].data()
-  //   console.log(data)
-  //   await updateDoc(doc(db, `users/${data?.uid}`), {"name": createNewComicName})
-
-  //   // await updateProfile(user, {displayName: createNewComicName})
-    
-  //   // await setDoc(doc(db, `users/${docD.docs[0].id}`), {name: createNewComicName, email: data.email, uid: data.uid, type: 'pro', allowed: true })
-  // }
 
   return (
     <div className='admin-form'>
@@ -805,20 +786,6 @@ ${showsForEmailSouth}`
             Create Comic Profile
           </button>
         </div>
-        {/* <div className='create-new-comic'
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              addNameToProfile()        
-            }
-          }}
-        > */}
-          {/* <label>Comic Email
-            <br></br>
-            <input type='text' onChange={e => setCreateNewComicEmail(e.target.value)}/>
-          </label>
-          
-          <button onClick={() => addNameToProfile()} className='create-comic-button'>Add Name to Comic</button> */}
-        {/* </div> */}
         <div className='create-new-comic'
           onKeyUp={(e) => {
             if (e.key === "Enter") {
@@ -836,14 +803,6 @@ ${showsForEmailSouth}`
           <br></br>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
           onChange={() => setOutOfTowners(!outOfTowners)}/></label>
-        {/* <button className='published-shows' onClick={() => fetchPublishedShows()}>See Queued Shows Page</button> */}
-        {/* {published.length > 0 && <div id='seen-published'>
-        <h2 className='downtown-available-header'>Downtown Bookings</h2>  
-        {showPublishedDowntown()}
-        <h2 className='south-available-header'>South Bookings</h2>
-        {showPublishedSouth()} */}
-        {/* <button className='build-week' onClick={() => sendEmails()}>Email to all comics</button></div>} */}
-        
         <h2 className='downtown-available-header'>Downtown Available Comics</h2>
         <div>{signedShowsDown.map(availShow => availShow)}</div>
         <h2 className='south-available-header'>South Club Available Comics</h2>
