@@ -23,6 +23,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [type, setType] = useState('')
+  const [newComicType, setNewComicType] = useState('')
   const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
   const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
   const [specificComicHistoryDowntown, setSpecificComicHistoryDowntown] = useState<any[]>([])
@@ -780,6 +781,18 @@ ${showsForEmailSouth}`
           <br></br>
             <input type='text' required onChange={e => setCreateNewComicPassword(e.target.value)}/>
           </label>
+          <div>
+            <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
+            <label htmlFor='new-pro'>Pro</label>
+            </div>
+            <div>
+              <input type='radio' id='new-outOfTown' name='new-comic-type' value='outOfTown'onClick={() => {
+                // if (type != '') {
+                  setNewComicType('OutOfTown')
+                // }
+              }}/>
+              <label htmlFor='new-outOfTown' >Out of Town Pro</label>
+          </div>
           <button value='Create Comic Profile' onClick={() => createNewComic()} className='create-comic-button'>
             Create Comic Profile
           </button>
