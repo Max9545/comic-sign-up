@@ -74,7 +74,6 @@ function Login() {
         <button
           className="login__btn"
           id="login__btn"
-          // type="submit"
           onClick={() => logInWithEmailAndPassword(email, password)}
         >
           Login

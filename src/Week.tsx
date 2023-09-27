@@ -13,7 +13,6 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
 
   useEffect(() => {
     setCurrentComedian(props.comedian)
-    console.log(props.comedian)
   }, [props])
 
   useEffect(() => {
