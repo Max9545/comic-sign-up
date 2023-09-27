@@ -714,9 +714,9 @@ ${showsForEmailSouth}`
       </div>
       <div>
         <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {
-          if (type != '') {
+          // if (type != '') {
             setType('OutOfTown')
-          }
+          // }
         }}/>
         <label htmlFor='outOfTown' >Out of Town Pro</label>
       </div>
