@@ -655,6 +655,49 @@ ${showsForEmailSouth}`
         await updateProfile(userCredential.user, {displayName: createNewComicName})
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType, allowed: true, name:  createNewComicName})
+        await updateCurrentUser(auth, props.user)
+        setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
+          name: createNewComicName,
+          id: userCredential.user.uid,
+          type: newComicType,
+          email: userCredential.user.email,
+          showsAvailabledowntown: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          }, 
+          showsAvailablesouth: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          },
+          showsAvailabledowntownHistory: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          },
+          showsAvailablesouthHistory: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          }
+        }, fireOrder: Date.now()})
         alert(`${createNewComicName} at ${userCredential.user.email} has been added`)
       })
       .catch((error) => {
