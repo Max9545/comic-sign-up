@@ -713,11 +713,7 @@ ${showsForEmailSouth}`
         <label htmlFor='pro-radio'>Pro</label>
       </div>
       <div>
-        <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {
-          // if (type != '') {
-            setType('OutOfTown')
-          // }
-        }}/>
+        <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {setType('OutOfTown')}}/>
         <label htmlFor='outOfTown' >Out of Town Pro</label>
       </div>
       <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
@@ -784,14 +780,10 @@ ${showsForEmailSouth}`
           <div>
             <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
             <label htmlFor='new-pro'>Pro</label>
-            </div>
-            <div>
-              <input type='radio' id='new-outOfTown' name='new-comic-type' value='outOfTown'onClick={() => {
-                // if (type != '') {
-                  setNewComicType('OutOfTown')
-                // }
-              }}/>
-              <label htmlFor='new-outOfTown' >Out of Town Pro</label>
+          </div>
+          <div>
+            <input type='radio' id='new-outOfTown' name='new-comic-type' value='outOfTown'onClick={() => {setNewComicType('OutOfTown')}}/>
+            <label htmlFor='new-outOfTown' >Out of Town Pro</label>
           </div>
           <button value='Create Comic Profile' onClick={() => createNewComic()} className='create-comic-button'>
             Create Comic Profile
