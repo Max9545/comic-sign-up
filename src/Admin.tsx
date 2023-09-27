@@ -654,7 +654,7 @@ ${showsForEmailSouth}`
       .then(async (userCredential) => {
         await updateProfile(userCredential.user, {displayName: createNewComicName})
         await updateCurrentUser(auth, props.user)
-        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: 'pro', allowed: true, name:  createNewComicName})
+        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType, allowed: true, name:  createNewComicName})
         alert(`${createNewComicName} at ${userCredential.user.email} has been added`)
       })
       .catch((error) => {
