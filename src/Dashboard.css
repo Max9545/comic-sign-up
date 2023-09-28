@@ -12,26 +12,40 @@
 }
 .dashboard__container {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
+  align-items: center;
   text-align: center;
   background-color: #dcdcdc;
-  padding: 3px;
+  padding: 3px 3px 3px 3px;
   color: black;
   position: absolute;
-  top: 0px;
-  right: 1px;
+  top: 3px;
+  right: 3px;
   min-width: 15vw;
-  font-size: .7rem
+  font-size: .6rem;
+  font-weight: 800;
 }
-.dashboard__btn {
+.dashboard__btn, .name-change__btn {
   padding: 4px;
   font-size: .7rem;
-  margin-top: 2px;
+  margin-bottom: 2px;
   border: none;
   color: white;
   background-color: black;
 }
+
 .dashboard div {
   margin-top: 7px;
+}
+
+.name-change__btn {
+  background-color: #dc3545;
+  margin-bottom: 6px;
+}
+
+.logout-buttons {
+  display: flex;
+  flex-direction: column;
+  margin: 0vh 0vw 0vh 1vw;
 }
 

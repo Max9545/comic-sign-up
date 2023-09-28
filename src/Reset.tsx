@@ -25,8 +25,6 @@ function Reset() {
 
     const caseCorrectEnd = emailToReset.slice(emailToReset.indexOf('@'))
 
-    console.log(`${caseCorrectBeginning + caseCorrectEnd}`)
-
     const db = getFirestore()
     
     const docRef = query(collection(db, 'users'), where('email', '==', `${caseCorrectBeginning + caseCorrectEnd}`))

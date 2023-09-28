@@ -28,6 +28,7 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
         uid: user.uid,
         name: user.displayName,
         email: user.email,
+        allowed: true
       })
     }
   } catch (err: any) {
