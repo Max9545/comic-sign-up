@@ -14,7 +14,7 @@ import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPas
 const auth = getAuth();
 
 
-function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any}) {
+function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any }) {
 
   const [newSchedule, setNewSchedule] = useState<any[]>([])
   const [showsToAddDowntown, setShowsToAddDowntown] = useState<any[]>([])
@@ -654,12 +654,13 @@ ${showsForEmailSouth}`
       .then(async (userCredential) => {
         await updateProfile(userCredential.user, {displayName: createNewComicName})
         await updateCurrentUser(auth, props.user)
-        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType, allowed: true, name:  createNewComicName})
+        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType, allowed: true, name:  createNewComicName, admin: props.admin})
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
           name: createNewComicName,
           id: userCredential.user.uid,
           type: newComicType,
+          admin: newComicType === 'admin',
           email: userCredential.user.email,
           showsAvailabledowntown: {
             monday: [],
@@ -826,7 +827,11 @@ ${showsForEmailSouth}`
           </div>
           <div>
             <input type='radio' id='new-outOfTown' name='new-comic-type' value='outOfTown'onClick={() => {setNewComicType('OutOfTown')}}/>
-            <label htmlFor='new-outOfTown' >Out of Town Pro</label>
+            <label htmlFor='new-outOfTown'>Out of Town Pro</label>
+          </div>
+          <div>
+            <input type='radio' id='new-admin' name='new-comic-type' value='admin'onClick={() => {setNewComicType('admin')}}/>
+            <label htmlFor='new-admin'>Administrator</label>
           </div>
           <button value='Create Comic Profile' onClick={() => createNewComic()} className='create-comic-button'>
             Create Comic Profile
