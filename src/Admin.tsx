@@ -771,6 +771,7 @@ ${showsForEmailSouth}`
         maskAsComic()
         }}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor='club-select'>CHOOSE CLUB:</label>
         <select className='club-select' {...register('club')}>
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>
