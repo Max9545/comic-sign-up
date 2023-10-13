@@ -380,11 +380,16 @@ label {
   .available-comic {
     column-count: 1;
   }
+  /* .show-div {
+    display: flex;
+    flex-direction: column;
+  } */
 }
 
 .show-div {
   display: flex;
   justify-content: space-evenly;
+  flex-direction: column;
   /* align-content: center; */
 }
 
@@ -466,7 +471,7 @@ label {
   margin-top: 1%;
 }
 .week-container {
-  width: 100vw;
+  width: 85vw;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
