@@ -103,10 +103,29 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
       
   }
 
+  const createMonth = (dateToConvert: string) => {
+    const months = {
+      '01': 'JAN',
+      '02': 'FEB',
+      '03': 'MAR',
+      '04': 'APR',
+      '05': 'MAY',
+      '06': 'JUN',
+      '07': 'JUL',
+      '08': 'AUG',
+      '09': 'SEP',
+      10: 'OCT', 
+      11: 'NOV',
+      12: 'DEC'
+    }
+    console.log(dateToConvert)
+    return(months[dateToConvert.slice(5, 7)])
+  }
+
   return (
     <div className='show'>
     {props.headliner && <button onClick={(event) => handleClick(event)} 
-      className={`${availability} show-button`}>{`${props.day.toUpperCase().slice(0, 3)} (${props.date}) ${props.time} ${props.currentClub.toUpperCase()} ${props.headliner}`}: 
+      className={`${availability} show-button`}>{`${props.day.toUpperCase().slice(0, 3)} (${createMonth(props.date)}${props.date.slice(7, 10)}) ${props.time} ${props.currentClub.toUpperCase()} ${props.headliner}`}: 
       <br></br>
       {availability   ? `Available` : `Not Available`}</button>}
   </div>
