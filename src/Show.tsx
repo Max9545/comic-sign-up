@@ -118,14 +118,13 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
       11: 'NOV',
       12: 'DEC'
     }
-    console.log(dateToConvert)
     return(months[dateToConvert.slice(5, 7)])
   }
 
   return (
     <div className='show'>
     {props.headliner && <button onClick={(event) => handleClick(event)} 
-      className={`${availability} show-button`}>{`${props.day.toUpperCase().slice(0, 3)} (${createMonth(props.date)}${props.date.slice(7, 10)}) ${props.time} ${props.currentClub.toUpperCase()} ${props.headliner}`}: 
+      className={`${availability} show-button`}>{`${props.day.toUpperCase().slice(0, 3)} (${createMonth(props.date)}${props.date.slice(7, 10)}) ${props.time} ${props.currentClub == 'south' ? 'SOUTH' : 'DT'} ${props.headliner}`}: 
       <br></br>
       {availability   ? `Available` : `Not Available`}</button>}
   </div>
