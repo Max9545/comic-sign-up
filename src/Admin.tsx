@@ -816,7 +816,7 @@ ${showsForEmailSouth}`
       >
           <label> New Comic Email
           <br></br>
-            <input type='text' required onChange={e => setCreateNewComicEmail(e.target.value)}/>
+            <input type='text' required onChange={e => setCreateNewComicEmail(e.target.value.trim())}/>
           </label>
           <label> New Comic Name
           <br></br>

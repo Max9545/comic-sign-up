@@ -52,7 +52,7 @@ function Login() {
       <div className="login__container" 
       onKeyUp={(e) => {
         if (e.key === "Enter") {
-          logInWithEmailAndPassword(email, password)
+          logInWithEmailAndPassword(email.trim(), password)
         }
       }}
       >
