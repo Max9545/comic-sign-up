@@ -280,8 +280,8 @@ const viewAllComicsAvailableSouth = async () => {
           </div>
         </div>
       {allowed && <div className="dashboard">
-        <p className='available-example'>This red color means you are AVAILABLE to be booked for the this show</p>
-        <p className='not-available-example'>This blue color means you are NOT available to be booked for this show</p>
+        <p className='available-example'>This yellow color means you are AVAILABLE to be booked for the this show</p>
+        <p className='not-available-example'>This grey color means you are NOT available to be booked for this show</p>
         <input
             type="userName"
             className="login__textBox userName"

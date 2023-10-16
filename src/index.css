@@ -21,18 +21,18 @@ code {
 
 .show-button {
   font-weight: 700;
-  color: white;
+  /* color: white; */
   width: 40vw;
   min-height: 9vh;
   font-size: 1.1rem;
 }
 
 .true {
-  background-color: darkred;
+  background-color: rgb(255, 251, 0);
 }
 
 .false {
-  background-color: #17a2b8;
+  background-color:rgb(190, 185, 185);
 }
 
 .submit-btn {
@@ -190,7 +190,8 @@ label {
   padding: .8%;
   font-size: 1.3rem;
   color: white;
-  background-color: #17a2b8;
+  /* background-color: #17a2b8; */
+  background-color: rgb(190, 185, 185)
 }
 
 .available-example {
@@ -199,7 +200,8 @@ label {
   padding: .8%;
   font-size: 1.3rem;
   color: black;
-  background-color: #dc3545
+  background-color: rgb(255, 251, 0)
+  /* background-color: #dc3545 */
 }
 
 .available-comic {
