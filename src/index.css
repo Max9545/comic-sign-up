@@ -374,6 +374,9 @@ label {
   padding: 2%;
   font-size: 1.4em;
 }
+.out-of-town-checkbox {
+  margin-bottom: 5vh;
+}
 
 
 @media (max-width: 540px) {
