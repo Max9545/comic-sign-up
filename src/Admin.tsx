@@ -743,7 +743,7 @@ ${showsForEmailSouth}`
       </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
   <div className='shows-visible-to-comics'>
-  <h3 className='change-type-header'>{`Comic Type: ${type.charAt(0).toUpperCase() + type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
+  <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
   <div
     onKeyUp={(e) => {
       if (e.key === "Enter" && type != '') {
