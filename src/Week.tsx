@@ -185,10 +185,16 @@ ${southString}`,
 
     return (
         <section className='show-container'>
-          <h1 className='downtown-available-header'>Downtown</h1>
-          {showDowntownShows()}
-          <h1 className='south-available-header'>South</h1>
-          {showSouthShows()}
+          <div className='week-container'>
+            <div>
+              <h1 className='downtown-available-header'>Downtown</h1>
+              {showDowntownShows()}
+            </div>
+            <div>
+            <h1 className='south-available-header'>South</h1>
+            {showSouthShows()}
+            </div>
+          </div>
           <button onClick={submitForm}type="submit" className='submit-btn'>
           Submit Availability
           </button>

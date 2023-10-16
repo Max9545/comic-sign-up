@@ -6,7 +6,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { Comic, ShowToBook } from './interface'
-import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where, getFirestore, setDoc, updateDoc } from "firebase/firestore"
+import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where, getFirestore, setDoc, updateDoc, orderBy, limit } from "firebase/firestore"
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
@@ -573,7 +573,7 @@ ${showsForEmailSouth}`
     } catch (err) {
       const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
       if (docRef.converter == null) {
-        return alert('Comedian does not exist or incorrect name has been Entered')
+        return alert('Comedian does not exist or incorrect name has been entered')
       }
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data()
@@ -643,7 +643,11 @@ ${showsForEmailSouth}`
       const data = docUser.docs[0].data()
       data.type = type
       updateDoc(doc(db, `users/${comedianMask?.id}`), {...data, type: type})
-      // updateDoc(doc(db, `comedians/comicStorage/${comedianMask.name}`), {"comedianInfo.type": type})
+      
+      // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
+      // const docTwo = await (getDocs(docRef))
+      // console.log(docTwo.docs[0].data())
+      // setDoc(doc(db, `comedians/comicStorage/${comedianMask.name}`), {...docTwo, "comedianInfo.type": type})
       alert(`${comedianMask.name} is now filed as ${type}`) 
   }
 
@@ -743,7 +747,7 @@ ${showsForEmailSouth}`
       </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
   <div className='shows-visible-to-comics'>
-  <h3 className='change-type-header'>{`Comic Type: ${type.charAt(0).toUpperCase() + type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
+  <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
   <div
     onKeyUp={(e) => {
       if (e.key === "Enter" && type != '') {
@@ -771,6 +775,7 @@ ${showsForEmailSouth}`
         maskAsComic()
         }}>Clear/Reset Form</button>
       <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor='club-select'>CHOOSE CLUB:</label>
         <select className='club-select' {...register('club')}>
           <option value='downtown'>Downtown</option>
           <option value='south'>South</option>

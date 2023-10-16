@@ -22,8 +22,8 @@ code {
 .show-button {
   font-weight: 700;
   color: white;
-  width: 60vw;
-  min-height: 7vh;
+  width: 40vw;
+  min-height: 9vh;
   font-size: 1.1rem;
 }
 
@@ -173,13 +173,13 @@ label {
 }
 
 .downtown-available-header {
-  font-size: 3rem;
+  font-size: 2rem;
   color: #dc3545;
   border-bottom: #17a2b8 double 10px;
 }
 
 .south-available-header {
-  font-size: 3rem;
+  font-size: 2rem;
   color: #17a2b8;
   border-bottom: #dc3545 double 10px;
 }
@@ -375,16 +375,24 @@ label {
   font-size: 1.4em;
 }
 
+.out-of-town-checkbox {
+  margin-bottom: 5vh;
+}
 
 @media (max-width: 540px) {
   .available-comic {
     column-count: 1;
   }
+  /* .show-div {
+    display: flex;
+    flex-direction: column;
+  } */
 }
 
 .show-div {
   display: flex;
   justify-content: space-evenly;
+  flex-direction: column;
   /* align-content: center; */
 }
 
@@ -462,6 +470,11 @@ label {
   font-size: 1.3rem;
 }
 
-.new-comic-password {
+.new-comic-password { 
   margin-top: 1%;
+}
+.week-container {
+  width: 85vw;
+  display: flex;
+  justify-content: space-between;
 }

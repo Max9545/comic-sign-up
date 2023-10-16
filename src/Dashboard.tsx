@@ -116,7 +116,7 @@ function Dashboard() {
       setName(newName ? newName : '')
       if (newName == '' || newName == null) return navigate("/")
       if (newName.length > 0 && newName != '' && newName != null) {
-        makeUserName(user, newName)
+        await makeUserName(user, newName)
       }
       await updateDoc(doc(db, `comediansForAdmin/${user?.uid}`), {"comedianInfo.name": newName})
       await addDoc(collection(db, `comedians/comicStorage/${comedian.name}`), {
