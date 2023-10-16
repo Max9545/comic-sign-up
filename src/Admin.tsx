@@ -6,7 +6,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { Comic, ShowToBook } from './interface'
-import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where, getFirestore, setDoc, updateDoc } from "firebase/firestore"
+import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where, getFirestore, setDoc, updateDoc, orderBy, limit } from "firebase/firestore"
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
@@ -643,7 +643,11 @@ ${showsForEmailSouth}`
       const data = docUser.docs[0].data()
       data.type = type
       updateDoc(doc(db, `users/${comedianMask?.id}`), {...data, type: type})
-      // updateDoc(doc(db, `comedians/comicStorage/${comedianMask.name}`), {"comedianInfo.type": type})
+      
+      // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
+      // const docTwo = await (getDocs(docRef))
+      // console.log(docTwo.docs[0].data())
+      // setDoc(doc(db, `comedians/comicStorage/${comedianMask.name}`), {...docTwo, "comedianInfo.type": type})
       alert(`${comedianMask.name} is now filed as ${type}`) 
   }
 
