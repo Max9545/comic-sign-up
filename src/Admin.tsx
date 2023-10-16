@@ -573,7 +573,7 @@ ${showsForEmailSouth}`
     } catch (err) {
       const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
       if (docRef.converter == null) {
-        return alert('Comedian does not exist or incorrect name has been Entered')
+        return alert('Comedian does not exist or incorrect name has been entered')
       }
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data()
