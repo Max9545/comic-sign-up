@@ -658,12 +658,12 @@ ${showsForEmailSouth}`
       .then(async (userCredential) => {
         await updateProfile(userCredential.user, {displayName: createNewComicName})
         await updateCurrentUser(auth, props.user)
-        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType, allowed: true, name:  createNewComicName, admin: newComicType === 'admin'})
+        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType || 'pro', allowed: true, name:  createNewComicName, admin: newComicType === 'admin'})
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
           name: createNewComicName,
           id: userCredential.user.uid,
-          type: newComicType,
+          type: newComicType || 'pro',
           admin: newComicType === 'admin',
           email: userCredential.user.email,
           showsAvailabledowntown: {
@@ -833,6 +833,10 @@ ${showsForEmailSouth}`
           <div>
             <input type='radio' id='new-outOfTown' name='new-comic-type' value='outOfTown'onClick={() => {setNewComicType('OutOfTown')}}/>
             <label htmlFor='new-outOfTown'>Out of Town Pro</label>
+          </div>
+          <div>
+            <input type='radio' id='new-almostFamous' name='new-comic-type' value='almostFamous'onClick={() => {setNewComicType('AlmostFamous')}}/>
+            <label htmlFor='new-almostFamous'>Almost Famous</label>
           </div>
           <div>
             <input type='radio' id='new-admin' name='new-comic-type' value='admin'onClick={() => {setNewComicType('admin')}}/>
