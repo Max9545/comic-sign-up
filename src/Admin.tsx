@@ -645,9 +645,10 @@ ${showsForEmailSouth}`
       updateDoc(doc(db, `users/${comedianMask?.id}`), {...data, type: type})
       
       // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
-      // const docTwo = await (getDocs(docRef))
-      // console.log(docTwo.docs[0].data())
-      // setDoc(doc(db, `comedians/comicStorage/${comedianMask.name}`), {...docTwo, "comedianInfo.type": type})
+      const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", comedianMask.id))
+      const docTwo = await (getDocs(docRef))
+      console.log(docTwo.docs[0].data())
+      updateDoc(doc(db, `comediansForAdmin/${comedianMask.id}`), {"comedianInfo.type": comedianMask.type})
       alert(`${comedianMask.name} is now filed as ${type}`) 
       setAdTrigger(!adTrigger)
   }
