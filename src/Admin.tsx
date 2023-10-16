@@ -649,6 +649,7 @@ ${showsForEmailSouth}`
       // console.log(docTwo.docs[0].data())
       // setDoc(doc(db, `comedians/comicStorage/${comedianMask.name}`), {...docTwo, "comedianInfo.type": type})
       alert(`${comedianMask.name} is now filed as ${type}`) 
+      setAdTrigger(!adTrigger)
   }
 
   const createNewComic = () => {
@@ -763,6 +764,10 @@ ${showsForEmailSouth}`
       <div>
         <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {setType('OutOfTown')}}/>
         <label htmlFor='outOfTown' >Out of Town Pro</label>
+      </div>
+      <div>
+        <input type='radio' id='almostFamous' name='type' value='almostFamous'onClick={() => {setType('AlmostFamous')}}/>
+        <label htmlFor='almostFamous' >Almost Famous</label>
       </div>
       <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
     </div>
