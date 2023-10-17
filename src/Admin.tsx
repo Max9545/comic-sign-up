@@ -41,6 +41,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [createNewComicEmail, setCreateNewComicEmail] = useState('')
   const [createNewComicPassword, setCreateNewComicPassword] = useState('')
   const [createNewComicName, setCreateNewComicName] = useState('')
+  const [createNewComicAddress, setCreateNewComicAddress] = useState('')
   const [comicToDelete, setComicToDelete] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
@@ -647,7 +648,7 @@ ${showsForEmailSouth}`
       // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", comedianMask.id))
       const docTwo = await (getDocs(docRef))
-      console.log(docTwo.docs[0].data())
+      // console.log(docTwo.docs[0].data())
       updateDoc(doc(db, `comediansForAdmin/${comedianMask.id}`), {"comedianInfo.type": comedianMask.type})
       alert(`${comedianMask.name} is now filed as ${type}`) 
       setAdTrigger(!adTrigger)
@@ -660,7 +661,7 @@ ${showsForEmailSouth}`
       .then(async (userCredential) => {
         await updateProfile(userCredential.user, {displayName: createNewComicName})
         await updateCurrentUser(auth, props.user)
-        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType || 'pro', allowed: true, name:  createNewComicName, admin: newComicType === 'admin'})
+        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType || 'pro', allowed: true, name:  createNewComicName, admin: newComicType === 'admin', address: createNewComicAddress})
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
           name: createNewComicName,
@@ -668,6 +669,7 @@ ${showsForEmailSouth}`
           type: newComicType || 'pro',
           admin: newComicType === 'admin',
           email: userCredential.user.email,
+          address: createNewComicAddress,
           showsAvailabledowntown: {
             monday: [],
             tuesday: [],
@@ -831,6 +833,10 @@ ${showsForEmailSouth}`
           <label className='new-comic-password'> New Comic Password
           <br></br>
             <input type='text' required onChange={e => setCreateNewComicPassword(e.target.value)}/>
+          </label>
+          <label className='new-comic-address'> New Comic Address
+          <br></br>
+            <input type='text' required onChange={e => setCreateNewComicAddress(e.target.value)}/>
           </label>
           <div>
             <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
