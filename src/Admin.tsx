@@ -659,7 +659,7 @@ ${showsForEmailSouth}`
 
   const createNewComic = () => {
 
-    if (createNewComicName && createNewComicEmail && createNewComicPassword) {
+    if (createNewComicName && createNewComicEmail && createNewComicPassword && createNewComicAddress && createNewComicPhone) {
       createUserWithEmailAndPassword(auth, createNewComicEmail, createNewComicPassword)
       .then(async (userCredential) => {
         await updateProfile(userCredential.user, {displayName: createNewComicName})
@@ -734,7 +734,7 @@ ${showsForEmailSouth}`
         alert(`Comic not added due to error: ${errorMessage}`)
       })
     } else {
-      alert('To submit a comic needs an email, name, and password.')
+      alert("Email, name, password, address, and phone number are needed to submit a new comic. If unknown enter 'N/A' for now.")
     }
   }
 
@@ -859,7 +859,7 @@ ${showsForEmailSouth}`
           </label>
           <label className='new-comic-phone'> New Comic Phone
             <br></br>
-            <input type='text' required onChange={e => setCreateNewComicPhone(e.target.value)}/>
+            <input type='text' required onChange={e => setCreateNewComicPhone(e.target.value)} maxLength={14}/>
           </label>
           <div>
             <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
