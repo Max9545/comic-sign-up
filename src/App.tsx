@@ -12,9 +12,9 @@ function App() {
       <header className="App-header">
         <img className="header-logo" alt='Comedy Works Logo' src={require('./images/comedyworkslogo(1).png')}/>
         </header>
-        <p className='comedian-signup'> 
+        {/* <p className='comedian-signup'> 
           Comedian Sign Up
-        </p>
+        </p> */}
         <Routes>
           <Route path='/' element={<Login/>}/>
           <Route path='/reset' element={<Reset/>}/>

@@ -41,6 +41,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [createNewComicEmail, setCreateNewComicEmail] = useState('')
   const [createNewComicPassword, setCreateNewComicPassword] = useState('')
   const [createNewComicName, setCreateNewComicName] = useState('')
+  const [createNewComicAddress, setCreateNewComicAddress] = useState('')
+  const [createNewComicPhone, setCreateNewComicPhone] = useState('')
+  const [createNewComicClean, setCreateNewComicClean] = useState(false)
+  const [createNewComicFamFriendly, setCreateNewComicFamFriendly] = useState(false)
   const [comicToDelete, setComicToDelete] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
@@ -645,27 +649,45 @@ ${showsForEmailSouth}`
       updateDoc(doc(db, `users/${comedianMask?.id}`), {...data, type: type})
       
       // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
-      // const docTwo = await (getDocs(docRef))
+      const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", comedianMask.id))
+      const docTwo = await (getDocs(docRef))
       // console.log(docTwo.docs[0].data())
-      // setDoc(doc(db, `comedians/comicStorage/${comedianMask.name}`), {...docTwo, "comedianInfo.type": type})
+      updateDoc(doc(db, `comediansForAdmin/${comedianMask.id}`), {"comedianInfo.type": comedianMask.type})
       alert(`${comedianMask.name} is now filed as ${type}`) 
+      setAdTrigger(!adTrigger)
   }
 
   const createNewComic = () => {
 
-    if (createNewComicName && createNewComicEmail && createNewComicPassword) {
+    if (createNewComicName && createNewComicEmail && createNewComicPassword && createNewComicAddress && createNewComicPhone) {
       createUserWithEmailAndPassword(auth, createNewComicEmail, createNewComicPassword)
       .then(async (userCredential) => {
         await updateProfile(userCredential.user, {displayName: createNewComicName})
         await updateCurrentUser(auth, props.user)
-        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType, allowed: true, name:  createNewComicName, admin: newComicType === 'admin'})
+        setDoc(doc(db, `users/${userCredential.user.uid}`), {
+          email: userCredential.user.email, 
+          uid: 
+          userCredential.user.uid, 
+          type: newComicType || 'pro', 
+          allowed: true, name:  
+          createNewComicName, 
+          admin: newComicType === 'admin', 
+          address: createNewComicAddress, 
+          clean: createNewComicClean, 
+          famFriendly: createNewComicFamFriendly,
+          phone: createNewComicPhone
+        })
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
           name: createNewComicName,
           id: userCredential.user.uid,
-          type: newComicType,
+          type: newComicType || 'pro',
           admin: newComicType === 'admin',
           email: userCredential.user.email,
+          address: createNewComicAddress,
+          clean: createNewComicClean,
+          famFriendly: createNewComicFamFriendly,
+          phone: createNewComicPhone,
           showsAvailabledowntown: {
             monday: [],
             tuesday: [],
@@ -704,6 +726,7 @@ ${showsForEmailSouth}`
           }
         }, fireOrder: Date.now()})
         alert(`${createNewComicName} at ${userCredential.user.email} has been added`)
+        console.log(userCredential.user.uid)
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -711,7 +734,7 @@ ${showsForEmailSouth}`
         alert(`Comic not added due to error: ${errorMessage}`)
       })
     } else {
-      alert('To submit a comic needs an email, name, and password.')
+      alert("Email, name, password, address, and phone number are needed to submit a new comic. If unknown enter 'N/A' for now.")
     }
   }
 
@@ -764,6 +787,10 @@ ${showsForEmailSouth}`
         <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {setType('OutOfTown')}}/>
         <label htmlFor='outOfTown' >Out of Town Pro</label>
       </div>
+      <div>
+        <input type='radio' id='almostFamous' name='type' value='almostFamous'onClick={() => {setType('AlmostFamous')}}/>
+        <label htmlFor='almostFamous' >Almost Famous</label>
+      </div>
       <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
     </div>
   </div>
@@ -815,28 +842,57 @@ ${showsForEmailSouth}`
       }}
       >
           <label> New Comic Email
-          <br></br>
-            <input type='text' required onChange={e => setCreateNewComicEmail(e.target.value)}/>
+            <br></br>
+            <input type='text' required onChange={e => setCreateNewComicEmail(e.target.value.trim())}/>
           </label>
           <label> New Comic Name
-          <br></br>
+            <br></br>
             <input type='text' required onChange={e => setCreateNewComicName(e.target.value)}/>
           </label>
           <label className='new-comic-password'> New Comic Password
-          <br></br>
+            <br></br>
             <input type='text' required onChange={e => setCreateNewComicPassword(e.target.value)}/>
           </label>
-          <div>
-            <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
-            <label htmlFor='new-pro'>Pro</label>
+          <label className='new-comic-address'> New Comic Address
+            <br></br>
+            <input type='text' required onChange={e => setCreateNewComicAddress(e.target.value)}/>
+          </label>
+          <label className='new-comic-phone'> New Comic Phone
+            <br></br>
+            <input type='text' required onChange={e => setCreateNewComicPhone(e.target.value)} maxLength={14}/>
+          </label>
+          <div className='create-new-comic-type-box'>
+            <div>
+              <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
+              <label htmlFor='new-pro'>Pro</label>
+            </div>
+            <div>
+              <input type='radio' id='new-outOfTown' name='new-comic-type' value='outOfTown'onClick={() => {setNewComicType('OutOfTown')}}/>
+              <label htmlFor='new-outOfTown'>Out of Town Pro</label>
+            </div>
+            <div>
+              <input type='radio' id='new-almostFamous' name='new-comic-type' value='almostFamous'onClick={() => {setNewComicType('AlmostFamous')}}/>
+              <label htmlFor='new-almostFamous'>Almost Famous</label>
+            </div>
+            <div>
+              <input type='radio' id='new-admin' name='new-comic-type' value='admin'onClick={() => {setNewComicType('admin')}}/>
+              <label htmlFor='new-admin'>Administrator</label>
+            </div>
           </div>
           <div>
-            <input type='radio' id='new-outOfTown' name='new-comic-type' value='outOfTown'onClick={() => {setNewComicType('OutOfTown')}}/>
-            <label htmlFor='new-outOfTown'>Out of Town Pro</label>
+            <label htmlFor="clean">Can Comic Do Clean?</label>
+            <input type="radio" id="clean-true" name="clean" value="cleanTrue" className='create-comic-radio-label' onClick={(e) => setCreateNewComicClean(true)} />
+            <label className='create-comic-radio-label'>True</label>
+            <input type="radio" id="clean-false" name="clean" value="false" onClick={(e) => setCreateNewComicClean(false)} defaultChecked/>
+            <label className='create-comic-radio-label'>False</label>
           </div>
+
           <div>
-            <input type='radio' id='new-admin' name='new-comic-type' value='admin'onClick={() => {setNewComicType('admin')}}/>
-            <label htmlFor='new-admin'>Administrator</label>
+            <label htmlFor="famFriendly">Can Comic Do Family Friendly?</label>
+            <input type="radio" id="famFriendly-true" name="famFriendly" value="famFriendlyTrue" className='create-comic-radio-label' onClick={(e) => setCreateNewComicFamFriendly(true)} />
+            <label className='create-comic-radio-label'>True</label>
+            <input type="radio" id="famFriendly-false" name="famFriendly" value="false" onClick={(e) => setCreateNewComicFamFriendly(false)} defaultChecked/>
+            <label className='create-comic-radio-label'>False</label>
           </div>
           <button value='Create Comic Profile' onClick={() => createNewComic()} className='create-comic-button'>
             Create Comic Profile

@@ -18,6 +18,10 @@ export interface Comic {
   id: string;
   email: any;
   type: string;
+  address?: string;
+  phone?: string;
+  clean?: boolean;
+  familyFreindly?: boolean;
   showsAvailabledowntown: WeekInter;
   showsAvailablesouth: WeekInter;
   showsAvailabledowntownHistory: WeekInter;
