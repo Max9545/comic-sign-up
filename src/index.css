@@ -486,3 +486,9 @@ label {
   color:#dc3545;
   font-size: 1.1em;
 }
+
+.create-new-comic-type-box {
+  border-top: 2px red solid;
+  border-bottom: 2px red solid;
+  padding-bottom: 2%
+}

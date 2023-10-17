@@ -861,21 +861,23 @@ ${showsForEmailSouth}`
             <br></br>
             <input type='text' required onChange={e => setCreateNewComicPhone(e.target.value)} maxLength={14}/>
           </label>
-          <div>
-            <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
-            <label htmlFor='new-pro'>Pro</label>
-          </div>
-          <div>
-            <input type='radio' id='new-outOfTown' name='new-comic-type' value='outOfTown'onClick={() => {setNewComicType('OutOfTown')}}/>
-            <label htmlFor='new-outOfTown'>Out of Town Pro</label>
-          </div>
-          <div>
-            <input type='radio' id='new-almostFamous' name='new-comic-type' value='almostFamous'onClick={() => {setNewComicType('AlmostFamous')}}/>
-            <label htmlFor='new-almostFamous'>Almost Famous</label>
-          </div>
-          <div>
-            <input type='radio' id='new-admin' name='new-comic-type' value='admin'onClick={() => {setNewComicType('admin')}}/>
-            <label htmlFor='new-admin'>Administrator</label>
+          <div className='create-new-comic-type-box'>
+            <div>
+              <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
+              <label htmlFor='new-pro'>Pro</label>
+            </div>
+            <div>
+              <input type='radio' id='new-outOfTown' name='new-comic-type' value='outOfTown'onClick={() => {setNewComicType('OutOfTown')}}/>
+              <label htmlFor='new-outOfTown'>Out of Town Pro</label>
+            </div>
+            <div>
+              <input type='radio' id='new-almostFamous' name='new-comic-type' value='almostFamous'onClick={() => {setNewComicType('AlmostFamous')}}/>
+              <label htmlFor='new-almostFamous'>Almost Famous</label>
+            </div>
+            <div>
+              <input type='radio' id='new-admin' name='new-comic-type' value='admin'onClick={() => {setNewComicType('admin')}}/>
+              <label htmlFor='new-admin'>Administrator</label>
+            </div>
           </div>
           <div>
             <label htmlFor="clean">Can Comic Do Clean?</label>
