@@ -42,6 +42,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [createNewComicPassword, setCreateNewComicPassword] = useState('')
   const [createNewComicName, setCreateNewComicName] = useState('')
   const [createNewComicAddress, setCreateNewComicAddress] = useState('')
+  const [createNewComicClean, setCreateNewComicClean] = useState(false)
   const [comicToDelete, setComicToDelete] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
@@ -661,7 +662,7 @@ ${showsForEmailSouth}`
       .then(async (userCredential) => {
         await updateProfile(userCredential.user, {displayName: createNewComicName})
         await updateCurrentUser(auth, props.user)
-        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType || 'pro', allowed: true, name:  createNewComicName, admin: newComicType === 'admin', address: createNewComicAddress})
+        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType || 'pro', allowed: true, name:  createNewComicName, admin: newComicType === 'admin', address: createNewComicAddress, clean: createNewComicClean})
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
           name: createNewComicName,
@@ -670,6 +671,7 @@ ${showsForEmailSouth}`
           admin: newComicType === 'admin',
           email: userCredential.user.email,
           address: createNewComicAddress,
+          clean: createNewComicClean,
           showsAvailabledowntown: {
             monday: [],
             tuesday: [],
@@ -708,6 +710,7 @@ ${showsForEmailSouth}`
           }
         }, fireOrder: Date.now()})
         alert(`${createNewComicName} at ${userCredential.user.email} has been added`)
+        console.log(userCredential.user.uid)
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -853,6 +856,13 @@ ${showsForEmailSouth}`
           <div>
             <input type='radio' id='new-admin' name='new-comic-type' value='admin'onClick={() => {setNewComicType('admin')}}/>
             <label htmlFor='new-admin'>Administrator</label>
+          </div>
+          <div>
+            <label htmlFor="clean">Can Comic Do Clean?</label>
+            <input type="radio" id="clean-true" name="clean" value="cleanTrue" className='create-comic-radio-label' onClick={(e) => setCreateNewComicClean(true)} />
+            <label className='create-comic-radio-label'>True</label>
+            <input type="radio" id="clean-false" name="clean" value="false" onClick={(e) => setCreateNewComicClean(false)} defaultChecked/>
+            <label className='create-comic-radio-label'>False</label>
           </div>
           <button value='Create Comic Profile' onClick={() => createNewComic()} className='create-comic-button'>
             Create Comic Profile

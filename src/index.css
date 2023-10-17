@@ -475,8 +475,14 @@ label {
 .new-comic-password { 
   margin-top: 1%;
 }
+
 .week-container {
   width: 85vw;
   display: flex;
   justify-content: space-between;
+}
+
+.create-comic-radio-label {
+  color:#dc3545;
+  font-size: 1.1em;
 }
