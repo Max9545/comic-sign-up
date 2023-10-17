@@ -19,7 +19,7 @@ export interface Comic {
   email: any;
   type: string;
   address?: string;
-  phone?: number;
+  phone?: string;
   clean?: boolean;
   familyFreindly?: boolean;
   showsAvailabledowntown: WeekInter;

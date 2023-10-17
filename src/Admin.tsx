@@ -42,6 +42,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [createNewComicPassword, setCreateNewComicPassword] = useState('')
   const [createNewComicName, setCreateNewComicName] = useState('')
   const [createNewComicAddress, setCreateNewComicAddress] = useState('')
+  const [createNewComicPhone, setCreateNewComicPhone] = useState('')
   const [createNewComicClean, setCreateNewComicClean] = useState(false)
   const [createNewComicFamFriendly, setCreateNewComicFamFriendly] = useState(false)
   const [comicToDelete, setComicToDelete] = useState('')
@@ -663,7 +664,19 @@ ${showsForEmailSouth}`
       .then(async (userCredential) => {
         await updateProfile(userCredential.user, {displayName: createNewComicName})
         await updateCurrentUser(auth, props.user)
-        setDoc(doc(db, `users/${userCredential.user.uid}`), {email: userCredential.user.email, uid: userCredential.user.uid, type: newComicType || 'pro', allowed: true, name:  createNewComicName, admin: newComicType === 'admin', address: createNewComicAddress, clean: createNewComicClean, famFriendly: createNewComicFamFriendly})
+        setDoc(doc(db, `users/${userCredential.user.uid}`), {
+          email: userCredential.user.email, 
+          uid: 
+          userCredential.user.uid, 
+          type: newComicType || 'pro', 
+          allowed: true, name:  
+          createNewComicName, 
+          admin: newComicType === 'admin', 
+          address: createNewComicAddress, 
+          clean: createNewComicClean, 
+          famFriendly: createNewComicFamFriendly,
+          phone: createNewComicPhone
+        })
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
           name: createNewComicName,
@@ -674,6 +687,7 @@ ${showsForEmailSouth}`
           address: createNewComicAddress,
           clean: createNewComicClean,
           famFriendly: createNewComicFamFriendly,
+          phone: createNewComicPhone,
           showsAvailabledowntown: {
             monday: [],
             tuesday: [],
@@ -828,20 +842,24 @@ ${showsForEmailSouth}`
       }}
       >
           <label> New Comic Email
-          <br></br>
+            <br></br>
             <input type='text' required onChange={e => setCreateNewComicEmail(e.target.value.trim())}/>
           </label>
           <label> New Comic Name
-          <br></br>
+            <br></br>
             <input type='text' required onChange={e => setCreateNewComicName(e.target.value)}/>
           </label>
           <label className='new-comic-password'> New Comic Password
-          <br></br>
+            <br></br>
             <input type='text' required onChange={e => setCreateNewComicPassword(e.target.value)}/>
           </label>
           <label className='new-comic-address'> New Comic Address
-          <br></br>
+            <br></br>
             <input type='text' required onChange={e => setCreateNewComicAddress(e.target.value)}/>
+          </label>
+          <label className='new-comic-phone'> New Comic Phone
+            <br></br>
+            <input type='text' required onChange={e => setCreateNewComicPhone(e.target.value)}/>
           </label>
           <div>
             <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
