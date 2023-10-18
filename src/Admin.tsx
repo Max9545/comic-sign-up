@@ -121,6 +121,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                     time={newShow.time}
                     currentClub={newShow.club}
                     supportStatus={newShow.support}
+                    familyFriendly={newShow.familyFriendly === 'familyFriendly'}
+                    clean={newShow.clean === 'clean'}
                     availableComedian={{
                       name: 'admin',
                       id: '',
@@ -193,6 +195,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               time={newShow.time}
               currentClub={newShow.club}
               supportStatus={newShow.support}
+              familyFriendly={newShow.familyFriendly === 'familyFriendly'}
+              clean={newShow.clean === 'clean'}
               availableComedian={{
                 name: 'admin',
                 id: '',
@@ -865,6 +869,15 @@ ${showsForEmailSouth}`
         <select className='club-select' {...register('supportStatus')}>
           <option value='support'>Support Is Needed</option>
           <option value='no-support'>No Support Needed</option>
+        </select>
+        <br></br>
+        <select className='club-select' {...register('clean')}>
+          <option value='not-clean'>Not Clean</option>
+          <option value='clean'>Clean</option>
+        </select>
+        <select className='club-select' {...register('familyFriendly')}>
+          <option value='not-familyFriendly'>Not Family Friendly</option>
+          <option value='familyFriendly'>Family Friendly</option>
         </select>
         <br></br>
         <input type='submit' value='Queue Show' className='add-show'/>

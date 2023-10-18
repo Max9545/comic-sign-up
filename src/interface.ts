@@ -46,6 +46,8 @@ export interface ShowToBook {
   club: string,
   availability: boolean,
   availableComics: any
+  clean?: any,
+  familyFriendly: any
 }
 
  

@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { Comic } from './interface'
 
-function Show(props: {key: number, day: string, time: string, currentClub: string, availableComedian: Comic, date: string, id: string, headliner: string, availability: boolean, setAllAvailability?: any, availableComics: [], supportStatus: string}) {
+function Show(props: {key: number, day: string, time: string, currentClub: string, availableComedian: Comic, date: string, id: string, headliner: string, availability: boolean, setAllAvailability?: any, availableComics: [], supportStatus: string, familyFriendly: any, clean: any}) {
 
   const [availability, setAvailability] = useState(false)
   const [dayOfWeek, setDayOfWeek] = useState('')
