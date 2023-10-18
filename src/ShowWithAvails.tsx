@@ -160,8 +160,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
 
   const showComics = () => {
     const div = document.getElementById(`available-comics-list-${props.id}`)
-    div!.style.display = 'contents'
-    // div!.style.display = 'contents' ? div!.style.display = 'hidden' : div!.style.display = 'contents'
+    div!.style.display === 'contents' ? div!.style.display = 'none' : div!.style.display = 'contents'
   }
 
   return (
