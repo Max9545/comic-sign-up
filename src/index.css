@@ -492,3 +492,7 @@ label {
   border-bottom: 2px red solid;
   padding-bottom: 2%
 }
+
+.available-comics-list {
+  display: none;
+}

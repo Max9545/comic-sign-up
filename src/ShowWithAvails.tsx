@@ -158,14 +158,19 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     setTrigger(!trigger)
   }
 
+  const showComics = () => {
+    const div = document.getElementById(`available-comics-list-${props.id}`)
+    div!.style.display = 'contents'
+    // div!.style.display = 'contents' ? div!.style.display = 'hidden' : div!.style.display = 'contents'
+  }
+
   return (
     <div className={`available-${props.club} avail-box`}>
       {props.alreadyBooked}
       {props.alreadyBooked.filter((show: any) => show != undefined).length > 0 && <button className='edit-show' onClick={() => editBooked()}>Edit Booked</button>}
-      <div>
         {props.supportStatus == 'no-support' && <p className='no-support-booked'>Self Contained</p>}
         <h3>Available {`${props.day} (${props.date}) ${props.headliner} ${props.time} ${props.club.charAt(0).toUpperCase() + props.club.slice(1)}`}</h3>
-        <div>
+        <button className='edit-show' onClick={() => showComics()}>See Comics</button>
       {Object.keys(bookedShow.comics).map((key, index) => (
         <div
           className='draggable'
@@ -179,8 +184,10 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           {bookedShow.comics[key].length > 0 && <div className='potential-booked-comic'>{`${key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}<button className='delete-potential-comic' onClick={() => removeComic(key)}>Delete</button></div>}
         </div>
       ))}
-    </div>
         {(bookedShow.comics.MC || bookedShow.comics.StarMC || bookedShow.comics.A1 || bookedShow.comics.B1 || bookedShow.comics.Yes || bookedShow.comics.Star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}  
+      <div className='available-comics-list' id={`available-comics-list-${props.id}`}>
+        <div>
+    </div>
         <div className='comic-type-box'>{props.availableComics.map(comic => 
           <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
             <p className='comic-avail' key={comic}>{`${comic}`}</p>

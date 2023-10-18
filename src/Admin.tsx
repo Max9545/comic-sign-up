@@ -667,7 +667,6 @@ ${showsForEmailSouth}`
       // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
       const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", comedianMask.id))
       const docTwo = await (getDocs(docRef))
-      // console.log(docTwo.docs[0].data())
       updateDoc(doc(db, `comediansForAdmin/${comedianMask.id}`), {"comedianInfo.type": comedianMask.type})
       alert(`${comedianMask.name} is now filed as ${type}`) 
       setAdTrigger(!adTrigger)
@@ -749,7 +748,6 @@ ${showsForEmailSouth}`
           }
         }, fireOrder: Date.now()})
         alert(`${createNewComicName} at ${userCredential.user.email} has been added`)
-        console.log(userCredential.user.uid)
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -826,17 +824,17 @@ ${showsForEmailSouth}`
       }}
     >
     <div>
-        <input type='radio' id='pro-radio' name='type' value='pro' onClick={() => setType('pro')}/>
-        <label htmlFor='pro-radio'>Pro</label>
-      </div>
-      <div>
-        <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {setType('OutOfTown')}}/>
-        <label htmlFor='outOfTown' >Out of Town Pro</label>
-      </div>
-      <div>
-        <input type='radio' id='almostFamous' name='type' value='almostFamous'onClick={() => {setType('AlmostFamous')}}/>
-        <label htmlFor='almostFamous' >Almost Famous</label>
-      </div>
+      <input type='radio' id='pro-radio' name='type' value='pro' onClick={() => setType('pro')}/>
+      <label htmlFor='pro-radio'>Pro</label>
+    </div>
+    <div>
+      <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {setType('OutOfTown')}}/>
+      <label htmlFor='outOfTown' >Out of Town Pro</label>
+    </div>
+    <div>
+      <input type='radio' id='almostFamous' name='type' value='almostFamous'onClick={() => {setType('AlmostFamous')}}/>
+      <label htmlFor='almostFamous' >Almost Famous</label>
+    </div>
       <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
     </div>
   </div>
