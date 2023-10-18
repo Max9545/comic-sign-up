@@ -496,3 +496,7 @@ label {
 .available-comics-list {
   display: none;
 }
+
+.pro-comic-type-input{
+  width: 75%
+}

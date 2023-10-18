@@ -11,6 +11,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   const [otherName, setOtherName] = useState('')
   const [yes, setYes] = useState('')
   const [trigger, setTrigger] = useState(true)
+  const [miscType, setMiscType] = useState('')
   const [bookedShow, setBookedShow] = useState<any>({
       day: props.day,
       headliner: props.headliner,
@@ -195,6 +196,10 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <p className='comic-type' onClick={() => setComedianType('b1', comic)}>B1</p>
             <p className='comic-type' onClick={() => setComedianType('star7', comic)}>Star7</p>
             <p className='comic-type starMC' onClick={() => setComedianType('starMC', comic)}>Star MC</p>
+            <div>
+              <input type='text' className='pro-comic-type-input' onChange={(e) => setMiscType(e.target.value)}/>
+              <button className='comic-type' onClick={() => setComedianType(miscType, comic)}>Enter Type</button>
+            </div>
           </div>)}
           <div className='yes-div'
             onKeyUp={(e) => {
