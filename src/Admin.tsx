@@ -807,24 +807,24 @@ ${showsForEmailSouth}`
         <input type='text' className='yes-spot' onChange={(e) => {
           setComicSearch(e.target.value)
           }}/>
-      <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
-      {/* <button onClick={() => gatherStats()}>See Stats</button> */}
+        <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
+        {/* <button onClick={() => gatherStats()}>See Stats</button> */}
       </div>
-  <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
-  {comedianMask.downTownShowCount &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
-  {comedianMask.southShowCount && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
-  {comedianMask.downTownWeekCount && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
-  {comedianMask.southWeekCount && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
-  <div className='shows-visible-to-comics'>
-  <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
-  <div
-    onKeyUp={(e) => {
-      if (e.key === "Enter" && type != '') {
-        changeComedianType()  
-        setAdTrigger(!adTrigger)      
-      }
-    }}
-  >
+    <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
+    {comedianMask.downTownShowCount &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
+    {comedianMask.southShowCount && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
+    {comedianMask.downTownWeekCount && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
+    {comedianMask.southWeekCount && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
+    <div className='shows-visible-to-comics'>
+    <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
+    <div
+      onKeyUp={(e) => {
+        if (e.key === "Enter" && type != '') {
+          changeComedianType()  
+          setAdTrigger(!adTrigger)      
+        }
+      }}
+    >
     <div>
         <input type='radio' id='pro-radio' name='type' value='pro' onClick={() => setType('pro')}/>
         <label htmlFor='pro-radio'>Pro</label>
