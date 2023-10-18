@@ -765,9 +765,9 @@ ${showsForEmailSouth}`
   }
 
   const gatherStats = async () => {
-    console.log(comedianMask)
 
-    
+    console.log('down',comedianMask.downTownShowCount, 'south', comedianMask.southShowCount)
+
     // const comediansRef = collection(db, `comedians/comicStorage/${comedianMask.name}`)
     // // const shows = query(comediansRef, where("name", "==", `${comedianMask.name}`))
     // const docShows = await getDocs(comediansRef)
@@ -799,6 +799,8 @@ ${showsForEmailSouth}`
       <button onClick={() => gatherStats()}>See Stats</button>
       </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
+  <div className='shows-visible-to-comics'>{comedianMask.downTownShowCount && `Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>
+  <div className='shows-visible-to-comics'>{comedianMask.southShowCount && `Total South Show Signups: ${comedianMask.southShowCount}`}</div>
   <div className='shows-visible-to-comics'>
   <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
   <div
