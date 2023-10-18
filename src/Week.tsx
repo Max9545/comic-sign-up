@@ -181,6 +181,8 @@ ${southString}`,
     currentComedian.downTownShowCount += downTownShowCount
     currentComedian.southShowCount += southShowCount
 
+    currentComedian.downTownWeekCount += 1
+    currentComedian.southWeekCount += 1
 
     setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
     addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {

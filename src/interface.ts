@@ -24,6 +24,8 @@ export interface Comic {
   familyFreindly?: boolean;
   downTownShowCount: number;
   southShowCount: number;
+  downTownWeekCount: number;
+  southWeekCount: number;
   showsAvailabledowntown: WeekInter;
   showsAvailablesouth: WeekInter;
   showsAvailabledowntownHistory: WeekInter;

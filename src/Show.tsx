@@ -15,6 +15,8 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
     email: '',
     downTownShowCount: 0,
     southShowCount: 0,
+    downTownWeekCount: 0,
+    southWeekCount: 0,
     showsAvailabledowntown: {
       monday: [],
       tuesday: [],

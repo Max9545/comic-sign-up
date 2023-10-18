@@ -128,6 +128,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                       email: '',
                       downTownShowCount: 0,
                       southShowCount: 0,
+                      downTownWeekCount: 0,
+                      southWeekCount: 0,
                       showsAvailabledowntown: {
                         monday: [],
                         tuesday: [],
@@ -198,6 +200,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                 email: '',
                 downTownShowCount: 0,
                 southShowCount: 0,
+                downTownWeekCount: 0,
+                southWeekCount: 0,
                 showsAvailabledowntown: {
                   monday: [],
                   tuesday: [],
@@ -575,6 +579,8 @@ ${showsForEmailSouth}`
         email: comic.email,
         downTownShowCount: comic.downTownShowCount,
         southShowCount: comic.southShowCount,
+        downTownWeekCount: comic.downTownWeekCount,
+        southWeekCount: comic.southWeekCount,
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
         showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
@@ -594,6 +600,8 @@ ${showsForEmailSouth}`
         email: comic.email,
         downTownShowCount: comic.downTownShowCount,
         southShowCount: comic.southShowCount,
+        downTownWeekCount: comic.downTownWeekCount,
+        southWeekCount: comic.southWeekCount,
         showsAvailabledowntown: {
           monday: [],
           tuesday: [],
@@ -685,6 +693,8 @@ ${showsForEmailSouth}`
           phone: createNewComicPhone,
           downTownShowCount: 0,
           southShowCount: 0,
+          downTownWeekCount: 0,
+          southWeekCount: 0,
         })
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
@@ -699,6 +709,8 @@ ${showsForEmailSouth}`
           phone: createNewComicPhone,
           downTownShowCount: 0,
           southShowCount: 0,
+          downTownWeekCount: 0,
+          southWeekCount: 0,
           showsAvailabledowntown: {
             monday: [],
             tuesday: [],
@@ -764,9 +776,9 @@ ${showsForEmailSouth}`
     }
   }
 
-  const gatherStats = async () => {
+  // const gatherStats = async () => {
 
-    console.log('down',comedianMask.downTownShowCount, 'south', comedianMask.southShowCount)
+  //   console.log('down',comedianMask.downTownShowCount, 'south', comedianMask.southShowCount)
 
     // const comediansRef = collection(db, `comedians/comicStorage/${comedianMask.name}`)
     // // const shows = query(comediansRef, where("name", "==", `${comedianMask.name}`))
@@ -779,7 +791,7 @@ ${showsForEmailSouth}`
     // console.log(Object.values(show.data().comedianInfo.showsAvailabledowntown), ' yes')
     // })
     // console.log(downTownShows)
-  }
+  // }
     
 
   return (
@@ -796,11 +808,13 @@ ${showsForEmailSouth}`
           setComicSearch(e.target.value)
           }}/>
       <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
-      <button onClick={() => gatherStats()}>See Stats</button>
+      {/* <button onClick={() => gatherStats()}>See Stats</button> */}
       </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
-  <div className='shows-visible-to-comics'>{comedianMask.downTownShowCount && `Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>
-  <div className='shows-visible-to-comics'>{comedianMask.southShowCount && `Total South Show Signups: ${comedianMask.southShowCount}`}</div>
+  {comedianMask.downTownShowCount &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
+  {comedianMask.southShowCount && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
+  {comedianMask.downTownWeekCount && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
+  {comedianMask.southWeekCount && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
   <div className='shows-visible-to-comics'>
   <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
   <div
