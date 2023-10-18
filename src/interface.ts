@@ -22,10 +22,13 @@ export interface Comic {
   phone?: string;
   clean?: boolean;
   familyFreindly?: boolean;
+  downTownShowCount: number;
+  southShowCount: number;
   showsAvailabledowntown: WeekInter;
   showsAvailablesouth: WeekInter;
   showsAvailabledowntownHistory: WeekInter;
   showsAvailablesouthHistory: WeekInter;
+
 }
 
 export interface ShowToBook {

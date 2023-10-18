@@ -22,6 +22,8 @@ function Dashboard() {
     id: '',
     type: '',
     email: '',
+    downTownShowCount: 0,
+    southShowCount: 0,
     showsAvailabledowntown: {
       monday: [],
       tuesday: [],
@@ -152,6 +154,8 @@ function Dashboard() {
         id: data.uid,
         email: data.email,
         type: data.type,
+        downTownShowCount: data.downTownShowCount,
+        southShowCount: data.southShowCount,
         showsAvailabledowntown: {
           monday: [],
           tuesday: [],
@@ -219,6 +223,8 @@ function Dashboard() {
         id: comic.id,
         type: comedian.type,
         email: user?.email,
+        downTownShowCount: comic.downTownShowCount,
+        southShowCount: comic.southShowCount,
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
         showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,

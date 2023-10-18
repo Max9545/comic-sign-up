@@ -126,6 +126,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                       id: '',
                       type: '',
                       email: '',
+                      downTownShowCount: 0,
+                      southShowCount: 0,
                       showsAvailabledowntown: {
                         monday: [],
                         tuesday: [],
@@ -194,6 +196,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                 id: '',
                 type: '',
                 email: '',
+                downTownShowCount: 0,
+                southShowCount: 0,
                 showsAvailabledowntown: {
                   monday: [],
                   tuesday: [],
@@ -569,6 +573,8 @@ ${showsForEmailSouth}`
         id: comic.id,
         type: comic.type,
         email: comic.email,
+        downTownShowCount: comic.downTownShowCount,
+        southShowCount: comic.southShowCount,
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
         showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
@@ -586,6 +592,8 @@ ${showsForEmailSouth}`
         id: comic.uid,
         type: comic.type,
         email: comic.email,
+        downTownShowCount: comic.downTownShowCount,
+        southShowCount: comic.southShowCount,
         showsAvailabledowntown: {
           monday: [],
           tuesday: [],
@@ -666,8 +674,7 @@ ${showsForEmailSouth}`
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `users/${userCredential.user.uid}`), {
           email: userCredential.user.email, 
-          uid: 
-          userCredential.user.uid, 
+          uid: userCredential.user.uid, 
           type: newComicType || 'pro', 
           allowed: true, name:  
           createNewComicName, 
@@ -675,7 +682,9 @@ ${showsForEmailSouth}`
           address: createNewComicAddress, 
           clean: createNewComicClean, 
           famFriendly: createNewComicFamFriendly,
-          phone: createNewComicPhone
+          phone: createNewComicPhone,
+          downTownShowCount: 0,
+          southShowCount: 0,
         })
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
@@ -688,6 +697,8 @@ ${showsForEmailSouth}`
           clean: createNewComicClean,
           famFriendly: createNewComicFamFriendly,
           phone: createNewComicPhone,
+          downTownShowCount: 0,
+          southShowCount: 0,
           showsAvailabledowntown: {
             monday: [],
             tuesday: [],
@@ -753,6 +764,24 @@ ${showsForEmailSouth}`
     }
   }
 
+  const gatherStats = async () => {
+    console.log(comedianMask)
+
+    
+    // const comediansRef = collection(db, `comedians/comicStorage/${comedianMask.name}`)
+    // // const shows = query(comediansRef, where("name", "==", `${comedianMask.name}`))
+    // const docShows = await getDocs(comediansRef)
+    // const downTownShows: any[] = []
+    // const data = docShows.docs.map(show => {
+
+    //   downTownShows.push(show)
+
+    // console.log(Object.values(show.data().comedianInfo.showsAvailabledowntown), ' yes')
+    // })
+    // console.log(downTownShows)
+  }
+    
+
   return (
     <div className='admin-form'>
       <div className='mask-container'
@@ -767,6 +796,7 @@ ${showsForEmailSouth}`
           setComicSearch(e.target.value)
           }}/>
       <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
+      <button onClick={() => gatherStats()}>See Stats</button>
       </div>
   <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
   <div className='shows-visible-to-comics'>

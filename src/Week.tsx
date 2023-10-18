@@ -173,13 +173,25 @@ ${southString}`,
   const submitForm = (event: any) => {
 
     event.preventDefault()
+
+    const downTownShowCount = Object.keys(currentComedian.showsAvailabledowntown).map(day => currentComedian.showsAvailabledowntown[day].map((show: any) => show)).flat().length
+    
+    const southShowCount = Object.keys(currentComedian.showsAvailablesouth).map(day => currentComedian.showsAvailablesouth[day].map((show: any) => show)).flat().length
+
+    currentComedian.downTownShowCount += downTownShowCount
+    currentComedian.southShowCount += southShowCount
+
+
     setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
     addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
       comedianInfo: currentComedian, 
       fireOrder: Date.now()})
    
+    
+    
+    console.log(currentComedian.downTownShowCount, currentComedian.southShowCount)
+    
     sendConfirmationEmail()
-
     alert('Availability Submitted!! Check your email for verification of your latest availabilty')
   }
 
