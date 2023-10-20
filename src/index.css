@@ -27,6 +27,17 @@ code {
   font-size: 1.1rem;
 }
 
+.no-show-button {
+  font-weight: 700;
+  background-color: black;
+  /* color: white; */
+  width: 40vw;
+  height: 8.5vh;
+  font-size: 1.1rem;
+  padding-top: 1vh;
+  margin: 4% 0% 0% 0%;
+}
+
 .true {
   background-color: rgb(255, 251, 0);
 }

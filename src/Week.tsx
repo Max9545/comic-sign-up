@@ -10,6 +10,21 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
   const [shows, setShows] = useState<any[]>([])
   const [currentComedian, setCurrentComedian] = useState(props.comedian)
   const [allAvailablity, setAllAvailability] = useState(false)
+  const [mondayShowList, setMondayShowList] = useState<any[]>([])
+  const [tuesdayShowList, setTuesdayShowList] = useState<any[]>([])
+  const [wednesdayShowList, setWednesdayShowList] = useState<any[]>([])
+  const [thursdayShowList, setThursdayShowList] = useState<any[]>([])
+  const [fridayShowList, setFridayShowList] = useState<any[]>([])
+  const [saturdayShowList, setSaturdayShowList] = useState<any[]>([])
+  const [sundayShowList, setSundayShowList] = useState<any[]>([])
+
+  const [mondaySouthShowList, setMondaySouthShowList] = useState<any[]>([])
+  const [tuesdaySouthShowList, setTuesdaySouthShowList] = useState<any[]>([])
+  const [wednesdaySouthShowList, setWednesdaySouthShowList] = useState<any[]>([])
+  const [thursdaySouthShowList, setThursdaySouthShowList] = useState<any[]>([])
+  const [fridaySouthShowList, setFridaySouthShowList] = useState<any[]>([])
+  const [saturdaySouthShowList, setSaturdaySouthShowList] = useState<any[]>([])
+  const [sundaySouthShowList, setSundaySouthShowList] = useState<any[]>([])
 
   useEffect(() => {
     setCurrentComedian(props.comedian)
@@ -20,9 +35,15 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
   })
 
   useEffect(() => {
-    showDowntownShows()
-    showSouthShows()
-  })
+    showMondayDowntownShows()
+    showTuesdayDowntownShows()
+    showWednesdayDowntownShows()
+    showThursdayDowntownShows()
+    showFridayDowntownShows()
+    showSaturdayDowntownShows()
+    showSundayDowntownShows()
+    // showSouthShows()
+  }, [mondayShowList, tuesdayShowList, wednesdayShowList, thursdayShowList, fridayShowList, saturdayShowList])
 
 
   const removePotentialShow = async (id: string) => {
@@ -34,11 +55,14 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
     }
   }
 
-  const showDowntownShows = () => {
+  const showMondayDowntownShows = () => {
     if(shows.length > 0) {
       return props.weeklyShowTimes.map((show, index) => { 
-        if (show.club === 'downtown') {
-          return <div key={index} className='show-div'>
+        if (show.club === 'downtown' && show.day == 'Monday') {
+          console.log([`${show.day.toLowerCase()}ShowList`])
+          // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+          
+          mondayShowList.push(<div key={index} className='show-div'>
                   {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
                   <Show
                       key={index}
@@ -58,11 +82,254 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                   />
                   
                   {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
-              </div>
+              </div>)
+              // setFridayShowList(fridayShowList)
+              return mondayShowList
+        // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
         } 
         })
       }
+      const uniqueArray = mondayShowList.filter((value, index) => mondayShowList.indexOf(value) === index)
+      console.log(uniqueArray)
+      setMondayShowList(uniqueArray)
     }
+
+    const showTuesdayDowntownShows = () => {
+      if(shows.length > 0) {
+        return props.weeklyShowTimes.map((show, index) => { 
+          if (show.club === 'downtown' && show.day == 'Tuesday') {
+            console.log([`${show.day.toLowerCase()}ShowList`])
+            // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+            
+            tuesdayShowList.push(<div key={index} className='show-div'>
+                    {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+                    <Show
+                        key={index}
+                        id={show.id}
+                        day={show.day}
+                        time={show.time}
+                        currentClub={show.club}
+                        availableComedian={currentComedian}
+                        date={show.date}
+                        headliner={show.headliner}
+                        availability={show.availableComics.includes(props.comedian.name)}
+                        setAllAvailability={setAllAvailability}
+                        availableComics={show.availableComics}
+                        supportStatus={show.supportStatus}
+                        clean={show.clean === 'clean'}
+                        familyFriendly={show.familyFriendly === 'familyFriendly'}
+                    />
+                    
+                    {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+                </div>)
+                // setFridayShowList(fridayShowList)
+                return tuesdayShowList
+          // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+          } 
+          })
+        }
+        const uniqueArray = tuesdayShowList.filter((value, index) => tuesdayShowList.indexOf(value) === index)
+        console.log(uniqueArray)
+        setTuesdayShowList(uniqueArray)
+      }
+
+      const showWednesdayDowntownShows = () => {
+        if(shows.length > 0) {
+          return props.weeklyShowTimes.map((show, index) => { 
+            if (show.club === 'downtown' && show.day == 'Wednesday') {
+              console.log([`${show.day.toLowerCase()}ShowList`])
+              // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+              
+              wednesdayShowList.push(<div key={index} className='show-div'>
+                      {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+                      <Show
+                          key={index}
+                          id={show.id}
+                          day={show.day}
+                          time={show.time}
+                          currentClub={show.club}
+                          availableComedian={currentComedian}
+                          date={show.date}
+                          headliner={show.headliner}
+                          availability={show.availableComics.includes(props.comedian.name)}
+                          setAllAvailability={setAllAvailability}
+                          availableComics={show.availableComics}
+                          supportStatus={show.supportStatus}
+                          clean={show.clean === 'clean'}
+                          familyFriendly={show.familyFriendly === 'familyFriendly'}
+                      />
+                      
+                      {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+                  </div>)
+                  // setFridayShowList(fridayShowList)
+                  return mondayShowList
+            // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+            } 
+            })
+          }
+          const uniqueArray = wednesdayShowList.filter((value, index) => wednesdayShowList.indexOf(value) === index)
+          console.log(uniqueArray)
+          setWednesdayShowList(uniqueArray)
+        }
+
+      const showThursdayDowntownShows = () => {
+        if(shows.length > 0) {
+          return props.weeklyShowTimes.map((show, index) => { 
+            if (show.club === 'downtown' && show.day == 'Thursday') {
+              console.log([`${show.day.toLowerCase()}ShowList`])
+              // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+              
+          thursdayShowList.push(<div key={index} className='show-div'>
+                      {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+                      <Show
+                          key={index}
+                          id={show.id}
+                          day={show.day}
+                          time={show.time}
+                          currentClub={show.club}
+                          availableComedian={currentComedian}
+                          date={show.date}
+                          headliner={show.headliner}
+                          availability={show.availableComics.includes(props.comedian.name)}
+                          setAllAvailability={setAllAvailability}
+                          availableComics={show.availableComics}
+                          supportStatus={show.supportStatus}
+                          clean={show.clean === 'clean'}
+                          familyFriendly={show.familyFriendly === 'familyFriendly'}
+                      />
+                      
+                      {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+                  </div>)
+                  // setFridayShowList(fridayShowList)
+                  return thursdayShowList
+            // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+            } 
+            })
+          }
+          const uniqueArray = thursdayShowList.filter((value, index) => thursdayShowList.indexOf(value) === index)
+          console.log(uniqueArray)
+          setThursdayShowList(uniqueArray)
+        }
+
+        
+
+  const showFridayDowntownShows = () => {
+    if(shows.length > 0) {
+      return props.weeklyShowTimes.map((show, index) => { 
+        if (show.club === 'downtown' && show.day == 'Friday') {
+          console.log([`${show.day.toLowerCase()}ShowList`])
+          // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+          
+          fridayShowList.push(<div key={index} className='show-div'>
+                  {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+                  <Show
+                      key={index}
+                      id={show.id}
+                      day={show.day}
+                      time={show.time}
+                      currentClub={show.club}
+                      availableComedian={currentComedian}
+                      date={show.date}
+                      headliner={show.headliner}
+                      availability={show.availableComics.includes(props.comedian.name)}
+                      setAllAvailability={setAllAvailability}
+                      availableComics={show.availableComics}
+                      supportStatus={show.supportStatus}
+                      clean={show.clean === 'clean'}
+                      familyFriendly={show.familyFriendly === 'familyFriendly'}
+                  />
+                  
+                  {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+              </div>)
+              // setFridayShowList(fridayShowList)
+              return fridayShowList
+        // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+        } 
+        })
+      }
+      const uniqueArray = fridayShowList.filter((value, index) => fridayShowList.indexOf(value) === index)
+      console.log(uniqueArray)
+      setFridayShowList(uniqueArray)
+    }
+
+
+    const showSaturdayDowntownShows = () => {
+      if(shows.length > 0) {
+        return props.weeklyShowTimes.map((show, index) => { 
+          if (show.club === 'downtown' && show.day == 'Saturday') {
+            console.log([`${show.day.toLowerCase()}ShowList`])
+            // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+            
+            saturdayShowList.push(<div key={index} className='show-div'>
+                    {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+                    <Show
+                        key={index}
+                        id={show.id}
+                        day={show.day}
+                        time={show.time}
+                        currentClub={show.club}
+                        availableComedian={currentComedian}
+                        date={show.date}
+                        headliner={show.headliner}
+                        availability={show.availableComics.includes(props.comedian.name)}
+                        setAllAvailability={setAllAvailability}
+                        availableComics={show.availableComics}
+                        supportStatus={show.supportStatus}
+                        clean={show.clean === 'clean'}
+                        familyFriendly={show.familyFriendly === 'familyFriendly'}
+                    />
+                    
+                    {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+                </div>)
+                // setFridayShowList(fridayShowList)
+                return saturdayShowList
+          // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+          } 
+          })
+        }
+        const uniqueArray = saturdayShowList.filter((value, index) => saturdayShowList.indexOf(value) === index)
+        console.log(uniqueArray)
+        setSaturdayShowList(uniqueArray)
+      }
+
+      const showSundayDowntownShows = () => {
+        if(shows.length > 0) {
+          return props.weeklyShowTimes.map((show, index) => { 
+            if (show.club === 'downtown' && show.day == 'Sunday') {
+              console.log([`${show.day.toLowerCase()}ShowList`])
+              // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+              
+              sundayShowList.push(<div key={index} className='show-div'>
+                      {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+                      <Show
+                          key={index}
+                          id={show.id}
+                          day={show.day}
+                          time={show.time}
+                          currentClub={show.club}
+                          availableComedian={currentComedian}
+                          date={show.date}
+                          headliner={show.headliner}
+                          availability={show.availableComics.includes(props.comedian.name)}
+                          setAllAvailability={setAllAvailability}
+                          availableComics={show.availableComics}
+                          supportStatus={show.supportStatus}
+                          clean={show.clean === 'clean'}
+                          familyFriendly={show.familyFriendly === 'familyFriendly'}
+                      />
+                      
+                      {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+                  </div>)
+                  // setFridayShowList(fridayShowList)
+                  return sundayShowList
+            // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+            } 
+            })
+          }
+          const uniqueArray = saturdayShowList.filter((value, index) => saturdayShowList.indexOf(value) === index)
+          console.log(uniqueArray)
+          setSundayShowList(uniqueArray)
+        }
 
     const showSouthShows = () => {
       if(shows.length > 0) {
@@ -195,7 +462,7 @@ ${southString}`,
    
     
     
-    console.log(currentComedian.downTownShowCount, currentComedian.southShowCount)
+    console.log(currentComedian, currentComedian.southShowCount)
     
     sendConfirmationEmail()
     alert('Availability Submitted!! Check your email for verification of your latest availabilty')
@@ -206,7 +473,22 @@ ${southString}`,
           <div className='week-container'>
             <div>
               <h1 className='downtown-available-header'>Downtown</h1>
-              {showDowntownShows()}
+              {/* <div id='downtownmonday'>No Show</div>
+              <div id='downtowntuesday'>No Show</div>
+              <div id='downtownwednesday'>No Show</div>
+              <div id='downtownthursday'>No Show</div>
+              <div id='downtownfriday'>No Show</div>
+              <div id='downtownsaturday'>No Show</div>
+              <div id='downtownsunday'>No Show</div> */}
+
+              {/* {showDowntownShows()} */}
+              {mondayShowList.length ? mondayShowList.map(show => show) : <p className='no-show-button'>No Show Monday</p>}
+              {tuesdayShowList.length ? tuesdayShowList.map(show => show) : <p className='no-show-button'>No Show Tuesday</p>}
+              {wednesdayShowList.length ? wednesdayShowList.map(show => show) : <p className='no-show-button'>No Show Wednesday</p>}
+              {thursdayShowList.length ? thursdayShowList.map(show => show) : <p className='no-show-button'>No Show Thursday</p>}
+              {fridayShowList.length ? fridayShowList.map(show => show) : <p className='no-show-button'>No Show Friday</p>}
+              {saturdayShowList.length ? saturdayShowList.map(show => show) : <p className='no-show-button'>No Show Saturday</p>}
+              {sundayShowList.length ? sundayShowList.map(show => show) : <p className='no-show-button'>No Show Sunday</p>}
             </div>
             <div>
             <h1 className='south-available-header'>South</h1>
