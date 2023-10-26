@@ -17,6 +17,7 @@ const auth = getAuth();
 function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any }) {
 
   const [newSchedule, setNewSchedule] = useState<any[]>([])
+  const [currentComedian, setCurrentComedian] = useState(props.comedian)
   const [showsToAddDowntown, setShowsToAddDowntown] = useState<any[]>([])
   const [showsToAddSouth, setShowsToAddSouth] = useState<any[]>([])
   const [day, setDay] = useState('')
@@ -123,6 +124,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
                     supportStatus={newShow.support}
                     familyFriendly={newShow.familyFriendly === 'familyFriendly'}
                     clean={newShow.clean === 'clean'}
+                    setCurrentComedian={setCurrentComedian}
                     availableComedian={{
                       name: 'admin',
                       id: '',
@@ -197,6 +199,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
               supportStatus={newShow.support}
               familyFriendly={newShow.familyFriendly === 'familyFriendly'}
               clean={newShow.clean === 'clean'}
+              setCurrentComedian={setCurrentComedian}
               availableComedian={{
                 name: 'admin',
                 id: '',

@@ -40,14 +40,15 @@ export interface ShowToBook {
   time: string, 
   currentClub: string, 
   availableComedian: object, 
-  date: string, 
+  date: string,   
   id: string,
   headliner: string
   club: string,
   availability: boolean,
   availableComics: any
   clean?: any,
-  familyFriendly: any
+  familyFriendly: any, 
+  setCurrentComedian?: any
 }
 
  

@@ -10,6 +10,15 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
   const [shows, setShows] = useState<any[]>([])
   const [currentComedian, setCurrentComedian] = useState(props.comedian)
   const [allAvailablity, setAllAvailability] = useState(false)
+  const [downtownShows, setDowntownShows] = useState({
+    monday: [],
+    tuesday: [],
+    wednesday: [], 
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: []
+  })
   const [mondayShowList, setMondayShowList] = useState<any[]>([])
   const [tuesdayShowList, setTuesdayShowList] = useState<any[]>([])
   const [wednesdayShowList, setWednesdayShowList] = useState<any[]>([])
@@ -18,6 +27,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
   const [saturdayShowList, setSaturdayShowList] = useState<any[]>([])
   const [sundayShowList, setSundayShowList] = useState<any[]>([])
 
+  const [trigger, setTrigger] = useState(true)
   const [mondaySouthShowList, setMondaySouthShowList] = useState<any[]>([])
   const [tuesdaySouthShowList, setTuesdaySouthShowList] = useState<any[]>([])
   const [wednesdaySouthShowList, setWednesdaySouthShowList] = useState<any[]>([])
@@ -32,18 +42,18 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
 
   useEffect(() => {
     setShows(props.weeklyShowTimes)
-  })
+  }, [])
 
   useEffect(() => {
-    showMondayDowntownShows()
-    showTuesdayDowntownShows()
-    showWednesdayDowntownShows()
-    showThursdayDowntownShows()
-    showFridayDowntownShows()
-    showSaturdayDowntownShows()
-    showSundayDowntownShows()
-    // showSouthShows()
-  }, [mondayShowList, tuesdayShowList, wednesdayShowList, thursdayShowList, fridayShowList, saturdayShowList])
+    showDowntownShows()
+    // showTuesdayDowntownShows()
+    // showWednesdayDowntownShows()
+    // showThursdayDowntownShows()
+    // showFridayDowntownShows()
+    // showSaturdayDowntownShows()
+    // showSundayDowntownShows()
+    // setCurrentComedian(currentComedian)
+  }, [currentComedian.name, props])
 
 
   const removePotentialShow = async (id: string) => {
@@ -55,14 +65,16 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
     }
   }
 
-  const showMondayDowntownShows = () => {
+  const showDowntownShows = () => {
     if(shows.length > 0) {
       return props.weeklyShowTimes.map((show, index) => { 
-        if (show.club === 'downtown' && show.day == 'Monday') {
-          console.log([`${show.day.toLowerCase()}ShowList`])
+        if (show.club === 'downtown') {
+          const list = show.availableComics
+
           // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
-          
-          mondayShowList.push(<div key={index} className='show-div'>
+          console.log(currentComedian, props.comedian)
+          // console.log(downtownShows, downtownShows[`${show.day.toLowerCase()}`])
+          downtownShows[`${show.day}`.toLowerCase()].push(<div key={index} className='show-div'>
                   {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
                   <Show
                       key={index}
@@ -70,10 +82,11 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                       day={show.day}
                       time={show.time}
                       currentClub={show.club}
-                      availableComedian={currentComedian}
+                      availableComedian={props.comedian}
+                      setCurrentComedian={setCurrentComedian}
                       date={show.date}
                       headliner={show.headliner}
-                      availability={show.availableComics.includes(props.comedian.name)}
+                      availability={list.includes(props.comedian.name)}
                       setAllAvailability={setAllAvailability}
                       availableComics={show.availableComics}
                       supportStatus={show.supportStatus}
@@ -83,254 +96,261 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                   
                   {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
               </div>)
+              
               // setFridayShowList(fridayShowList)
-              return mondayShowList
-        // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
-        } 
-        })
-      }
-      const uniqueArray = mondayShowList.filter((value, index) => mondayShowList.indexOf(value) === index)
-      console.log(uniqueArray)
-      setMondayShowList(uniqueArray)
-    }
-
-    const showTuesdayDowntownShows = () => {
-      if(shows.length > 0) {
-        return props.weeklyShowTimes.map((show, index) => { 
-          if (show.club === 'downtown' && show.day == 'Tuesday') {
-            console.log([`${show.day.toLowerCase()}ShowList`])
-            // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
-            
-            tuesdayShowList.push(<div key={index} className='show-div'>
-                    {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
-                    <Show
-                        key={index}
-                        id={show.id}
-                        day={show.day}
-                        time={show.time}
-                        currentClub={show.club}
-                        availableComedian={currentComedian}
-                        date={show.date}
-                        headliner={show.headliner}
-                        availability={show.availableComics.includes(props.comedian.name)}
-                        setAllAvailability={setAllAvailability}
-                        availableComics={show.availableComics}
-                        supportStatus={show.supportStatus}
-                        clean={show.clean === 'clean'}
-                        familyFriendly={show.familyFriendly === 'familyFriendly'}
-                    />
-                    
-                    {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
-                </div>)
-                // setFridayShowList(fridayShowList)
-                return tuesdayShowList
-          // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
-          } 
+              // return mondayShowList
+              // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+              // console.log(show.availableComics.includes(props.comedian.name), show.availableComics)
+            } 
+            const uniqueArray = downtownShows[`${show.day.toLowerCase()}`].filter((value: any, index: number) => downtownShows[`${show.day.toLowerCase()}`].indexOf(value) === index)
+            downtownShows[`${show.day.toLowerCase()}`] = uniqueArray
+            setDowntownShows(downtownShows)
+            // console.log(uniqueArray, show.day)
+            // setDowntownShows({...downtownShows, [`${show.day.toLowerCase()}`]: uniqueArray})
           })
         }
-        const uniqueArray = tuesdayShowList.filter((value, index) => tuesdayShowList.indexOf(value) === index)
-        console.log(uniqueArray)
-        setTuesdayShowList(uniqueArray)
-      }
+        setTrigger(!trigger)
+    }
 
-      const showWednesdayDowntownShows = () => {
-        if(shows.length > 0) {
-          return props.weeklyShowTimes.map((show, index) => { 
-            if (show.club === 'downtown' && show.day == 'Wednesday') {
-              console.log([`${show.day.toLowerCase()}ShowList`])
-              // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
-              
-              wednesdayShowList.push(<div key={index} className='show-div'>
-                      {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
-                      <Show
-                          key={index}
-                          id={show.id}
-                          day={show.day}
-                          time={show.time}
-                          currentClub={show.club}
-                          availableComedian={currentComedian}
-                          date={show.date}
-                          headliner={show.headliner}
-                          availability={show.availableComics.includes(props.comedian.name)}
-                          setAllAvailability={setAllAvailability}
-                          availableComics={show.availableComics}
-                          supportStatus={show.supportStatus}
-                          clean={show.clean === 'clean'}
-                          familyFriendly={show.familyFriendly === 'familyFriendly'}
-                      />
-                      
-                      {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
-                  </div>)
-                  // setFridayShowList(fridayShowList)
-                  return mondayShowList
-            // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
-            } 
-            })
-          }
-          const uniqueArray = wednesdayShowList.filter((value, index) => wednesdayShowList.indexOf(value) === index)
-          console.log(uniqueArray)
-          setWednesdayShowList(uniqueArray)
-        }
+  //   const showTuesdayDowntownShows = () => {
+  //     if(shows.length > 0) {
+  //       return props.weeklyShowTimes.map((show, index) => { 
+  //         if (show.club === 'downtown' && show.day == 'Tuesday') {
+  //           console.log([`${show.day.toLowerCase()}ShowList`])
+  //           // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+            
+  //           tuesdayShowList.push(<div key={index} className='show-div'>
+  //                   {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+  //                   <Show
+  //                       key={index}
+  //                       id={show.id}
+  //                       day={show.day}
+  //                       time={show.time}
+  //                       currentClub={show.club}
+  //                       availableComedian={currentComedian}
+  //                       date={show.date}
+  //                       headliner={show.headliner}
+  //                       availability={show.availableComics.includes(props.comedian.name)}
+  //                       setAllAvailability={setAllAvailability}
+  //                       availableComics={show.availableComics}
+  //                       supportStatus={show.supportStatus}
+  //                       clean={show.clean === 'clean'}
+  //                       familyFriendly={show.familyFriendly === 'familyFriendly'}
+  //                   />
+                    
+  //                   {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+  //               </div>)
+  //               // setFridayShowList(fridayShowList)
+  //               return tuesdayShowList
+  //         // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+  //         } 
+  //         })
+  //       }
+  //       const uniqueArray = tuesdayShowList.filter((value, index) => tuesdayShowList.indexOf(value) === index)
+  //       console.log(uniqueArray)
+  //       return setTuesdayShowList(uniqueArray)
+  //     }
 
-      const showThursdayDowntownShows = () => {
-        if(shows.length > 0) {
-          return props.weeklyShowTimes.map((show, index) => { 
-            if (show.club === 'downtown' && show.day == 'Thursday') {
-              console.log([`${show.day.toLowerCase()}ShowList`])
-              // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+  //     const showWednesdayDowntownShows = () => {
+  //       if(shows.length > 0) {
+  //         return props.weeklyShowTimes.map((show, index) => { 
+  //           if (show.club === 'downtown' && show.day == 'Wednesday') {
+  //             console.log([`${show.day.toLowerCase()}ShowList`])
+  //             // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
               
-          thursdayShowList.push(<div key={index} className='show-div'>
-                      {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
-                      <Show
-                          key={index}
-                          id={show.id}
-                          day={show.day}
-                          time={show.time}
-                          currentClub={show.club}
-                          availableComedian={currentComedian}
-                          date={show.date}
-                          headliner={show.headliner}
-                          availability={show.availableComics.includes(props.comedian.name)}
-                          setAllAvailability={setAllAvailability}
-                          availableComics={show.availableComics}
-                          supportStatus={show.supportStatus}
-                          clean={show.clean === 'clean'}
-                          familyFriendly={show.familyFriendly === 'familyFriendly'}
-                      />
+  //             wednesdayShowList.push(<div key={index} className='show-div'>
+  //                     {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+  //                     <Show
+  //                         key={index}
+  //                         id={show.id}
+  //                         day={show.day}
+  //                         time={show.time}
+  //                         currentClub={show.club}
+  //                         availableComedian={currentComedian}
+  //                         date={show.date}
+  //                         headliner={show.headliner}
+  //                         availability={show.availableComics.includes(props.comedian.name)}
+  //                         setAllAvailability={setAllAvailability}
+  //                         availableComics={show.availableComics}
+  //                         supportStatus={show.supportStatus}
+  //                         clean={show.clean === 'clean'}
+  //                         familyFriendly={show.familyFriendly === 'familyFriendly'}
+  //                     />
                       
-                      {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
-                  </div>)
-                  // setFridayShowList(fridayShowList)
-                  return thursdayShowList
-            // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
-            } 
-            })
-          }
-          const uniqueArray = thursdayShowList.filter((value, index) => thursdayShowList.indexOf(value) === index)
-          console.log(uniqueArray)
-          setThursdayShowList(uniqueArray)
-        }
+  //                     {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+  //                 </div>)
+  //                 // setFridayShowList(fridayShowList)
+  //                 return mondayShowList
+  //           // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+  //           } 
+  //           })
+  //         }
+  //         const uniqueArray = wednesdayShowList.filter((value, index) => wednesdayShowList.indexOf(value) === index)
+  //         console.log(uniqueArray)
+  //         return setWednesdayShowList(uniqueArray)
+  //       }
+
+  //     const showThursdayDowntownShows = () => {
+  //       if(shows.length > 0) {
+  //         return props.weeklyShowTimes.map((show, index) => { 
+  //           if (show.club === 'downtown' && show.day == 'Thursday') {
+  //             console.log([`${show.day.toLowerCase()}ShowList`])
+  //             // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+              
+  //         thursdayShowList.push(<div key={index} className='show-div'>
+  //                     {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+  //                     <Show
+  //                         key={index}
+  //                         id={show.id}
+  //                         day={show.day}
+  //                         time={show.time}
+  //                         currentClub={show.club}
+  //                         availableComedian={currentComedian}
+  //                         date={show.date}
+  //                         headliner={show.headliner}
+  //                         availability={show.availableComics.includes(props.comedian.name)}
+  //                         setAllAvailability={setAllAvailability}
+  //                         availableComics={show.availableComics}
+  //                         supportStatus={show.supportStatus}
+  //                         clean={show.clean === 'clean'}
+  //                         familyFriendly={show.familyFriendly === 'familyFriendly'}
+  //                     />
+                      
+  //                     {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+  //                 </div>)
+  //                 // setFridayShowList(fridayShowList)
+  //                 return thursdayShowList
+  //           // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+  //           } 
+  //           })
+  //         }
+  //         const uniqueArray = thursdayShowList.filter((value, index) => thursdayShowList.indexOf(value) === index)
+  //         console.log(uniqueArray)
+  //         return setThursdayShowList(uniqueArray)
+  //       }
 
         
 
-  const showFridayDowntownShows = () => {
-    if(shows.length > 0) {
-      return props.weeklyShowTimes.map((show, index) => { 
-        if (show.club === 'downtown' && show.day == 'Friday') {
-          console.log([`${show.day.toLowerCase()}ShowList`])
-          // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+  // const showFridayDowntownShows = () => {
+  //   if(shows.length > 0) {
+  //     return props.weeklyShowTimes.map((show, index) => { 
+  //       if (show.club === 'downtown' && show.day == 'Friday') {
+  //         console.log([`${show.day.toLowerCase()}ShowList`])
+  //         // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
           
-          fridayShowList.push(<div key={index} className='show-div'>
-                  {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
-                  <Show
-                      key={index}
-                      id={show.id}
-                      day={show.day}
-                      time={show.time}
-                      currentClub={show.club}
-                      availableComedian={currentComedian}
-                      date={show.date}
-                      headliner={show.headliner}
-                      availability={show.availableComics.includes(props.comedian.name)}
-                      setAllAvailability={setAllAvailability}
-                      availableComics={show.availableComics}
-                      supportStatus={show.supportStatus}
-                      clean={show.clean === 'clean'}
-                      familyFriendly={show.familyFriendly === 'familyFriendly'}
-                  />
+  //         fridayShowList.push(<div key={index} className='show-div'>
+  //                 {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+  //                 <Show
+  //                     key={index}
+  //                     id={show.id}
+  //                     day={show.day}
+  //                     time={show.time}
+  //                     currentClub={show.club}
+  //                     availableComedian={currentComedian}
+  //                     date={show.date}
+  //                     headliner={show.headliner}
+  //                     availability={show.availableComics.includes(props.comedian.name)}
+  //                     setAllAvailability={setAllAvailability}
+  //                     availableComics={show.availableComics}
+  //                     supportStatus={show.supportStatus}
+  //                     clean={show.clean === 'clean'}
+  //                     familyFriendly={show.familyFriendly === 'familyFriendly'}
+  //                 />
                   
-                  {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
-              </div>)
-              // setFridayShowList(fridayShowList)
-              return fridayShowList
-        // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
-        } 
-        })
-      }
-      const uniqueArray = fridayShowList.filter((value, index) => fridayShowList.indexOf(value) === index)
-      console.log(uniqueArray)
-      setFridayShowList(uniqueArray)
-    }
+  //                 {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+  //             </div>)
+  //             // setFridayShowList(fridayShowList)
+  //             return fridayShowList
+  //       // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+  //       } 
+  //       })
+  //     }
+  //     const uniqueArray = fridayShowList.filter((value, index) => fridayShowList.indexOf(value) === index)
+  //     console.log(uniqueArray)
+  //     return setFridayShowList(uniqueArray)
+  //   }
 
 
-    const showSaturdayDowntownShows = () => {
-      if(shows.length > 0) {
-        return props.weeklyShowTimes.map((show, index) => { 
-          if (show.club === 'downtown' && show.day == 'Saturday') {
-            console.log([`${show.day.toLowerCase()}ShowList`])
-            // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+  //   const showSaturdayDowntownShows = () => {
+  //     if(shows.length > 0) {
+  //       return props.weeklyShowTimes.map((show, index) => { 
+  //         if (show.club === 'downtown' && show.day == 'Saturday') {
+  //           console.log([`${show.day.toLowerCase()}ShowList`])
+  //           // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
             
-            saturdayShowList.push(<div key={index} className='show-div'>
-                    {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
-                    <Show
-                        key={index}
-                        id={show.id}
-                        day={show.day}
-                        time={show.time}
-                        currentClub={show.club}
-                        availableComedian={currentComedian}
-                        date={show.date}
-                        headliner={show.headliner}
-                        availability={show.availableComics.includes(props.comedian.name)}
-                        setAllAvailability={setAllAvailability}
-                        availableComics={show.availableComics}
-                        supportStatus={show.supportStatus}
-                        clean={show.clean === 'clean'}
-                        familyFriendly={show.familyFriendly === 'familyFriendly'}
-                    />
+  //           saturdayShowList.push(<div key={index} className='show-div'>
+  //                   {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+  //                   <Show
+  //                       key={index}
+  //                       id={show.id}
+  //                       day={show.day}
+  //                       time={show.time}
+  //                       currentClub={show.club}
+  //                       availableComedian={currentComedian}
+  //                       date={show.date}
+  //                       headliner={show.headliner}
+  //                       availability={show.availableComics.includes(props.comedian.name)}
+  //                       setAllAvailability={setAllAvailability}
+  //                       availableComics={show.availableComics}
+  //                       supportStatus={show.supportStatus}
+  //                       clean={show.clean === 'clean'}
+  //                       familyFriendly={show.familyFriendly === 'familyFriendly'}
+  //                   />
                     
-                    {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
-                </div>)
-                // setFridayShowList(fridayShowList)
-                return saturdayShowList
-          // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
-          } 
-          })
-        }
-        const uniqueArray = saturdayShowList.filter((value, index) => saturdayShowList.indexOf(value) === index)
-        console.log(uniqueArray)
-        setSaturdayShowList(uniqueArray)
-      }
+  //                   {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+  //               </div>)
+  //               // setFridayShowList(fridayShowList)
+  //               return saturdayShowList
+  //         // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+  //         } 
+  //         })
+  //       }
+  //       const uniqueArray = saturdayShowList.filter((value, index) => saturdayShowList.indexOf(value) === index)
+  //       console.log(uniqueArray)
+  //       return setSaturdayShowList(uniqueArray)
+  //     }
 
-      const showSundayDowntownShows = () => {
-        if(shows.length > 0) {
-          return props.weeklyShowTimes.map((show, index) => { 
-            if (show.club === 'downtown' && show.day == 'Sunday') {
-              console.log([`${show.day.toLowerCase()}ShowList`])
-              // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
+  //     const showSundayDowntownShows = () => {
+  //       if(shows.length > 0) {
+  //         return props.weeklyShowTimes.map((show, index) => { 
+  //           if (show.club === 'downtown' && show.day == 'Sunday') {
+  //             console.log([`${show.day.toLowerCase()}ShowList`])
+  //             // document.getElementById(`downtown${show.day.toLowerCase()}`)!.innerText += 
               
-              sundayShowList.push(<div key={index} className='show-div'>
-                      {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
-                      <Show
-                          key={index}
-                          id={show.id}
-                          day={show.day}
-                          time={show.time}
-                          currentClub={show.club}
-                          availableComedian={currentComedian}
-                          date={show.date}
-                          headliner={show.headliner}
-                          availability={show.availableComics.includes(props.comedian.name)}
-                          setAllAvailability={setAllAvailability}
-                          availableComics={show.availableComics}
-                          supportStatus={show.supportStatus}
-                          clean={show.clean === 'clean'}
-                          familyFriendly={show.familyFriendly === 'familyFriendly'}
-                      />
+  //             sundayShowList.push(<div key={index} className='show-div'>
+  //                     {show.supportStatus === 'no-support' && props.admin && <p className='no-support'>Self <br></br> Contained</p>}
+  //                     <Show
+  //                         key={index}
+  //                         id={show.id}
+  //                         day={show.day}
+  //                         time={show.time}
+  //                         currentClub={show.club}
+  //                         availableComedian={currentComedian}
+  //                         date={show.date}
+  //                         headliner={show.headliner}
+  //                         availability={show.availableComics.includes(props.comedian.name)}
+  //                         setAllAvailability={setAllAvailability}
+  //                         availableComics={show.availableComics}
+  //                         supportStatus={show.supportStatus}
+  //                         clean={show.clean === 'clean'}
+  //                         familyFriendly={show.familyFriendly === 'familyFriendly'}
+  //                     />
                       
-                      {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
-                  </div>)
-                  // setFridayShowList(fridayShowList)
-                  return sundayShowList
-            // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
-            } 
-            })
-          }
-          const uniqueArray = saturdayShowList.filter((value, index) => saturdayShowList.indexOf(value) === index)
-          console.log(uniqueArray)
-          setSundayShowList(uniqueArray)
-        }
+  //                     {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
+  //                 </div>)
+  //                 // setFridayShowList(fridayShowList)
+  //                 return sundayShowList
+  //           // [`set${show.day.toLowerCase()}ShowList`]([`${show.day.toLowerCase()}ShowList`])
+  //           } 
+  //           })
+  //         }
+  //         const uniqueArray = saturdayShowList.filter((value, index) => saturdayShowList.indexOf(value) === index)
+  //         console.log(uniqueArray)
+  //         return setSundayShowList(uniqueArray)
+  //       }
 
+
+  
     const showSouthShows = () => {
       if(shows.length > 0) {
         return props.weeklyShowTimes.map((show, index) => { 
@@ -344,6 +364,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                         time={show.time}
                         currentClub={show.club}
                         availableComedian={currentComedian}
+                        setCurrentComedian={setCurrentComedian}
                         date={show.date}
                         headliner={show.headliner}
                         availability={show.availableComics. includes(props.comedian.name)}
@@ -446,7 +467,7 @@ ${southString}`,
     event.preventDefault()
 
     const downTownShowCount = Object.keys(currentComedian.showsAvailabledowntown).map(day => currentComedian.showsAvailabledowntown[day].map((show: any) => show)).flat().length
-    
+    console.log(currentComedian)
     const southShowCount = Object.keys(currentComedian.showsAvailablesouth).map(day => currentComedian.showsAvailablesouth[day].map((show: any) => show)).flat().length
 
     currentComedian.downTownShowCount += downTownShowCount
@@ -482,13 +503,19 @@ ${southString}`,
               <div id='downtownsunday'>No Show</div> */}
 
               {/* {showDowntownShows()} */}
-              {mondayShowList.length ? mondayShowList.map(show => show) : <p className='no-show-button'>No Show Monday</p>}
-              {tuesdayShowList.length ? tuesdayShowList.map(show => show) : <p className='no-show-button'>No Show Tuesday</p>}
+              {downtownShows.monday.length > 0 ? downtownShows.monday.map(show => show) : <p className='no-show-button'>No Show Monday</p>}
+              {downtownShows.tuesday.length > 0 ? downtownShows.tuesday.map(show => show) : <p className='no-show-button'>No Show Tuesday</p>}
+              {downtownShows.wednesday.length > 0 ? downtownShows.wednesday.map(show => show) : <p className='no-show-button'>No Show Wednesday</p>}
+              {downtownShows.thursday.length > 0 ? downtownShows.thursday.map(show => show) : <p className='no-show-button'>No Show Thursday</p>}
+              {downtownShows.friday.length > 0 ? downtownShows.friday.map(show => show) : <p className='no-show-button'>No Show Friday</p>}
+              {downtownShows.saturday.length > 0 ? downtownShows.saturday.map(show => show) : <p className='no-show-button'>No Show Saturday</p>}
+              {downtownShows.sunday.length > 0 ? downtownShows.sunday.map(show => show) : <p className='no-show-button'>No Show Sunday</p>}
+              {/* {tuesdayShowList.length ? tuesdayShowList.map(show => show) : <p className='no-show-button'>No Show Tuesday</p>}
               {wednesdayShowList.length ? wednesdayShowList.map(show => show) : <p className='no-show-button'>No Show Wednesday</p>}
               {thursdayShowList.length ? thursdayShowList.map(show => show) : <p className='no-show-button'>No Show Thursday</p>}
               {fridayShowList.length ? fridayShowList.map(show => show) : <p className='no-show-button'>No Show Friday</p>}
               {saturdayShowList.length ? saturdayShowList.map(show => show) : <p className='no-show-button'>No Show Saturday</p>}
-              {sundayShowList.length ? sundayShowList.map(show => show) : <p className='no-show-button'>No Show Sunday</p>}
+              {sundayShowList.length ? sundayShowList.map(show => show) : <p className='no-show-button'>No Show Sunday</p>} */}
             </div>
             <div>
             <h1 className='south-available-header'>South</h1>
