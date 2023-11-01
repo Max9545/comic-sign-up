@@ -22,6 +22,10 @@ function Dashboard() {
     id: '',
     type: '',
     email: '',
+    downTownShowCount: 0,
+    southShowCount: 0,
+    downTownWeekCount: 0,
+    southWeekCount: 0,
     showsAvailabledowntown: {
       monday: [],
       tuesday: [],
@@ -152,6 +156,10 @@ function Dashboard() {
         id: data.uid,
         email: data.email,
         type: data.type,
+        downTownShowCount: data.downTownShowCount,
+        southShowCount: data.southShowCount,
+        downTownWeekCount: data.downTownWeekCount,
+        southWeekCount: data.southWeekCount,
         showsAvailabledowntown: {
           monday: [],
           tuesday: [],
@@ -219,6 +227,10 @@ function Dashboard() {
         id: comic.id,
         type: comedian.type,
         email: user?.email,
+        downTownShowCount: comic.downTownShowCount,
+        southShowCount: comic.southShowCount,
+        downTownWeekCount: comic.downTownWeekCount,
+        southWeekCount: comic.southWeekCount,
         showsAvailabledowntown: comic.showsAvailabledowntown,
         showsAvailablesouth: comic.showsAvailablesouth,
         showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
@@ -280,7 +292,7 @@ const viewAllComicsAvailableSouth = async () => {
           </div>
         </div>
         <p className='comedian-signup'> 
-          {shows[0] && `Signup For Week Starting ${shows[0].day} ${shows[0].date.slice(5)}-${shows[0].date.slice(0, 4)}`}
+          {shows[0] && `Signup Week of ${shows[0].date.slice(5)}-${shows[0].date.slice(0, 4)}`}
         </p>
       {allowed && <div className="dashboard">
         <p className='available-example'>This yellow color means you are AVAILABLE to be booked for the this show</p>

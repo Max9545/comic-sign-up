@@ -53,6 +53,8 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                       setAllAvailability={setAllAvailability}
                       availableComics={show.availableComics}
                       supportStatus={show.supportStatus}
+                      clean={show.clean === 'clean'}
+                      familyFriendly={show.familyFriendly === 'familyFriendly'}
                   />
                   
                   {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
@@ -77,10 +79,12 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
                         availableComedian={currentComedian}
                         date={show.date}
                         headliner={show.headliner}
-                        availability={show.availableComics.includes(props.comedian.name)}
+                        availability={show.availableComics. includes(props.comedian.name)}
                         setAllAvailability={setAllAvailability}
                         availableComics={show.availableComics}
                         supportStatus={show.supportStatus}
+                        familyFriendly={show.familyFriendly === 'familyFriendly'}
+                        clean={show.clean === 'clean'}
                     />
                     
                     {props.admin && <button className='edit-published' onClick={() => removePotentialShow(show.id)}>Delete</button>}
@@ -173,13 +177,27 @@ ${southString}`,
   const submitForm = (event: any) => {
 
     event.preventDefault()
+
+    const downTownShowCount = Object.keys(currentComedian.showsAvailabledowntown).map(day => currentComedian.showsAvailabledowntown[day].map((show: any) => show)).flat().length
+    
+    const southShowCount = Object.keys(currentComedian.showsAvailablesouth).map(day => currentComedian.showsAvailablesouth[day].map((show: any) => show)).flat().length
+
+    currentComedian.downTownShowCount += downTownShowCount
+    currentComedian.southShowCount += southShowCount
+
+    currentComedian.downTownWeekCount += 1
+    currentComedian.southWeekCount += 1
+
     setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
     addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
       comedianInfo: currentComedian, 
       fireOrder: Date.now()})
    
+    
+    
+    console.log(currentComedian.downTownShowCount, currentComedian.southShowCount)
+    
     sendConfirmationEmail()
-
     alert('Availability Submitted!! Check your email for verification of your latest availabilty')
   }
 

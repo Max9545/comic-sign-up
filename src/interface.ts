@@ -22,10 +22,15 @@ export interface Comic {
   phone?: string;
   clean?: boolean;
   familyFreindly?: boolean;
+  downTownShowCount: number;
+  southShowCount: number;
+  downTownWeekCount: number;
+  southWeekCount: number;
   showsAvailabledowntown: WeekInter;
   showsAvailablesouth: WeekInter;
   showsAvailabledowntownHistory: WeekInter;
   showsAvailablesouthHistory: WeekInter;
+
 }
 
 export interface ShowToBook {
@@ -41,6 +46,8 @@ export interface ShowToBook {
   club: string,
   availability: boolean,
   availableComics: any
+  clean?: any,
+  familyFriendly: any
 }
 
  
