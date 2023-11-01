@@ -292,7 +292,7 @@ const viewAllComicsAvailableSouth = async () => {
           </div>
         </div>
         <p className='comedian-signup'> 
-          {shows[0] && `Signup For Week Starting ${shows[0].day} ${shows[0].date.slice(5)}-${shows[0].date.slice(0, 4)}`}
+          {shows[0] && `Signup Week of ${shows[0].date.slice(5)}-${shows[0].date.slice(0, 4)}`}
         </p>
       {allowed && <div className="dashboard">
         <p className='available-example'>This yellow color means you are AVAILABLE to be booked for the this show</p>

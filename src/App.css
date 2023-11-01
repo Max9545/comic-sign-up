@@ -13,7 +13,7 @@
   align-self: flex-start;
 }
 
-@media (max-width: 540px) {
+@media (max-width: 660px) {
   .header-logo {
     height: 14vh;
   }
