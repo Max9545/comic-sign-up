@@ -158,12 +158,16 @@ South:
 ${southString}`,
       }
     
-      fetch('http://localhost:3001/send-email', {
+      fetch('http://localhost:3001/getUsers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(emailData),
+        body: JSON.stringify({email: props.comedian.email, message: `Downtown: 
+        ${downtownString}
+        
+        South: 
+        ${southString}`}),
       })
         .then((response) => response.json())
         .then((data) => {
