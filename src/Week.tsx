@@ -158,7 +158,7 @@ South:
 ${southString}`,
       }
     
-      fetch('http://localhost:3001/getUsers', {
+      fetch('http://localhost:3001/sendMail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
