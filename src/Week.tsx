@@ -157,14 +157,20 @@ ${downtownString}
 South: 
 ${southString}`,
       }
-    
+      fetch('https://comicsignuptestmail.comedyworks.com/')
+      // .then((response) => response.json())
+      .then((data) => {
+        console.log(data.json())
+      })
+
+
       fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
         method: 'POST',
+        // mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': '*/*'
         },
-        mode: 'no-cors',
         body: JSON.stringify({email: props.comedian.email, message: `Downtown: 
         ${downtownString}
         
