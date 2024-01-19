@@ -158,20 +158,22 @@ South:
 ${southString}`,
       }
     
-      fetch('http://localhost:3001/sendMail', {
+      fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         },
+        mode: 'no-cors',
         body: JSON.stringify({email: props.comedian.email, message: `Downtown: 
         ${downtownString}
         
         South: 
         ${southString}`}),
       })
-        .then((response) => response.json())
+        // .then((response) => response.json())
         .then((data) => {
-          console.log(data.message)
+          console.log(data)
         })
         .catch((error) => {
           console.error('Error sending email', error)
