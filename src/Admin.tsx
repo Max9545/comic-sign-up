@@ -839,6 +839,10 @@ ${showsForEmailSouth}`
       <input type='radio' id='almostFamous' name='type' value='almostFamous'onClick={() => {setType('AlmostFamous')}}/>
       <label htmlFor='almostFamous' >Almost Famous</label>
     </div>
+    <div>
+      <input type='radio' id='inactive' name='type' value='inactive'onClick={() => {setType('Inactive')}}/>
+      <label htmlFor='inactive' >Inactive</label>
+    </div>
       <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
     </div>
   </div>
