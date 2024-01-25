@@ -500,3 +500,9 @@ label {
 .pro-comic-type-input{
   width: 75%
 }
+
+.comic-note-label {
+  font-size: 1.3rem;
+  color: red;
+  margin-bottom: 0%;
+}

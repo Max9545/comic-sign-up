@@ -226,9 +226,10 @@ ${southString}`,
             {showSouthShows()}
             </div>
           </div>
+          <p className='comic-note-label'>Add Additional Note Below</p>
+          <br></br>
           <input type='text' className='comic-note' onChange={(e) => {
           setComicNote(e.target.value)
-          console.log(comicNote)
           }}/>
           <br></br>
           <button onClick={submitForm}type="submit" className='submit-btn'>
