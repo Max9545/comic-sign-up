@@ -10,6 +10,7 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
   const [shows, setShows] = useState<any[]>([])
   const [currentComedian, setCurrentComedian] = useState(props.comedian)
   const [allAvailablity, setAllAvailability] = useState(false)
+  const [comicNote, setComicNote] = useState('')
 
   useEffect(() => {
     setCurrentComedian(props.comedian)
@@ -200,10 +201,10 @@ ${southString}`,
     currentComedian.downTownWeekCount += 1
     currentComedian.southWeekCount += 1
 
-    setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
+    setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now(), note: comicNote})
     addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
       comedianInfo: currentComedian, 
-      fireOrder: Date.now()})
+      fireOrder: Date.now(), note: comicNote})
    
     
     
@@ -225,9 +226,15 @@ ${southString}`,
             {showSouthShows()}
             </div>
           </div>
+          <input type='text' className='comic-note' onChange={(e) => {
+          setComicNote(e.target.value)
+          console.log(comicNote)
+          }}/>
+          <br></br>
           <button onClick={submitForm}type="submit" className='submit-btn'>
           Submit Availability
           </button>
+          
         </section>
     )
 }
