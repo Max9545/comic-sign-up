@@ -155,36 +155,64 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
         text: `Downtown: 
 ${downtownString}
 
-South: 
+South:  
 ${southString}`,
       }
       fetch('https://comicsignuptestmail.comedyworks.com/w')
-      .then((response) => response.json())
+      // .then((response) => response.json())
       .then((data) => {
-        console.log(data.body)
+        console.log(data)
       })
 
 
-      fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
-        method: 'POST',
-        // mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Access-Control-Allow-Origin': '*/*'
-        },
-        body: JSON.stringify({email: props.comedian.email, message: `Downtown: 
-        ${downtownString}
+      // fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+      //   method: 'POST',
+      //   // mode: 'no-cors',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     // 'X-Requested-With': 'XMLHttpRequest',
+      //     // 'Access-Control-Allow-Origin': '*'
+      //   },
+      
+      //   body: JSON.stringify({email: props.comedian.email, message: `Downtown: 
+      //   ${downtownString}
         
-        South: 
-        ${southString}`}),
-      })
-        // .then((response) => response.json())
-        .then((data) => {
-          console.log(data.body)
-        })
-        .catch((error) => {
-          console.error('Error sending email', error)
-        })
+      //   South: 
+      //   ${southString}`}),
+      // })
+      //   // .then((response) => console.log(response))
+        
+      //   .then((data) => {
+      //     console.log(data) 
+      //     console.log(data.json())
+      //     console.log(currentComedian.email)
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error sending email', error, 'Hel;p')
+      //   })
+      try {
+        const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
+          },
+          body: JSON.stringify({ email: props.comedian.email, message: `Downtown: 
+          ${downtownString} 
+          South: 
+          ${southString}` }),
+        });
+    
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Email sent successfully:', data);
+          console.log(currentComedian.email);
+        } else {
+          console.error('Error sending email:', response);
+        }
+      } catch (error) {
+        console.error('Error sending email:', error);
+      }
     }
 
   const submitForm = (event: any) => {
@@ -241,3 +269,6 @@ ${southString}`,
 }
 
 export default Week
+
+
+
