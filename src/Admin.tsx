@@ -45,7 +45,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [createNewComicPhone, setCreateNewComicPhone] = useState('')
   const [createNewComicClean, setCreateNewComicClean] = useState(false)
   const [createNewComicFamFriendly, setCreateNewComicFamFriendly] = useState(false)
+  const [weekVisibility, setWeekVisibility] = useState(false)
   const [comicToDelete, setComicToDelete] = useState('')
+  const [buildShowVisible, setBuildShowVisible] = useState(false)
+  const [comicBuildVisible, setComicBuildVisible] = useState(false)
+
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -813,6 +817,18 @@ ${showsForEmailSouth}`
     // })
     // console.log(downTownShows)
   // }
+  const toggleWeekVisibility = () => {
+    setWeekVisibility(!weekVisibility);
+  };
+
+  const toggleBuildShowVisible = () => {
+    setBuildShowVisible(!buildShowVisible);
+  };
+
+  const toggleComicBuildVisible = () => {
+    setComicBuildVisible(!comicBuildVisible);
+  };
+
     
 
   return (
@@ -865,61 +881,61 @@ ${showsForEmailSouth}`
       <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
     </div>
   </div>
-  <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
-      <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>
-      <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
-      <button className='clear-form' onClick={() => {
+  <h2 className='shows-visible-to-comics' onClick={() => toggleWeekVisibility()}>Shows Visible To Comics</h2>
+      {weekVisibility && <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>}
+      <p className='admin-build' onClick={() => toggleBuildShowVisible()}>Admin: Build Week of Upcoming Shows</p>
+      { buildShowVisible && <><button className='clear-form' onClick={() => {
         reset()
         maskAsComic()
-        }}>Clear/Reset Form</button>
-      <form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='club-select'>CHOOSE CLUB:</label>
-        <select className='club-select' {...register('club')}>
-          <option value='downtown'>Downtown</option>
-          <option value='south'>South</option>
-        </select>
-        <label className='date'>Date:</label>
-        <input className='day' {...register('date')} type='date' required onChange={(event) => showDay(event.target.value)}/>
-        <div className='day-of-week' >{` which is a ${day}`}</div>
-        <div>
-        <label>Time: </label>
-        <input className='time-input' {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)} required/>
+      } }>Clear/Reset Form</button><form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor='club-select'>CHOOSE CLUB:</label>
+          <select className='club-select' {...register('club')}>
+            <option value='downtown'>Downtown</option>
+            <option value='south'>South</option>
+          </select>
+          <label className='date'>Date:</label>
+          <input className='day' {...register('date')} type='date' required onChange={(event) => showDay(event.target.value)} />
+          <div className='day-of-week'>{` which is a ${day}`}</div>
+          <div>
+            <label>Time: </label>
+            <input className='time-input' {...register('time')} type='time' onChange={(event) => showTime(event?.target.value)} required />
+          </div>
+          <div>
+            <label>Headliner: </label>
+            <input className='headliner-input' id='headliner-input' {...register('headliner')} required />
+          </div>
+          <select className='club-select' {...register('supportStatus')}>
+            <option value='support'>Support Is Needed</option>
+            <option value='no-support'>No Support Needed</option>
+          </select>
+          <br></br>
+          <select className='club-select' {...register('clean')}>
+            <option value='not-clean'>Not Clean</option>
+            <option value='clean'>Clean</option>
+          </select>
+          <select className='club-select' {...register('familyFriendly')}>
+            <option value='not-familyFriendly'>Not Family Friendly</option>
+            <option value='familyFriendly'>Family Friendly</option>
+          </select>
+          <br></br>
+          <input type='submit' value='Queue Show' className='add-show' />
+        </form>
+        <div className='add-build'>
+          <button onClick={() => addToWeek()} className='build-week'>Add Show to Week</button>
+          {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
         </div>
-        <div>
-        <label>Headliner: </label>
-        <input className='headliner-input' id='headliner-input'{...register('headliner')} required/>
-        </div>
-        <select className='club-select' {...register('supportStatus')}>
-          <option value='support'>Support Is Needed</option>
-          <option value='no-support'>No Support Needed</option>
-        </select>
-        <br></br>
-        <select className='club-select' {...register('clean')}>
-          <option value='not-clean'>Not Clean</option>
-          <option value='clean'>Clean</option>
-        </select>
-        <select className='club-select' {...register('familyFriendly')}>
-          <option value='not-familyFriendly'>Not Family Friendly</option>
-          <option value='familyFriendly'>Family Friendly</option>
-        </select>
-        <br></br>
-        <input type='submit' value='Queue Show' className='add-show'/>
-      </form>
-     <div className='add-build'>
-      <button onClick={() => addToWeek()} className='build-week'>Add Show to Week</button>
-     {props.setShows && <button onClick={buildWeek} className='build-week'>Build Week</button>}
-     </div>
      {showsToAddDowntown.length > 0 && <h2 className='downtown-available-header'>Downtown</h2>}
       {showsToAddDowntown}
       {showsToAddSouth.length > 0 && <h2 className='south-available-header'>South</h2>}
-      {showsToAddSouth}
-      <div>
-      <div className='create-new-comic'
-      onKeyUp={(e) => {
-        if (e.key === "Enter") {
-          createNewComic()        
-        }
-      }}
+      {showsToAddSouth}</>}
+       
+        <h2 className='admin-build' onClick={() => toggleComicBuildVisible()}>Create New Comic/Delete Comic</h2>
+        {comicBuildVisible && <div><div className='create-new-comic'
+        onKeyUp={(e) => {
+          if (e.key === "Enter") {
+            createNewComic()        
+          }
+        }}
       >
           <label> New Comic Email
             <br></br>
@@ -985,12 +1001,13 @@ ${showsForEmailSouth}`
             }
           }}
         >
-          <label> Comic To Delete
+          <label> Comic To Delete (By Name or Email)
             <br></br>
             <input type='text' onChange={e => setComicToDelete(e.target.value)}/>
           </label>
           <button onClick={() => deleteComic()} className='create-comic-button'>Delete Comic Profile</button>
         </div>
+        </div>}
           <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button> 
           <br></br>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
@@ -999,7 +1016,7 @@ ${showsForEmailSouth}`
         <div>{signedShowsDown.map(availShow => availShow)}</div>
         <h2 className='south-available-header'>South Club Available Comics</h2>
         <div>{signedShowsSouth.map(availShow => availShow)}</div>
-      </div>
+      
       {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
       {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>}
       {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
