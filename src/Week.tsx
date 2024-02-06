@@ -12,18 +12,26 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
   const [allAvailablity, setAllAvailability] = useState(false)
   const [comicNote, setComicNote] = useState('')
 
-  useEffect(() => {
-    setCurrentComedian(props.comedian)
-  }, [props])
+  // useEffect(() => {
+  //   setCurrentComedian(props.comedian)
+  // }, [props])
 
-  useEffect(() => {
-    setShows(props.weeklyShowTimes)
-  })
+  // useEffect(() => {
+  //   setShows(props.weeklyShowTimes)
+  // })
 
   useEffect(() => {
     showDowntownShows()
     showSouthShows()
-  })
+  }, [props])
+
+  useEffect(() => {
+    setCurrentComedian(props.comedian);
+  }, [props]);
+
+  useEffect(() => {
+    setShows(props.weeklyShowTimes);
+  }, [props]);
 
 
   const removePotentialShow = async (id: string) => {
@@ -148,21 +156,21 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
       }).join('\n').replaceAll(',', '\n').replace(/(^[ \t]*\n)/gm, "")
 
 
-      const emailData = {
-        to: `${props.comedian.email}`,
-        from: 'bregmanmax91@gmail.com',
-        subject: 'Comedy Works availability you submitted',
-        text: `Downtown: 
-${downtownString}
+//       const emailData = {
+//         to: `${props.comedian.email}`,
+//         from: 'bregmanmax91@gmail.com',
+//         subject: 'Comedy Works availability you submitted',
+//         text: `Downtown: 
+// ${downtownString}
 
-South:  
-${southString}`,
-      }
-      fetch('https://comicsignuptestmail.comedyworks.com/w')
-      // .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-      })
+// South:  
+// ${southString}`,
+//       }
+      // fetch('https://comicsignuptestmail.comedyworks.com/w')
+      // // .then((response) => response.json())
+      // .then((data) => {
+      //   console.log(data)
+      // })
 
 
       // fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {

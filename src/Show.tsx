@@ -104,7 +104,7 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
           comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))
           comedian[`showsAvailable${clubToSign}History`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}History`][dayOfWeek].findIndex((showToDelete: { id: string }) => showToDelete.id === props.id))
         }
-      
+      console.log(comedian)
   }
 
   const createMonth = (dateToConvert: string) => {
