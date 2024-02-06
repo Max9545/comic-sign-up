@@ -45,6 +45,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [createNewComicPhone, setCreateNewComicPhone] = useState('')
   const [createNewComicClean, setCreateNewComicClean] = useState(false)
   const [createNewComicFamFriendly, setCreateNewComicFamFriendly] = useState(false)
+  const [weekVisibility, setWeekVisibility] = useState(false)
   const [comicToDelete, setComicToDelete] = useState('')
   const { register, handleSubmit, reset } = useForm()
 
@@ -813,6 +814,9 @@ ${showsForEmailSouth}`
     // })
     // console.log(downTownShows)
   // }
+  const toggleWeekVisibility = () => {
+    setWeekVisibility(!weekVisibility);
+  };
     
 
   return (
@@ -865,8 +869,8 @@ ${showsForEmailSouth}`
       <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
     </div>
   </div>
-  <h2 className='shows-visible-to-comics'>Shows Visible To Comics</h2>
-      <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>
+  <h2 className='shows-visible-to-comics' onClick={() => toggleWeekVisibility()}>Shows Visible To Comics</h2>
+      {weekVisibility && <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>}
       <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
       <button className='clear-form' onClick={() => {
         reset()
