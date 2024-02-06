@@ -208,7 +208,9 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
           body: JSON.stringify({ email: props.comedian.email, message: `Downtown: 
           ${downtownString} 
           South: 
-          ${southString}` }),
+          ${southString}
+          
+     Comic's Note: ${comicNote}` }),
         });
     
         if (response.ok) {
