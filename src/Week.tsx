@@ -10,19 +10,28 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
   const [shows, setShows] = useState<any[]>([])
   const [currentComedian, setCurrentComedian] = useState(props.comedian)
   const [allAvailablity, setAllAvailability] = useState(false)
+  const [comicNote, setComicNote] = useState('')
 
-  useEffect(() => {
-    setCurrentComedian(props.comedian)
-  }, [props])
+  // useEffect(() => {
+  //   setCurrentComedian(props.comedian)
+  // }, [props])
 
-  useEffect(() => {
-    setShows(props.weeklyShowTimes)
-  })
+  // useEffect(() => {
+  //   setShows(props.weeklyShowTimes)
+  // })
 
   useEffect(() => {
     showDowntownShows()
     showSouthShows()
-  })
+  }, [props])
+
+  useEffect(() => {
+    setCurrentComedian(props.comedian);
+  }, [props]);
+
+  useEffect(() => {
+    setShows(props.weeklyShowTimes);
+  }, [props]);
 
 
   const removePotentialShow = async (id: string) => {
@@ -147,31 +156,71 @@ function Week(props: {comedian: Comic, weeklyShowTimes: [ShowToBook], admin: boo
       }).join('\n').replaceAll(',', '\n').replace(/(^[ \t]*\n)/gm, "")
 
 
-      const emailData = {
-        to: `${props.comedian.email}`,
-        from: 'bregmanmax91@gmail.com',
-        subject: 'Comedy Works availability you submitted',
-        text: `Downtown: 
-${downtownString}
+//       const emailData = {
+//         to: `${props.comedian.email}`,
+//         from: 'bregmanmax91@gmail.com',
+//         subject: 'Comedy Works availability you submitted',
+//         text: `Downtown: 
+// ${downtownString}
 
-South: 
-${southString}`,
-      }
+// South:  
+// ${southString}`,
+//       }
+      // fetch('https://comicsignuptestmail.comedyworks.com/w')
+      // // .then((response) => response.json())
+      // .then((data) => {
+      //   console.log(data)
+      // })
+
+
+      // fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+      //   method: 'POST',
+      //   // mode: 'no-cors',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     // 'X-Requested-With': 'XMLHttpRequest',
+      //     // 'Access-Control-Allow-Origin': '*'
+      //   },
+      
+      //   body: JSON.stringify({email: props.comedian.email, message: `Downtown: 
+      //   ${downtownString}
+        
+      //   South: 
+      //   ${southString}`}),
+      // })
+      //   // .then((response) => console.log(response))
+        
+      //   .then((data) => {
+      //     console.log(data) 
+      //     console.log(data.json())
+      //     console.log(currentComedian.email)
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error sending email', error, 'Hel;p')
+      //   })
+      try {
+        const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
+          },
+          body: JSON.stringify({ email: props.comedian.email, message: `Downtown: 
+          ${downtownString} 
+          South: 
+          ${southString}` }),
+        });
     
-      fetch('http://localhost:3001/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(emailData),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.message)
-        })
-        .catch((error) => {
-          console.error('Error sending email', error)
-        })
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Email sent successfully:', data);
+          console.log(currentComedian.email);
+        } else {
+          console.error('Error sending email:', response);
+        }
+      } catch (error) {
+        console.error('Error sending email:', error);
+      }
     }
 
   const submitForm = (event: any) => {
@@ -188,10 +237,10 @@ ${southString}`,
     currentComedian.downTownWeekCount += 1
     currentComedian.southWeekCount += 1
 
-    setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now()})
+    setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now(), note: comicNote})
     addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
       comedianInfo: currentComedian, 
-      fireOrder: Date.now()})
+      fireOrder: Date.now(), note: comicNote})
    
     
     
@@ -213,11 +262,21 @@ ${southString}`,
             {showSouthShows()}
             </div>
           </div>
+          <p className='comic-note-label'>Add Additional Note Below</p>
+          <br></br>
+          <input type='text' className='comic-note' onChange={(e) => {
+          setComicNote(e.target.value)
+          }}/>
+          <br></br>
           <button onClick={submitForm}type="submit" className='submit-btn'>
           Submit Availability
           </button>
+          
         </section>
     )
 }
 
 export default Week
+
+
+

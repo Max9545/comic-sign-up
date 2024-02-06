@@ -101,10 +101,10 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
             return parseInt(a.time.replaceAll(':','')) - parseInt(b.time.replaceAll(':',''))
           })
         } else {
-          comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id))
-          comedian[`showsAvailable${clubToSign}History`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}History`][dayOfWeek].findIndex((showToDelete: { id: string }) => showToDelete.id === props.id))
+          comedian[`showsAvailable${clubToSign}`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}`][dayOfWeek].indexOf(props.id), 1)
+          comedian[`showsAvailable${clubToSign}History`][dayOfWeek].splice(comedian[`showsAvailable${clubToSign}History`][dayOfWeek].findIndex((showToDelete: { id: string }) => showToDelete.id === props.id), 1)
         }
-      
+      console.log(comedian)
   }
 
   const createMonth = (dateToConvert: string) => {
@@ -128,9 +128,9 @@ function Show(props: {key: number, day: string, time: string, currentClub: strin
   return (
     <div className='show'>
     {props.headliner && <button onClick={(event) => handleClick(event)} 
-      className={`${availability} show-button`}>{`${props.day.toUpperCase().slice(0, 3)} (${createMonth(props.date)}${props.date.slice(7, 10)}) ${props.time} ${props.currentClub == 'south' ? 'SOUTH' : 'DT'} ${props.headliner}`}: 
+      className={`${availability} show-button`}>{`${props.day.toUpperCase().slice(0, 3)} ${createMonth(props.date)}${props.date.slice(7, 10)} ${props.time} ${props.currentClub == 'south' ? 'SOUTH' : 'DT'} ${props.headliner}`} 
       <br></br>
-      {availability   ? `Available` : `Not Available`}</button>}
+      {availability   ? `Available` : `NOT Available`}</button>}
   </div>
   )
 }
