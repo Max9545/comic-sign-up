@@ -48,6 +48,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [weekVisibility, setWeekVisibility] = useState(false)
   const [comicToDelete, setComicToDelete] = useState('')
   const [buildShowVisible, setBuildShowVisible] = useState(false)
+  const [comicBuildVisible, setComicBuildVisible] = useState(false)
+
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -822,6 +824,11 @@ ${showsForEmailSouth}`
   const toggleBuildShowVisible = () => {
     setBuildShowVisible(!buildShowVisible);
   };
+
+  const toggleComicBuildVisible = () => {
+    setComicBuildVisible(!comicBuildVisible);
+  };
+
     
 
   return (
@@ -921,8 +928,9 @@ ${showsForEmailSouth}`
       {showsToAddDowntown}
       {showsToAddSouth.length > 0 && <h2 className='south-available-header'>South</h2>}
       {showsToAddSouth}</>}
-      <div>
-        <div className='create-new-comic'
+       
+        <h2 className='admin-build' onClick={() => toggleComicBuildVisible()}>Create New Comic/Delete Comic</h2>
+        {comicBuildVisible && <div><div className='create-new-comic'
         onKeyUp={(e) => {
           if (e.key === "Enter") {
             createNewComic()        
@@ -993,12 +1001,13 @@ ${showsForEmailSouth}`
             }
           }}
         >
-          <label> Comic To Delete
+          <label> Comic To Delete (By Name or Email)
             <br></br>
             <input type='text' onChange={e => setComicToDelete(e.target.value)}/>
           </label>
           <button onClick={() => deleteComic()} className='create-comic-button'>Delete Comic Profile</button>
         </div>
+        </div>}
           <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button> 
           <br></br>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
@@ -1007,7 +1016,7 @@ ${showsForEmailSouth}`
         <div>{signedShowsDown.map(availShow => availShow)}</div>
         <h2 className='south-available-header'>South Club Available Comics</h2>
         <div>{signedShowsSouth.map(availShow => availShow)}</div>
-      </div>
+      
       {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
       {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>}
       {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
