@@ -421,29 +421,48 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     }
   }
 
-  const sendEmail = (comicsEmail: any, showsForEmail: any) => {
+  const sendEmail = async (comicsEmail: any, showsForEmail: any) => {
 
-    const emailData = {
-      to: `${comicsEmail}`,
-      from: 'bregmanmax91@gmail.com',
-      subject: 'Comedy Works Upcoming Lineup',
-      text: `${showsForEmail}`,
-    }
+    // const emailData = {
+    //   to: `${comicsEmail}`,
+    //   from: 'bregmanmax91@gmail.com',
+    //   subject: 'Comedy Works Upcoming Lineup',
+    //   text: `${showsForEmail}`,
+    // }
   
-    fetch('http://localhost:3001/send-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(emailData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.message)
-      })
-      .catch((error) => {
-        console.error('Error sending email', error)
-      })
+    // fetch('http://localhost:3001/send-email', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(emailData),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(data.message)
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error sending email', error)
+    //   })
+    try {
+      const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
+        },
+        body: JSON.stringify({email: comicsEmail, message: `${showsForEmail}`}),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Email sent successfully:', data);
+      } else {
+        console.error('Error sending email:', response);
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
   }
 
 
