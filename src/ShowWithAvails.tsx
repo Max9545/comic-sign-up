@@ -191,18 +191,18 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         <div className='comic-type-box'>{props.availableComics.map(comic => 
           <div className='available-comic' onClick={() => displayComicHistory(comic)} key={(comic as { name?: string })?.name}>
             <div>
-            
+             
             <p className='comic-avail' key={(comic as { name?: string })?.name}>{`${(comic as { name?: string })?.name}`}</p>
     {(comic as { note?: string })?.note && <p>{`${(comic as { note?: string })?.note}`}</p>}
 </div>
-            <p className='comic-type' onClick={() => setComedianType('mC', comic)}>MC</p>
-            <p className='comic-type' onClick={() => setComedianType('a1', comic)}>A1</p>
-            <p className='comic-type' onClick={() => setComedianType('b1', comic)}>B1</p>
-            <p className='comic-type' onClick={() => setComedianType('star7', comic)}>Star7</p>
-            <p className='comic-type starMC' onClick={() => setComedianType('starMC', comic)}>Star MC</p>
+            <p className='comic-type' onClick={() => setComedianType('mC', `${(comic as { name?: string })?.name}`)}>MC</p>
+            <p className='comic-type' onClick={() => setComedianType('a1', `${(comic as { name?: string })?.name}`)}>A1</p>
+            <p className='comic-type' onClick={() => setComedianType('b1', `${(comic as { name?: string })?.name}`)}>B1</p>
+            <p className='comic-type' onClick={() => setComedianType('star7', `${(comic as { name?: string })?.name}`)}>Star7</p>
+            <p className='comic-type starMC' onClick={() => setComedianType('starMC', `${(comic as { name?: string })?.name}`)}>Star MC</p>
             <div>
               <input type='text' className='pro-comic-type-input' onChange={(e) => setMiscType(e.target.value)}/>
-              <button className='comic-type' onClick={() => setComedianType(miscType, comic)}>Enter Type</button>
+              <button className='comic-type' onClick={() => setComedianType(miscType, `${(comic as { name?: string })?.name}`)}>Enter Type</button>
             </div>
           </div>)}
           <div className='yes-div'

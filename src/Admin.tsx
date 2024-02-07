@@ -1017,11 +1017,11 @@ ${showsForEmailSouth}`
         <h2 className='south-available-header'>South Club Available Comics</h2>
         <div>{signedShowsSouth.map(availShow => availShow)}</div>
       
-      {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
-      {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>}
-      {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
-      {comicForHistory && <h2 className='south-available-header'>South Club Availability History</h2>}
-      {specificComicHistorySouth.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
+      {/* {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>} */}
+      {/* {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>} */}
+      {/* {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)} */}
+      {/* {comicForHistory && <h2 className='south-available-header'>South Club Availability History</h2>} */}  
+      {/* {specificComicHistorySouth.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)} */}
     </div>
   )
 }
