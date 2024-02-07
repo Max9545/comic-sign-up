@@ -295,7 +295,7 @@ const viewAllComicsAvailableSouth = async () => {
           {shows[0] && `Signup Week of ${shows[0].date.slice(5)}-${shows[0].date.slice(0, 4)}`}
         </p>
       {allowed && <div className="dashboard">
-        <p className='available-example'>This yellow color means you are AVAILABLE to be booked for this show</p>
+        <p className='available-example'>This yellow color means you are AVAILABLE to be booked for the this show</p>
         <p className='not-available-example'>This grey color means you are NOT available to be booked for this show</p>
         <input
             type="userName"
