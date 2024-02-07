@@ -303,9 +303,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
         const availabeComedians: any[] = []
         availableComics.map((comedian) => {
         
-          comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].map((downTownShow: string) => {
+          comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].map((downTownShow: string, index: any) => {
             if (show.id == downTownShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-              availabeComedians.push({name: comedian.comedianInfo.name, note: comedian.note})
+              availabeComedians.push({name: comedian.comedianInfo.name, note: comedian.note, id: index})
               show.availableComics = availabeComedians
             }
           })
@@ -361,9 +361,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     const availabeComedians: any[] = []
     availableComics.map((comedian) => {
       
-      comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].map((southShow: string) => {
+      comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].map((southShow: string, index: any) => {
         if (show.id == southShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-          availabeComedians.push({name: comedian.comedianInfo.name, note: comedian.note})
+          availabeComedians.push({name: comedian.comedianInfo.name, note: comedian.note, id:index})
           show.availableComics = availabeComedians
         }
       })

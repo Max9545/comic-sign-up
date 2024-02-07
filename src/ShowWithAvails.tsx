@@ -189,7 +189,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         <div>
     </div>
         <div className='comic-type-box'>{props.availableComics.map(comic => 
-          <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
+          <div className='available-comic' onClick={() => displayComicHistory(comic)} key={(comic as { name?: string })?.name}>
             <div>
             
             <p className='comic-avail' key={(comic as { name?: string })?.name}>{`${(comic as { name?: string })?.name}`}</p>
