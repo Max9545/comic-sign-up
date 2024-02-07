@@ -305,7 +305,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
         
           comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].map((downTownShow: string) => {
             if (show.id == downTownShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-              availabeComedians.push(comedian.comedianInfo.name)
+              availabeComedians.push({name: comedian.comedianInfo.name, note: comedian.note})
               show.availableComics = availabeComedians
             }
           })
@@ -363,7 +363,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
       
       comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].map((southShow: string) => {
         if (show.id == southShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-          availabeComedians.push(comedian.comedianInfo.name)
+          availabeComedians.push({name: comedian.comedianInfo.name, note: comedian.note})
           show.availableComics = availabeComedians
         }
       })
