@@ -181,7 +181,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           onDrop={handleDrop}
           data-index={index}
         >
-          {bookedShow.comics[key].length > 0 && <div className='potential-booked-comic'>{`${key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}<button className='delete-potential-comic' onClick={() => removeComic(key)}>Delete</button></div>}
+          {bookedShow.comics[key].length > 0 && <div className='potential-booked-comic'>{`${key.includes('Star') ? '*' + key.slice(4) : key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}<button className='delete-potential-comic' onClick={() => removeComic(key)}>Delete</button></div>}
         </div>
       ))}
         {(bookedShow.comics.MC || bookedShow.comics.StarMC || bookedShow.comics.A1 || bookedShow.comics.B1 || bookedShow.comics.Yes || bookedShow.comics.Star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}  
@@ -198,8 +198,8 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
             <p className='comic-type' onClick={() => setComedianType('mC', `${(comic as { name?: string })?.name}`)}>MC</p>
             <p className='comic-type' onClick={() => setComedianType('a1', `${(comic as { name?: string })?.name}`)}>A1</p>
             <p className='comic-type' onClick={() => setComedianType('b1', `${(comic as { name?: string })?.name}`)}>B1</p>
-            <p className='comic-type' onClick={() => setComedianType('star7', `${(comic as { name?: string })?.name}`)}>Star7</p>
-            <p className='comic-type starMC' onClick={() => setComedianType('starMC', `${(comic as { name?: string })?.name}`)}>Star MC</p>
+            <p className='comic-type' onClick={() => setComedianType('star7', `${(comic as { name?: string })?.name}`)}>*7</p>
+            <p className='comic-type starMC' onClick={() => setComedianType('starMC', `${(comic as { name?: string })?.name}`)}>*MC</p>
             <div>
               <input type='text' className='pro-comic-type-input' onChange={(e) => setMiscType(e.target.value)}/>
               <button className='comic-type' onClick={() => setComedianType(miscType, `${(comic as { name?: string })?.name}`)}>Enter Type</button>
