@@ -197,6 +197,15 @@
         //   })
         //   .catch((error) => {
         //     console.error('Error sending email', error, 'Hel;p')
+        const getCurrentDayAndTime = () => {
+          const now = new Date();
+          const date = now.toLocaleDateString('en-US');
+          const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+          const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+          
+          return `${day} ${date} at: ${time}`;
+        };
+        
         //   })
         try {
           const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
@@ -205,12 +214,16 @@
               'Content-Type': 'application/json',
               // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
             },
-            body: JSON.stringify({ email: props.comedian.email, message: `Downtown: 
-            ${downtownString} 
-            South: 
-            ${southString}
+            body: JSON.stringify({ email: props.comedian.email, message: `Here is the availabilty you submitted ${getCurrentDayAndTime()}:
+
+Downtown: 
+${downtownString} 
+
+
+South: 
+${southString}
             
-      Comic's Note: ${comicNote}` }),
+Comic's Note: ${comicNote}` }),
           });
       
           if (response.ok) {
