@@ -11,10 +11,11 @@ import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateCurrentUser, deleteUser, updateProfile } from "firebase/auth"
+import ComediansGrid from './ComediansGrid'
 const auth = getAuth();
 
 
-function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any }) {
+function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, weekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any }) {
 
   const [newSchedule, setNewSchedule] = useState<any[]>([])
   const [showsToAddDowntown, setShowsToAddDowntown] = useState<any[]>([])
@@ -23,6 +24,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [type, setType] = useState('')
+  const [downtownShowsGrid, setDownTownShowsGrid] = useState([])
   const [newComicType, setNewComicType] = useState('')
   const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
   const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
@@ -310,7 +312,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
             }
           })
         })
-
+        // @ts-ignore
+        setDownTownShowsGrid(downtownShows)
         const showFinals = downtownShows.map((finalForm, index) => {
 
         const alreadyBooked = published.map(show => {
@@ -383,7 +386,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
       </div>
       }
     })
-
         
         return <ShowWithAvails
         key={index}
@@ -833,6 +835,8 @@ ${showsForEmailSouth}`
 
   return (
     <div className='admin-form'>
+      {/* @ts-ignore */}
+      {/* <ComediansGrid comedians={downtownShowsGrid} shows={props.weekSchedule} /> */}
       <div className='mask-container'
       onKeyUp={(e) => {
         if (e.key === "Enter") {

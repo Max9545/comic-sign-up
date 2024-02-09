@@ -8,6 +8,7 @@ import Week  from './Week'
 import { Comic } from './interface'
 import Admin from './Admin'
 import { deleteUser, getAuth, updateProfile, User } from "firebase/auth"
+import ComediansGrid from "./ComediansGrid"
 
 function Dashboard() {
 
@@ -17,6 +18,7 @@ function Dashboard() {
   const [weekOrder, setWeekOrder] = useState('')
   const [allowed, setAllowed] = useState()
   const [trigger, setTrigger] = useState(false)
+  const [comicsAvailable, setComicsAvailable] = useState([]);
   const [comedian, setComedian] = useState<Comic>({
     name: '',
     id: '',
@@ -69,6 +71,28 @@ function Dashboard() {
   const [shows, setShows] = useState<any>([]) 
 
   const navigate = useNavigate() 
+
+  useEffect(() => {
+    const fetchComedians = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "comediansForAdmin")); // Assuming "comedians" is your collection name
+        // console.log(querySnapshot[0].data())
+        const comediansData: any[] = [];
+        querySnapshot.forEach((doc) => {
+          console.log(doc)
+          // Assuming each document contains comedian data
+          const comedianData = doc.data();
+          comediansData.push(comedianData);
+        });
+        console.log(comediansData)
+        setComicsAvailable(comediansData);
+      } catch (error) {
+        console.error("Error fetching comedians:", error);
+      }
+    };
+
+    fetchComedians();
+  }, []); // Run once on component mount
 
   useEffect(() => {
     viewAllComicsAvailableDowntown()
@@ -296,18 +320,22 @@ const viewAllComicsAvailableSouth = async () => {
         </p>
       {allowed && <div className="dashboard">
         <p className='available-example'>This yellow color means you are AVAILABLE to be booked for the this show</p>
-        <p className='not-available-example'>This grey color means you are NOT available to be booked for this show</p>
+        <p className='not-available-example'>This gray color means you are NOT available to be booked for this show</p>
         <input
             type="userName"
             className="login__textBox userName"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="User Name If First Time"
-        />
+            />
+        
+
         {!admin && <Week comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder}/>}
         {admin && <Admin shows={shows} setShows={setShows}
-        setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder} user={user}/>}
+        setWeekSchedule={setWeekSchedule} weekSchedule={weekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder} user={user}/>}
       </div>}
+        {shows && comicsAvailable && <ComediansGrid comedians={comicsAvailable} shows={shows} />}
+      
      </>
   ) 
 } 
