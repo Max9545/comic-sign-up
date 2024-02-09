@@ -18,7 +18,7 @@ function Dashboard() {
   const [weekOrder, setWeekOrder] = useState('')
   const [allowed, setAllowed] = useState()
   const [trigger, setTrigger] = useState(false)
-  const [comicsAvailable, setComicsAvailable] = useState([]);
+  const [comicsAvailable, setComicsAvailable] = useState<Comic[]>([]);
   const [comedian, setComedian] = useState<Comic>({
     name: '',
     id: '',
