@@ -540,7 +540,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   
       // ).filter(line => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
       if (pubShow.bookedshow.club === 'downtown') {
-        const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
+        const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
   
         const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
   
@@ -555,7 +555,7 @@ ${showString}`
       const showsForEmailRawSouth = published.map(pubShow => {
 
         if (pubShow.bookedshow.club === 'south') {
-          const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
+          const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
     
           const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
     
@@ -573,7 +573,9 @@ ${showsForEmailRawDowntown}`.replace(/,/g, '')
     const showsForEmailSouth = `South Shows----------------
 ${showsForEmailRawSouth}`.replace(/,/g, '')
 
-    const showsForEmailRaw = `${showsForEmailDowntown}
+    const showsForEmailRaw = `Below is the schedule for the following shows. Please be aware of which club you are to perfom in.
+
+${showsForEmailDowntown}
 
 
 ${showsForEmailSouth}`
