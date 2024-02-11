@@ -528,3 +528,7 @@ label {
   padding: 5px;
   text-align: center;
 }
+
+.popup {
+  background-color: black;
+}
