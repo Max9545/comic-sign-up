@@ -532,3 +532,44 @@ label {
 .popup {
   background-color: black;
 }
+.admin-container {
+  display: flex;
+  position: relative
+} 
+
+/* .admin-container { */
+  /* position: relative; Ensure relative positioning for children */
+/* } */
+
+.sidebar {
+  position: fixed;
+  top: 5;
+  left: 0;
+  /* height: 100%; */
+  width: 15%;
+  background-color:red;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ddd;
+  cursor: pointer;
+  
+}
+
+.sidebar button:hover {
+  background-color: #ccc;
+}
+
+.admin-container {
+  margin-left: 15%; /* Add margin to create space for the sidebar */
+  padding-left: 20px; /* Optional: Add padding to the left of the admin container */
+}

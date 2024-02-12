@@ -836,7 +836,13 @@ ${showsForEmailSouth}`
     
 
   return (
-    <div className='admin-form'>
+    <div className='admin-container'>
+      <div className="sidebar">
+          <button onClick={() => toggleWeekVisibility()}>Toggle Week Visibility</button>
+          <button onClick={toggleBuildShowVisible}>Toggle Build Show Visible</button>
+          <button onClick={toggleComicBuildVisible}>Toggle Comic Build Visible</button>
+        </div>
+        <div className='admin-form'>
       {/* @ts-ignore */}
       {/* <ComediansGrid comedians={downtownShowsGrid} shows={props.weekSchedule} /> */}
       <div className='mask-container'
@@ -1028,6 +1034,7 @@ ${showsForEmailSouth}`
       {/* {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)} */}
       {/* {comicForHistory && <h2 className='south-available-header'>South Club Availability History</h2>} */}  
       {/* {specificComicHistorySouth.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)} */}
+    </div>
     </div>
   )
 }
