@@ -6,15 +6,15 @@ type PopupProps = {
   position: { x: number; y: number };
   onClose: () => void;
   onSelection: (position: string) => void;
-  selectedCell: { comedian: any; show: any } | null;
+  selectedCell: { comedian: any; show: any; selectedPosition: string | null } | null;
 };
 
 const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians, shows }) => {
   // State to manage the popup visibility, position, and selected cell
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [popupPosition, setPopupPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [selectedCell, setSelectedCell] = useState<{ comedian: any; show: any } | null>(null);
-  const [comediansNow, setComediansNow] = useState();
+  const [selectedCell, setSelectedCell] = useState<{ comedian: any; show: any; selectedPosition: string | null } | null>(null);
+  const [comediansNow, setComediansNow] = useState(comedians);
 
   // Group comedians by type
   const groupedComedians: { [type: string]: any[] } = {
@@ -38,13 +38,12 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
 
   // Function to handle cell click
   const handleCellClick = (event: React.MouseEvent<HTMLDivElement>, comedian: any, show: any) => {
-    // If the same cell is clicked again, close the popup
     if (selectedCell && selectedCell.comedian.comedianInfo.id === comedian.comedianInfo.id && selectedCell.show.id === show.id) {
       setShowPopup(false);
-      setSelectedCell(null);
+      // Do not clear the selected cell when clicking on the same cell
     } else {
       setPopupPosition({ x: event.clientX, y: event.clientY });
-      setSelectedCell({ comedian, show });
+      setSelectedCell({ comedian, show, selectedPosition: selectedCell ? selectedCell.selectedPosition : null });
       setShowPopup(true);
     }
   };
@@ -52,7 +51,7 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
   // Function to handle popup selection
   const handlePopupSelection = (position: string) => {
     if (selectedCell) {
-      const updatedComedians = comedians.map(comedian => {
+      const updatedComedians = comediansNow.map(comedian => {
         if (comedian.comedianInfo.id === selectedCell.comedian.comedianInfo.id) {
           const updatedShowsAvailableDowntown = { ...comedian.comedianInfo.showsAvailabledowntown };
           const updatedShowsAvailableSouth = { ...comedian.comedianInfo.showsAvailablesouth };
@@ -73,10 +72,12 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
         return comedian;
       });
 
-      // Update the comedians state with the updated data
+      // Update selected position for the cell
+      setSelectedCell({ ...selectedCell, selectedPosition: position });
+
+      // Update only the selected cell in the comedians state
       setComediansNow(updatedComedians);
       setShowPopup(false);
-      setSelectedCell(null);
     }
   };
 
@@ -124,11 +125,13 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
                   key={`${comedian.comedianInfo.id}-${show.id}`}
                   onClick={(event) => handleCellClick(event, comedian, show)}
                 >
-                  {selectedCell && selectedCell.comedian.comedianInfo.id === comedian.comedianInfo.id && selectedCell.show.id === show.id ?
-                    'Select Position' :
+                  {(selectedCell && selectedCell.comedian.comedianInfo.id === comedian.comedianInfo.id && selectedCell.show.id === show.id) ?
+                    (selectedCell.selectedPosition || 'Select Position') :
                     ((comedian.comedianInfo.showsAvailabledowntown && comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()].includes(show.id)) ||
                       (comedian.comedianInfo.showsAvailablesouth && comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()].includes(show.id))) ?
-                    'X' : ''}
+                    (comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()][show.id] ||
+                      comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()][show.id] ||
+                      'X') : ''}
                 </div>
               ))}
             </div>
@@ -137,14 +140,13 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
       ))}
 
       {/* Render Popup */}
-      {showPopup && (
+      {showPopup &&
         <Popup
           position={popupPosition}
-          onClose={() => setShowPopup(false)}
-          onSelection={handlePopupSelection}
-          selectedCell={selectedCell}
+          onClose={(position) => handlePopupSelection(position)} // Pass the selected position to handlePopupSelection
         />
-      )}
+      }
+
     </div>
   );
 };
