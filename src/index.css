@@ -563,6 +563,8 @@ label {
 .admin-container {
   display: flex;
   position: relative;
+  margin-left: 15%; /* Add margin to create space for the sidebar */
+  padding-left: 20px; /* Optional: Add padding to the left of the admin container */
 }
 
 
@@ -602,9 +604,6 @@ label {
   /* Add any other styles to indicate the selected state */
 }
 
-.admin-container {
-  margin-left: 15%; /* Add margin to create space for the sidebar */
-  padding-left: 20px; /* Optional: Add padding to the left of the admin container */
-}
+
 
 
