@@ -516,6 +516,7 @@ label {
   width: 75vw;
   color: black;
   align-self: flex-end;
+  margin-right:3vw
 }
 
 .row {
