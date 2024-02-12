@@ -15,7 +15,13 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
   };
 
   return (
-    <div className="popup" style={{ position: 'fixed', top: position.y, left: position.x }}>
+    <div className="popup" style={{ position: 'fixed', top: position.y, left: position.x }}
+    onKeyUp={(e) => {
+      if (e.key === "Enter") {
+        onClose(otherPosition || selectedPosition || 'MC')    
+      }
+    }}
+    >
       <div className="popup-content">
         <div>
           <label htmlFor="position">Position:</label>
