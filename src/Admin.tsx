@@ -51,6 +51,15 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [comicToDelete, setComicToDelete] = useState('')
   const [buildShowVisible, setBuildShowVisible] = useState(false)
   const [comicBuildVisible, setComicBuildVisible] = useState(false)
+  const [enterAvailabilityForComic, setEnterAvailabilityForComic] = useState(false)
+  const [selectedButtons, setSelectedButtons] = useState({
+    availabiltyForComics: false,
+    buildShows: false,
+    createNewComic: false,
+    changeComicType: false
+  });
+
+  
 
   const { register, handleSubmit, reset } = useForm()
 
@@ -833,33 +842,80 @@ ${showsForEmailSouth}`
     setComicBuildVisible(!comicBuildVisible);
   };
 
+  const toggleEnterAvailabilityForComic = () => {
+    setEnterAvailabilityForComic(!enterAvailabilityForComic);
+  };
+
+  const handleButtonClick = (buttonName: string) => {
+    setSelectedButtons(prevState => ({
+      ...prevState,
+      [buttonName]: !prevState[buttonName]
+    }));
+
+    // Add your button click logic here
+    if (buttonName === 'availabiltyForComics') {
+      // Logic for the "Enter Availabilty For Comics" button
+      toggleWeekVisibility(); // Assuming this function toggles visibility
+    } else if (buttonName === 'buildShows') {
+      // Logic for the "Build Shows" button
+      toggleBuildShowVisible(); // Assuming this function toggles visibility
+    } else if (buttonName === 'createNewComic') {
+      // Logic for the "Create New Comic" button
+      toggleComicBuildVisible(); // Assuming this function toggles visibility
+    } else if (buttonName === 'changeComicType') {
+      // Logic for the "Change Comic Type" button
+      toggleEnterAvailabilityForComic(); // Assuming this function toggles visibility
+    }
+  };
+
     
 
   return (
     <div className='admin-container'>
       <div className="sidebar">
-          <button onClick={() => toggleWeekVisibility()}>Toggle Week Visibility</button>
-          <button onClick={toggleBuildShowVisible}>Toggle Build Show Visible</button>
-          <button onClick={toggleComicBuildVisible}>Toggle Comic Build Visible</button>
-        </div>
+        <button 
+          className={selectedButtons.availabiltyForComics ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('availabiltyForComics')}
+        >
+          Enter Availabilty For Comics
+        </button>
+        <button 
+          className={selectedButtons.buildShows ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('buildShows')}
+        >
+          Build Shows
+        </button>
+        <button 
+          className={selectedButtons.createNewComic ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('createNewComic')}
+        >
+          Create New Comic
+        </button>
+        <button 
+          className={selectedButtons.changeComicType ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('changeComicType')}
+        >
+          Change Comic Type
+        </button>
+      </div>
         <div className='admin-form'>
       {/* @ts-ignore */}
       {/* <ComediansGrid comedians={downtownShowsGrid} shows={props.weekSchedule} /> */}
-      <div className='mask-container'
-      onKeyUp={(e) => {
-        if (e.key === "Enter") {
-          maskAsComic()        
-        }
-      }}
-      >
-        <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their name or email</h3>
-        <input type='text' className='yes-spot' onChange={(e) => {
-          setComicSearch(e.target.value)
-          }}/>
-        <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
-        {/* <button onClick={() => gatherStats()}>See Stats</button> */}
-      </div>
-    <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
+      {enterAvailabilityForComic && <><div className='mask-container'
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              maskAsComic()
+            }
+          } }
+        >
+          <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their name or email</h3>
+          <input type='text' className='yes-spot' onChange={(e) => {
+            setComicSearch(e.target.value)
+          } } />
+          <input type='submit' className='submit-mask' onClick={() => maskAsComic()} />
+
+        </div>
+          <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
     {comedianMask.downTownShowCount &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
     {comedianMask.southShowCount && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
     {comedianMask.downTownWeekCount && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
@@ -892,9 +948,56 @@ ${showsForEmailSouth}`
     </div>
       <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
     </div>
-  </div>
+  </div></>}
   <h2 className='shows-visible-to-comics' onClick={() => toggleWeekVisibility()}>Shows Visible To Comics</h2>
-      {weekVisibility && <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>}
+      {weekVisibility && <><div className='mask-container'
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              maskAsComic()
+            }
+          } }
+        >
+          <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their name or email</h3>
+          <input type='text' className='yes-spot' onChange={(e) => {
+            setComicSearch(e.target.value)
+          } } />
+          <input type='submit' className='submit-mask' onClick={() => maskAsComic()} />
+
+        </div>
+          <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
+    {comedianMask.downTownShowCount &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
+    {comedianMask.southShowCount && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
+    {comedianMask.downTownWeekCount && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
+    {comedianMask.southWeekCount && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
+    <div className='shows-visible-to-comics'>
+    <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
+    <div
+      onKeyUp={(e) => {
+        if (e.key === "Enter" && type != '') {
+          changeComedianType()  
+          setAdTrigger(!adTrigger)      
+        }
+      }}
+    >
+    <div>
+      <input type='radio' id='pro-radio' name='type' value='pro' onClick={() => setType('pro')}/>
+      <label htmlFor='pro-radio'>Pro</label>
+    </div>
+    <div>
+      <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {setType('OutOfTown')}}/>
+      <label htmlFor='outOfTown' >Out of Town Pro</label>
+    </div>
+    <div>
+      <input type='radio' id='almostFamous' name='type' value='almostFamous'onClick={() => {setType('AlmostFamous')}}/>
+      <label htmlFor='almostFamous' >Almost Famous</label>
+    </div>
+    <div>
+      <input type='radio' id='inactive' name='type' value='inactive'onClick={() => {setType('Inactive')}}/>
+      <label htmlFor='inactive' >Inactive</label>
+    </div>
+      <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
+    </div>
+  </div><Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/></>}
       <p className='admin-build' onClick={() => toggleBuildShowVisible()}>Admin: Build Week of Upcoming Shows</p>
       { buildShowVisible && <><button className='clear-form' onClick={() => {
         reset()

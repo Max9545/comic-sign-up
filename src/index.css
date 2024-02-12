@@ -543,11 +543,10 @@ label {
 
 .sidebar {
   position: fixed;
-  top: 5;
+  top: 10;
   left: 0;
-  /* height: 100%; */
   width: 15%;
-  background-color:red;
+  background-color: red;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -562,11 +561,15 @@ label {
   border-radius: 5px;
   background-color: #ddd;
   cursor: pointer;
-  
 }
 
 .sidebar button:hover {
-  background-color: #ccc;
+  background-color: rgb(253, 216, 216);
+}
+
+.sidebar button.highlighted {
+  background-color: #dc3545; /* Adjust the color as needed */
+  /* Add any other styles to indicate the selected state */
 }
 
 .admin-container {

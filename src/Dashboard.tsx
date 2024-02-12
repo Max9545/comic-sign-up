@@ -316,11 +316,14 @@ const viewAllComicsAvailableSouth = async () => {
           </div>
         </div>
         <p className='comedian-signup'> 
-          {shows[0] && `Signup Week of ${shows[0].date.slice(5)}-${shows[0].date.slice(0, 4)}`}
+          {shows[0] && !admin && `Signup Week of ${shows[0].date.slice(5)}-${shows[0].date.slice(0, 4)}`}
+          {admin && `Administrator Portal`}
         </p>
       {allowed && <div className="dashboard">
-        <p className='available-example'>This yellow color means you are AVAILABLE to be booked for the this show</p>
-        <p className='not-available-example'>This gray color means you are NOT available to be booked for this show</p>
+        {!admin && <>
+          <p className='available-example'>This yellow color means you are AVAILABLE to be booked for the this show</p>
+          <p className='not-available-example'>This gray color means you are NOT available to be booked for this show</p>
+        </>}
         <input
             type="userName"
             className="login__textBox userName"
