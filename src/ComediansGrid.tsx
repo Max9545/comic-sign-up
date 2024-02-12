@@ -55,9 +55,9 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
         if (comedian.comedianInfo.id === selectedCell.comedian.comedianInfo.id) {
           const updatedShowsAvailableDowntown = { ...comedian.comedianInfo.showsAvailabledowntown };
           const updatedShowsAvailableSouth = { ...comedian.comedianInfo.showsAvailablesouth };
-          if (selectedCell.comedian.comedianInfo.showsAvailabledowntown[selectedCell.show.day.toLowerCase()].includes(selectedCell.show.id)) {
+          if (selectedCell.comedian.comedianInfo.showsAvailabledowntown[selectedCell.show.day.toLowerCase()]?.includes(selectedCell.show.id)) {
             updatedShowsAvailableDowntown[selectedCell.show.day.toLowerCase()][selectedCell.show.id] = position;
-          } else if (selectedCell.comedian.comedianInfo.showsAvailablesouth[selectedCell.show.day.toLowerCase()].includes(selectedCell.show.id)) {
+          } else if (selectedCell.comedian.comedianInfo.showsAvailablesouth[selectedCell.show.day.toLowerCase()]?.includes(selectedCell.show.id)) {
             updatedShowsAvailableSouth[selectedCell.show.day.toLowerCase()][selectedCell.show.id] = position;
           }
           return {
@@ -101,7 +101,7 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
             {shows.map((show) => (
               <React.Fragment key={`${type}-${show.id}-downtown`}>
                 {show.club === 'downtown' && (
-                  <div className="cell">{`${show.day} ${show.time} ${show.headliner} ${show.club}`}</div>
+                  <div className="cell">{`${show.day.slice(0, 3)} ${show.time.slice(0, -2)} ${show.headliner} ${show.club.slice(0, -4)}`}</div>
                 )}
               </React.Fragment>
             ))}
@@ -109,7 +109,7 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
             {shows.map((show) => (
               <React.Fragment key={`${type}-${show.id}-south`}>
                 {show.club === 'south' && (
-                  <div className="cell">{`${show.day} ${show.time} ${show.headliner} ${show.club}`}</div>
+                  <div className="cell">{`${show.day.slice(0, 3)} ${show.time.slice(0, -2)} ${show.headliner} ${show.club}`}</div>
                 )}
               </React.Fragment>
             ))}
@@ -127,8 +127,8 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
                 >
                   {(selectedCell && selectedCell.comedian.comedianInfo.id === comedian.comedianInfo.id && selectedCell.show.id === show.id) ?
                     (selectedCell.selectedPosition || 'Select Position') :
-                    ((comedian.comedianInfo.showsAvailabledowntown && comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()].includes(show.id)) ||
-                      (comedian.comedianInfo.showsAvailablesouth && comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()].includes(show.id))) ?
+                    ((comedian.comedianInfo.showsAvailabledowntown && comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()]?.includes(show.id)) ||
+                      (comedian.comedianInfo.showsAvailablesouth && comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()]?.includes(show.id))) ?
                     (comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()][show.id] ||
                       comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()][show.id] ||
                       'X') : ''}
