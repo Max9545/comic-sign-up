@@ -944,7 +944,7 @@ ${showsForEmailSouth}`
           className={selectedButtons.createNewComic ? 'highlighted' : ''}
           onClick={() => handleButtonClick('createNewComic')}
         >
-          Create New Comic
+          Create New Comic/Delete Comic
         </button>
         <button 
           className={selectedButtons.emailComics ? 'highlighted' : ''}

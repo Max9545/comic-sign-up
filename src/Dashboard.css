@@ -1,6 +1,6 @@
 .dashboard {
-  height: 100%;
-  width: 100%;
+  min-height: 100vh;
+  width: 100;
   display: flex;
   /* padding: 2%; */
   border-top: #dc3545 solid;
