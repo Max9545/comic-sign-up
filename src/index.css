@@ -511,7 +511,7 @@ label {
   display: grid;
   grid-template-columns: auto repeat(auto-fit, minmax(120px, 1fr));
   gap: 2px;
-  background-color: #f0f0f0;
+  background-color: white;
   padding: 10px;
   width: 75vw;
   color: black;
@@ -523,24 +523,28 @@ label {
   display: grid;
   grid-template-columns: 120px repeat(auto-fit, minmax(120px, 1fr));
   gap: 2px;
+  
 }
 
 .cell {
   border: 1px solid #ccc;
   padding: 5px;
   text-align: center;
+  margin-top: 0px;
+  
 }
 
 .header {
-  background-color: #ccc;
+  background-color: white;
 }
 
 .type-header {
-  background-color: #ccc;
+  background-color: #e0e0e0;
 }
 
 .row.even {
   background-color: white;
+  
 }
 
 .row.odd {
@@ -548,7 +552,7 @@ label {
 }
 
 .row.highlighted {
-  background-color: #e0e0e0; /* Change this color as needed */
+  background-color: rgb(204, 204, 204); /* Change this color as needed */
 }
 
 .popup {
@@ -601,3 +605,5 @@ label {
   margin-left: 15%; /* Add margin to create space for the sidebar */
   padding-left: 20px; /* Optional: Add padding to the left of the admin container */
 }
+
+

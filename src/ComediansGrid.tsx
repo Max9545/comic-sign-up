@@ -95,7 +95,7 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
         <React.Fragment key={type}>
           {/* Header for Comic Type */}
           <div className="row type-header">
-            <div className="cell" style={{ backgroundColor: '#ccc' }}>{type.replace(/([A-Z])/g, ' $1').trim()}</div>
+            <div className="cell">{type.replace(/([A-Z])/g, ' $1').trim()}</div>
             {/* Show information for Downtown */}
             {shows.map((show) => (
               <React.Fragment key={`${type}-${show.id}-downtown`}>
