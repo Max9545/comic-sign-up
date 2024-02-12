@@ -527,7 +527,7 @@ label {
 }
 
 .cell {
-  border: 1px solid #ccc;
+  border: 1px solid black;
   padding: 5px;
   text-align: center;
   margin-top: 0px;
@@ -536,6 +536,7 @@ label {
 
 .header {
   background-color: white;
+  font-size: 2em;
 }
 
 .type-header {
