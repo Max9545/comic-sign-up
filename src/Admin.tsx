@@ -15,7 +15,7 @@ import ComediansGrid from './ComediansGrid'
 const auth = getAuth();
 
 
-function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, weekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any }) {
+function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, weekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any, comedians: any }) {
 
   const [newSchedule, setNewSchedule] = useState<any[]>([])
   const [showsToAddDowntown, setShowsToAddDowntown] = useState<any[]>([])
@@ -55,6 +55,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [emailComics, setEmailComics] = useState(false)
   const [downtownLong, setDowntownLong] = useState(false)
   const [southLong, setSouthLong] = useState(false)
+  const [gridVisible, setGridVisible] = useState(true)
   const [selectedButtons, setSelectedButtons] = useState({
     availabiltyForComics: false,
     buildShows: false,
@@ -62,7 +63,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     changeComicType: false,
     emailComics: false,
     downtownLong: false,
-    southLong: false
+    southLong: false,
+    gridVisible: true
   });
 
   
@@ -863,6 +865,9 @@ ${showsForEmailSouth}`
   const toggleSouthLong = () => {
     setSouthLong(!southLong);
   };
+  const toggleGridVisible = () => {
+    setGridVisible(!gridVisible);
+  };
 
   const handleButtonClick = (buttonName: string) => {
     setSelectedButtons(prevState => ({
@@ -874,7 +879,10 @@ ${showsForEmailSouth}`
     if (buttonName === 'availabiltyForComics') {
       // Logic for the "Enter Availabilty For Comics" button
       toggleWeekVisibility(); // Assuming this function toggles visibility
-    } else if (buttonName === 'buildShows') {
+    } else if (buttonName === 'gridVisible') {
+      // Logic for the "Build Shows" button
+      toggleGridVisible(); // Assuming this function toggles visibility
+    }else if (buttonName === 'buildShows') {
       // Logic for the "Build Shows" button
       toggleBuildShowVisible(); // Assuming this function toggles visibility
     } else if (buttonName === 'createNewComic') {
@@ -902,6 +910,12 @@ ${showsForEmailSouth}`
   return (
     <div className='admin-container'>
       <div className="sidebar">
+      <button 
+          className={selectedButtons.gridVisible ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('gridVisible')}
+        >
+        Grid Availability Sheet
+        </button>
       <button 
           className={selectedButtons.downtownLong ? 'highlighted' : ''}
           onClick={() => handleButtonClick('downtownLong')}
@@ -947,7 +961,7 @@ ${showsForEmailSouth}`
       </div>
         <div className='admin-form'>
       {/* @ts-ignore */}
-      {/* <ComediansGrid comedians={downtownShowsGrid} shows={props.weekSchedule} /> */}
+      {gridVisible && <ComediansGrid comedians={props.comedians} shows={props.shows} />}
       {enterAvailabilityForComic && <><div className='mask-container'
           onKeyUp={(e) => {
             if (e.key === "Enter") {
