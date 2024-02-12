@@ -336,8 +336,9 @@ const viewAllComicsAvailableSouth = async () => {
         {!admin && <Week comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder}/>}
         {admin && <Admin shows={shows} setShows={setShows}
         setWeekSchedule={setWeekSchedule} weekSchedule={weekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder} user={user}/>}
-      </div>}
         {shows && admin && comicsAvailable && <ComediansGrid comedians={comicsAvailable} shows={shows} />}
+      </div>}
+        
       
      </>
   ) 
