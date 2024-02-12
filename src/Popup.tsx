@@ -7,6 +7,7 @@ interface PopupProps {
 
 const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
   const [selectedPosition, setSelectedPosition] = useState<string>(''); // Initialize selectedPosition state with an empty string
+  const [otherPosition, setOtherPosition] = useState<string>('')
 
   // Function to handle position selection
   const handlePositionSelection = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -28,9 +29,9 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
         </div>
         <div>
           <label htmlFor="other">Other:</label>
-          <input type="text" id="other" />
+          <input type="text" id="other" onChange={(e) => setOtherPosition(e.target.value)}/>
         </div>
-        <button onClick={() => onClose(selectedPosition || 'MC')}>Submit</button> {/* Pass the selected position to onClose function */}
+        <button onClick={() => onClose(otherPosition || selectedPosition || 'MC')}>Submit</button> {/* Pass the selected position to onClose function */}
       </div>
     </div>
   );
