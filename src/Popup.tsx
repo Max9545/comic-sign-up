@@ -30,7 +30,7 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
           <label htmlFor="other">Other:</label>
           <input type="text" id="other" />
         </div>
-        <button onClick={() => onClose(selectedPosition)}>Submit</button> {/* Pass the selected position to onClose function */}
+        <button onClick={() => onClose(selectedPosition || 'MC')}>Submit</button> {/* Pass the selected position to onClose function */}
       </div>
     </div>
   );
