@@ -14,7 +14,7 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [popupPosition, setPopupPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [selectedCell, setSelectedCell] = useState<{ comedian: any; show: any } | null>(null);
-  const [comediansNow, setComediansNow] = useState()
+  const [comediansNow, setComediansNow] = useState();
 
   // Group comedians by type
   const groupedComedians: { [type: string]: any[] } = {
@@ -84,18 +84,18 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
   return (
     <div className="grid-container">
       {/* Header row */}
-      <div className="row">
+      <div className="row header">
         <div className="cell"></div> {/* Empty cell for spacing */}
-        <div className="cell header">Downtown</div>
-        <div className="cell header">South</div>
+        <div className="cell">Downtown</div>
+        <div className="cell">South</div>
       </div>
 
       {/* Iterate through shows to display show information for each Comic Type */}
       {Object.entries(groupedComedians).map(([type, comediansOfType]) => (
         <React.Fragment key={type}>
           {/* Header for Comic Type */}
-          <div className="row">
-            <div className="cell header" style={{ backgroundColor: '#ccc' }}>{type.replace(/([A-Z])/g, ' $1').trim()}</div>
+          <div className="row type-header">
+            <div className="cell" style={{ backgroundColor: '#ccc' }}>{type.replace(/([A-Z])/g, ' $1').trim()}</div>
             {/* Show information for Downtown */}
             {shows.map((show) => (
               <React.Fragment key={`${type}-${show.id}-downtown`}>
@@ -114,8 +114,8 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
             ))}
           </div>
           {/* Comedians of this type */}
-          {comediansOfType.map((comedian) => (
-            <div className="row" key={comedian.comedianInfo.id}>
+          {comediansOfType.map((comedian, index) => (
+            <div className={`row ${index % 2 === 0 ? 'even' : 'odd'}`} key={comedian.comedianInfo.id}>
               <div className="cell">{comedian.comedianInfo.name}</div>
               {/* Iterate through shows to determine if comedian is available */}
               {shows.map((show) => (
