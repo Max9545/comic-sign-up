@@ -500,13 +500,14 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     const emails = doc.docs.map(user => user.data().email)
 
     setEmailList(emails)
-
+console.log(emails)
     setEmailListWithOutTowners([])
 
-    const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'outOfTown')
-
+    const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
+    console.log(withoutOutTowners)
     const emailsWithoutOutTowners = withoutOutTowners.map((comic: any ) => comic.data().email)
-
+    
+    console.log(emailsWithoutOutTowners)
     setEmailListWithOutTowners(emailsWithoutOutTowners)
     // const docRefOut = query(collection(db, `users`), where('type', '!=', 'outOfTown'))
 
@@ -929,6 +930,12 @@ ${showsForEmailSouth}`
           Book South Long Form
         </button>
         <button 
+          className={selectedButtons.emailComics ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('emailComics')}
+        >
+          Email Comics
+        </button>
+        <button 
           className={selectedButtons.availabiltyForComics ? 'highlighted' : ''}
           onClick={() => handleButtonClick('availabiltyForComics')}
         >
@@ -946,12 +953,7 @@ ${showsForEmailSouth}`
         >
           Create New Comic/Delete Comic
         </button>
-        <button 
-          className={selectedButtons.emailComics ? 'highlighted' : ''}
-          onClick={() => handleButtonClick('emailComics')}
-        >
-          Email Comics
-        </button>
+        
         <button 
           className={selectedButtons.changeComicType ? 'highlighted' : ''}
           onClick={() => handleButtonClick('changeComicType')}
