@@ -81,55 +81,63 @@ const handlePopupSelection = (position: string, cellKey: string) => {
 
 
 const publishShow = async () => {
-  if (Object.keys(selectedCells).length > 0) {
-    const selectedCellKey = Object.keys(selectedCells)[Object.keys(selectedCells).length - 1];
-    const selectedCell = selectedCells[selectedCellKey];
+  const comicArray: { showId: string; type: unknown; comic: any }[] = [];
 
-    const comicArray: { showId: string; type: unknown; comic: any }[] = [];
+  // Iterate through all selected cells
+  Object.values(selectedCells).forEach((selectedCell) => {
+    const availableShowsDowntown =
+      selectedCell.comedian.comedianInfo.showsAvailabledowntown[selectedCell.show.day.toLowerCase()] || {};
+    const availableShowsSouth =
+      selectedCell.comedian.comedianInfo.showsAvailablesouth[selectedCell.show.day.toLowerCase()] || {};
+    const availableShows = { ...availableShowsDowntown, ...availableShowsSouth };
 
-    // Iterate through all the comedians
-    comediansNow.forEach((comedian) => {
-      // Check if the comedian is available for any shows
-      const availableShowsDowntown = comedian.comedianInfo.showsAvailabledowntown[selectedCell.show.day.toLowerCase()] || {};
-      const availableShowsSouth = comedian.comedianInfo.showsAvailablesouth[selectedCell.show.day.toLowerCase()] || {};
-      const availableShows = { ...availableShowsDowntown, ...availableShowsSouth };
-
-      // Iterate through all available shows for the comedian
-      Object.entries(availableShows).forEach(([showId, position]) => {
-        const targetShow = shows.find(show => show.id === showId);
-        // Ensure targetShow is defined before proceeding
-        if (targetShow) {
-          console.log('Comedian:', comedian.comedianInfo.name, 'Show:', targetShow, 'Position:', position);
-          // If the comedian is available for the selected show, add them to the comicArray
-          if (targetShow.club === (selectedCell.show.club === 'downtown' ? 'downtown' : 'south') && position && position !== 'X') {
-            comicArray.push({ showId, type: position, comic: comedian.comedianInfo.name });
-          }
+    // Iterate through all available shows for the comedian
+    Object.entries(availableShows).forEach(([showId, position]) => {
+      const targetShow = shows.find((show) => show.id === showId);
+      // Ensure targetShow is defined before proceeding
+      if (targetShow) {
+        console.log('Comedian:', selectedCell.comedian.comedianInfo.name, 'Show:', targetShow, 'Position:', position);
+        // If the comedian is available for the selected show, add them to the comicArray
+        if (
+          targetShow.club === (selectedCell.show.club === 'downtown' ? 'downtown' : 'south') &&
+          position &&
+          position !== 'X'
+        ) {
+          // Push comedian data into comicArray with the corresponding showId
+          comicArray.push({ showId, type: position, comic: selectedCell.comedian.comedianInfo.name });
         }
+      }
+    });
+  });
+
+  // Only submit if there are valid entries
+  if (comicArray.length > 0) {
+    // Group comedian data by showId
+    const comicsByShowId: { [showId: string]: { type: unknown; comic: any }[] } = {};
+    comicArray.forEach(({ showId, type, comic }) => {
+      if (!comicsByShowId[showId]) {
+        comicsByShowId[showId] = [];
+      }
+      comicsByShowId[showId].push({ type, comic });
+    });
+
+    // Save comedian data for each showId
+    Object.entries(comicsByShowId).forEach(([showId, comics]) => {
+      console.log('Saving comics for show:', showId, comics);
+      // Assuming 'db' and 'setDoc' are already imported and defined somewhere in your code
+      setDoc(doc(db, `publishedShows/${showId}`), {
+        bookedshow: shows.find((show) => show.id === showId),
+        fireOrder: Date.now(),
+        comicArray: comics,
       });
     });
 
-    // Only submit if there are valid entries
-    if (comicArray.length > 0) {
-      // Iterate over unique show IDs and save comics for each show
-      const uniqueShowIds = Array.from(new Set(comicArray.map(comic => comic.showId)));
-      uniqueShowIds.forEach(showId => {
-        const comicsForShow = comicArray.filter(comic => comic.showId === showId);
-        console.log('Saving comics for show:', showId, comicsForShow);
-        // Assuming 'db' and 'setDoc' are already imported and defined somewhere in your code
-        setDoc(doc(db, `publishedShows/${showId}`), {
-          bookedshow: selectedCell.show,
-          fireOrder: Date.now(),
-          comicArray: comicsForShow
-        });
-      });
-      alert('Show published!');
-    } else {
-      alert('There are no valid entries to submit.');
-    }
+    alert('Show published!');
   } else {
-    alert('Please select a cell before publishing.');
+    alert('There are no valid entries to submit.');
   }
 };
+
 
 
     // Render comedians under respective headers
