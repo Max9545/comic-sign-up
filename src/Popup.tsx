@@ -15,6 +15,7 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
   };
 
   return (
+    
     <div className="popup" style={{ position: 'fixed', top: position.y, left: position.x }}
     onKeyUp={(e) => {
       if (e.key === "Enter") {
@@ -22,6 +23,10 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
       }
     }}
     >
+    <div className="close-icon" onClick={() => onClose('')}>
+    <span>X</span>
+  </div>
+    <br></br>
       <div className="popup-content">
         <div>
           <label htmlFor="position">Position:</label>

@@ -604,6 +604,19 @@ label {
   /* Add any other styles to indicate the selected state */
 }
 
+.close-icon {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  color: white;
+}
+
+.close-icon span {
+  font-weight: bold;
+}
+
 
 
 
