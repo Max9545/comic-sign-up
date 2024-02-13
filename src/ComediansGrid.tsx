@@ -38,6 +38,7 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
 
   // Function to handle cell click
   const handleCellClick = (event: React.MouseEvent<HTMLDivElement>, comedian: any, show: any) => {
+    console.log(selectedCell)
     if (selectedCell && selectedCell.comedian.comedianInfo.id === comedian.comedianInfo.id && selectedCell.show.id === show.id) {
       setShowPopup(false);
       // Do not clear the selected cell when clicking on the same cell
@@ -55,9 +56,9 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
         if (comedian.comedianInfo.id === selectedCell.comedian.comedianInfo.id) {
           const updatedShowsAvailableDowntown = { ...comedian.comedianInfo.showsAvailabledowntown };
           const updatedShowsAvailableSouth = { ...comedian.comedianInfo.showsAvailablesouth };
-          if (selectedCell.comedian.comedianInfo.showsAvailabledowntown[selectedCell.show.day.toLowerCase()]?.includes(selectedCell.show.id)) {
+          if (selectedCell.show.club === 'downtown' && selectedCell.comedian.comedianInfo.showsAvailabledowntown[selectedCell.show.day.toLowerCase()]?.includes(selectedCell.show.id)) {
             updatedShowsAvailableDowntown[selectedCell.show.day.toLowerCase()][selectedCell.show.id] = position;
-          } else if (selectedCell.comedian.comedianInfo.showsAvailablesouth[selectedCell.show.day.toLowerCase()]?.includes(selectedCell.show.id)) {
+          } else if (selectedCell.show.club === 'south' && selectedCell.comedian.comedianInfo.showsAvailablesouth[selectedCell.show.day.toLowerCase()]?.includes(selectedCell.show.id)) {
             updatedShowsAvailableSouth[selectedCell.show.day.toLowerCase()][selectedCell.show.id] = position;
           }
           return {
@@ -81,74 +82,111 @@ const ComediansGrid: React.FC<{ comedians: any[]; shows: any[] }> = ({ comedians
     }
   };
 
-  // Render comedians under respective headers
-  return (
-    <div className="grid-container">
-      {/* Header row */}
-      <div className="row header">
-        <div className="cell"></div> {/* Empty cell for spacing */}
-        <div className="cell">Downtown</div>
-        <div className="cell">South</div>
-      </div>
+// Render comedians under respective headers
+// Render comedians under respective headers
+return (
+  <div className="grid-container">
+    {/* Header row */}
+    <div className="row header">
+      <div className="cell"></div> {/* Empty cell for spacing */}
+      {/* Header for Downtown shows */}
+      <div className="cell">Downtown</div>
+      {/* Header for South Club shows */}
+      <div className="cell">South</div>
+    </div>
 
-      {/* Iterate through shows to display show information for each Comic Type */}
-      {Object.entries(groupedComedians).map(([type, comediansOfType]) => (
-        <React.Fragment key={type}>
-          {/* Header for Comic Type */}
-          <div className="row type-header">
-            <div className="cell">{type.replace(/([A-Z])/g, ' $1').trim()}</div>
-            {/* Show information for Downtown */}
-            {shows.map((show) => (
-              <React.Fragment key={`${type}-${show.id}-downtown`}>
-                {show.club === 'downtown' && (
-                  <div className="cell">{`${show.day.slice(0, 3)} ${show.time.slice(0, -2)} ${show.headliner} ${show.club.slice(0, -4)}`}</div>
-                )}
-              </React.Fragment>
+    {/* Iterate through shows to display show information for each Comic Type */}
+    {Object.entries(groupedComedians).map(([type, comediansOfType], typeIndex) => (
+      <React.Fragment key={type}>
+        {/* Header row for Comic Type */}
+        <div className="row type-header">
+          <div className="cell type-cell">{type.replace(/([A-Z])/g, ' $1').trim()}</div>
+          {/* Downtown show information */}
+          {shows
+            .filter(show => show.club === 'downtown')
+            .map(show => (
+              <div className="cell" key={`${type}-${show.id}`}>
+                {`${show.day.slice(0, 3)} ${show.time.slice(0, -2)} ${show.headliner} ${show.club.slice(0, -4)}`}
+              </div>
             ))}
-            {/* Show information for South */}
-            {shows.map((show) => (
-              <React.Fragment key={`${type}-${show.id}-south`}>
-                {show.club === 'south' && (
-                  <div className="cell">{`${show.day.slice(0, 3)} ${show.time.slice(0, -2)} ${show.headliner} ${show.club}`}</div>
-                )}
-              </React.Fragment>
+          {/* South Club show information */}
+          {shows
+            .filter(show => show.club === 'south')
+            .map(show => (
+              <div className="cell" key={`${type}-${show.id}`}>
+                {`${show.day.slice(0, 3)} ${show.time.slice(0, -2)} ${show.headliner} ${show.club}`}
+              </div>
             ))}
-          </div>
-          {/* Comedians of this type */}
-          {comediansOfType.map((comedian, index) => (
-            <div className={`row ${index % 2 === 0 ? 'even' : 'odd'}`} key={comedian.comedianInfo.id}>
-              <div className="cell">{comedian.comedianInfo.name}</div>
-              {/* Iterate through shows to determine if comedian is available */}
-              {shows.map((show) => (
+        </div>
+        {/* Comedians of this type */}
+        {comediansOfType.map((comedian, index) => (
+          <div className={`row ${index % 2 === 0 ? 'even' : 'odd'}`} key={comedian.comedianInfo.id}>
+            {/* Comedian name cell */}
+            <div className="cell">{comedian.comedianInfo.name}</div>
+            {/* Downtown show cells */}
+            {shows
+              .filter(show => show.club === 'downtown')
+              .map(show => (
                 <div
                   className="cell"
                   key={`${comedian.comedianInfo.id}-${show.id}`}
                   onClick={(event) => handleCellClick(event, comedian, show)}
                 >
-                  {(selectedCell && selectedCell.comedian.comedianInfo.id === comedian.comedianInfo.id && selectedCell.show.id === show.id) ?
-                    (selectedCell.selectedPosition || 'Select Position') :
-                    ((comedian.comedianInfo.showsAvailabledowntown && comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()]?.includes(show.id)) ||
-                      (comedian.comedianInfo.showsAvailablesouth && comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()]?.includes(show.id))) ?
-                    (comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()][show.id] ||
-                      comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()][show.id] ||
-                      'X') : ''}
+                  {selectedCell &&
+                    selectedCell.comedian.comedianInfo.id === comedian.comedianInfo.id &&
+                    selectedCell.show.id === show.id ? (
+                      selectedCell.selectedPosition || 'Select Position'
+                    ) : (
+                      (comedian.comedianInfo.showsAvailabledowntown &&
+                        comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()] &&
+                        comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()].includes(show.id)) ?
+                        'X' : ''
+                    )}
                 </div>
               ))}
-            </div>
-          ))}
-        </React.Fragment>
-      ))}
+            {/* South Club show cells */}
+            {shows
+              .filter(show => show.club === 'south')
+              .map(show => (
+                <div
+                  className="cell"
+                  key={`${comedian.comedianInfo.id}-${show.id}`}
+                  onClick={(event) => handleCellClick(event, comedian, show)}
+                >
+                  {selectedCell &&
+                    selectedCell.comedian.comedianInfo.id === comedian.comedianInfo.id &&
+                    selectedCell.show.id === show.id ? (
+                      selectedCell.selectedPosition || 'Select Position'
+                    ) : (
+                      (comedian.comedianInfo.showsAvailablesouth &&
+                        comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()] &&
+                        comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()].includes(show.id)) ?
+                        'X' : ''
+                    )}
+                </div>
+              ))}
+          </div>
+        ))}
+      </React.Fragment>
+    ))}
 
-      {/* Render Popup */}
-      {showPopup &&
-        <Popup
-          position={popupPosition}
-          onClose={(position) => handlePopupSelection(position)} // Pass the selected position to handlePopupSelection
-        />
-      }
+    {/* Render Popup */}
+    {showPopup && (
+      <Popup
+        position={popupPosition}
+        onClose={(position) => handlePopupSelection(position)} // Pass the selected position to handlePopupSelection
+      />
+    )}
+  </div>
+);
 
-    </div>
-  );
+
+
+
+
+
+
+
 };
 
 export default ComediansGrid;
