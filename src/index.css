@@ -516,7 +516,7 @@ label {
   width: 80vw;
   color: black;
   align-self: flex-end;
-  margin-right:3vw
+  margin-right:3vw; 
 }
 
 .row {
@@ -588,7 +588,7 @@ label {
   width: 100%;
   margin-bottom: 10px;
   padding: 10px;
-  font-size: 16px;
+  /* font-size: 16px; */
   border: none;
   border-radius: 5px;
   background-color: #ddd;

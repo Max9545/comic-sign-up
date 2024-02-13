@@ -953,7 +953,7 @@ ${showsForEmailSouth}`
           className={selectedButtons.emailComics ? 'highlighted' : ''}
           onClick={() => handleButtonClick('emailComics')}
         >
-          Email Comics
+          Email Booked Shows To Comics
         </button>
         <button 
           className={selectedButtons.availabiltyForComics ? 'highlighted' : ''}
