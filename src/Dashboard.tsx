@@ -321,9 +321,11 @@ const viewAllComicsAvailableSouth = async () => {
         </p>
       {allowed && <div className="dashboard">
         {!admin && <>
+          <p className='available-example directions'>Below you will find buttons, each with information about one show. Clicking on a show button lets the club know you are available to be booked for that specific show. Click the show button again to change/toggle your availability for that show. Hit the Submit button at the very bottom to send the club your availability recive a confirmation email.</p>
           <p className='available-example'>This yellow color means you are AVAILABLE to be booked for the this show</p>
           <p className='not-available-example'>This gray color means you are NOT available to be booked for this show</p>
         </>}
+        
         <input
             type="userName"
             className="login__textBox userName"
