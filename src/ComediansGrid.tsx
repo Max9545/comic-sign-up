@@ -19,6 +19,9 @@ import { db } from './firebase';
       Inactive: []
     };
 
+    const [currentCellKey, setCurrentCellKey] = useState<string>('');
+
+
     comedians.forEach((comedian) => {
       if (comedian.comedianInfo.type === 'pro') {
         groupedComedians.Pro.push(comedian);
@@ -37,47 +40,47 @@ import { db } from './firebase';
     const [selectedCells, setSelectedCells] = useState<{ [key: string]: { comedian: any; show: any; selectedPosition: string | null } }>({});
     const [comediansNow, setComediansNow] = useState(comedians);
 
-   // Function to handle cell click
-const handleCellClick = (event: React.MouseEvent<HTMLDivElement>, comedian: any, show: any) => {
-  const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
-  const cellData = selectedCells[cellKey];
-
-  if (cellData && cellData.comedian.comedianInfo.id === comedian.comedianInfo.id && cellData.show.id === show.id) {
-    setShowPopup(false);
-  } else {
-    setPopupPosition({ x: event.clientX, y: event.clientY });
-    setSelectedCells({
-      ...selectedCells,
-      [cellKey]: { comedian, show, selectedPosition: cellData ? cellData.selectedPosition : null }
-    });
-    setShowPopup(true);
-  }
-};
-
-// Function to handle popup selection
-const handlePopupSelection = (position: string, cellKey: string) => {
-  if (selectedCells[cellKey]) {
-    const { comedian, show } = selectedCells[cellKey];
-    const updatedCells = { ...selectedCells };
-
-    const updatedShowsAvailableDowntown = { ...comedian.comedianInfo.showsAvailabledowntown };
-    const updatedShowsAvailableSouth = { ...comedian.comedianInfo.showsAvailablesouth };
-
-    if (show.club === 'downtown' && comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()]?.includes(show.id)) {
-      updatedShowsAvailableDowntown[show.day.toLowerCase()][show.id] = position;
-    } else if (show.club === 'south' && comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()]?.includes(show.id)) {
-      updatedShowsAvailableSouth[show.day.toLowerCase()][show.id] = position;
-    }
-
-    updatedCells[cellKey] = {
-      ...selectedCells[cellKey],
-      selectedPosition: position
+    const handleCellClick = (event: React.MouseEvent<HTMLDivElement>, comedian: any, show: any) => {
+      const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
+      setCurrentCellKey(cellKey); // Store the cell key of the clicked cell
+    
+      const cellData = selectedCells[cellKey];
+      
+      setPopupPosition({ x: event.clientX, y: event.clientY });
+      setSelectedCells({
+        ...selectedCells,
+        [cellKey]: { comedian, show, selectedPosition: cellData ? cellData.selectedPosition : null }
+      });
+      setShowPopup(true);
     };
+    
+    // Function to handle popup selection
+    const handlePopupSelection = (position: string) => {
+      if (currentCellKey && selectedCells[currentCellKey]) {
+        const { comedian, show } = selectedCells[currentCellKey];
+        const updatedCells = { ...selectedCells };
+    
+        const updatedShowsAvailableDowntown = { ...comedian.comedianInfo.showsAvailabledowntown };
+        const updatedShowsAvailableSouth = { ...comedian.comedianInfo.showsAvailablesouth };
+    
+        if (show.club === 'downtown' && comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()]?.includes(show.id)) {
+          updatedShowsAvailableDowntown[show.day.toLowerCase()][show.id] = position;
+        } else if (show.club === 'south' && comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()]?.includes(show.id)) {
+          updatedShowsAvailableSouth[show.day.toLowerCase()][show.id] = position;
+        }
+    
+        updatedCells[currentCellKey] = {
+          ...selectedCells[currentCellKey],
+          selectedPosition: position
+        };
+    
+        setSelectedCells(updatedCells);
+        setShowPopup(false);
+      }
+    };
+    
 
-    setSelectedCells(updatedCells);
-    setShowPopup(false);
-  }
-};
+
 
 
 const publishShow = async () => {
@@ -224,12 +227,14 @@ const publishShow = async () => {
         ))}
 
         {/* Render Popup */}
+        // Render Popup
         {showPopup && (
   <Popup
     position={popupPosition}
-    onClose={(position) => handlePopupSelection(position, Object.keys(selectedCells)[Object.keys(selectedCells).length - 1])} // Pass the selected position and cellKey
+    onClose={(position) => handlePopupSelection(position)} // Only pass the selected position
   />
 )}
+
 <button onClick={() => publishShow()}>Submit</button>
       </div>
     );
