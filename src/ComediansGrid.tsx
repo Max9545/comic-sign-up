@@ -1,4 +1,6 @@
-  import React, { useState } from 'react';
+  import { doc, setDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { db } from './firebase';
   import Popup from './Popup'; // Importing the Popup component
 
   // Define the type for PopupProps
@@ -74,6 +76,58 @@ const handlePopupSelection = (position: string, cellKey: string) => {
 
     setSelectedCells(updatedCells);
     setShowPopup(false);
+  }
+};
+
+
+const publishShow = async () => {
+  if (Object.keys(selectedCells).length > 0) {
+    const selectedCellKey = Object.keys(selectedCells)[Object.keys(selectedCells).length - 1];
+    const selectedCell = selectedCells[selectedCellKey];
+
+    const comicArray: { showId: string; type: unknown; comic: any }[] = [];
+
+    // Iterate through all the comedians
+    comediansNow.forEach((comedian) => {
+      // Check if the comedian is available for any shows
+      const availableShowsDowntown = comedian.comedianInfo.showsAvailabledowntown[selectedCell.show.day.toLowerCase()] || {};
+      const availableShowsSouth = comedian.comedianInfo.showsAvailablesouth[selectedCell.show.day.toLowerCase()] || {};
+      const availableShows = { ...availableShowsDowntown, ...availableShowsSouth };
+
+      // Iterate through all available shows for the comedian
+      Object.entries(availableShows).forEach(([showId, position]) => {
+        const targetShow = shows.find(show => show.id === showId);
+        // Ensure targetShow is defined before proceeding
+        if (targetShow) {
+          console.log('Comedian:', comedian.comedianInfo.name, 'Show:', targetShow, 'Position:', position);
+          // If the comedian is available for the selected show, add them to the comicArray
+          if (targetShow.club === (selectedCell.show.club === 'downtown' ? 'downtown' : 'south') && position && position !== 'X') {
+            comicArray.push({ showId, type: position, comic: comedian.comedianInfo.name });
+          }
+        }
+      });
+    });
+
+    // Only submit if there are valid entries
+    if (comicArray.length > 0) {
+      // Iterate over unique show IDs and save comics for each show
+      const uniqueShowIds = Array.from(new Set(comicArray.map(comic => comic.showId)));
+      uniqueShowIds.forEach(showId => {
+        const comicsForShow = comicArray.filter(comic => comic.showId === showId);
+        console.log('Saving comics for show:', showId, comicsForShow);
+        // Assuming 'db' and 'setDoc' are already imported and defined somewhere in your code
+        setDoc(doc(db, `publishedShows/${showId}`), {
+          bookedshow: selectedCell.show,
+          fireOrder: Date.now(),
+          comicArray: comicsForShow
+        });
+      });
+      alert('Show published!');
+    } else {
+      alert('There are no valid entries to submit.');
+    }
+  } else {
+    alert('Please select a cell before publishing.');
   }
 };
 
@@ -168,6 +222,7 @@ const handlePopupSelection = (position: string, cellKey: string) => {
     onClose={(position) => handlePopupSelection(position, Object.keys(selectedCells)[Object.keys(selectedCells).length - 1])} // Pass the selected position and cellKey
   />
 )}
+<button onClick={() => publishShow()}>Submit</button>
       </div>
     );
   };
