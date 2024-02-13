@@ -43,7 +43,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [createNewComicEmail, setCreateNewComicEmail] = useState('')
   const [inactive, setInactive] = useState(false)
   const [emailListWithNoInactiveOrOutTown, setEmailListWithNoInactiveOrOutTown] = useState([])
-  const [emailListWithNoInactive, setEmailListWithNoInactive] = useState([]) 
+  const [emailListWithNoInactive, setEmailListWithNoInactive] = useState([])
+  const [emailWithNoAlmostFamous, setEmailWithNoAlmostFamous] = useState()
   const [createNewComicPassword, setCreateNewComicPassword] = useState('')
   const [createNewComicName, setCreateNewComicName] = useState('')
   const [createNewComicAddress, setCreateNewComicAddress] = useState('')
@@ -58,6 +59,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [emailComics, setEmailComics] = useState(false)
   const [downtownLong, setDowntownLong] = useState(false)
   const [southLong, setSouthLong] = useState(false)
+  const [almostFamous, setAlmostFamous] = useState(true)
+  
   const [gridVisible, setGridVisible] = useState(true)
   const [selectedButtons, setSelectedButtons] = useState({
     availabiltyForComics: false,
@@ -523,6 +526,11 @@ console.log(emails)
 console.log('withoutOutInactive', withoutOutInactive)
     // const docOut = await (getDocs(docRefOut))
 
+
+    const withoutOutAlmostFamous = doc.docs.filter(comic =>  comic.data().type !='AlmostFamous').map((comic: any ) => comic.data().email)
+
+    setEmailWithNoAlmostFamous(withoutOutAlmostFamous)
+    console.log('withoutOutAlmostFamous', withoutOutAlmostFamous)
     // const emailsOut = docOut.docs.map(user => user.data().email)
 
     // setEmailListWithOutTowners(emailsOut)
@@ -608,21 +616,24 @@ ${showsForEmailDowntown}
 
 ${showsForEmailSouth}`
 
-    if (outOfTowners && inactive) {
+    if (outOfTowners && inactive && almostFamous) {
       console.log('everyone')
       emailList.map(email => sendEmail(email, showsForEmailRaw))
     } else if (!outOfTowners && inactive) {
       console.log('only inactive and pro')
       emailListWithOutTowners.map(email => sendEmail(email, showsForEmailRaw))
-    } 
-    else if (outOfTowners && !inactive) {
+    } else if (outOfTowners && !inactive) {
       console.log('only out of town and pro', emailListWithNoInactive)
       
       emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
     } else if (!outOfTowners && !inactive) {
       console.log('only pro')
       emailListWithNoInactiveOrOutTown.map(email => sendEmail(email, showsForEmailRaw))
-    }
+    } else if (!almostFamous) {
+      console.log('only out of town and pro', emailListWithNoInactive)
+      
+      emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
+    } 
     alert('Comics have been notified')
   }
 
@@ -1213,10 +1224,16 @@ ${showsForEmailSouth}`
         </div>
         </div>}
           {emailComics && <><button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button><br></br>
+          <label className='out-of-town'>Include Almost Famous<input type="checkbox" checked={almostFamous}
+           className='out-of-town-checkbox'
+            onChange={() => setAlmostFamous(!almostFamous)}/></label>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
             onChange={() => setOutOfTowners(!outOfTowners)} /></label>
             <label className='out-of-town'>Include Inactive<input type="checkbox" className='out-of-town-checkbox'
-            onChange={() => setInactive(!inactive)} /></label></>}
+            onChange={() => setInactive(!inactive)} /></label>
+            
+            
+            </>}
         {downtownLong && <><h2 className='downtown-available-header'>Downtown Available Comics</h2>
           <div>{signedShowsDown.map(availShow => availShow)}</div></>}
         {southLong && <><h2 className='south-available-header'>South Club Available Comics</h2>
