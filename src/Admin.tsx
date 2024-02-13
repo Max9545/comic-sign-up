@@ -512,23 +512,24 @@ console.log(emails)
     const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
 
     const withoutOutTownersOrInactive = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown' && comic.data().type != 'Inactive')
-
     const emailsWithoutOutTowners = withoutOutTowners.map((comic: any ) => comic.data().email)
     
     console.log('emails', emails)
     console.log('emailsWithoutOutTowners', emailsWithoutOutTowners)
     setEmailListWithOutTowners(emailsWithoutOutTowners)
 
+    // @ts-ignore
     setEmailListWithNoInactiveOrOutTown(withoutOutTownersOrInactive)
     // const docRefOut = query(collection(db, `users`), where('type', '!=', 'outOfTown'))
     const withoutOutInactive = doc.docs.filter(comic =>  comic.data().type !='Inactive').map((comic: any ) => comic.data().email)
+    // @ts-ignore
     setEmailListWithNoInactive(withoutOutInactive)
 console.log('withoutOutInactive', withoutOutInactive)
     // const docOut = await (getDocs(docRefOut))
 
 
     const withoutOutAlmostFamous = doc.docs.filter(comic =>  comic.data().type !='AlmostFamous').map((comic: any ) => comic.data().email)
-
+    // @ts-ignore
     setEmailWithNoAlmostFamous(withoutOutAlmostFamous)
     console.log('withoutOutAlmostFamous', withoutOutAlmostFamous)
     // const emailsOut = docOut.docs.map(user => user.data().email)
