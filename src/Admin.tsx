@@ -753,7 +753,7 @@ ${showsForEmailSouth}`
     setAdTrigger(!adTrigger)
   }
 
-  const createNewComic = () => {
+  const createNewComic = async () => {
 
     if (createNewComicName && createNewComicEmail && createNewComicPassword && createNewComicAddress && createNewComicPhone) {
       createUserWithEmailAndPassword(auth, createNewComicEmail, createNewComicPassword)
@@ -837,6 +837,34 @@ ${showsForEmailSouth}`
       })
     } else {
       alert("Email, name, password, address, and phone number are needed to submit a new comic. If unknown enter 'N/A' for now.")
+    }
+
+    try {
+      const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
+        },
+        body: JSON.stringify({email: createNewComicEmail, message: `Hello ${createNewComicName}, this is an email to inviting you to use https://comicsignuptestmail.comedyworks.com in order to give the club your weekly availability. Your login username is this email you provided the club and your initial password is 
+        ${createNewComicPassword} 
+and you will need to change your password after your first login to something that is private and known only to you.
+
+The rules for submitting your availability remain the same. Your last availability submitted by Tuesday at 5PM is what will be used to book the shows. 
+               
+You will receive confirmation emails to this email address each time you submit your availability. The schedule each week will be emailed as well. 
+        
+        `}),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Email sent successfully:', data);
+      } else {
+        console.error('Error sending email:', response);
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
     }
   }
 
