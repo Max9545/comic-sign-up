@@ -41,6 +41,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [adTrigger, setAdTrigger] = useState(true)
   const [potentialShow, setPotentialShow] = useState({id:''})
   const [createNewComicEmail, setCreateNewComicEmail] = useState('')
+  const [inactive, setInactive] = useState(false)
+  const [emailListWithNoInactiveOrOutTown, setEmailListWithNoInactiveOrOutTown] = useState([])
+  const [emailListWithNoInactive, setEmailListWithNoInactive] = useState([]) 
   const [createNewComicPassword, setCreateNewComicPassword] = useState('')
   const [createNewComicName, setCreateNewComicName] = useState('')
   const [createNewComicAddress, setCreateNewComicAddress] = useState('')
@@ -504,13 +507,20 @@ console.log(emails)
     setEmailListWithOutTowners([])
 
     const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
-    console.log(withoutOutTowners)
+
+    const withoutOutTownersOrInactive = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown' && comic.data().type != 'Inactive')
+
     const emailsWithoutOutTowners = withoutOutTowners.map((comic: any ) => comic.data().email)
     
-    console.log(emailsWithoutOutTowners)
+    console.log('emails', emails)
+    console.log('emailsWithoutOutTowners', emailsWithoutOutTowners)
     setEmailListWithOutTowners(emailsWithoutOutTowners)
-    // const docRefOut = query(collection(db, `users`), where('type', '!=', 'outOfTown'))
 
+    setEmailListWithNoInactiveOrOutTown(withoutOutTownersOrInactive)
+    // const docRefOut = query(collection(db, `users`), where('type', '!=', 'outOfTown'))
+    const withoutOutInactive = doc.docs.filter(comic =>  comic.data().type !='Inactive').map((comic: any ) => comic.data().email)
+    setEmailListWithNoInactive(withoutOutInactive)
+console.log('withoutOutInactive', withoutOutInactive)
     // const docOut = await (getDocs(docRefOut))
 
     // const emailsOut = docOut.docs.map(user => user.data().email)
@@ -598,10 +608,20 @@ ${showsForEmailDowntown}
 
 ${showsForEmailSouth}`
 
-    if (outOfTowners) {
+    if (outOfTowners && inactive) {
+      console.log('everyone')
       emailList.map(email => sendEmail(email, showsForEmailRaw))
-    } else {
+    } else if (!outOfTowners && inactive) {
+      console.log('only inactive and pro')
       emailListWithOutTowners.map(email => sendEmail(email, showsForEmailRaw))
+    } 
+    else if (outOfTowners && !inactive) {
+      console.log('only out of town and pro', emailListWithNoInactive)
+      
+      emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
+    } else if (!outOfTowners && !inactive) {
+      console.log('only pro')
+      emailListWithNoInactiveOrOutTown.map(email => sendEmail(email, showsForEmailRaw))
     }
     alert('Comics have been notified')
   }
@@ -1194,7 +1214,9 @@ ${showsForEmailSouth}`
         </div>}
           {emailComics && <><button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button><br></br>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
-            onChange={() => setOutOfTowners(!outOfTowners)} /></label></>}
+            onChange={() => setOutOfTowners(!outOfTowners)} /></label>
+            <label className='out-of-town'>Include Inactive<input type="checkbox" className='out-of-town-checkbox'
+            onChange={() => setInactive(!inactive)} /></label></>}
         {downtownLong && <><h2 className='downtown-available-header'>Downtown Available Comics</h2>
           <div>{signedShowsDown.map(availShow => availShow)}</div></>}
         {southLong && <><h2 className='south-available-header'>South Club Available Comics</h2>
