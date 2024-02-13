@@ -1,5 +1,5 @@
-  import { doc, setDoc } from 'firebase/firestore';
-import React, { useState } from 'react';
+  import { collection, doc, DocumentData, getDocs, query, setDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import { db } from './firebase';
   import Popup from './Popup'; // Importing the Popup component
 
@@ -39,6 +39,23 @@ import { db } from './firebase';
     const [popupPosition, setPopupPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
     const [selectedCells, setSelectedCells] = useState<{ [key: string]: { comedian: any; show: any; selectedPosition: string | null } }>({});
     const [comediansNow, setComediansNow] = useState(comedians);
+    const [comicHistory, setComicHistory] = useState<DocumentData[]>([]);
+
+
+    useEffect(() => {
+      const fetchData = async () => {
+        const docRef = query(collection(db, 'publishedShows'));
+        const docSnap = await getDocs(docRef);
+        if (!docSnap.empty) {
+          const data = docSnap.docs.map(doc => doc.data());
+          setComicHistory(data as DocumentData[]); // Ensure data is treated as DocumentData[]
+
+          console.log(data)
+        }
+      };
+  
+      fetchData();
+    }, []);
 
     const handleCellClick = (event: React.MouseEvent<HTMLDivElement>, comedian: any, show: any) => {
       const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
