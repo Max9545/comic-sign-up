@@ -42,6 +42,8 @@ import { db } from './firebase';
     const [comediansNow, setComediansNow] = useState(comedians);
     const [comicHistory, setComicHistory] = useState<DocumentData[]>([]);
 
+    const [allNotes, setAllNotes] = useState([]);
+
 
     useEffect(() => {
       const fetchData = async () => {
@@ -57,6 +59,36 @@ import { db } from './firebase';
   
       fetchData();
     }, []);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const docRef = query(collection(db, 'comediansForAdmin'));
+          const docSnap = await getDocs(docRef);
+          if (!docSnap.empty) {
+            const comedianData = docSnap.docs.map(doc => doc.data());
+            setComediansNow(comedianData); // Update comedians state with fetched data
+    
+            // Extract all notes
+            console.log(comedianData)
+            const notes = comedianData.map(comedian => {
+              if (comedian.note) {
+                return `${comedian.comedianInfo.name} + ${comedian.note}`
+              }
+            }).filter(note => note);
+            setAllNotes(notes);
+    
+            // Log data to ensure retrieval
+            console.log(comedianData);
+          }
+        } catch (error) {
+          console.error('Error fetching comedians:', error);
+        }
+      };
+    
+      fetchData();
+    }, []);
+    
 
     const handleCellClick = (event: React.MouseEvent<HTMLDivElement>, comedian: any, show: any) => {
       const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
@@ -296,8 +328,15 @@ const publishShow = async () => {
     onClose={(position) => handlePopupSelection(position)} // Only pass the selected position
   />
 )}
-
 <button onClick={() => publishShow()}>Submit</button>
+<div className="notes-container">
+  <h2>All Comedians' Notes</h2>
+  <ul>
+    {allNotes.map((note, index) => (
+      <li key={index}>{note}</li>
+    ))}
+  </ul>
+</div>
       </div>
     );
   };
