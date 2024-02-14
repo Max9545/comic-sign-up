@@ -994,52 +994,54 @@ You will receive confirmation emails to this email address each time you submit 
 
     const displayProfiles = () => {
       return profiles.map(profile => {
+        console.log(profile)
         return <div className='profile'>
-          <h3>{profile.name}</h3>
-          <h3>{profile.type}</h3>
-        </div>
+                  <div className='profile-contact-info'>
+                    <h1>{profile.name}</h1>
+                    
+                    <h3>{profile.email}</h3>
+                    <h4>{profile.phone}</h4>
+                  </div>
+                  <div className=''>
+                    <h2>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
+                    <h4>Clean: {profile.clean ? 'True' : 'False'}</h4>
+                    <h4>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
+                  </div>
+                </div>
       })
     }
 
-    address
-    : 
-    "55"
-    admin
-    : 
-    false
-    allowed
-    : 
-    true
-    clean
-    : 
-    false
-    downTownShowCount
-    : 
-    0
-    downTownWeekCount
-    : 
-    0
-    email
-    : 
-    "f@gmail.com"
-    famFriendly
-    : 
-    false
-    name
-    : 
-    "Ed Bell"
-    phone
-    : 
-    "55"
-    southShowCount
-    : 
-    0
-    southWeekCount
-    : 
-    0
-    type
-    : 
-    "AlmostFamous"
+
+
+// allowed
+// true
+// (boolean)
+
+
+
+
+// downTownShowCount
+// 0
+// (number)
+
+
+// downTownWeekCount
+// 0
+// (number)
+
+
+
+// southShowCount
+// 0
+// (number)
+
+
+// southWeekCount
+// 0
+// (number)
+
+
+
 
     
   return (
