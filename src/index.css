@@ -623,6 +623,11 @@ label {
   font-size: 1em;
 }
 
+.profile-headers {
+  margin-top: 6%;
+  margin-bottom: 8%;
+}
+
 .profile {
   display: flex;
   justify-content: space-between;
@@ -639,6 +644,20 @@ label {
   flex-direction: column;
   align-items: flex-start;
 }
+
+.profile-type {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profile-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+
 
 
 

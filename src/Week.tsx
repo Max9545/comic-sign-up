@@ -253,7 +253,6 @@ Comic's Note: ${comicNote}` }),
       currentComedian.southWeekCount += 1
 
       const showRef = doc(db, "users", currentComedian.id);
-console.log(showRef.data)
       // Set the "capital" field of the city 'DC'
       await updateDoc(showRef, {
         downTownShowCount: currentComedian.downTownShowCount,

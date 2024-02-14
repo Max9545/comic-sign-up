@@ -997,15 +997,22 @@ You will receive confirmation emails to this email address each time you submit 
         console.log(profile)
         return <div className='profile'>
                   <div className='profile-contact-info'>
-                    <h1>{profile.name}</h1>
-                    
-                    <h3>{profile.email}</h3>
-                    <h4>{profile.phone}</h4>
+                    <h1 className='profile-headers'>{profile.name}</h1>
+                    <h3 className='profile-headers'>{profile.email}</h3>
+                    <h4 className='profile-headers'>{profile.phone}</h4>
                   </div>
-                  <div className=''>
-                    <h2>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
-                    <h4>Clean: {profile.clean ? 'True' : 'False'}</h4>
-                    <h4>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
+                  <div className='profile-type'>
+                    <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
+                    <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
+                    <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
+                    <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
+                    </div>
+                    <div className='profile-stats'>
+                      <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
+                      <p className='profile-headers'>South Show Sign Up Count: {profile.southShowCount}</p>
+                      <p className='profile-headers'>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
+                      <p className='profile-headers'>South Weeks Submitted: {profile.southWeekCount}</p>
+                    
                   </div>
                 </div>
       })
