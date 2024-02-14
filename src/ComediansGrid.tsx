@@ -20,6 +20,7 @@ import { db } from './firebase';
     };
 
     const [currentCellKey, setCurrentCellKey] = useState<string>('');
+    const [trig, setTrig] = useState(true)
 
 
     comedians.forEach((comedian) => {
@@ -48,7 +49,7 @@ import { db } from './firebase';
         const docSnap = await getDocs(docRef);
         if (!docSnap.empty) {
           const data = docSnap.docs.map(doc => doc.data());
-          setComicHistory(data as DocumentData[]); // Ensure data is treated as DocumentData[]
+          setComicHistory(data); // Ensure data is treated as DocumentData[]
 
           console.log(data)
         }
@@ -71,28 +72,46 @@ import { db } from './firebase';
       setShowPopup(true);
     };
     
-    // Function to handle popup selection
     const handlePopupSelection = (position: string) => {
       if (currentCellKey && selectedCells[currentCellKey]) {
         const { comedian, show } = selectedCells[currentCellKey];
+        console.log("Selected cell:", selectedCells[currentCellKey]);
+        
         const updatedCells = { ...selectedCells };
     
-        const updatedShowsAvailableDowntown = { ...comedian.comedianInfo.showsAvailabledowntown };
-        const updatedShowsAvailableSouth = { ...comedian.comedianInfo.showsAvailablesouth };
+        // Update the appropriate showsAvailable object based on the show's club
+        const updatedShowsAvailable = show.club === 'downtown' 
+          ? { ...comedian.comedianInfo.showsAvailabledowntown }
+          : { ...comedian.comedianInfo.showsAvailablesouth };
+        console.log("Updated shows available:", updatedShowsAvailable);
     
-        if (show.club === 'downtown' && comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()]?.includes(show.id)) {
-          updatedShowsAvailableDowntown[show.day.toLowerCase()][show.id] = position;
-        } else if (show.club === 'south' && comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()]?.includes(show.id)) {
-          updatedShowsAvailableSouth[show.day.toLowerCase()][show.id] = position;
+        // Update the position for the specific show in the appropriate showsAvailable object
+        if (updatedShowsAvailable[show.day.toLowerCase()]?.includes(show.id)) {
+          updatedShowsAvailable[show.day.toLowerCase()][show.id] = position;
+          console.log("Position updated for show:", updatedShowsAvailable[show.day.toLowerCase()][show.id]);
         }
     
+        // Update the selectedCells state with the new position
         updatedCells[currentCellKey] = {
           ...selectedCells[currentCellKey],
-          selectedPosition: position
+          selectedPosition: position,
+          comedian: {
+            ...selectedCells[currentCellKey].comedian,
+            comedianInfo: {
+              ...(selectedCells[currentCellKey].comedian.comedianInfo),
+              showsAvailabledowntown: show.club === 'downtown' 
+                ? updatedShowsAvailable
+                : selectedCells[currentCellKey].comedian.comedianInfo.showsAvailabledowntown,
+              showsAvailablesouth: show.club === 'south' 
+                ? updatedShowsAvailable 
+                : selectedCells[currentCellKey].comedian.comedianInfo.showsAvailablesouth
+            }
+          }
         };
+        console.log("Updated cell:", updatedCells[currentCellKey]);
     
-        setSelectedCells(updatedCells);
-        setShowPopup(false);
+        setSelectedCells(updatedCells); // Update the selectedCells state
+        setShowPopup(false); // Close the popup
       }
     };
     
@@ -201,43 +220,67 @@ const publishShow = async () => {
                 {/* Comedian name cell */}
                 <div className="cell">{comedian.comedianInfo.name}</div>
                 {/* Downtown show cells */}
-                {shows
-                  .filter(show => show.club === 'downtown')
-                  .map(show => (
-                    <div
-                      className="cell"
-                      key={`${comedian.comedianInfo.id}-${show.id}`}
-                      onClick={(event) => handleCellClick(event, comedian, show)}
-                    >
-                      {selectedCells[`${comedian.comedianInfo.id}-${show.id}`] ?
-                        selectedCells[`${comedian.comedianInfo.id}-${show.id}`].selectedPosition || 'Select Position'
-                        : (
-                          (comedian.comedianInfo.showsAvailabledowntown &&
-                            comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()] &&
-                            comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()].includes(show.id)) ?
-                            'X' : ''
-                        )}
-                    </div>
-                  ))}
-                {/* South Club show cells */}
-                {shows
-                  .filter(show => show.club === 'south')
-                  .map(show => (
-                    <div
-                      className="cell"
-                      key={`${comedian.comedianInfo.id}-${show.id}`}
-                      onClick={(event) => handleCellClick(event, comedian, show)}
-                    >
-                      {selectedCells[`${comedian.comedianInfo.id}-${show.id}`] ?
-                        selectedCells[`${comedian.comedianInfo.id}-${show.id}`].selectedPosition || 'Select Position'
-                        : (
-                          (comedian.comedianInfo.showsAvailablesouth &&
-                            comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()] &&
-                            comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()].includes(show.id)) ?
-                            'X' : ''
-                        )}
-                    </div>
-                  ))}
+{shows
+  .filter(show => show.club === 'downtown')
+  .map(show => {
+    const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
+    const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
+    let assignedType = null;
+    if (comicHistoryItem) {
+      const comic = comicHistoryItem.comicArray.find(comic => comic.comic === comedian.comedianInfo.name);
+      if (comic) {
+        assignedType = comic.type;
+      }
+    }
+
+    const isAvailable = comedian.comedianInfo.showsAvailabledowntown &&
+                        comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()] &&
+                        comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()].includes(show.id);
+
+
+    return (
+      <div
+        className={`cell ${assignedType || (isAvailable ? 'available' : '')}`} // Adding comic type as a class
+        key={cellKey}
+        onClick={(event) => handleCellClick(event, comedian, show)}
+      >
+        {assignedType || (isAvailable ? 'X' : '')} {/* Display assigned type or 'X' if available */}
+      </div>
+    );
+  })
+}
+
+{/* South Club show cells */}
+{shows
+  .filter(show => show.club === 'south')
+  .map(show => {
+    const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
+    const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
+    let assignedType = null;
+    if (comicHistoryItem) {
+      const comic = comicHistoryItem.comicArray.find(comic => comic.comic === comedian.comedianInfo.name);
+      if (comic) {
+        assignedType = comic.type;
+      }
+    }
+
+    const isAvailable = comedian.comedianInfo.showsAvailablesouth &&
+                        comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()] &&
+                        comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()].includes(show.id);
+
+
+    return (
+      <div
+        className={`cell ${assignedType || (isAvailable ? 'available' : '')}`} // Adding comic type as a class
+        key={cellKey}
+        onClick={(event) => handleCellClick(event, comedian, show)}
+      >
+        {assignedType || (isAvailable ? 'X' : '')} {/* Display assigned type or 'X' if available */}
+      </div>
+    );
+  })
+}
+
               </div>
             ))}
           </React.Fragment>
