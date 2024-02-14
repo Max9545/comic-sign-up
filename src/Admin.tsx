@@ -57,9 +57,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [comicBuildVisible, setComicBuildVisible] = useState(false)
   const [enterAvailabilityForComic, setEnterAvailabilityForComic] = useState(false)
   const [emailComics, setEmailComics] = useState(false)
+  const [comicProfiles, setComicProfiles] = useState(false)
   const [downtownLong, setDowntownLong] = useState(false)
   const [southLong, setSouthLong] = useState(false)
   const [almostFamous, setAlmostFamous] = useState(true)
+  
   
   const [gridVisible, setGridVisible] = useState(true)
   const [selectedButtons, setSelectedButtons] = useState({
@@ -70,7 +72,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     emailComics: false,
     downtownLong: false,
     southLong: false,
-    gridVisible: true
+    gridVisible: true,
+    comicProfiles: false,
   });
 
   
@@ -847,7 +850,7 @@ ${showsForEmailSouth}`
           'Content-Type': 'application/json',
           // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
         },
-        body: JSON.stringify({email: createNewComicEmail, message: `Hello ${createNewComicName}, this is an email to inviting you to use https://comicsignuptestmail.comedyworks.com in order to give the club your weekly availability. Your login username is this email you provided the club and your initial password is 
+        body: JSON.stringify({email: createNewComicEmail, message: `Hello ${createNewComicName}, this is an email to inviting you to use https://comicsignuptest.comedyworks.com in order to give the club your weekly availability. Your login username is this email you provided the club and your initial password is 
         ${createNewComicPassword} 
 and you will need to change your password after your first login to something that is private and known only to you.
 
@@ -920,6 +923,10 @@ You will receive confirmation emails to this email address each time you submit 
     setEmailComics(!emailComics);
   };
 
+  const toggleComicProfiles = () => {
+    setComicProfiles(!comicProfiles);
+  };
+
   const toggledowntownLong = () => {
     setDowntownLong(!downtownLong);
   };
@@ -956,15 +963,16 @@ You will receive confirmation emails to this email address each time you submit 
     } else if (buttonName === 'emailComics') {
       // Logic for the "Change Comic Type" button
       toggleEmailComics(); // Assuming this function toggles visibility
-    }
-    else if (buttonName === 'downtownLong') {
+    } else if (buttonName === 'downtownLong') {
       // Logic for the "Change Comic Type" button
       toggledowntownLong(); // Assuming this function toggles visibility
     } else if (buttonName === 'southLong') {
       // Logic for the "Change Comic Type" button
       toggleSouthLong(); // Assuming this function toggles visibility
-    }
-    
+    } else if (buttonName === 'comicProfiles') {
+      // Logic for the "Change Comic Type" button
+      toggleComicProfiles(); // Assuming this function toggles visibility
+    } 
   };
 
     
@@ -1000,7 +1008,7 @@ You will receive confirmation emails to this email address each time you submit 
           className={selectedButtons.availabiltyForComics ? 'highlighted' : ''}
           onClick={() => handleButtonClick('availabiltyForComics')}
         >
-          Enter Availabilty For Comics
+          Comic View and Enter Availabilty For Comic
         </button>
         <button 
           className={selectedButtons.buildShows ? 'highlighted' : ''}
@@ -1020,6 +1028,12 @@ You will receive confirmation emails to this email address each time you submit 
           onClick={() => handleButtonClick('changeComicType')}
         >
           Change Comic Type
+        </button>
+        <button 
+          className={selectedButtons.comicProfiles ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('comicProfiles')}
+        >
+          Comic Profiles
         </button>
       </div>
         <div className='admin-form'>
@@ -1268,7 +1282,9 @@ You will receive confirmation emails to this email address each time you submit 
           <div>{signedShowsDown.map(availShow => availShow)}</div></>}
         {southLong && <><h2 className='south-available-header'>South Club Available Comics</h2>
           <div>{signedShowsSouth.map(availShow => availShow)}</div></>}
-      
+      {comicProfiles && <>
+        <h2>Comic Profiles</h2>
+      </>}
       {/* {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
       {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>} */}
       {/* {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)} */}
