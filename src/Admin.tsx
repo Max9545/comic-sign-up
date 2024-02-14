@@ -1100,7 +1100,7 @@ You will receive confirmation emails to this email address each time you submit 
           className={selectedButtons.comicProfiles ? 'highlighted' : ''}
           onClick={() => handleButtonClick('comicProfiles')}
         >
-          Comic Profiles
+          User Profiles
         </button>
       </div>
         <div className='admin-form'>
@@ -1350,7 +1350,6 @@ You will receive confirmation emails to this email address each time you submit 
         {southLong && <><h2 className='south-available-header'>South Club Available Comics</h2>
           <div>{signedShowsSouth.map(availShow => availShow)}</div></>}
       {comicProfiles && <>
-        <h2>Comic Profiles</h2>
         <div>{displayProfiles()}</div>
       </>}
       {/* {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}

@@ -564,7 +564,7 @@ label {
 .admin-container {
   display: flex;
   position: relative;
-  margin-left: 15%; /* Add margin to create space for the sidebar */
+  margin-left: 15%; 
   padding-left: 20px; /* Optional: Add padding to the left of the admin container */
 }
 
