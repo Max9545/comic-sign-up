@@ -373,8 +373,9 @@ label {
 .out-of-town {
   border: solid 2px #17a2b8;
   background-color: black;
-  padding: 2%;
+  padding: 2% 0 0 0;
   font-size: 1.4em;
+  display: block;
 }
 
 .out-of-town-checkbox {

@@ -1253,7 +1253,7 @@ You will receive confirmation emails to this email address each time you submit 
           <button onClick={() => deleteComic()} className='create-comic-button'>Delete Comic Profile</button>
         </div>
         </div>}
-          {emailComics && <><button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button><br></br>
+          {emailComics && <><button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros</button><br></br>
           <label className='out-of-town'>Include Almost Famous<input type="checkbox" checked={almostFamous}
            className='out-of-town-checkbox'
             onChange={() => setAlmostFamous(!almostFamous)}/></label>
