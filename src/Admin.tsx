@@ -629,7 +629,8 @@ ${showsForEmailSouth}`
       emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
     } else if (!outOfTowners && !inactive) {
       console.log('only pro')
-      emailListWithNoInactiveOrOutTown.map(email => sendEmail(email, showsForEmailRaw))
+      emailList.map(email => sendEmail(email, showsForEmailRaw))
+      // emailListWithNoInactiveOrOutTown.map(email => sendEmail(email, showsForEmailRaw))
     } else if (!almostFamous) {
       console.log('only out of town and pro', emailListWithNoInactive)
       
