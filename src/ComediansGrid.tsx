@@ -227,7 +227,7 @@ const publishShow = async () => {
     const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
     let assignedType = null;
     if (comicHistoryItem) {
-      const comic = comicHistoryItem.comicArray.find(comic => comic.comic === comedian.comedianInfo.name);
+      const comic = comicHistoryItem.comicArray.find((comic: { comic: any; }) => comic.comic === comedian.comedianInfo.name);
       if (comic) {
         assignedType = comic.type;
       }
@@ -244,7 +244,9 @@ const publishShow = async () => {
         key={cellKey}
         onClick={(event) => handleCellClick(event, comedian, show)}
       >
-        {assignedType || (isAvailable ? 'X' : '')} {/* Display assigned type or 'X' if available */}
+        {/* {selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')} */}
+
+        {selectedCells[cellKey]?.selectedPosition || assignedType || (isAvailable ? 'X' : '')} {/* Display assigned type or 'X' if available */}
       </div>
     );
   })
@@ -258,7 +260,7 @@ const publishShow = async () => {
     const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
     let assignedType = null;
     if (comicHistoryItem) {
-      const comic = comicHistoryItem.comicArray.find(comic => comic.comic === comedian.comedianInfo.name);
+      const comic = comicHistoryItem.comicArray.find((comic: { comic: any; }) => comic.comic === comedian.comedianInfo.name);
       if (comic) {
         assignedType = comic.type;
       }
@@ -275,7 +277,7 @@ const publishShow = async () => {
         key={cellKey}
         onClick={(event) => handleCellClick(event, comedian, show)}
       >
-        {assignedType || (isAvailable ? 'X' : '')} {/* Display assigned type or 'X' if available */}
+        {selectedCells[cellKey]?.selectedPosition || assignedType || (isAvailable ? 'X' : '')} {/* Display assigned type or 'X' if available */}
       </div>
     );
   })
