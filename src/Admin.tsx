@@ -12,6 +12,7 @@ import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateCurrentUser, deleteUser, updateProfile } from "firebase/auth"
 import ComediansGrid from './ComediansGrid'
+import { preProcessFile } from 'typescript'
 const auth = getAuth();
 
 
@@ -61,6 +62,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [downtownLong, setDowntownLong] = useState(false)
   const [southLong, setSouthLong] = useState(false)
   const [almostFamous, setAlmostFamous] = useState(true)
+  const [profiles, setProfiles] = useState<DocumentData[]>([])
   
   
   const [gridVisible, setGridVisible] = useState(true)
@@ -98,6 +100,21 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
   }, [published])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const docRef = query(collection(db, 'users'));
+      const docSnap = await getDocs(docRef);
+      if (!docSnap.empty) {
+        const data = docSnap.docs.map(doc => doc.data());
+        setProfiles(data); // Ensure data is treated as DocumentData[]
+
+        console.log(data)
+      }
+    };
+
+    fetchData();
+  }, [comicProfiles])
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -975,8 +992,56 @@ You will receive confirmation emails to this email address each time you submit 
     } 
   };
 
-    
+    const displayProfiles = () => {
+      return profiles.map(profile => {
+        return <div className='profile'>
+          <h3>{profile.name}</h3>
+          <h3>{profile.type}</h3>
+        </div>
+      })
+    }
 
+    address
+    : 
+    "55"
+    admin
+    : 
+    false
+    allowed
+    : 
+    true
+    clean
+    : 
+    false
+    downTownShowCount
+    : 
+    0
+    downTownWeekCount
+    : 
+    0
+    email
+    : 
+    "f@gmail.com"
+    famFriendly
+    : 
+    false
+    name
+    : 
+    "Ed Bell"
+    phone
+    : 
+    "55"
+    southShowCount
+    : 
+    0
+    southWeekCount
+    : 
+    0
+    type
+    : 
+    "AlmostFamous"
+
+    
   return (
     <div className='admin-container'>
       <div className="sidebar">
@@ -1284,6 +1349,7 @@ You will receive confirmation emails to this email address each time you submit 
           <div>{signedShowsSouth.map(availShow => availShow)}</div></>}
       {comicProfiles && <>
         <h2>Comic Profiles</h2>
+        <div>{displayProfiles()}</div>
       </>}
       {/* {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
       {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>} */}
