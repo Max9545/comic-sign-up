@@ -657,7 +657,7 @@ label {
   align-items: flex-end;
 }
 
-
-
-
-
+.profile-search {
+  height: 5vh;
+  width: 20vw
+}

@@ -63,7 +63,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [southLong, setSouthLong] = useState(false)
   const [almostFamous, setAlmostFamous] = useState(true)
   const [profiles, setProfiles] = useState<DocumentData[]>([])
-  
+  const [searchQuery, setSearchQuery] = useState('');
+
   
   const [gridVisible, setGridVisible] = useState(true)
   const [selectedButtons, setSelectedButtons] = useState({
@@ -992,30 +993,59 @@ You will receive confirmation emails to this email address each time you submit 
     } 
   };
 
-    const displayProfiles = () => {
-      return profiles.map(profile => {
-        console.log(profile)
-        return <div className='profile'>
-                  <div className='profile-contact-info'>
-                    <h1 className='profile-headers'>{profile.name}</h1>
-                    <h3 className='profile-headers'>{profile.email}</h3>
-                    <h4 className='profile-headers'>{profile.phone}</h4>
-                  </div>
-                  <div className='profile-type'>
-                    <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
-                    <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
-                    <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
-                    <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
+    const displayProfiles = (listToUse: string) => {
+
+      if (listToUse === 'all') {
+        return profiles.map(profile => {
+          console.log(profile)
+          return <div className='profile'>
+                    <div className='profile-contact-info'>
+                      <h1 className='profile-headers'>{profile.name}</h1>
+                      <h3 className='profile-headers'>{profile.email}</h3>
+                      <h4 className='profile-headers'>{profile.phone}</h4>
                     </div>
-                    <div className='profile-stats'>
-                      <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
-                      <p className='profile-headers'>South Show Sign Up Count: {profile.southShowCount}</p>
-                      <p className='profile-headers'>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
-                      <p className='profile-headers'>South Weeks Submitted: {profile.southWeekCount}</p>
-                    
+                    <div className='profile-type'>
+                      <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
+                      <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
+                      <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
+                      <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
+                      </div>
+                      <div className='profile-stats'>
+                        <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
+                        <p className='profile-headers'>South Show Sign Up Count: {profile.southShowCount}</p>
+                        <p className='profile-headers'>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
+                        <p className='profile-headers'>South Weeks Submitted: {profile.southWeekCount}</p>
+                      
+                    </div>
                   </div>
-                </div>
-      })
+        })
+      } else if (listToUse === 'filtered') {
+        return filteredProfiles.map(profile => {
+          console.log(profile)
+          return <div className='profile'>
+                    <div className='profile-contact-info'>
+                      <h1 className='profile-headers'>{profile.name}</h1>
+                      <h3 className='profile-headers'>{profile.email}</h3>
+                      <h4 className='profile-headers'>{profile.phone}</h4>
+                    </div>
+                    <div className='profile-type'>
+                      <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
+                      <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
+                      <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
+                      <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
+                      </div>
+                      <div className='profile-stats'>
+                        <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
+                        <p className='profile-headers'>South Show Sign Up Count: {profile.southShowCount}</p>
+                        <p className='profile-headers'>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
+                        <p className='profile-headers'>South Weeks Submitted: {profile.southWeekCount}</p>
+                      
+                    </div>
+                  </div>
+        })
+      }
+
+      
     }
 
 
@@ -1047,7 +1077,15 @@ You will receive confirmation emails to this email address each time you submit 
 // 0
 // (number)
 
+const handleSearch = (event: { target: { value: React.SetStateAction<string> } }) => {
+  setSearchQuery(event.target.value);
+};
 
+const filteredProfiles = profiles.filter(profile => {
+  return Object.values(profile).some(value =>
+    typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+});
 
 
     
@@ -1357,7 +1395,14 @@ You will receive confirmation emails to this email address each time you submit 
         {southLong && <><h2 className='south-available-header'>South Club Available Comics</h2>
           <div>{signedShowsSouth.map(availShow => availShow)}</div></>}
       {comicProfiles && <>
-        <div>{displayProfiles()}</div>
+          <input
+          type="text"
+          placeholder="Search profiles..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className='profile-search'
+        />
+        {searchQuery ? <div>{displayProfiles('filtered')}</div> : <div>{displayProfiles('all')}</div>}
       </>}
       {/* {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
       {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>} */}
