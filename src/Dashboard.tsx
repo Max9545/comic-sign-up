@@ -8,6 +8,7 @@ import Week  from './Week'
 import { Comic } from './interface'
 import Admin from './Admin'
 import { deleteUser, getAuth, updateProfile, User } from "firebase/auth"
+import ComediansGrid from "./ComediansGrid"
 
 function Dashboard() {
 
@@ -17,6 +18,7 @@ function Dashboard() {
   const [weekOrder, setWeekOrder] = useState('')
   const [allowed, setAllowed] = useState()
   const [trigger, setTrigger] = useState(false)
+  const [comicsAvailable, setComicsAvailable] = useState<Comic[]>([]);
   const [comedian, setComedian] = useState<Comic>({
     name: '',
     id: '',
@@ -69,6 +71,28 @@ function Dashboard() {
   const [shows, setShows] = useState<any>([]) 
 
   const navigate = useNavigate() 
+
+  useEffect(() => {
+    const fetchComedians = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "comediansForAdmin")); // Assuming "comedians" is your collection name
+        // console.log(querySnapshot[0].data())
+        const comediansData: any[] = [];
+        querySnapshot.forEach((doc) => {
+          console.log(doc)
+          // Assuming each document contains comedian data
+          const comedianData = doc.data();
+          comediansData.push(comedianData);
+        });
+        console.log(comediansData)
+        setComicsAvailable(comediansData);
+      } catch (error) {
+        console.error("Error fetching comedians:", error);
+      }
+    };
+
+    fetchComedians();
+  }, []); // Run once on component mount
 
   useEffect(() => {
     viewAllComicsAvailableDowntown()
@@ -292,22 +316,32 @@ const viewAllComicsAvailableSouth = async () => {
           </div>
         </div>
         <p className='comedian-signup'> 
-          {shows[0] && `Signup Week of ${shows[0].date.slice(5)}-${shows[0].date.slice(0, 4)}`}
+          {shows[0] && !admin && `Signup Week of ${shows[0].date.slice(5)}-${shows[0].date.slice(0, 4)}`}
+          {admin && `Administrator Portal`}
         </p>
       {allowed && <div className="dashboard">
-        <p className='available-example'>This yellow color means you are AVAILABLE to be booked for this show</p>
-        <p className='not-available-example'>This grey color means you are NOT available to be booked for this show</p>
+        {!admin && <>
+          <p className='available-example directions'>Below you will find buttons, each with information about one show. Clicking on a show button lets the club know you are available to be booked for that specific show. Click the show button again to change/toggle your availability for that show. Hit the Submit button at the very bottom to send the club your availability recive a confirmation email.</p>
+          <p className='available-example'>This yellow color means you are AVAILABLE to be booked for the this show</p>
+          <p className='not-available-example'>This gray color means you are NOT available to be booked for this show</p>
+        </>}
+        
         <input
             type="userName"
             className="login__textBox userName"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="User Name If First Time"
-        />
+            />
+        
+
         {!admin && <Week comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder}/>}
         {admin && <Admin shows={shows} setShows={setShows}
-        setWeekSchedule={setWeekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder} user={user}/>}
+        setWeekSchedule={setWeekSchedule} weekSchedule={weekSchedule} comedian={comedian} weeklyShowTimes={shows} admin={admin} fetchWeekForComedian={fetchWeekForComedian} weekOrder={weekOrder} user={user} comedians={comicsAvailable}/>}
+        {/* {shows && admin && comicsAvailable && <ComediansGrid comedians={comicsAvailable} shows={shows} />} */}
       </div>}
+        
+      
      </>
   ) 
 } 

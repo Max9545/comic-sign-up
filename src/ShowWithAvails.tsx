@@ -112,7 +112,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
     }).filter(type => type != undefined)
 
     setDoc(doc(db, `publishedShows/${props.id}`), {bookedshow: bookedShow, fireOrder: Date.now(), comicArray: comicArray})
-    alert('Show queued!')
+    alert('Show published!')
     props.setAdTrigger(!props.adTrigger)
   }
 
@@ -181,7 +181,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           onDrop={handleDrop}
           data-index={index}
         >
-          {bookedShow.comics[key].length > 0 && <div className='potential-booked-comic'>{`${key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}<button className='delete-potential-comic' onClick={() => removeComic(key)}>Delete</button></div>}
+          {bookedShow.comics[key].length > 0 && <div className='potential-booked-comic'>{`${key.includes('Star') ? '*' + key.slice(4) : key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}<button className='delete-potential-comic' onClick={() => removeComic(key)}>Delete</button></div>}
         </div>
       ))}
         {(bookedShow.comics.MC || bookedShow.comics.StarMC || bookedShow.comics.A1 || bookedShow.comics.B1 || bookedShow.comics.Yes || bookedShow.comics.Star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}  
@@ -189,16 +189,20 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
         <div>
     </div>
         <div className='comic-type-box'>{props.availableComics.map(comic => 
-          <div className='available-comic' onClick={() => displayComicHistory(comic)} key={comic}>
-            <p className='comic-avail' key={comic}>{`${comic}`}</p>
-            <p className='comic-type' onClick={() => setComedianType('mC', comic)}>MC</p>
-            <p className='comic-type' onClick={() => setComedianType('a1', comic)}>A1</p>
-            <p className='comic-type' onClick={() => setComedianType('b1', comic)}>B1</p>
-            <p className='comic-type' onClick={() => setComedianType('star7', comic)}>Star7</p>
-            <p className='comic-type starMC' onClick={() => setComedianType('starMC', comic)}>Star MC</p>
+          <div className='available-comic' onClick={() => displayComicHistory(comic)} key={(comic as { name?: string })?.name}>
+            <div>
+             
+            <p className='comic-avail' key={(comic as { name?: string })?.name}>{`${(comic as { name?: string })?.name}`}</p>
+    {(comic as { note?: string })?.note && <p>{`${(comic as { note?: string })?.note}`}</p>}
+</div>
+            <p className='comic-type' onClick={() => setComedianType('mC', `${(comic as { name?: string })?.name}`)}>MC</p>
+            <p className='comic-type' onClick={() => setComedianType('a1', `${(comic as { name?: string })?.name}`)}>A1</p>
+            <p className='comic-type' onClick={() => setComedianType('b1', `${(comic as { name?: string })?.name}`)}>B1</p>
+            <p className='comic-type' onClick={() => setComedianType('star7', `${(comic as { name?: string })?.name}`)}>*7</p>
+            <p className='comic-type starMC' onClick={() => setComedianType('starMC', `${(comic as { name?: string })?.name}`)}>*MC</p>
             <div>
               <input type='text' className='pro-comic-type-input' onChange={(e) => setMiscType(e.target.value)}/>
-              <button className='comic-type' onClick={() => setComedianType(miscType, comic)}>Enter Type</button>
+              <button className='comic-type' onClick={() => setComedianType(miscType, `${(comic as { name?: string })?.name}`)}>Enter Type</button>
             </div>
           </div>)}
           <div className='yes-div'
@@ -210,13 +214,13 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
               }
             }}
           >
-            <label className='yes-spot'>Yes (Guest):</label>
-            <input type='text' className='yes-spot-input' onChange={(event) => setYes(event?.target?.value)}/>
-            <button className='add-show' onClick={() => {
+            {/* <label className='yes-spot'>Yes (Guest):</label>
+            <input type='text' className='yes-spot-input' onChange={(event) => setYes(event?.target?.value)}/> */}
+            {/* <button className='add-show' onClick={() => {
                 bookedShow.comics.Yes = yes
                 setBookedShow(bookedShow)
                 setTrigger(!trigger)
-            }}>Add</button>
+            }}>Add</button> */}
           </div>
           <div className='other-block'
             onKeyUp={(e) => {

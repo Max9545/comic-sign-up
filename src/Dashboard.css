@@ -1,6 +1,6 @@
 .dashboard {
-  height: 100%;
-  width: 100%;
+  min-height: 100vh;
+  width: 100;
   display: flex;
   /* padding: 2%; */
   border-top: #dc3545 solid;
@@ -33,10 +33,10 @@
   color: white;
   background-color: black;
 }
-
+/* 
 .dashboard div {
   margin-top: 7px;
-}
+} */
 
 .name-change__btn {
   background-color: #dc3545;

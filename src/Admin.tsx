@@ -11,10 +11,11 @@ import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateCurrentUser, deleteUser, updateProfile } from "firebase/auth"
+import ComediansGrid from './ComediansGrid'
 const auth = getAuth();
 
 
-function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any }) {
+function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any, weekSchedule: any, comedian: any, weeklyShowTimes: any, admin: boolean, fetchWeekForComedian: any, weekOrder: string, user: any, comedians: any }) {
 
   const [newSchedule, setNewSchedule] = useState<any[]>([])
   const [showsToAddDowntown, setShowsToAddDowntown] = useState<any[]>([])
@@ -23,6 +24,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [type, setType] = useState('')
+  const [downtownShowsGrid, setDownTownShowsGrid] = useState([])
   const [newComicType, setNewComicType] = useState('')
   const [signedShowsDown, setSignedShowsDown] = useState<any[]>([])
   const [signedShowsSouth, setSignedShowsSouth] = useState<any[]>([])
@@ -39,6 +41,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [adTrigger, setAdTrigger] = useState(true)
   const [potentialShow, setPotentialShow] = useState({id:''})
   const [createNewComicEmail, setCreateNewComicEmail] = useState('')
+  const [inactive, setInactive] = useState(false)
+  const [emailListWithNoInactiveOrOutTown, setEmailListWithNoInactiveOrOutTown] = useState([])
+  const [emailListWithNoInactive, setEmailListWithNoInactive] = useState([])
+  const [emailWithNoAlmostFamous, setEmailWithNoAlmostFamous] = useState()
   const [createNewComicPassword, setCreateNewComicPassword] = useState('')
   const [createNewComicName, setCreateNewComicName] = useState('')
   const [createNewComicAddress, setCreateNewComicAddress] = useState('')
@@ -49,6 +55,25 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [comicToDelete, setComicToDelete] = useState('')
   const [buildShowVisible, setBuildShowVisible] = useState(false)
   const [comicBuildVisible, setComicBuildVisible] = useState(false)
+  const [enterAvailabilityForComic, setEnterAvailabilityForComic] = useState(false)
+  const [emailComics, setEmailComics] = useState(false)
+  const [downtownLong, setDowntownLong] = useState(false)
+  const [southLong, setSouthLong] = useState(false)
+  const [almostFamous, setAlmostFamous] = useState(true)
+  
+  const [gridVisible, setGridVisible] = useState(true)
+  const [selectedButtons, setSelectedButtons] = useState({
+    availabiltyForComics: false,
+    buildShows: false,
+    createNewComic: false,
+    changeComicType: false,
+    emailComics: false,
+    downtownLong: false,
+    southLong: false,
+    gridVisible: true
+  });
+
+  
 
   const { register, handleSubmit, reset } = useForm()
 
@@ -303,21 +328,22 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
         const availabeComedians: any[] = []
         availableComics.map((comedian) => {
         
-          comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].map((downTownShow: string) => {
+          comedian.comedianInfo.showsAvailabledowntown[`${show.day.toLowerCase()}`].map((downTownShow: string, index: any) => {
             if (show.id == downTownShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-              availabeComedians.push(comedian.comedianInfo.name)
+              availabeComedians.push({name: comedian.comedianInfo.name, note: comedian.note, id: index})
               show.availableComics = availabeComedians
             }
           })
         })
-
+        // @ts-ignore
+        setDownTownShowsGrid(downtownShows)
         const showFinals = downtownShows.map((finalForm, index) => {
 
         const alreadyBooked = published.map(show => {
           if (show.bookedshow.id == finalForm.id) {
             return <div className={`published-${show.bookedshow.club}`} key={index}>
           <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-          {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={pinDext} >{`${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
+          {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={pinDext} >{`${comic.type.includes('Star') ? '*' + comic.type.slice(4) : comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
             <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
           </div>
           }
@@ -361,9 +387,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     const availabeComedians: any[] = []
     availableComics.map((comedian) => {
       
-      comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].map((southShow: string) => {
+      comedian.comedianInfo.showsAvailablesouth[`${show.day.toLowerCase()}`].map((southShow: string, index: any) => {
         if (show.id == southShow && !availabeComedians.includes(comedian.comedianInfo.name)) {
-          availabeComedians.push(comedian.comedianInfo.name)
+          availabeComedians.push({name: comedian.comedianInfo.name, note: comedian.note, id:index})
           show.availableComics = availabeComedians
         }
       })
@@ -378,12 +404,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
         return <div className={`published-${show.bookedshow.club}`} key={index}>
       <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
 
-      {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={`${pinDext}`} >{`${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
+      {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={`${pinDext}`} >{`${comic.type.includes('Star') ? '*' + comic.type.slice(4) : comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
         <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
       </div>
       }
     })
-
         
         return <ShowWithAvails
         key={index}
@@ -481,18 +506,32 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     const emails = doc.docs.map(user => user.data().email)
 
     setEmailList(emails)
-
+console.log(emails)
     setEmailListWithOutTowners([])
 
-    const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'outOfTown')
+    const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
 
+    const withoutOutTownersOrInactive = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown' && comic.data().type != 'Inactive')
     const emailsWithoutOutTowners = withoutOutTowners.map((comic: any ) => comic.data().email)
-
+    
+    console.log('emails', emails)
+    console.log('emailsWithoutOutTowners', emailsWithoutOutTowners)
     setEmailListWithOutTowners(emailsWithoutOutTowners)
-    // const docRefOut = query(collection(db, `users`), where('type', '!=', 'outOfTown'))
 
+    // @ts-ignore
+    setEmailListWithNoInactiveOrOutTown(withoutOutTownersOrInactive)
+    // const docRefOut = query(collection(db, `users`), where('type', '!=', 'outOfTown'))
+    const withoutOutInactive = doc.docs.filter(comic =>  comic.data().type !='Inactive').map((comic: any ) => comic.data().email)
+    // @ts-ignore
+    setEmailListWithNoInactive(withoutOutInactive)
+console.log('withoutOutInactive', withoutOutInactive)
     // const docOut = await (getDocs(docRefOut))
 
+
+    const withoutOutAlmostFamous = doc.docs.filter(comic =>  comic.data().type !='AlmostFamous').map((comic: any ) => comic.data().email)
+    // @ts-ignore
+    setEmailWithNoAlmostFamous(withoutOutAlmostFamous)
+    console.log('withoutOutAlmostFamous', withoutOutAlmostFamous)
     // const emailsOut = docOut.docs.map(user => user.data().email)
 
     // setEmailListWithOutTowners(emailsOut)
@@ -538,7 +577,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   
       // ).filter(line => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
       if (pubShow.bookedshow.club === 'downtown') {
-        const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
+        const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
   
         const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
   
@@ -553,7 +592,7 @@ ${showString}`
       const showsForEmailRawSouth = published.map(pubShow => {
 
         if (pubShow.bookedshow.club === 'south') {
-          const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
+          const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
     
           const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
     
@@ -571,16 +610,32 @@ ${showsForEmailRawDowntown}`.replace(/,/g, '')
     const showsForEmailSouth = `South Shows----------------
 ${showsForEmailRawSouth}`.replace(/,/g, '')
 
-    const showsForEmailRaw = `${showsForEmailDowntown}
+    const showsForEmailRaw = `Below is the schedule for the following shows. Please be aware of which club you are to perfom in.
+
+${showsForEmailDowntown}
 
 
 ${showsForEmailSouth}`
 
-    if (outOfTowners) {
+    if (outOfTowners && inactive && almostFamous) {
+      console.log('everyone')
       emailList.map(email => sendEmail(email, showsForEmailRaw))
-    } else {
+    } else if (!outOfTowners && inactive) {
+      console.log('only inactive and pro')
       emailListWithOutTowners.map(email => sendEmail(email, showsForEmailRaw))
-    }
+    } else if (outOfTowners && !inactive) {
+      console.log('only out of town and pro', emailListWithNoInactive)
+      
+      emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
+    } else if (!outOfTowners && !inactive) {
+      console.log('only pro')
+      emailList.map(email => sendEmail(email, showsForEmailRaw))
+      // emailListWithNoInactiveOrOutTown.map(email => sendEmail(email, showsForEmailRaw))
+    } else if (!almostFamous) {
+      console.log('only out of town and pro', emailListWithNoInactive)
+      
+      emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
+    } 
     alert('Comics have been notified')
   }
 
@@ -699,7 +754,7 @@ ${showsForEmailSouth}`
     setAdTrigger(!adTrigger)
   }
 
-  const createNewComic = () => {
+  const createNewComic = async () => {
 
     if (createNewComicName && createNewComicEmail && createNewComicPassword && createNewComicAddress && createNewComicPhone) {
       createUserWithEmailAndPassword(auth, createNewComicEmail, createNewComicPassword)
@@ -784,6 +839,34 @@ ${showsForEmailSouth}`
     } else {
       alert("Email, name, password, address, and phone number are needed to submit a new comic. If unknown enter 'N/A' for now.")
     }
+
+    try {
+      const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
+        },
+        body: JSON.stringify({email: createNewComicEmail, message: `Hello ${createNewComicName}, this is an email to inviting you to use https://comicsignuptestmail.comedyworks.com in order to give the club your weekly availability. Your login username is this email you provided the club and your initial password is 
+        ${createNewComicPassword} 
+and you will need to change your password after your first login to something that is private and known only to you.
+
+The rules for submitting your availability remain the same. Your last availability submitted by Tuesday at 5PM is what will be used to book the shows. 
+               
+You will receive confirmation emails to this email address each time you submit your availability. The schedule each week will be emailed as well. 
+        
+        `}),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Email sent successfully:', data);
+      } else {
+        console.error('Error sending email:', response);
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
   }
 
   const deleteComic = async () => {
@@ -829,29 +912,138 @@ ${showsForEmailSouth}`
     setComicBuildVisible(!comicBuildVisible);
   };
 
+  const toggleEnterAvailabilityForComic = () => {
+    setEnterAvailabilityForComic(!enterAvailabilityForComic);
+  };
+
+  const toggleEmailComics = () => {
+    setEmailComics(!emailComics);
+  };
+
+  const toggledowntownLong = () => {
+    setDowntownLong(!downtownLong);
+  };
+
+  const toggleSouthLong = () => {
+    setSouthLong(!southLong);
+  };
+  const toggleGridVisible = () => {
+    setGridVisible(!gridVisible);
+  };
+
+  const handleButtonClick = (buttonName: string) => {
+    setSelectedButtons(prevState => ({
+      ...prevState,
+      [buttonName]: !prevState[buttonName]
+    }));
+
+    // Add your button click logic here
+    if (buttonName === 'availabiltyForComics') {
+      // Logic for the "Enter Availabilty For Comics" button
+      toggleWeekVisibility(); // Assuming this function toggles visibility
+    } else if (buttonName === 'gridVisible') {
+      // Logic for the "Build Shows" button
+      toggleGridVisible(); // Assuming this function toggles visibility
+    }else if (buttonName === 'buildShows') {
+      // Logic for the "Build Shows" button
+      toggleBuildShowVisible(); // Assuming this function toggles visibility
+    } else if (buttonName === 'createNewComic') {
+      // Logic for the "Create New Comic" button
+      toggleComicBuildVisible(); // Assuming this function toggles visibility
+    } else if (buttonName === 'changeComicType') {
+      // Logic for the "Change Comic Type" button
+      toggleEnterAvailabilityForComic(); // Assuming this function toggles visibility
+    } else if (buttonName === 'emailComics') {
+      // Logic for the "Change Comic Type" button
+      toggleEmailComics(); // Assuming this function toggles visibility
+    }
+    else if (buttonName === 'downtownLong') {
+      // Logic for the "Change Comic Type" button
+      toggledowntownLong(); // Assuming this function toggles visibility
+    } else if (buttonName === 'southLong') {
+      // Logic for the "Change Comic Type" button
+      toggleSouthLong(); // Assuming this function toggles visibility
+    }
+    
+  };
+
     
 
   return (
-    <div className='admin-form'>
-      <div className='mask-container'
-      onKeyUp={(e) => {
-        if (e.key === "Enter") {
-          maskAsComic()        
-        }
-      }}
-      >
-        <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their name or email</h3>
-        <input type='text' className='yes-spot' onChange={(e) => {
-          setComicSearch(e.target.value)
-          }}/>
-        <input type='submit' className='submit-mask' onClick={() => maskAsComic()}/>
-        {/* <button onClick={() => gatherStats()}>See Stats</button> */}
+    <div className='admin-container'>
+      <div className="sidebar">
+      <button 
+          className={selectedButtons.gridVisible ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('gridVisible')}
+        >
+        Grid Availability Sheet
+        </button>
+      <button 
+          className={selectedButtons.downtownLong ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('downtownLong')}
+        >
+          Book Downtown Long Form
+        </button>
+        <button 
+          className={selectedButtons.southLong ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('southLong')}
+        >
+          Book South Long Form
+        </button>
+        <button 
+          className={selectedButtons.emailComics ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('emailComics')}
+        >
+          Email Booked Shows To Comics
+        </button>
+        <button 
+          className={selectedButtons.availabiltyForComics ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('availabiltyForComics')}
+        >
+          Enter Availabilty For Comics
+        </button>
+        <button 
+          className={selectedButtons.buildShows ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('buildShows')}
+        >
+          Build Shows
+        </button>
+        <button 
+          className={selectedButtons.createNewComic ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('createNewComic')}
+        >
+          Create New Comic/Delete Comic
+        </button>
+        
+        <button 
+          className={selectedButtons.changeComicType ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('changeComicType')}
+        >
+          Change Comic Type
+        </button>
       </div>
-    <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
-    {comedianMask.downTownShowCount &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
-    {comedianMask.southShowCount && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
-    {comedianMask.downTownWeekCount && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
-    {comedianMask.southWeekCount && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
+        <div className='admin-form'>
+      {/* @ts-ignore */}
+      {gridVisible && <ComediansGrid comedians={props.comedians} shows={props.shows} />}
+      {enterAvailabilityForComic && <><div className='mask-container'
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              maskAsComic()
+            }
+          } }
+        >
+          <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their name or email</h3>
+          <input type='text' className='yes-spot' onChange={(e) => {
+            setComicSearch(e.target.value)
+          } } />
+          <input type='submit' className='submit-mask' onClick={() => maskAsComic()} />
+
+        </div>
+          <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
+    {comedianMask.downTownShowCount > 0 &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
+    {comedianMask.southShowCount > 0 && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
+    {comedianMask.downTownWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
+    {comedianMask.southWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
     <div className='shows-visible-to-comics'>
     <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
     <div
@@ -880,11 +1072,62 @@ ${showsForEmailSouth}`
     </div>
       <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
     </div>
-  </div>
-  <h2 className='shows-visible-to-comics' onClick={() => toggleWeekVisibility()}>Shows Visible To Comics</h2>
-      {weekVisibility && <Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/>}
-      <p className='admin-build' onClick={() => toggleBuildShowVisible()}>Admin: Build Week of Upcoming Shows</p>
-      { buildShowVisible && <><button className='clear-form' onClick={() => {
+  </div></>}
+  {/* <h2 className='shows-visible-to-comics' onClick={() => toggleWeekVisibility()}>Shows Visible To Comics</h2> */}
+      {weekVisibility && <>
+        {/* <h2 className='shows-visible-to-comics'>Enter Availabilty For a Comic</h2> */}
+      <div className='mask-container'
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              maskAsComic()
+            }
+          } }
+        >
+          <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their name or email</h3>
+          <input type='text' className='yes-spot' onChange={(e) => {
+            setComicSearch(e.target.value)
+          } } />
+          <input type='submit' className='submit-mask' onClick={() => maskAsComic()} />
+
+        </div>
+          <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
+    {comedianMask.downTownShowCount > 0 &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
+    {comedianMask.southShowCount > 0 && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
+    {comedianMask.downTownWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
+    {comedianMask.southWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
+    <div className='shows-visible-to-comics'>
+    <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
+    {/* <div
+      onKeyUp={(e) => {
+        if (e.key === "Enter" && type != '') {
+          changeComedianType()  
+          setAdTrigger(!adTrigger)      
+        }
+      }}
+    >
+    <div>
+      <input type='radio' id='pro-radio' name='type' value='pro' onClick={() => setType('pro')}/>
+      <label htmlFor='pro-radio'>Pro</label>
+    </div>
+    <div>
+      <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {setType('OutOfTown')}}/>
+      <label htmlFor='outOfTown' >Out of Town Pro</label>
+    </div>
+    <div>
+      <input type='radio' id='almostFamous' name='type' value='almostFamous'onClick={() => {setType('AlmostFamous')}}/>
+      <label htmlFor='almostFamous' >Almost Famous</label>
+    </div>
+    <div>
+      <input type='radio' id='inactive' name='type' value='inactive'onClick={() => {setType('Inactive')}}/>
+      <label htmlFor='inactive' >Inactive</label>
+    </div>
+      <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
+    </div> */}
+  </div><Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/></>}
+      {/* <p className='admin-build' onClick={() => toggleBuildShowVisible()}>Admin: Build Week of Upcoming Shows</p> */}
+      { buildShowVisible && <>
+        <p className='admin-build'>Admin: Build Week of Upcoming Shows</p>
+      <button className='clear-form' onClick={() => {
         reset()
         maskAsComic()
       } }>Clear/Reset Form</button><form className='admin-input' onSubmit={handleSubmit(onSubmit)}>
@@ -929,8 +1172,10 @@ ${showsForEmailSouth}`
       {showsToAddSouth.length > 0 && <h2 className='south-available-header'>South</h2>}
       {showsToAddSouth}</>}
        
-        <h2 className='admin-build' onClick={() => toggleComicBuildVisible()}>Create New Comic/Delete Comic</h2>
-        {comicBuildVisible && <div><div className='create-new-comic'
+        {/* <h2 className='admin-build' onClick={() => toggleComicBuildVisible()}>Create New Comic/Delete Comic</h2> */}
+        {comicBuildVisible && <div>
+          <h2 className='admin-build'>Create New Comic/Delete Comic</h2>
+          <div className='create-new-comic'
         onKeyUp={(e) => {
           if (e.key === "Enter") {
             createNewComic()        
@@ -1008,20 +1253,28 @@ ${showsForEmailSouth}`
           <button onClick={() => deleteComic()} className='create-comic-button'>Delete Comic Profile</button>
         </div>
         </div>}
-          <button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros and Almost Famous</button> 
-          <br></br>
+          {emailComics && <><button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros</button><br></br>
+          <label className='out-of-town'>Include Almost Famous<input type="checkbox" checked={almostFamous}
+           className='out-of-town-checkbox'
+            onChange={() => setAlmostFamous(!almostFamous)}/></label>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
-          onChange={() => setOutOfTowners(!outOfTowners)}/></label>
-        <h2 className='downtown-available-header'>Downtown Available Comics</h2>
-        <div>{signedShowsDown.map(availShow => availShow)}</div>
-        <h2 className='south-available-header'>South Club Available Comics</h2>
-        <div>{signedShowsSouth.map(availShow => availShow)}</div>
+            onChange={() => setOutOfTowners(!outOfTowners)} /></label>
+            <label className='out-of-town'>Include Inactive<input type="checkbox" className='out-of-town-checkbox'
+            onChange={() => setInactive(!inactive)} /></label>
+            
+            
+            </>}
+        {downtownLong && <><h2 className='downtown-available-header'>Downtown Available Comics</h2>
+          <div>{signedShowsDown.map(availShow => availShow)}</div></>}
+        {southLong && <><h2 className='south-available-header'>South Club Available Comics</h2>
+          <div>{signedShowsSouth.map(availShow => availShow)}</div></>}
       
-      {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
-      {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>}
-      {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
-      {comicForHistory && <h2 className='south-available-header'>South Club Availability History</h2>}
-      {specificComicHistorySouth.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)}
+      {/* {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
+      {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>} */}
+      {/* {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)} */}
+      {/* {comicForHistory && <h2 className='south-available-header'>South Club Availability History</h2>} */}  
+      {/* {specificComicHistorySouth.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)} */}
+    </div>
     </div>
   )
 }

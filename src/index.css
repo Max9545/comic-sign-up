@@ -45,7 +45,7 @@ code {
 }
 
 .admin-form {
-  width: 80%;
+  /* width: 80%; */
   align-self: center;
   justify-content: center; 
 } 
@@ -222,7 +222,7 @@ label {
 
 .comic-avail {
   font-size: 1.1rem;
-  margin: 1vh 0vh 5vh 0vh;
+  margin: 1vh 0vh 0vh 0vh;
   font-weight: bolder;
   align-self: center;
 }
@@ -373,8 +373,9 @@ label {
 .out-of-town {
   border: solid 2px #17a2b8;
   background-color: black;
-  padding: 2%;
+  padding: 2% 0 0 0;
   font-size: 1.4em;
+  display: block;
 }
 
 .out-of-town-checkbox {
@@ -506,3 +507,122 @@ label {
   color: red;
   margin-bottom: 0%;
 }
+
+.grid-container {
+  display: grid;
+  /* grid-template-columns: auto repeat(auto-fit, minmax(120px, 1fr)); */
+  gap: 2px;
+  background-color: white;
+  padding: 10px;
+  width: 80vw;
+  color: black;
+  align-self: flex-end;
+  margin-right:3vw; 
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 70px repeat(auto-fit, minmax(30px, 1fr));
+  gap: 2px;
+  font-size: .8em;
+}
+
+.cell {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  margin-top: 0px;
+  overflow: hidden;
+}
+
+.header {
+  background-color: white;
+  font-size: 2em;
+}
+
+.type-header {
+  background-color: #e0e0e0;
+}
+
+.row.even {
+  background-color: white;
+  
+}
+
+.row.odd {
+  background-color: #e0e0e0;
+}
+
+.row.highlighted {
+  background-color: rgb(204, 204, 204); /* Change this color as needed */
+}
+
+.popup {
+  background-color: black;
+}
+
+.admin-container {
+  display: flex;
+  position: relative;
+  margin-left: 15%; /* Add margin to create space for the sidebar */
+  padding-left: 20px; /* Optional: Add padding to the left of the admin container */
+}
+
+
+
+/* .admin-container { */
+  /* position: relative; Ensure relative positioning for children */
+/* } */
+
+.sidebar {
+  position: fixed;
+  top: 10;
+  left: 0;
+  width: 15%;
+  background-color:  #17a2b8;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  /* font-size: 16px; */
+  border: none;
+  border-radius: 5px;
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+.sidebar button:hover {
+  background-color: rgb(253, 216, 216);
+}
+
+.sidebar button.highlighted {
+  background-color: #dc3545; /* Adjust the color as needed */
+  /* Add any other styles to indicate the selected state */
+}
+
+.close-icon {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  color: white;
+}
+
+.close-icon span {
+  font-weight: bold;
+}
+
+.directions {
+  background-color: #dc3545;
+  font-size: 1em;
+}
+
+
+
+
