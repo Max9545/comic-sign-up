@@ -20,7 +20,7 @@ import { db } from './firebase';
     };
 
     const [currentCellKey, setCurrentCellKey] = useState<string>('');
-    const [trig, setTrig] = useState(true)
+    // const [trig, setTrig] = useState(true)
 
 
     comedians.forEach((comedian) => {
@@ -42,7 +42,7 @@ import { db } from './firebase';
     const [comediansNow, setComediansNow] = useState(comedians);
     const [comicHistory, setComicHistory] = useState<DocumentData[]>([]);
 
-    const [allNotes, setAllNotes] = useState([]);
+    const [allNotes, setAllNotes] = useState<any[]>([]);
 
 
     useEffect(() => {
@@ -73,9 +73,9 @@ import { db } from './firebase';
             console.log(comedianData)
             const notes = comedianData.map(comedian => {
               if (comedian.note) {
-                return `${comedian.comedianInfo.name} + ${comedian.note}`
+                return `${comedian.comedianInfo.name} - ${comedian.note}`
               }
-            }).filter(note => note);
+            }).filter(note => note !== undefined && note !== null)
             setAllNotes(notes);
     
             // Log data to ensure retrieval
@@ -321,15 +321,14 @@ const publishShow = async () => {
         ))}
 
         {/* Render Popup */}
-        // Render Popup
         {showPopup && (
   <Popup
     position={popupPosition}
     onClose={(position) => handlePopupSelection(position)} // Only pass the selected position
   />
 )}
-<button onClick={() => publishShow()}>Submit</button>
-<div className="notes-container">
+<button className='delete-potential-comic' onClick={() => publishShow()}>Submit</button>
+<div className='notes-list'>
   <h2>All Comedians' Notes</h2>
   <ul>
     {allNotes.map((note, index) => (

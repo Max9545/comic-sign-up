@@ -661,3 +661,8 @@ label {
   height: 5vh;
   width: 20vw
 }
+
+.notes-list {
+  border: 2px solid red;
+  margin-top: 3vh
+}
