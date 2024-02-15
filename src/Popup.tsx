@@ -6,7 +6,7 @@ interface PopupProps {
 }
 
 const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
-  const [selectedPosition, setSelectedPosition] = useState<string>(''); // Initialize selectedPosition state with an empty string
+  const [selectedPosition, setSelectedPosition] = useState<string>('MC'); // Initialize selectedPosition state with an empty string
   const [otherPosition, setOtherPosition] = useState<string>('')
 
   // Function to handle position selection
@@ -19,7 +19,7 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
     <div className="popup" style={{ position: 'fixed', top: position.y, left: position.x }}
     onKeyUp={(e) => {
       if (e.key === "Enter") {
-        onClose(otherPosition || selectedPosition || 'MC')    
+        onClose(otherPosition || selectedPosition || 'X')    
       }
     }}
     >
@@ -43,7 +43,7 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
           <label htmlFor="other">Other:</label>
           <input type="text" id="other" onChange={(e) => setOtherPosition(e.target.value)}/>
         </div>
-        <button onClick={() => onClose(otherPosition || selectedPosition || 'MC')}>Submit</button> {/* Pass the selected position to onClose function */}
+        <button onClick={() => onClose(otherPosition || selectedPosition || 'X')}>Submit</button> {/* Pass the selected position to onClose function */}
       </div>
     </div>
   );

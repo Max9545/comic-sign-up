@@ -637,26 +637,26 @@ ${showsForEmailDowntown}
 
 
 ${showsForEmailSouth}`
-
-    if (outOfTowners && inactive && almostFamous) {
-      console.log('everyone')
-      emailList.map(email => sendEmail(email, showsForEmailRaw))
-    } else if (!outOfTowners && inactive) {
-      console.log('only inactive and pro')
-      emailListWithOutTowners.map(email => sendEmail(email, showsForEmailRaw))
-    } else if (outOfTowners && !inactive) {
-      console.log('only out of town and pro', emailListWithNoInactive)
+console.log(showsForEmailRaw)
+    // if (outOfTowners && inactive && almostFamous) {
+    //   console.log('everyone')
+    //   emailList.map(email => sendEmail(email, showsForEmailRaw))
+    // } else if (!outOfTowners && inactive) {
+    //   console.log('only inactive and pro')
+    //   emailListWithOutTowners.map(email => sendEmail(email, showsForEmailRaw))
+    // } else if (outOfTowners && !inactive) {
+    //   console.log('only out of town and pro', emailListWithNoInactive)
       
-      emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
-    } else if (!outOfTowners && !inactive) {
-      console.log('only pro')
-      emailList.map(email => sendEmail(email, showsForEmailRaw))
-      // emailListWithNoInactiveOrOutTown.map(email => sendEmail(email, showsForEmailRaw))
-    } else if (!almostFamous) {
-      console.log('only out of town and pro', emailListWithNoInactive)
+    //   emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
+    // } else if (!outOfTowners && !inactive) {
+    //   console.log('only pro')
+    //   emailList.map(email => sendEmail(email, showsForEmailRaw))
+    //   // emailListWithNoInactiveOrOutTown.map(email => sendEmail(email, showsForEmailRaw))
+    // } else if (!almostFamous) {
+    //   console.log('only out of town and pro', emailListWithNoInactive)
       
-      emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
-    } 
+    //   emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
+    // } 
     alert('Comics have been notified')
   }
 
