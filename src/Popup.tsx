@@ -19,7 +19,7 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
     <div className="popup" style={{ position: 'fixed', top: position.y, left: position.x }}
     onKeyUp={(e) => {
       if (e.key === "Enter") {
-        onClose(otherPosition || selectedPosition || 'X')    
+        onClose(otherPosition || selectedPosition)    
       }
     }}
     >
@@ -36,14 +36,14 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
             <option value="B1">B1</option>
             <option value="*7">*7</option>
             <option value="*MC">*MC</option>
-            <option value=''>X</option>
+            <option value='X'>X</option>
           </select>
         </div>
         <div>
           <label htmlFor="other">Other:</label>
           <input type="text" id="other" onChange={(e) => setOtherPosition(e.target.value)}/>
         </div>
-        <button onClick={() => onClose(otherPosition || selectedPosition || 'X')}>Submit</button> {/* Pass the selected position to onClose function */}
+        <button onClick={() => onClose(otherPosition || selectedPosition)}>Submit</button> {/* Pass the selected position to onClose function */}
       </div>
     </div>
   );

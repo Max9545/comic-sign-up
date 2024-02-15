@@ -169,14 +169,15 @@ const publishShow = async () => {
       if (targetShow) {
         console.log('Comedian:', selectedCell.comedian.comedianInfo.name, 'Show:', targetShow, 'Position:', position);
         // If the comedian is available for the selected show, add them to the comicArray
-        if (
-          targetShow.club === (selectedCell.show.club === 'downtown' ? 'downtown' : 'south') &&
-          position &&
-          position !== 'X'
-        ) {
+        // if (
+        //   targetShow.club === (selectedCell.show.club === 'downtown' ? 'downtown' : 'south') &&
+        //   position &&
+        //   position !== 'X'
+        // ) {
           // Push comedian data into comicArray with the corresponding showId
+          console.log('Push comedian data into comicArray with the corresponding showId', { showId, type: position === 'X' ? '' : position, comic: selectedCell.comedian.comedianInfo.name })
           comicArray.push({ showId, type: position, comic: selectedCell.comedian.comedianInfo.name });
-        }
+        // }
       }
     });
   });
