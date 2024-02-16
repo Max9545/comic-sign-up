@@ -64,7 +64,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [almostFamous, setAlmostFamous] = useState(true)
   const [profiles, setProfiles] = useState<DocumentData[]>([])
   const [searchQuery, setSearchQuery] = useState('');
-
+  const [publishedShows, setPublishedShows] = useState<DocumentData[]>([])
+  const [publishedVisible, setPublishedVisible] = useState(false)
+  const [filteredPublished, setFilteredPublished] = useState([])
   
   const [gridVisible, setGridVisible] = useState(true)
   const [selectedButtons, setSelectedButtons] = useState({
@@ -77,6 +79,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     southLong: false,
     gridVisible: true,
     comicProfiles: false,
+    publishedVisible: false
   });
 
   
@@ -86,6 +89,22 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   useEffect(() => {
     setComicEmailList()
   }, [])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const docRef = query(collection(db, 'publishedShows'));
+      const docSnap = await getDocs(docRef);
+      if (!docSnap.empty) {
+        const data = docSnap.docs.map(doc => doc.data());
+        setPublishedShows(data); // Ensure data is treated as DocumentData[]
+
+        console.log(data)
+      }
+    };
+
+    fetchData();
+  }, [])
+  
 
   useEffect(() => {
     displayPotentialShows()
@@ -956,6 +975,10 @@ You will receive confirmation emails to this email address each time you submit 
     setGridVisible(!gridVisible);
   };
 
+  const togglePublishedVisible = () => {
+    setPublishedVisible(!publishedVisible);
+  };
+
   const handleButtonClick = (buttonName: string) => {
     setSelectedButtons(prevState => ({
       ...prevState,
@@ -990,6 +1013,9 @@ You will receive confirmation emails to this email address each time you submit 
     } else if (buttonName === 'comicProfiles') {
       // Logic for the "Change Comic Type" button
       toggleComicProfiles(); // Assuming this function toggles visibility
+    } else if (buttonName === 'publishedVisible') {
+      // Logic for the "Change Comic Type" button
+      togglePublishedVisible(); // Assuming this function toggles visibility
     } 
   };
 
@@ -1088,7 +1114,113 @@ const filteredProfiles = profiles.filter(profile => {
 });
 
 
+const filteredPublishedShows = publishedShows.filter(show => {
+  // Helper function to check if a value contains the search query
+  const containsQuery = value =>
+    typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase());
+
+  // Function to search through nested objects recursively
+  const searchObject = obj => {
+    for (const key in obj) {
+      if (key === 'availableComics') continue; // Skip searching the availableComics array
+      const value = obj[key];
+      console.log(`Checking key: ${key}, value: ${JSON.stringify(value)}`);
+      if (containsQuery(value)) {
+        console.log(`Found a match: ${value}`);
+        return true; // Found a match
+      }
+      if (Array.isArray(value)) {
+        // Search through array elements
+        if (value.some(item => typeof item === 'object' && searchObject(item))) {
+          console.log(`Found a match in array elements: ${JSON.stringify(value)}`);
+          return true; // Found a match
+        }
+      } else if (typeof value === 'object') {
+        // Recursively search through nested objects
+        if (searchObject(value)) {
+          console.log(`Found a match in nested object: ${JSON.stringify(value)}`);
+          return true; // Found a match
+        }
+      }
+    }
+    return false; // No match found
+  };
+
+  // Check if the show matches the search query
+  const match = searchObject(show);
+  console.log(`Match for show ${JSON.stringify(show)}: ${match}`);
+  return match;
+});
+
+
+
+
+  const displayBookedShows = (type: string) => {
+    if (type == 'all') {
+      return publishedShows.map(show => {
+        return <div className='profile' key={show.id}>
+        <div className='profile-contact-info'>
+          <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
+          <h3 className='profile-headers'>{show.bookedshow.time} {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
+          {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
+          <h4 className='profile-headers'>{show.time}</h4>
+        </div>
     
+    
+        <div className='profile-contact-info'>
+          <h2 className='profile-headers'>Comics</h2>
+          {show.comicArray.map((comic: { comic: string, type: string }) => {
+            return <>
+            <p>{comic.comic}: {comic.type}</p>
+            </>
+          })}
+          </div>
+    
+    
+        <div className='profile-stats'>
+          {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
+          <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
+          <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
+          {/* Add other relevant show details */} 
+        </div>
+      </div>
+      })
+    } else {
+      return filteredPublishedShows.map(show => {
+        return <div className='profile' key={show.id}>
+        <div className='profile-contact-info'>
+          <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
+          <h3 className='profile-headers'>{show.bookedshow.time}  {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
+          {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
+          <h4 className='profile-headers'>{show.time}</h4>
+        </div>
+    
+    
+        <div className='profile-contact-info'>
+          <h2 className='profile-headers'>Comics</h2>
+          {show.comicArray.map((comic: { comic: string, type: string }) => {
+            return <>
+            <p>{comic.comic}: {comic.type}</p>
+            </>
+          })}
+          </div>
+    
+    
+        <div className='profile-stats'>
+          {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
+          <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
+          <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
+          {/* Add other relevant show details */} 
+        </div>
+      </div>
+      })
+    }
+  
+
+  } 
+  
+  
+
   return (
     <div className='admin-container'>
       <div className="sidebar">
@@ -1146,6 +1278,12 @@ const filteredProfiles = profiles.filter(profile => {
           onClick={() => handleButtonClick('comicProfiles')}
         >
           User Profiles
+        </button>
+        <button 
+          className={selectedButtons.publishedVisible ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('publishedVisible')}
+        >
+          Booked Show History
         </button>
       </div>
         <div className='admin-form'>
@@ -1403,6 +1541,18 @@ const filteredProfiles = profiles.filter(profile => {
           className='profile-search'
         />
         {searchQuery ? <div>{displayProfiles('filtered')}</div> : <div>{displayProfiles('all')}</div>}
+      </>}
+      {publishedVisible && <>
+        {publishedShows && <>
+          <input
+          type="text"
+          placeholder="Search shows..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className='profile-search'
+          />
+          {searchQuery ? <div>{displayBookedShows('filtered')}</div> : <div>{displayBookedShows('all')}</div>}
+        </>}
       </>}
       {/* {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
       {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>} */}
