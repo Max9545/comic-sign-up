@@ -30,7 +30,7 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
       <div className="popup-content">
         <div>
           <label htmlFor="position">Position:</label>
-          <select id="position" onChange={handlePositionSelection}>
+          <select id="position" onChange={handlePositionSelection} autoFocus>
             <option value="MC">MC</option>
             <option value="A1">A1</option>
             <option value="B1">B1</option>
