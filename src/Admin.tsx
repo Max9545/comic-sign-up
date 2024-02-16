@@ -98,7 +98,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
         const data = docSnap.docs.map(doc => doc.data());
         setPublishedShows(data); // Ensure data is treated as DocumentData[]
 
-        console.log(data)
       }
     };
 
@@ -129,7 +128,6 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
         const data = docSnap.docs.map(doc => doc.data());
         setProfiles(data); // Ensure data is treated as DocumentData[]
 
-        console.log(data)
       }
     };
 
@@ -546,16 +544,13 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     const emails = doc.docs.map(user => user.data().email)
 
     setEmailList(emails)
-console.log(emails)
     setEmailListWithOutTowners([])
 
     const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
 
     const withoutOutTownersOrInactive = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown' && comic.data().type != 'Inactive')
     const emailsWithoutOutTowners = withoutOutTowners.map((comic: any ) => comic.data().email)
-    
-    console.log('emails', emails)
-    console.log('emailsWithoutOutTowners', emailsWithoutOutTowners)
+
     setEmailListWithOutTowners(emailsWithoutOutTowners)
 
     // @ts-ignore
@@ -564,14 +559,12 @@ console.log(emails)
     const withoutOutInactive = doc.docs.filter(comic =>  comic.data().type !='Inactive').map((comic: any ) => comic.data().email)
     // @ts-ignore
     setEmailListWithNoInactive(withoutOutInactive)
-console.log('withoutOutInactive', withoutOutInactive)
     // const docOut = await (getDocs(docRefOut))
 
 
     const withoutOutAlmostFamous = doc.docs.filter(comic =>  comic.data().type !='AlmostFamous').map((comic: any ) => comic.data().email)
     // @ts-ignore
     setEmailWithNoAlmostFamous(withoutOutAlmostFamous)
-    console.log('withoutOutAlmostFamous', withoutOutAlmostFamous)
     // const emailsOut = docOut.docs.map(user => user.data().email)
 
     // setEmailListWithOutTowners(emailsOut)
@@ -1124,21 +1117,17 @@ const filteredPublishedShows = publishedShows.filter(show => {
     for (const key in obj) {
       if (key === 'availableComics') continue; // Skip searching the availableComics array
       const value = obj[key];
-      console.log(`Checking key: ${key}, value: ${JSON.stringify(value)}`);
       if (containsQuery(value)) {
-        console.log(`Found a match: ${value}`);
         return true; // Found a match
       }
       if (Array.isArray(value)) {
         // Search through array elements
         if (value.some(item => typeof item === 'object' && searchObject(item))) {
-          console.log(`Found a match in array elements: ${JSON.stringify(value)}`);
           return true; // Found a match
         }
       } else if (typeof value === 'object') {
         // Recursively search through nested objects
         if (searchObject(value)) {
-          console.log(`Found a match in nested object: ${JSON.stringify(value)}`);
           return true; // Found a match
         }
       }
@@ -1148,7 +1137,6 @@ const filteredPublishedShows = publishedShows.filter(show => {
 
   // Check if the show matches the search query
   const match = searchObject(show);
-  console.log(`Match for show ${JSON.stringify(show)}: ${match}`);
   return match;
 });
 
