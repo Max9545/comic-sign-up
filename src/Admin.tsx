@@ -1116,11 +1116,11 @@ const filteredProfiles = profiles.filter(profile => {
 
 const filteredPublishedShows = publishedShows.filter(show => {
   // Helper function to check if a value contains the search query
-  const containsQuery = value =>
+  const containsQuery = (value: string) =>
     typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase());
 
   // Function to search through nested objects recursively
-  const searchObject = obj => {
+  const searchObject = (obj: DocumentData) => {
     for (const key in obj) {
       if (key === 'availableComics') continue; // Skip searching the availableComics array
       const value = obj[key];
@@ -1158,7 +1158,7 @@ const filteredPublishedShows = publishedShows.filter(show => {
   const displayBookedShows = (type: string) => {
     if (type == 'all') {
       return publishedShows.map(show => {
-        return <div className='profile' key={show.id}>
+        return <div className='profile' key={show.bookedshow.id}>
         <div className='profile-contact-info'>
           <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
           <h3 className='profile-headers'>{show.bookedshow.time} {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
@@ -1181,13 +1181,14 @@ const filteredPublishedShows = publishedShows.filter(show => {
           {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
           <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
           <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
+          <h4 className='profile-headers'>Needed Support: {show.bookedshow.supportStatus ? 'True' : 'False'}</h4>
           {/* Add other relevant show details */} 
         </div>
       </div>
-      })
+      })  
     } else {
       return filteredPublishedShows.map(show => {
-        return <div className='profile' key={show.id}>
+        return <div className='profile' key={show.bookedshow.id}>
         <div className='profile-contact-info'>
           <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
           <h3 className='profile-headers'>{show.bookedshow.time}  {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
@@ -1546,7 +1547,7 @@ const filteredPublishedShows = publishedShows.filter(show => {
         {publishedShows && <>
           <input
           type="text"
-          placeholder="Search shows..."
+          placeholder="Search Booked Shows..."
           value={searchQuery}
           onChange={handleSearch}
           className='profile-search'
