@@ -586,91 +586,48 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     //   })
   }
 
-  const sendEmails = () => {
-    
-    const showsForEmailRawDowntown = published.map(pubShow => {
+  const sendEmails = async () => {
 
-      // const mC = pubShow.bookedshow.comics.mC && `MC: ${pubShow.bookedshow.comics.mC}`
-      // const starMC = pubShow.bookedshow.comics.starMC && `Star MC: ${pubShow.bookedshow.comics.starMC}`
-      // const a1 = pubShow.bookedshow.comics.a1 && `A1: ${pubShow.bookedshow.comics.a1}`
-      // const b1 = pubShow.bookedshow.comics.b1 && `B1: ${pubShow.bookedshow.comics.b1}`
-      // const star7 = pubShow.bookedshow.comics.star7 && `Star 7: ${pubShow.bookedshow.comics.star7}`
-      // const yes = pubShow.bookedshow.comics.yes && `Yes: ${pubShow.bookedshow.comics.yes}`
-      // const other = pubShow.bookedshow.comics.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
-      
-      // const arrayLineup = [mC, starMC, star7, a1, b1, yes].filter(line => line != '').join('\n')
-      // const arrayLineup = Object.keys(pubShow.bookedshow.comics).map((key, index) => {
-      //   if (pubShow.bookedshow.comics[key] != '') {
-
-      //     return `${key.charAt(0).toUpperCase() + key.slice(1)}: ${pubShow.bookedshow.comics[key]}`
-      //   }
-      // }
-      
-      //   //  `${pubShow.comics[key].charAt(0).toUpperCase() + pubShow.comics[key].slice(1)}: ${pubShow.comics[key]}`
+    const fetchData = async () => {
+      const docRef = query(collection(db, 'publishedShows'));
+      const docSnap = await getDocs(docRef);
+      if (!docSnap.empty) {
+        const data = docSnap.docs.map(doc => doc.data());
+        setPublished(data); // Ensure data is treated as DocumentData[]
   
-      // ).filter(line => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
-      if (pubShow.bookedshow.club === 'downtown') {
-        const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
+        console.log(data);
   
-        const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
+        // Process logic dependent on 'published' state here
+        const showsForEmailRawDowntown = data.map(pubShow => {
+          if (pubShow.bookedshow.club === 'downtown') {
+            const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "");
+            const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}\n\n${arrayLineup}\n`;
+            return `${showString}`;
+          }
+        });
   
-${arrayLineup}
-        `
-      return `
-${showString}`
+        const showsForEmailRawSouth = data.map(pubShow => {
+          if (pubShow.bookedshow.club === 'south') {
+            const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "");
+            const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}\n\n${arrayLineup}\n`;
+            return `${showString}`;
+          }
+        });
+  
+        const showsForEmailDowntown = `Downtown Shows----------------\n${showsForEmailRawDowntown}`.replace(/,/g, '');
+        const showsForEmailSouth = `South Shows----------------\n${showsForEmailRawSouth}`.replace(/,/g, '');
+  
+        const showsForEmailRaw = `Below is the schedule for the following shows. Please be aware of which club you are to perform in.\n\n${showsForEmailDowntown}\n\n${showsForEmailSouth}`;
+        console.log(showsForEmailRaw);
       }
-
-    })
-
-      const showsForEmailRawSouth = published.map(pubShow => {
-
-        if (pubShow.bookedshow.club === 'south') {
-          const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
-    
-          const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
-    
-${arrayLineup}
-          `
-        return `
-${showString}`
-        }
+    };
   
-        })
-
-    const showsForEmailDowntown = `Downtown Shows----------------
-${showsForEmailRawDowntown}`.replace(/,/g, '')
-
-    const showsForEmailSouth = `South Shows----------------
-${showsForEmailRawSouth}`.replace(/,/g, '')
-
-    const showsForEmailRaw = `Below is the schedule for the following shows. Please be aware of which club you are to perfom in.
-
-${showsForEmailDowntown}
-
-
-${showsForEmailSouth}`
-console.log(showsForEmailRaw)
-    // if (outOfTowners && inactive && almostFamous) {
-    //   console.log('everyone')
-    //   emailList.map(email => sendEmail(email, showsForEmailRaw))
-    // } else if (!outOfTowners && inactive) {
-    //   console.log('only inactive and pro')
-    //   emailListWithOutTowners.map(email => sendEmail(email, showsForEmailRaw))
-    // } else if (outOfTowners && !inactive) {
-    //   console.log('only out of town and pro', emailListWithNoInactive)
-      
-    //   emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
-    // } else if (!outOfTowners && !inactive) {
-    //   console.log('only pro')
-    //   emailList.map(email => sendEmail(email, showsForEmailRaw))
-    //   // emailListWithNoInactiveOrOutTown.map(email => sendEmail(email, showsForEmailRaw))
-    // } else if (!almostFamous) {
-    //   console.log('only out of town and pro', emailListWithNoInactive)
-      
-    //   emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
-    // } 
-    alert('Comics have been notified')
+    await fetchData();
+  
+    // Rest of your method here
+    alert('Comics have been notified');
   }
+  
 
   const removePublishedShow = async (id: string) => {
 
