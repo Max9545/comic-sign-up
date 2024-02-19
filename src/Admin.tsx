@@ -1078,15 +1078,25 @@ You will receive confirmation emails to this email address each time you submit 
     } 
   };
 
+  const takeToEdit = (name: string) => {
+    console.log(name)
+    setComicSearch(name)
+    maskAsComic()
+    toggleComicProfiles()
+    toggleEnterAvailabilityForComic()
+
+  }
+
     const displayProfiles = (listToUse: string) => {
       if (listToUse === 'all') {
         return profiles.map(profile => {
           console.log(profile)
-          return <div className='profile'>
+          return <div className='profile' key={profile.uid}>
                     <div className='profile-contact-info'>
                       <h1 className='profile-headers'>{profile.name}</h1>
                       <h3 className='profile-headers'>{profile.email}</h3>
                       <h4 className='profile-headers'>{profile.phone}</h4>
+                      <button onClick={() => takeToEdit(profile.name)}>Edit Comic</button>
                     </div>
                     <div className='profile-type'>
                       <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
@@ -1106,7 +1116,7 @@ You will receive confirmation emails to this email address each time you submit 
       } else if (listToUse === 'filtered') {
         return filteredProfiles.map(profile => {
           console.log(profile)
-          return <div className='profile'>
+          return <div className='profile' key={profile.uid}>
                     <div className='profile-contact-info'>
                       <h1 className='profile-headers'>{profile.name}</h1>
                       <h3 className='profile-headers'>{profile.email}</h3>
@@ -1232,7 +1242,6 @@ const filteredPublishedShows = publishedShows.filter(show => {
     
         <div className='profile-stats'>
           {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
-          {console.log(show.bookedshow)}
           <h4 className='profile-headers'>Clean: {show.bookedshow.clean == 'not-clean' ? 'False' : 'True'}</h4>
           <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly == 'not-familyFriendly' ? 'False' : 'True'}</h4>
           <h4 className='profile-headers'>Needed Support: {show.bookedshow.supportStatus == 'support' ? 'True' : 'False'}</h4>
