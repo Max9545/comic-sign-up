@@ -725,24 +725,28 @@ console.log('almostFamousEmails', almostFamousEmails)
   const maskAsComic = async () => {
 
     const searchType = comicSearch.includes('@') ? 'email' : 'name'
-
-    try {
-      const docRef = query(collection(db, `comediansForAdmin`), where(`comedianInfo.${searchType}`, "==", comicSearch))
+console.log(searchType, comicSearch)
+    try { 
+      const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
       const doc = await (getDocs(docRef))
-      const comic = await doc.docs[0].data().comedianInfo
+      console.log(doc.docs[0].data(), 'hi')
+      const comic = await doc.docs[0].data()
+      console.log(comic)
       setComedianMask({
         name: comic.name,
-        id: comic.id,
+        uid: comic.uid,
         type: comic.type,
         email: comic.email,
         downTownShowCount: comic.downTownShowCount,
         southShowCount: comic.southShowCount,
         downTownWeekCount: comic.downTownWeekCount,
         southWeekCount: comic.southWeekCount,
-        showsAvailabledowntown: comic.showsAvailabledowntown,
-        showsAvailablesouth: comic.showsAvailablesouth,
-        showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
-        showsAvailablesouthHistory: comic.showsAvailablesouthHistory
+        // showsAvailabledowntown: comic.showsAvailabledowntown,
+        // showsAvailablesouth: comic.showsAvailablesouth,
+        // showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
+        // showsAvailablesouthHistory: comic.showsAvailablesouthHistory,
+        clean: comic.clean, 
+        famFriendly: comic.famFriendly
       })
     } catch (err) {
       const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
@@ -751,6 +755,7 @@ console.log('almostFamousEmails', almostFamousEmails)
       }
       const doc = await (getDocs(docRef))
       const comic = await doc.docs[0].data()
+      console.log(comic)
       setComedianMask({
         name: comic.name,
         id: comic.uid,
@@ -827,6 +832,23 @@ console.log('almostFamousEmails', almostFamousEmails)
     const docTwo = await (getDocs(docRef))
     updateDoc(doc(db, `comediansForAdmin/${comedianMask.id}`), {"comedianInfo.type": comedianMask.type})
     alert(`${comedianMask.name} is now filed as ${type}`) 
+    setAdTrigger(!adTrigger)
+  }
+
+  const updateComedian = async () => {  
+   console.log(comedianMask)
+    const db = getFirestore()
+    const q = query(collection(db, "users"), where("uid", "==", comedianMask?.uid)) 
+    const docUser = await getDocs(q)
+    const data = docUser.docs[0].data()
+    console.log(comedianMask.uid)
+    updateDoc(doc(db, `users/${comedianMask?.uid}`), comedianMask)
+    
+    // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
+    // const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", comedianMask.id))
+    // await (getDocs(docRef))
+    updateDoc(doc(db, `comediansForAdmin/${comedianMask.uid}`), comedianMask)
+    alert(`${comedianMask.name} is now updated`) 
     setAdTrigger(!adTrigger)
   }
 
@@ -1320,13 +1342,14 @@ const filteredPublishedShows = publishedShows.filter(show => {
         <div className='admin-form'>
       {/* @ts-ignore */}
       {gridVisible && <ComediansGrid comedians={props.comedians} shows={props.shows} />}
-      {enterAvailabilityForComic && <><div className='mask-container'
+      {enterAvailabilityForComic && <>
+      <div className='mask-container'
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               maskAsComic()
             }
           } }
-        >
+      >
           <h3 className='shows-visible-to-comics'>Edit/Update Comedian Information</h3>
           <input type='text' className='yes-spot' onChange={(e) => {
             setComicSearch(e.target.value)
@@ -1356,13 +1379,13 @@ const filteredPublishedShows = publishedShows.filter(show => {
                     </div>
                   </div>
           <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
-    {comedianMask.downTownShowCount > 0 &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
+    {/* {comedianMask.downTownShowCount > 0 &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
     {comedianMask.southShowCount > 0 && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
     {comedianMask.downTownWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
-    {comedianMask.southWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
+    {comedianMask.southWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>} */}
     <div className='shows-visible-to-comics'>
     
-    <h2 className='admin-build'>Comedian Information</h2>
+    <h2 className='admin-build'>Comedian Information Fields</h2>
           <div className='create-new-comic'
         onKeyUp={(e) => {
           if (e.key === "Enter") {
@@ -1372,25 +1395,25 @@ const filteredPublishedShows = publishedShows.filter(show => {
       >
           <label> Edit Comic Email
             <br></br>
-            <input type='text' required onChange={e => setCreateNewComicEmail(e.target.value.trim())}/>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, email: e.target.value})}/> 
           </label>
           <label> Edit Comic Name
             <br></br>
-            <input type='text' required onChange={e => setCreateNewComicName(e.target.value)}/>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, name: e.target.value})}/>
           </label>
           <label className='new-comic-password'> Edit Comic Password
             <br></br>
-            <input type='text' required onChange={e => setCreateNewComicPassword(e.target.value)}/>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, password: e.target.value})}/>
           </label>
           <label className='new-comic-address'> Edit Comic Address
             <br></br>
-            <input type='text' required onChange={e => setCreateNewComicAddress(e.target.value)}/>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, address: e.target.value})}/>
           </label>
           <label className='new-comic-phone'> Edit Comic Phone
             <br></br>
-            <input type='text' required onChange={e => setCreateNewComicPhone(e.target.value)} maxLength={14}/>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, phone: e.target.value})} maxLength={14}/>
           </label>
-          <div className='create-new-comic-type-box'>
+          {/* <div className='create-new-comic-type-box'>
             <div>
               <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
               <label htmlFor='new-pro'>Pro</label>
@@ -1407,24 +1430,24 @@ const filteredPublishedShows = publishedShows.filter(show => {
               <input type='radio' id='new-admin' name='new-comic-type' value='admin'onClick={() => {setNewComicType('admin')}}/>
               <label htmlFor='new-admin'>Administrator</label>
             </div>
-          </div>
+          </div> */}
           <div>
             <label htmlFor="clean">Edit Clean</label>
-            <input type="radio" id="clean-true" name="clean" value="cleanTrue" className='create-comic-radio-label' onClick={(e) => setCreateNewComicClean(true)} />
+            <input type="radio" id="clean-true" name="clean" value="cleanTrue" className='create-comic-radio-label' onClick={(e) => setComedianMask({...comedianMask, clean: true})} />
             <label className='create-comic-radio-label'>True</label>
-            <input type="radio" id="clean-false" name="clean" value="false" onClick={(e) => setCreateNewComicClean(false)} defaultChecked/>
+            <input type="radio" id="clean-false" name="clean" value="false" onClick={(e) => setComedianMask({...comedianMask, clean: false})} defaultChecked/>
             <label className='create-comic-radio-label'>False</label>
           </div>
 
           <div>
             <label htmlFor="famFriendly">Edit Family Friendly</label>
-            <input type="radio" id="famFriendly-true" name="famFriendly" value="famFriendlyTrue" className='create-comic-radio-label' onClick={(e) => setCreateNewComicFamFriendly(true)} />
+            <input type="radio" id="famFriendly-true" name="famFriendly" value="famFriendlyTrue" className='create-comic-radio-label' onClick={(e) => setComedianMask({...comedianMask, famFriendly: true})} />
             <label className='create-comic-radio-label'>True</label>
-            <input type="radio" id="famFriendly-false" name="famFriendly" value="false" onClick={(e) => setCreateNewComicFamFriendly(false)} defaultChecked/>
+            <input type="radio" id="famFriendly-false" name="famFriendly" value="false" onClick={(e) => setComedianMask({...comedianMask, famFriendly: false})} defaultChecked/>
             <label className='create-comic-radio-label'>False</label>
           </div>
-          <button value='Create Comic Profile' onClick={() => createNewComic()} className='create-comic-button'>
-            Create Comic Profile
+          <button value='Create Comic Profile' onClick={() => updateComedian()} className='create-comic-button'>
+            Update Comic Profile
           </button>
         </div>
         <div className='create-new-comic'
