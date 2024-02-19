@@ -1232,9 +1232,10 @@ const filteredPublishedShows = publishedShows.filter(show => {
     
         <div className='profile-stats'>
           {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
-          <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
-          <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
-          <h4 className='profile-headers'>Needed Support: {show.bookedshow.supportStatus ? 'True' : 'False'}</h4>
+          {console.log(show.bookedshow)}
+          <h4 className='profile-headers'>Clean: {show.bookedshow.clean == 'not-clean' ? 'False' : 'True'}</h4>
+          <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly == 'not-familyFriendly' ? 'False' : 'True'}</h4>
+          <h4 className='profile-headers'>Needed Support: {show.bookedshow.supportStatus == 'support' ? 'True' : 'False'}</h4>
           {/* Add other relevant show details */} 
         </div>
       </div>
