@@ -417,7 +417,7 @@ label {
 .edit-show {
   background-color:red;
   border-radius: 30%;
-  width: 40vw;
+  width: 30vw;
   height: 5vh;
   font-weight: 900;
   margin: 2%;
@@ -564,7 +564,7 @@ label {
 .admin-container {
   display: flex;
   position: relative;
-  margin-left: 15%; /* Add margin to create space for the sidebar */
+  margin-left: 15%; 
   padding-left: 20px; /* Optional: Add padding to the left of the admin container */
 }
 
@@ -623,6 +623,50 @@ label {
   font-size: 1em;
 }
 
+.profile-headers {
+  margin-top: 6%;
+  margin-bottom: 8%;
+}
 
+.profile {
+  display: flex;
+  justify-content: space-between;
+  width: 60vw;
+  padding: 2% 5% 2% 5%;
+  margin: 2% 0% 0% 0%;
+  border: 2px solid red;
+  background-color: white;
+  color: black;
+}
 
+.profile-contact-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
+.profile-type {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profile-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.profile-search {
+  height: 5vh;
+  width: 20vw
+}
+
+.notes-list {
+  border: 2px solid red;
+  margin-top: 3vh
+}
+
+.red {
+  background-color: red;
+}

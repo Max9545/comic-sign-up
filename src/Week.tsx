@@ -238,7 +238,7 @@ Comic's Note: ${comicNote}` }),
         }
       }
 
-    const submitForm = (event: any) => {
+    const submitForm = async (event: any) => {
 
       event.preventDefault()
 
@@ -251,6 +251,15 @@ Comic's Note: ${comicNote}` }),
 
       currentComedian.downTownWeekCount += 1
       currentComedian.southWeekCount += 1
+
+      const showRef = doc(db, "users", currentComedian.id);
+      // Set the "capital" field of the city 'DC'
+      await updateDoc(showRef, {
+        downTownShowCount: currentComedian.downTownShowCount,
+        southShowCount: currentComedian.southShowCount,
+        downTownWeekCount: currentComedian.downTownWeekCount,
+        southWeekCount: currentComedian.southWeekCount,
+      });
 
       setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now(), note: comicNote})
       addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {

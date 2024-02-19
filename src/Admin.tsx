@@ -12,6 +12,7 @@ import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateCurrentUser, deleteUser, updateProfile } from "firebase/auth"
 import ComediansGrid from './ComediansGrid'
+import { preProcessFile } from 'typescript'
 const auth = getAuth();
 
 
@@ -57,9 +58,15 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [comicBuildVisible, setComicBuildVisible] = useState(false)
   const [enterAvailabilityForComic, setEnterAvailabilityForComic] = useState(false)
   const [emailComics, setEmailComics] = useState(false)
+  const [comicProfiles, setComicProfiles] = useState(false)
   const [downtownLong, setDowntownLong] = useState(false)
   const [southLong, setSouthLong] = useState(false)
   const [almostFamous, setAlmostFamous] = useState(true)
+  const [profiles, setProfiles] = useState<DocumentData[]>([])
+  const [searchQuery, setSearchQuery] = useState('');
+  const [publishedShows, setPublishedShows] = useState<DocumentData[]>([])
+  const [publishedVisible, setPublishedVisible] = useState(false)
+  const [filteredPublished, setFilteredPublished] = useState([])
   
   const [gridVisible, setGridVisible] = useState(true)
   const [selectedButtons, setSelectedButtons] = useState({
@@ -70,7 +77,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     emailComics: false,
     downtownLong: false,
     southLong: false,
-    gridVisible: true
+    gridVisible: true,
+    comicProfiles: false,
+    publishedVisible: false
   });
 
   
@@ -80,6 +89,21 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   useEffect(() => {
     setComicEmailList()
   }, [])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const docRef = query(collection(db, 'publishedShows'));
+      const docSnap = await getDocs(docRef);
+      if (!docSnap.empty) {
+        const data = docSnap.docs.map(doc => doc.data());
+        setPublishedShows(data); // Ensure data is treated as DocumentData[]
+
+      }
+    };
+
+    fetchData();
+  }, [])
+  
 
   useEffect(() => {
     displayPotentialShows()
@@ -95,6 +119,20 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
   }, [published])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const docRef = query(collection(db, 'users'));
+      const docSnap = await getDocs(docRef);
+      if (!docSnap.empty) {
+        const data = docSnap.docs.map(doc => doc.data());
+        setProfiles(data); // Ensure data is treated as DocumentData[]
+
+      }
+    };
+
+    fetchData();
+  }, [comicProfiles])
 
   const deleteShow = (showId: string) => {
     newSchedule.splice(newSchedule.findIndex(show => show.id === showId), 1)
@@ -343,7 +381,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
           if (show.bookedshow.id == finalForm.id) {
             return <div className={`published-${show.bookedshow.club}`} key={index}>
           <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-          {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={pinDext} >{`${comic.type.includes('Star') ? '*' + comic.type.slice(4) : comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
+          {show.comicArray.map((comic: { type: any; comic: string }, pinDext: any) =>  <p key={pinDext} >{comic.type && `${comic.type.includes('Star') ? '*' + comic.type.slice(4) : comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
             <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
           </div>
           }
@@ -404,7 +442,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
         return <div className={`published-${show.bookedshow.club}`} key={index}>
       <h3>Booked {show.bookedshow.day} {`(${show.bookedshow.date})`} {show.bookedshow.headliner} {show.bookedshow.time} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
 
-      {show.comicArray.map((comic: { type: string; comic: string }, pinDext: any) =>  <p key={`${pinDext}`} >{`${comic.type.includes('Star') ? '*' + comic.type.slice(4) : comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
+      {show.comicArray.map((comic: { type: any; comic: string }, pinDext: any) =>  <p key={`${pinDext}`} >{comic.type && `${comic.type.includes('Star') ? '*' + comic.type.slice(4) : comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}: ${comic.comic}`}</p>)}
         <button className='delete-show' onClick={() => removePublishedShow(show.bookedshow.id)}>Unpublish</button>   
       </div>
       }
@@ -506,16 +544,13 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     const emails = doc.docs.map(user => user.data().email)
 
     setEmailList(emails)
-console.log(emails)
     setEmailListWithOutTowners([])
 
     const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
 
     const withoutOutTownersOrInactive = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown' && comic.data().type != 'Inactive')
     const emailsWithoutOutTowners = withoutOutTowners.map((comic: any ) => comic.data().email)
-    
-    console.log('emails', emails)
-    console.log('emailsWithoutOutTowners', emailsWithoutOutTowners)
+
     setEmailListWithOutTowners(emailsWithoutOutTowners)
 
     // @ts-ignore
@@ -524,14 +559,12 @@ console.log(emails)
     const withoutOutInactive = doc.docs.filter(comic =>  comic.data().type !='Inactive').map((comic: any ) => comic.data().email)
     // @ts-ignore
     setEmailListWithNoInactive(withoutOutInactive)
-console.log('withoutOutInactive', withoutOutInactive)
     // const docOut = await (getDocs(docRefOut))
 
 
     const withoutOutAlmostFamous = doc.docs.filter(comic =>  comic.data().type !='AlmostFamous').map((comic: any ) => comic.data().email)
     // @ts-ignore
     setEmailWithNoAlmostFamous(withoutOutAlmostFamous)
-    console.log('withoutOutAlmostFamous', withoutOutAlmostFamous)
     // const emailsOut = docOut.docs.map(user => user.data().email)
 
     // setEmailListWithOutTowners(emailsOut)
@@ -553,91 +586,48 @@ console.log('withoutOutInactive', withoutOutInactive)
     //   })
   }
 
-  const sendEmails = () => {
-    
-    const showsForEmailRawDowntown = published.map(pubShow => {
+  const sendEmails = async () => {
 
-      // const mC = pubShow.bookedshow.comics.mC && `MC: ${pubShow.bookedshow.comics.mC}`
-      // const starMC = pubShow.bookedshow.comics.starMC && `Star MC: ${pubShow.bookedshow.comics.starMC}`
-      // const a1 = pubShow.bookedshow.comics.a1 && `A1: ${pubShow.bookedshow.comics.a1}`
-      // const b1 = pubShow.bookedshow.comics.b1 && `B1: ${pubShow.bookedshow.comics.b1}`
-      // const star7 = pubShow.bookedshow.comics.star7 && `Star 7: ${pubShow.bookedshow.comics.star7}`
-      // const yes = pubShow.bookedshow.comics.yes && `Yes: ${pubShow.bookedshow.comics.yes}`
-      // const other = pubShow.bookedshow.comics.other.map((comic: { name: string,  type: string }) => `${comic.type}: ${comic.name}`).join('\n')
-      
-      // const arrayLineup = [mC, starMC, star7, a1, b1, yes].filter(line => line != '').join('\n')
-      // const arrayLineup = Object.keys(pubShow.bookedshow.comics).map((key, index) => {
-      //   if (pubShow.bookedshow.comics[key] != '') {
-
-      //     return `${key.charAt(0).toUpperCase() + key.slice(1)}: ${pubShow.bookedshow.comics[key]}`
-      //   }
-      // }
-      
-      //   //  `${pubShow.comics[key].charAt(0).toUpperCase() + pubShow.comics[key].slice(1)}: ${pubShow.comics[key]}`
+    const fetchData = async () => {
+      const docRef = query(collection(db, 'publishedShows'));
+      const docSnap = await getDocs(docRef);
+      if (!docSnap.empty) {
+        const data = docSnap.docs.map(doc => doc.data());
+        setPublished(data); // Ensure data is treated as DocumentData[]
   
-      // ).filter(line => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
-      if (pubShow.bookedshow.club === 'downtown') {
-        const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
+        console.log(data);
   
-        const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
+        // Process logic dependent on 'published' state here
+        const showsForEmailRawDowntown = data.map(pubShow => {
+          if (pubShow.bookedshow.club === 'downtown') {
+            const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "");
+            const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}\n\n${arrayLineup}\n`;
+            return `${showString}`;
+          }
+        });
   
-${arrayLineup}
-        `
-      return `
-${showString}`
+        const showsForEmailRawSouth = data.map(pubShow => {
+          if (pubShow.bookedshow.club === 'south') {
+            const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "");
+            const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}\n\n${arrayLineup}\n`;
+            return `${showString}`;
+          }
+        });
+  
+        const showsForEmailDowntown = `Downtown Shows----------------\n${showsForEmailRawDowntown}`.replace(/,/g, '');
+        const showsForEmailSouth = `South Shows----------------\n${showsForEmailRawSouth}`.replace(/,/g, '');
+  
+        const showsForEmailRaw = `Below is the schedule for the following shows. Please be aware of which club you are to perform in.\n\n${showsForEmailDowntown}\n\n${showsForEmailSouth}`;
+        console.log(showsForEmailRaw);
       }
-
-    })
-
-      const showsForEmailRawSouth = published.map(pubShow => {
-
-        if (pubShow.bookedshow.club === 'south') {
-          const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "")
-    
-          const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}
-    
-${arrayLineup}
-          `
-        return `
-${showString}`
-        }
+    };
   
-        })
-
-    const showsForEmailDowntown = `Downtown Shows----------------
-${showsForEmailRawDowntown}`.replace(/,/g, '')
-
-    const showsForEmailSouth = `South Shows----------------
-${showsForEmailRawSouth}`.replace(/,/g, '')
-
-    const showsForEmailRaw = `Below is the schedule for the following shows. Please be aware of which club you are to perfom in.
-
-${showsForEmailDowntown}
-
-
-${showsForEmailSouth}`
-
-    if (outOfTowners && inactive && almostFamous) {
-      console.log('everyone')
-      emailList.map(email => sendEmail(email, showsForEmailRaw))
-    } else if (!outOfTowners && inactive) {
-      console.log('only inactive and pro')
-      emailListWithOutTowners.map(email => sendEmail(email, showsForEmailRaw))
-    } else if (outOfTowners && !inactive) {
-      console.log('only out of town and pro', emailListWithNoInactive)
-      
-      emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
-    } else if (!outOfTowners && !inactive) {
-      console.log('only pro')
-      emailList.map(email => sendEmail(email, showsForEmailRaw))
-      // emailListWithNoInactiveOrOutTown.map(email => sendEmail(email, showsForEmailRaw))
-    } else if (!almostFamous) {
-      console.log('only out of town and pro', emailListWithNoInactive)
-      
-      emailListWithNoInactive.map(email => sendEmail(email, showsForEmailRaw))
-    } 
-    alert('Comics have been notified')
+    await fetchData();
+  
+    // Rest of your method here
+    alert('Comics have been notified');
   }
+  
 
   const removePublishedShow = async (id: string) => {
 
@@ -847,7 +837,7 @@ ${showsForEmailSouth}`
           'Content-Type': 'application/json',
           // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
         },
-        body: JSON.stringify({email: createNewComicEmail, message: `Hello ${createNewComicName}, this is an email to inviting you to use https://comicsignuptestmail.comedyworks.com in order to give the club your weekly availability. Your login username is this email you provided the club and your initial password is 
+        body: JSON.stringify({email: createNewComicEmail, message: `Hello ${createNewComicName}, this is an email to inviting you to use https://comicsignuptest.comedyworks.com in order to give the club your weekly availability. Your login username is this email you provided the club and your initial password is 
         ${createNewComicPassword} 
 and you will need to change your password after your first login to something that is private and known only to you.
 
@@ -920,6 +910,10 @@ You will receive confirmation emails to this email address each time you submit 
     setEmailComics(!emailComics);
   };
 
+  const toggleComicProfiles = () => {
+    setComicProfiles(!comicProfiles);
+  };
+
   const toggledowntownLong = () => {
     setDowntownLong(!downtownLong);
   };
@@ -929,6 +923,10 @@ You will receive confirmation emails to this email address each time you submit 
   };
   const toggleGridVisible = () => {
     setGridVisible(!gridVisible);
+  };
+
+  const togglePublishedVisible = () => {
+    setPublishedVisible(!publishedVisible);
   };
 
   const handleButtonClick = (buttonName: string) => {
@@ -956,18 +954,218 @@ You will receive confirmation emails to this email address each time you submit 
     } else if (buttonName === 'emailComics') {
       // Logic for the "Change Comic Type" button
       toggleEmailComics(); // Assuming this function toggles visibility
-    }
-    else if (buttonName === 'downtownLong') {
+    } else if (buttonName === 'downtownLong') {
       // Logic for the "Change Comic Type" button
       toggledowntownLong(); // Assuming this function toggles visibility
     } else if (buttonName === 'southLong') {
       // Logic for the "Change Comic Type" button
       toggleSouthLong(); // Assuming this function toggles visibility
-    }
-    
+    } else if (buttonName === 'comicProfiles') {
+      // Logic for the "Change Comic Type" button
+      toggleComicProfiles(); // Assuming this function toggles visibility
+    } else if (buttonName === 'publishedVisible') {
+      // Logic for the "Change Comic Type" button
+      togglePublishedVisible(); // Assuming this function toggles visibility
+    } 
   };
 
+    const displayProfiles = (listToUse: string) => {
+
+      if (listToUse === 'all') {
+        return profiles.map(profile => {
+          console.log(profile)
+          return <div className='profile'>
+                    <div className='profile-contact-info'>
+                      <h1 className='profile-headers'>{profile.name}</h1>
+                      <h3 className='profile-headers'>{profile.email}</h3>
+                      <h4 className='profile-headers'>{profile.phone}</h4>
+                    </div>
+                    <div className='profile-type'>
+                      <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
+                      <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
+                      <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
+                      <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
+                      </div>
+                      <div className='profile-stats'>
+                        <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
+                        <p className='profile-headers'>South Show Sign Up Count: {profile.southShowCount}</p>
+                        <p className='profile-headers'>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
+                        <p className='profile-headers'>South Weeks Submitted: {profile.southWeekCount}</p>
+                      
+                    </div>
+                  </div>
+        })
+      } else if (listToUse === 'filtered') {
+        return filteredProfiles.map(profile => {
+          console.log(profile)
+          return <div className='profile'>
+                    <div className='profile-contact-info'>
+                      <h1 className='profile-headers'>{profile.name}</h1>
+                      <h3 className='profile-headers'>{profile.email}</h3>
+                      <h4 className='profile-headers'>{profile.phone}</h4>
+                    </div>
+                    <div className='profile-type'>
+                      <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
+                      <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
+                      <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
+                      <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
+                      </div>
+                      <div className='profile-stats'>
+                        <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
+                        <p className='profile-headers'>South Show Sign Up Count: {profile.southShowCount}</p>
+                        <p className='profile-headers'>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
+                        <p className='profile-headers'>South Weeks Submitted: {profile.southWeekCount}</p>
+                      
+                    </div>
+                  </div>
+        })
+      }
+
+      
+    }
+
+
+
+// allowed
+// true
+// (boolean)
+
+
+
+
+// downTownShowCount
+// 0
+// (number)
+
+
+// downTownWeekCount
+// 0
+// (number)
+
+
+
+// southShowCount
+// 0
+// (number)
+
+
+// southWeekCount
+// 0
+// (number)
+
+const handleSearch = (event: { target: { value: React.SetStateAction<string> } }) => {
+  setSearchQuery(event.target.value);
+};
+
+const filteredProfiles = profiles.filter(profile => {
+  return Object.values(profile).some(value =>
+    typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+});
+
+
+const filteredPublishedShows = publishedShows.filter(show => {
+  // Helper function to check if a value contains the search query
+  const containsQuery = (value: string) =>
+    typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase());
+
+  // Function to search through nested objects recursively
+  const searchObject = (obj: DocumentData) => {
+    for (const key in obj) {
+      if (key === 'availableComics') continue; // Skip searching the availableComics array
+      const value = obj[key];
+      if (containsQuery(value)) {
+        return true; // Found a match
+      }
+      if (Array.isArray(value)) {
+        // Search through array elements
+        if (value.some(item => typeof item === 'object' && searchObject(item))) {
+          return true; // Found a match
+        }
+      } else if (typeof value === 'object') {
+        // Recursively search through nested objects
+        if (searchObject(value)) {
+          return true; // Found a match
+        }
+      }
+    }
+    return false; // No match found
+  };
+
+  // Check if the show matches the search query
+  const match = searchObject(show);
+  return match;
+});
+
+
+
+
+  const displayBookedShows = (type: string) => {
+    if (type == 'all') {
+      return publishedShows.map(show => {
+        return <div className='profile' key={show.bookedshow.id}>
+        <div className='profile-contact-info'>
+          <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
+          <h3 className='profile-headers'>{show.bookedshow.time} {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
+          {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
+          <h4 className='profile-headers'>{show.time}</h4>
+        </div>
     
+    
+        <div className='profile-contact-info'>
+          <h2 className='profile-headers'>Comics</h2>
+          {show.comicArray.map((comic: { comic: string, type: string }) => {
+            return <>
+            <p>{comic.comic}: {comic.type}</p>
+            </>
+          })}
+          </div>
+    
+    
+        <div className='profile-stats'>
+          {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
+          <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
+          <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
+          <h4 className='profile-headers'>Needed Support: {show.bookedshow.supportStatus ? 'True' : 'False'}</h4>
+          {/* Add other relevant show details */} 
+        </div>
+      </div>
+      })  
+    } else {
+      return filteredPublishedShows.map(show => {
+        return <div className='profile' key={show.bookedshow.id}>
+        <div className='profile-contact-info'>
+          <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
+          <h3 className='profile-headers'>{show.bookedshow.time}  {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
+          {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
+          <h4 className='profile-headers'>{show.time}</h4>
+        </div>
+    
+    
+        <div className='profile-contact-info'>
+          <h2 className='profile-headers'>Comics</h2>
+          {show.comicArray.map((comic: { comic: string, type: string }) => {
+            return <>
+            <p>{comic.comic}: {comic.type}</p>
+            </>
+          })}
+          </div>
+    
+    
+        <div className='profile-stats'>
+          {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
+          <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
+          <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
+          {/* Add other relevant show details */} 
+        </div>
+      </div>
+      })
+    }
+  
+
+  } 
+  
+  
 
   return (
     <div className='admin-container'>
@@ -1000,7 +1198,7 @@ You will receive confirmation emails to this email address each time you submit 
           className={selectedButtons.availabiltyForComics ? 'highlighted' : ''}
           onClick={() => handleButtonClick('availabiltyForComics')}
         >
-          Enter Availabilty For Comics
+          Comic View and Enter Availabilty For Comic
         </button>
         <button 
           className={selectedButtons.buildShows ? 'highlighted' : ''}
@@ -1020,6 +1218,18 @@ You will receive confirmation emails to this email address each time you submit 
           onClick={() => handleButtonClick('changeComicType')}
         >
           Change Comic Type
+        </button>
+        <button 
+          className={selectedButtons.comicProfiles ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('comicProfiles')}
+        >
+          User Profiles
+        </button>
+        <button 
+          className={selectedButtons.publishedVisible ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('publishedVisible')}
+        >
+          Booked Show History
         </button>
       </div>
         <div className='admin-form'>
@@ -1268,7 +1478,28 @@ You will receive confirmation emails to this email address each time you submit 
           <div>{signedShowsDown.map(availShow => availShow)}</div></>}
         {southLong && <><h2 className='south-available-header'>South Club Available Comics</h2>
           <div>{signedShowsSouth.map(availShow => availShow)}</div></>}
-      
+      {comicProfiles && <>
+          <input
+          type="text"
+          placeholder="Search profiles..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className='profile-search'
+        />
+        {searchQuery ? <div>{displayProfiles('filtered')}</div> : <div>{displayProfiles('all')}</div>}
+      </>}
+      {publishedVisible && <>
+        {publishedShows && <>
+          <input
+          type="text"
+          placeholder="Search Booked Shows..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className='profile-search'
+          />
+          {searchQuery ? <div>{displayBookedShows('filtered')}</div> : <div>{displayBookedShows('all')}</div>}
+        </>}
+      </>}
       {/* {comicForHistory && <h2 className='comic-of-history'>Availability History for {comicForHistory}</h2>}
       {comicForHistory && <h2 className='downtown-available-header'>Downtown Availability History</h2>} */}
       {/* {specificComicHistoryDowntown.map((show, index) => <div key={index} className='comicHistory-show'>{show.showMap}</div>)} */}
