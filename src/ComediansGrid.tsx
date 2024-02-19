@@ -189,65 +189,6 @@ import { db } from './firebase';
     };
     
     
-    
-// const publishShow = async () => {
-//   const comicArray: { showId: string; type: unknown; comic: any }[] = [];
-
-//   // Iterate through all selected cells
-//   Object.values(selectedCells).forEach((selectedCell) => {
-//     const availableShowsDowntown =
-//       selectedCell.comedian.comedianInfo.showsAvailabledowntown[selectedCell.show.day.toLowerCase()] || {};
-//     const availableShowsSouth =
-//       selectedCell.comedian.comedianInfo.showsAvailablesouth[selectedCell.show.day.toLowerCase()] || {};
-//     const availableShows = { ...availableShowsDowntown, ...availableShowsSouth };
-
-//     // Iterate through all available shows for the comedian
-//     Object.entries(availableShows).forEach(([showId, position]) => {
-//       const targetShow = shows.find((show) => show.id === showId);
-//       // Ensure targetShow is defined before proceeding
-//       if (targetShow) {
-//         console.log('Comedian:', selectedCell.comedian.comedianInfo.name, 'Show:', targetShow, 'Position:', position);
-//         // If the comedian is available for the selected show, add them to the comicArray
-//         // if (
-//         //   targetShow.club === (selectedCell.show.club === 'downtown' ? 'downtown' : 'south') &&
-//         //   position &&
-//         //   position !== 'X'
-//         // ) {
-//           // Push comedian data into comicArray with the corresponding showId
-//           console.log('Push comedian data into comicArray with the corresponding showId', { showId, type: position === 'X' ? '' : position, comic: selectedCell.comedian.comedianInfo.name })
-//           comicArray.push({ showId, type: position, comic: selectedCell.comedian.comedianInfo.name });
-//         // }
-//       }
-//     });
-//   });
-
-//   // Only submit if there are valid entries
-//   if (comicArray.length > 0) {
-//     // Group comedian data by showId
-//     const comicsByShowId: { [showId: string]: { type: unknown; comic: any }[] } = {};
-//     comicArray.forEach(({ showId, type, comic }) => {
-//       if (!comicsByShowId[showId]) {
-//         comicsByShowId[showId] = [];
-//       }
-//       comicsByShowId[showId].push({ type, comic });
-//     });
-
-//     // Save comedian data for each showId
-//     Object.entries(comicsByShowId).forEach(([showId, comics]) => {
-//       console.log('Saving comics for show:', showId, comics);
-//       // Assuming 'db' and 'setDoc' are already imported and defined somewhere in your code
-//       setDoc(doc(db, `publishedShows/${showId}`), {
-//         bookedshow: shows.find((show) => show.id === showId),
-//         fireOrder: Date.now(),
-//         comicArray: comics,
-//       });
-//     });
-
-//     alert('Show published!');
-//   } else {
-//     alert('There are no valid entries to submit.');
-//   }
-// };
 const handleOverrideClick = () => {
   setOverride(prevState => !prevState); // Step 2: Toggle override state
 };
