@@ -344,6 +344,7 @@ label {
 
 .mask-container {
   border: red double 5px;
+  min-width: 60vw;
 }
 
 .show-avail-container {
@@ -582,6 +583,7 @@ label {
   background-color:  #17a2b8;
   padding: 20px;
   box-sizing: border-box;
+  overflow: auto
 }
 
 .sidebar button {
@@ -594,6 +596,8 @@ label {
   border-radius: 5px;
   background-color: #ddd;
   cursor: pointer;
+  font-size: .65em;
+  font-weight: 600;
 }
 
 .sidebar button:hover {
@@ -669,4 +673,8 @@ label {
 
 .red {
   background-color: red;
+}
+
+.profile-for-edit{
+  width: 54.5vw
 }
