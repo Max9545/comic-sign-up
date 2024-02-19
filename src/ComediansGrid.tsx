@@ -164,13 +164,13 @@ import { db } from './firebase';
               console.log(existingComicIndex);
     
               if (existingComicIndex !== -1) {
-                if (position === 'X') {
+                if (position === 'X' || '') {
                   existingComicArray.comicArray.splice(existingComicIndex, 1);
                 } else {
                   existingComicArray.comicArray[existingComicIndex].type = position;
                 }
               } else {
-                if (position !== 'X') {
+                if (position !== 'X' || '') {
                   existingComicArray.comicArray.push({
                     showId: show.id,
                     type: position,
@@ -179,7 +179,7 @@ import { db } from './firebase';
                 }
               }
             } else {
-              if (position !== 'X') {
+              if (position !== 'X' || '') {
                 newComicArray = [{
                   showId: show.id,
                   type: position,
