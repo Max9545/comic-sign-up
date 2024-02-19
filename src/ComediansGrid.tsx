@@ -141,25 +141,34 @@ import { db } from './firebase';
             console.log(existingComicIndex);
     
             if (existingComicIndex !== -1) {
-              // If comedian already exists, update position
-              existingComicArray.comicArray[existingComicIndex].type = position === 'X' ? '' : position;
+              // If position is 'X', remove comedian from comicArray
+              if (position === 'X') {
+                existingComicArray.comicArray.splice(existingComicIndex, 1);
+              } else {
+                // Otherwise, update comedian's position
+                existingComicArray.comicArray[existingComicIndex].type = position;
+              }
             } else {
-              // If comedian doesn't exist, add to comicArray
-              existingComicArray.comicArray.push({
-                showId: show.id,
-                type: position === 'X' ? '' : position,
-                comic: comedian.comedianInfo.name
-              });
+              // If comedian doesn't exist and position is not 'X', add to comicArray
+              if (position !== 'X') {
+                existingComicArray.comicArray.push({
+                  showId: show.id,
+                  type: position,
+                  comic: comedian.comedianInfo.name
+                });
+              }
             }
           } else {
-            // If existingComicArray is undefined, create a new one
-            newComicArray = [{
-              showId: show.id,
-              type: position === 'X' ? '' : position,
-              comic: comedian.comedianInfo.name
-            }];
-            // Push the new comic array to comicHistory
-            comicHistory.push({ bookedshow: show, comicArray: newComicArray });
+            // If existingComicArray is undefined, create a new one only if position is not 'X'
+            if (position !== 'X') {
+              newComicArray = [{
+                showId: show.id,
+                type: position,
+                comic: comedian.comedianInfo.name
+              }];
+              // Push the new comic array to comicHistory
+              comicHistory.push({ bookedshow: show, comicArray: newComicArray });
+            }
           }
     
           console.log(existingComicArray);
@@ -177,6 +186,7 @@ import { db } from './firebase';
         }
       }
     };
+    
     
     
 const publishShow = async () => {
