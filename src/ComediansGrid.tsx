@@ -104,53 +104,81 @@ import { db } from './firebase';
       setShowPopup(true);
     };
     
-    const handlePopupSelection = (position: string) => {
+ 
+    const handlePopupSelection = async (position: string) => {
+      let newComicArray: { showId: string, type: string, comic: string }[] = []; // Define newComicArray here
+    
       if (currentCellKey && selectedCells[currentCellKey]) {
         const { comedian, show } = selectedCells[currentCellKey];
-        console.log("Selected cell:", selectedCells[currentCellKey]);
-        
-        const updatedCells = { ...selectedCells };
     
-        // Update the appropriate showsAvailable object based on the show's club
-        const updatedShowsAvailable = show.club === 'downtown' 
-          ? { ...comedian.comedianInfo.showsAvailabledowntown }
-          : { ...comedian.comedianInfo.showsAvailablesouth };
-        console.log("Updated shows available:", updatedShowsAvailable);
-    
-        // Update the position for the specific show in the appropriate showsAvailable object
-        if (updatedShowsAvailable[show.day.toLowerCase()]?.includes(show.id)) {
-          updatedShowsAvailable[show.day.toLowerCase()][show.id] = position;
-          console.log("Position updated for show:", updatedShowsAvailable[show.day.toLowerCase()][show.id]);
+        // Check if comedian and show are defined
+        if (!comedian || !show) {
+          console.error('Comedian or show is undefined.');
+          return;
         }
     
-        // Update the selectedCells state with the new position
-        updatedCells[currentCellKey] = {
-          ...selectedCells[currentCellKey],
-          selectedPosition: position,
-          comedian: {
-            ...selectedCells[currentCellKey].comedian,
-            comedianInfo: {
-              ...(selectedCells[currentCellKey].comedian.comedianInfo),
-              showsAvailabledowntown: show.club === 'downtown' 
-                ? updatedShowsAvailable
-                : selectedCells[currentCellKey].comedian.comedianInfo.showsAvailabledowntown,
-              showsAvailablesouth: show.club === 'south' 
-                ? updatedShowsAvailable 
-                : selectedCells[currentCellKey].comedian.comedianInfo.showsAvailablesouth
-            }
-          }
-        };
-        console.log("Updated cell:", updatedCells[currentCellKey]);
+        console.log("Selected cell:", selectedCells[currentCellKey]);
+        console.log(comedian, show);
     
-        setSelectedCells(updatedCells); // Update the selectedCells state
-        setShowPopup(false); // Close the popup
+        const updatedCells = { ...selectedCells };
+        const columnCellKey = `${comedian.comedianInfo.id}-${show.id}`;
+        const updatedCell = {
+          ...selectedCells[currentCellKey],
+          selectedPosition: position
+        };
+    
+        updatedCells[columnCellKey] = updatedCell;
+        console.log(updatedCells[columnCellKey]);
+        try {
+          // Check if comicHistory is empty
+          const existingComicArray = comicHistory.length ? comicHistory.find(item => item.bookedshow.id === show.id) : undefined;
+    
+          console.log(comicHistory);
+          // Check if existingComicArray is defined
+          if (existingComicArray) {
+            // Find index only if comicArray has length
+            const existingComicIndex = existingComicArray.comicArray.length ? existingComicArray.comicArray.findIndex((item: { showId: string, type: string, comic: string }) => item.comic === comedian.comedianInfo.name) : -1;
+            console.log(existingComicIndex);
+    
+            if (existingComicIndex !== -1) {
+              // If comedian already exists, update position
+              existingComicArray.comicArray[existingComicIndex].type = position === 'X' ? '' : position;
+            } else {
+              // If comedian doesn't exist, add to comicArray
+              existingComicArray.comicArray.push({
+                showId: show.id,
+                type: position === 'X' ? '' : position,
+                comic: comedian.comedianInfo.name
+              });
+            }
+          } else {
+            // If existingComicArray is undefined, create a new one
+            newComicArray = [{
+              showId: show.id,
+              type: position === 'X' ? '' : position,
+              comic: comedian.comedianInfo.name
+            }];
+            // Push the new comic array to comicHistory
+            comicHistory.push({ bookedshow: show, comicArray: newComicArray });
+          }
+    
+          console.log(existingComicArray);
+          // Update show's data with modified comicArray
+          await setDoc(doc(db, 'publishedShows', show.id), {
+            bookedshow: show,
+            fireOrder: Date.now(),
+            comicArray: existingComicArray ? existingComicArray.comicArray : newComicArray
+          });
+    
+          setSelectedCells(updatedCells);
+          setShowPopup(false);
+        } catch (error) {
+          console.error('Error updating data:', error);
+        }
       }
     };
     
-
-
-
-
+    
 const publishShow = async () => {
   const comicArray: { showId: string; type: unknown; comic: any }[] = [];
 
@@ -293,6 +321,7 @@ const publishShow = async () => {
     const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
     let assignedType = null;
     if (comicHistoryItem) {
+      console.log(comicHistoryItem)
       const comic = comicHistoryItem.comicArray.find((comic: { comic: any; }) => comic.comic === comedian.comedianInfo.name);
       if (comic) {
         assignedType = comic.type;
