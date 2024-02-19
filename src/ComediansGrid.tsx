@@ -98,11 +98,25 @@ import { db } from './firebase';
       const cellData = selectedCells[cellKey];
     
       // Check if override is true and the comedian is not available for the show
-      const isAvailable = comedian.comedianInfo.showsAvailabledowntown &&
+      console.log(comedian.comedianInfo)
+      const isAvailableDown = comedian.comedianInfo.showsAvailabledowntown &&
                           comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()] &&
                           comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()].includes(show.id);
+
+      const isAvailableSouth = comedian.comedianInfo.showsAvailablesouth &&
+                          comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()] &&
+                          comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()].includes(show.id);                    
+
+                          console.log('isAvailableSouth', isAvailableSouth, 'isAvailableDown', isAvailableDown, 'override', override)
     
-      if (override && !isAvailable) {
+      if (isAvailableSouth || isAvailableDown) {
+        setPopupPosition({ x: event.clientX, y: event.clientY });
+        setSelectedCells({
+          ...selectedCells,
+          [cellKey]: { comedian, show, selectedPosition: cellData ? cellData.selectedPosition : null }
+        });
+        setShowPopup(true);
+      } else if (override) {
         setPopupPosition({ x: event.clientX, y: event.clientY });
         setSelectedCells({
           ...selectedCells,
@@ -118,7 +132,7 @@ import { db } from './firebase';
     
   
     const handlePopupSelection = async (position: string) => {
-      if (override) { // Check if override is true
+      // if (override) { // Check if override is true
         let newComicArray: { showId: string, type: string, comic: string }[] = [];
     
         if (currentCellKey && selectedCells[currentCellKey]) {
@@ -190,15 +204,16 @@ import { db } from './firebase';
     
           // Update comedian's availability in comediansForAdmin collection
           try {
+            console.log(`showsAvailable${show.club}${show.day.toLowerCase()}`, comedian.comedianInfo)
             const comedianDocRef = doc(db, 'comediansForAdmin', comedian.comedianInfo.id);
             await updateDoc(comedianDocRef, {
-              [`showsAvailable${show.club}${show.day.toLowerCase()}`]: comedian.comedianInfo[`showsAvailable${show.club}${show.day.toLowerCase()}`].filter((id: string) => id !== show.id)
+              [`showsAvailable${show.club}${show.day.toLowerCase()}`]: comedian.comedianInfo[`showsAvailable${show.club}`][`${show.day.toLowerCase()}`].filter((id: string) => id !== show.id)
             });
           } catch (error) {
             console.error('Error updating comedian availability:', error);
           }
         }
-      }
+      // }
     };
     
 const handleOverrideClick = () => {
@@ -289,7 +304,6 @@ const handleOverrideClick = () => {
     const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
     let assignedType = null;
     if (comicHistoryItem) {
-      console.log(comicHistoryItem)
       const comic = comicHistoryItem.comicArray.find((comic: { comic: any; }) => comic.comic === comedian.comedianInfo.name);
       if (comic) {
         assignedType = comic.type;
