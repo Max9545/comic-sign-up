@@ -32,6 +32,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [specificComicHistoryDowntown, setSpecificComicHistoryDowntown] = useState<any[]>([])
   const [specificComicHistorySouth, setSpecificComicHistorySouth] = useState<any[]>([])
   const [comicForHistory, setcomicForHistory] = useState('')
+  const [showsForEmailRawString, setShowsForEmailRawString] = useState('')
   const [published, setPublished] = useState<any[]>([])
   const [emailList, setEmailList] = useState<any[]>([])
   const [emailListWithOutTowners, setEmailListWithOutTowners] = useState<any[]>([])
@@ -42,8 +43,11 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [adTrigger, setAdTrigger] = useState(true)
   const [potentialShow, setPotentialShow] = useState({id:''})
   const [createNewComicEmail, setCreateNewComicEmail] = useState('')
-  const [inactive, setInactive] = useState(false)
-  const [emailListWithNoInactiveOrOutTown, setEmailListWithNoInactiveOrOutTown] = useState([])
+  const [inactiveBool, setInactiveBool] = useState(false)
+  const [proEmails, setProEmails] = useState<string[]>([])
+  const [outOfTownEmails, setOutOfTownEmails] = useState<string[]>([])
+  const [almostFamousEmails, setAlmostFamousEmails] = useState<string[]>([])
+  const [inactiveEmails, setInactiveEmails] = useState<string[]>([])
   const [emailListWithNoInactive, setEmailListWithNoInactive] = useState([])
   const [emailWithNoAlmostFamous, setEmailWithNoAlmostFamous] = useState()
   const [createNewComicPassword, setCreateNewComicPassword] = useState('')
@@ -66,7 +70,10 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [searchQuery, setSearchQuery] = useState('');
   const [publishedShows, setPublishedShows] = useState<DocumentData[]>([])
   const [publishedVisible, setPublishedVisible] = useState(false)
-  const [filteredPublished, setFilteredPublished] = useState([])
+  const [prosEmailBool, setProsEmailBool] = useState<boolean>(false);
+const [almostFamousEmailBool, setAlmostFamousEmailBool] = useState<boolean>(false);
+const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(false);
+
   
   const [gridVisible, setGridVisible] = useState(true)
   const [selectedButtons, setSelectedButtons] = useState({
@@ -89,6 +96,23 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   useEffect(() => {
     setComicEmailList()
   }, [])
+
+  // useEffect(() => {
+  //   console.log('pro emails state', proEmails);
+  // }, [proEmails]);
+  
+  // useEffect(() => {
+  //   console.log('outOfTownEmails', outOfTownEmails);
+  // }, [outOfTownEmails]);
+  
+  // useEffect(() => {
+  //   console.log('almostFamousEmails', almostFamousEmails);
+  // }, [almostFamousEmails]);
+  
+  // useEffect(() => {
+  //   console.log('inactiveEmails', inactiveEmails);
+  // }, [inactiveEmails]);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -541,31 +565,57 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
 
     const doc = await (getDocs(docRef))
 
-    const emails = doc.docs.map(user => user.data().email)
+    // const emails = doc.docs.map(user => user.data().email)
 
-    setEmailList(emails)
-    setEmailListWithOutTowners([])
+    // setEmailList(emails)
+    // setEmailListWithOutTowners([])
 
-    const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
+    const pros = doc.docs.filter(comic =>  comic.data().type == 'pro').map((comic: any ) => comic.data().email)
 
-    const withoutOutTownersOrInactive = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown' && comic.data().type != 'Inactive')
-    const emailsWithoutOutTowners = withoutOutTowners.map((comic: any ) => comic.data().email)
+    console.log(pros)
 
-    setEmailListWithOutTowners(emailsWithoutOutTowners)
+    setProEmails(pros)
+    console.log('pro emails state', pros)
+
+    const outOfTown = doc.docs.filter(comic =>  comic.data().type == 'OutOfTown').map((comic: any ) => comic.data().email)
+
+    console.log(outOfTown)
+
+    setOutOfTownEmails(outOfTown)
+    console.log('outOfTownEmails', outOfTownEmails)
+
+    const almostFamous = doc.docs.filter(comic =>  comic.data().type == 'AlmostFamous').map((comic: any ) => comic.data().email)
+
+    console.log(almostFamous)
+    setAlmostFamousEmails(almostFamous)
+
+console.log('almostFamousEmails', almostFamousEmails)
+    const inactive = doc.docs.filter(comic =>  comic.data().type == 'Inactive').map((comic: any ) => comic.data().email)
+
+    console.log(inactive)
+    setInactiveEmails(inactive)
+    console.log('inactiveEmails', inactiveEmails)
+
+    // const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
+
+    // const withoutOutTownersOrInactive = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown' && comic.data().type != 'Inactive')
+    // const emailsWithoutOutTowners = withoutOutTowners.map((comic: any ) => comic.data().email)
+
+    // setEmailListWithOutTowners(emailsWithoutOutTowners)
 
     // @ts-ignore
-    setEmailListWithNoInactiveOrOutTown(withoutOutTownersOrInactive)
-    // const docRefOut = query(collection(db, `users`), where('type', '!=', 'outOfTown'))
-    const withoutOutInactive = doc.docs.filter(comic =>  comic.data().type !='Inactive').map((comic: any ) => comic.data().email)
-    // @ts-ignore
-    setEmailListWithNoInactive(withoutOutInactive)
-    // const docOut = await (getDocs(docRefOut))
+    // setEmailListWithNoInactiveOrOutTown(withoutOutTownersOrInactive)
+    // // const docRefOut = query(collection(db, `users`), where('type', '!=', 'outOfTown'))
+    // const withoutOutInactive = doc.docs.filter(comic =>  comic.data().type !='Inactive').map((comic: any ) => comic.data().email)
+    // // @ts-ignore
+    // setEmailListWithNoInactive(withoutOutInactive)
+    // // const docOut = await (getDocs(docRefOut))
 
 
-    const withoutOutAlmostFamous = doc.docs.filter(comic =>  comic.data().type !='AlmostFamous').map((comic: any ) => comic.data().email)
-    // @ts-ignore
-    setEmailWithNoAlmostFamous(withoutOutAlmostFamous)
-    // const emailsOut = docOut.docs.map(user => user.data().email)
+    // const withoutOutAlmostFamous = doc.docs.filter(comic =>  comic.data().type !='AlmostFamous').map((comic: any ) => comic.data().email)
+    // // @ts-ignore
+    // setEmailWithNoAlmostFamous(withoutOutAlmostFamous)
+    // // const emailsOut = docOut.docs.map(user => user.data().email)
 
     // setEmailListWithOutTowners(emailsOut)
     // console.log(emailListWithOutTowners, emailList)
@@ -584,49 +634,85 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
     //     }
     //    })
     //   })
+
+   
   }
 
   const sendEmails = async () => {
+    const emailList: string[] = [];
+    if (prosEmailBool) emailList.push(...proEmails);
+    if (almostFamousEmailBool) emailList.push(...almostFamousEmails);
+    if (outOfTownersEmailBool) emailList.push(...outOfTownEmails);
+    if (inactiveBool) emailList.push(...inactiveEmails);
+
+    console.log("Email list:", emailList);
 
     const fetchData = async () => {
-      const docRef = query(collection(db, 'publishedShows'));
-      const docSnap = await getDocs(docRef);
-      if (!docSnap.empty) {
-        const data = docSnap.docs.map(doc => doc.data());
-        setPublished(data); // Ensure data is treated as DocumentData[]
-  
-        console.log(data);
-  
-        // Process logic dependent on 'published' state here
-        const showsForEmailRawDowntown = data.map(pubShow => {
-          if (pubShow.bookedshow.club === 'downtown') {
-            const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "");
-            const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}\n\n${arrayLineup}\n`;
-            return `${showString}`;
-          }
-        });
-  
-        const showsForEmailRawSouth = data.map(pubShow => {
-          if (pubShow.bookedshow.club === 'south') {
-            const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "");
-            const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}\n\n${arrayLineup}\n`;
-            return `${showString}`;
-          }
-        });
-  
-        const showsForEmailDowntown = `Downtown Shows----------------\n${showsForEmailRawDowntown}`.replace(/,/g, '');
-        const showsForEmailSouth = `South Shows----------------\n${showsForEmailRawSouth}`.replace(/,/g, '');
-  
-        const showsForEmailRaw = `Below is the schedule for the following shows. Please be aware of which club you are to perform in.\n\n${showsForEmailDowntown}\n\n${showsForEmailSouth}`;
-        console.log(showsForEmailRaw);
-      }
+        const docRef = query(collection(db, 'publishedShows'));
+        const docSnap = await getDocs(docRef);
+        if (!docSnap.empty) {
+            const data = docSnap.docs.map(doc => doc.data());
+            setPublished(data); // Ensure data is treated as DocumentData[]
+
+            console.log(data);
+
+            // Process logic dependent on 'published' state here
+            const showsForEmailRawDowntown = data.map(pubShow => {
+                if (pubShow.bookedshow.club === 'downtown') {
+                    const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "");
+                    const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}\n\n${arrayLineup}\n`;
+                    return `${showString}`;
+                }
+            });
+
+            const showsForEmailRawSouth = data.map(pubShow => {
+                if (pubShow.bookedshow.club === 'south') {
+                    const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "");
+                    const showString = `${pubShow.bookedshow.headliner} ${pubShow.bookedshow.day} ${pubShow.bookedshow.date} ${pubShow.bookedshow.time} ${pubShow.bookedshow.club.charAt(0).toUpperCase() + pubShow.bookedshow.club.slice(1)}\n\n${arrayLineup}\n`;
+                    return `${showString}`;
+                }
+            });
+
+            const showsForEmailDowntown = `Downtown Shows----------------\n${showsForEmailRawDowntown}`.replace(/,/g, '');
+            const showsForEmailSouth = `South Shows----------------\n${showsForEmailRawSouth}`.replace(/,/g, '');
+
+            const showsForEmailRaw = `Below is the schedule for the following shows. Please be aware of which club you are to perform in.\n\n${showsForEmailDowntown}\n\n${showsForEmailSouth}`;
+
+            // Update showsForEmailRawString state
+            setShowsForEmailRawString(showsForEmailRaw);
+            console.log(showsForEmailRawString);
+
+            // Once showsForEmailRawString is set, send emails
+            emailList.forEach(async email => {
+                try {
+                  console.log(email, showsForEmailRaw)
+                    const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
+                        },
+                        body: JSON.stringify({ email, message: showsForEmailRaw }),
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('Email sent successfully:', data);
+                    } else {
+                        console.error('Error sending email:', response);
+                    }
+                } catch (error) {
+                    console.error('Error sending email:', error);
+                }
+            });
+
+            alert('Comics have been notified');
+        }
     };
-  
+
     await fetchData();
-  
-    // Rest of your method here
-    alert('Comics have been notified');
-  }
+};
+
   
 
   const removePublishedShow = async (id: string) => {
@@ -1463,14 +1549,17 @@ const filteredPublishedShows = publishedShows.filter(show => {
           <button onClick={() => deleteComic()} className='create-comic-button'>Delete Comic Profile</button>
         </div>
         </div>}
-          {emailComics && <><button className='published-shows' onClick={() => sendEmails()}>Email Schedule to Pros</button><br></br>
-          <label className='out-of-town'>Include Almost Famous<input type="checkbox" checked={almostFamous}
+          {emailComics && <><button className='published-shows' onClick={() => sendEmails()}>Email Schedule to the Following Types</button><br></br>
+          <label className='out-of-town'>Include Pros<input type="checkbox"
            className='out-of-town-checkbox'
-            onChange={() => setAlmostFamous(!almostFamous)}/></label>
+            onChange={() => setProsEmailBool(!prosEmailBool)}/></label>
+          <label className='out-of-town'>Include Almost Famous<input type="checkbox"
+           className='out-of-town-checkbox'
+            onChange={() => setAlmostFamousEmailBool(!almostFamousEmailBool)}/></label>
           <label className='out-of-town'>Include Out of Town Pros<input type="checkbox" className='out-of-town-checkbox' defaultChecked={outOfTowners}
-            onChange={() => setOutOfTowners(!outOfTowners)} /></label>
+            onChange={() => setOutOfTownersEmailBool(!outOfTownersEmailBool)} /></label>
             <label className='out-of-town'>Include Inactive<input type="checkbox" className='out-of-town-checkbox'
-            onChange={() => setInactive(!inactive)} /></label>
+            onChange={() => setInactiveBool(!inactiveBool)} /></label>
             
             
             </>}
