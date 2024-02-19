@@ -732,6 +732,7 @@ console.log(searchType, comicSearch)
       console.log(doc.docs[0].data(), 'hi')
       const comic = await doc.docs[0].data()
       console.log(comic)
+      // @ts-ignore
       setComedianMask({
         name: comic.name,
         uid: comic.uid,
