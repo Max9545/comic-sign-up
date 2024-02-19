@@ -692,7 +692,7 @@ console.log('almostFamousEmails', almostFamousEmails)
                             'Content-Type': 'application/json',
                             // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
                         },
-                        body: JSON.stringify({ email: 'bregmanmax91@gmail.com', message: showsForEmailRaw }),
+                        body: JSON.stringify({ email, message: showsForEmailRaw }),
                     });
 
                     if (response.ok) {
