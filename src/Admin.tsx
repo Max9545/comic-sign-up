@@ -580,29 +580,21 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
 
     const pros = doc.docs.filter(comic =>  comic.data().type == 'pro').map((comic: any ) => comic.data().email)
 
-    console.log(pros)
 
     setProEmails(pros)
-    console.log('pro emails state', pros)
 
     const outOfTown = doc.docs.filter(comic =>  comic.data().type == 'OutOfTown').map((comic: any ) => comic.data().email)
 
-    console.log(outOfTown)
 
     setOutOfTownEmails(outOfTown)
-    console.log('outOfTownEmails', outOfTownEmails)
 
     const almostFamous = doc.docs.filter(comic =>  comic.data().type == 'AlmostFamous').map((comic: any ) => comic.data().email)
 
-    console.log(almostFamous)
     setAlmostFamousEmails(almostFamous)
 
-console.log('almostFamousEmails', almostFamousEmails)
     const inactive = doc.docs.filter(comic =>  comic.data().type == 'Inactive').map((comic: any ) => comic.data().email)
 
-    console.log(inactive)
     setInactiveEmails(inactive)
-    console.log('inactiveEmails', inactiveEmails)
 
     // const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
 
@@ -660,11 +652,8 @@ console.log('almostFamousEmails', almostFamousEmails)
         const docSnap = await getDocs(docRef);
         if (!docSnap.empty) {
             const data = docSnap.docs.map(doc => doc.data());
-            setPublished(data); // Ensure data is treated as DocumentData[]
+            setPublished(data)
 
-            console.log(data);
-
-            // Process logic dependent on 'published' state here
             const showsForEmailRawDowntown = data.map(pubShow => {
                 if (pubShow.bookedshow.club === 'downtown') {
                     const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "");
@@ -688,12 +677,10 @@ console.log('almostFamousEmails', almostFamousEmails)
 
             // Update showsForEmailRawString state
             setShowsForEmailRawString(showsForEmailRaw);
-            console.log(showsForEmailRawString);
 
             // Once showsForEmailRawString is set, send emails
             emailList.forEach(async email => {
                 try {
-                  console.log(email, showsForEmailRaw)
                     const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
                         method: 'POST',
                         headers: {
@@ -731,20 +718,14 @@ console.log('almostFamousEmails', almostFamousEmails)
   }
 
     const maskAsComic = async () => {
-console.log(profileToEdit != '')
       const searchType = profileToEdit == '' ? 'email' : comicSearch.includes('@') ? 'email' : 'name'
-  console.log(searchType, profileToEdit, 'hi')
 
   const comicToSearch = profileToEdit != '' ? profileToEdit : comicSearch
-
-  console.log(comicToSearch)
 
       try { 
         const docRef = query(collection(db, `users`), where(searchType, "==", comicToSearch))
         const doc = await (getDocs(docRef))
-        console.log(doc.docs[0].data(), 'hi')
         const comic = await doc.docs[0].data()
-        console.log(comic)
         // @ts-ignore
         setComedianMask({
           name: comic.name,
@@ -769,7 +750,6 @@ console.log(profileToEdit != '')
         }
         const doc = await (getDocs(docRef))
         const comic = await doc.docs[0].data()
-        console.log(comic)
         setComedianMask({
           name: comic.name,
           id: comic.uid,
@@ -850,12 +830,10 @@ console.log(profileToEdit != '')
   }
 
   const updateComedian = async () => {  
-   console.log(comedianMask)
     const db = getFirestore()
     const q = query(collection(db, "users"), where("uid", "==", comedianMask?.uid)) 
     const docUser = await getDocs(q)
     const data = docUser.docs[0].data()
-    console.log(comedianMask.uid)
     updateDoc(doc(db, `users/${comedianMask?.uid}`), comedianMask)
     
     // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
@@ -1092,19 +1070,15 @@ You will receive confirmation emails to this email address each time you submit 
   };
 
   const takeToEdit = async (name: string) => {
-    console.log(name);
-    setProfileToEdit(name); // Await the setComicSearch function call
+    setProfileToEdit(name)
     toggleComicProfiles();
     toggleEnterAvailabilityForComic();
-    console.log(comicSearch);
 
     setSelectedButtons({
         ...selectedButtons,
         changeComicType: true,
         comicProfiles: false,
     });
-
-    // maskAsComic(); // Await the maskAsComic function call
     
 };
 
@@ -1136,7 +1110,6 @@ You will receive confirmation emails to this email address each time you submit 
         })
       } else if (listToUse === 'filtered') {
         return filteredProfiles.map(profile => {
-          console.log(profile)
           return <div className='profile' key={profile.uid}>
                     <div className='profile-contact-info'>
                       <h1 className='profile-headers'>{profile.name}</h1>
