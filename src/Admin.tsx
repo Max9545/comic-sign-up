@@ -68,6 +68,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [almostFamous, setAlmostFamous] = useState(true)
   const [profiles, setProfiles] = useState<DocumentData[]>([])
   const [searchQuery, setSearchQuery] = useState('');
+  const [profileToEdit, setProfileToEdit] = useState('');
   const [publishedShows, setPublishedShows] = useState<DocumentData[]>([])
   const [publishedVisible, setPublishedVisible] = useState(false)
   const [prosEmailBool, setProsEmailBool] = useState<boolean>(false);
@@ -143,6 +144,13 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
     viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
   }, [published])
+
+  useEffect(() => {
+    if (profileToEdit !== '') {
+
+        maskAsComic();
+    }
+}, [profileToEdit]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -722,91 +730,96 @@ console.log('almostFamousEmails', almostFamousEmails)
     setAdTrigger(!adTrigger)
   }
 
-  const maskAsComic = async () => {
+    const maskAsComic = async () => {
+console.log(profileToEdit != '')
+      const searchType = profileToEdit == '' ? 'email' : comicSearch.includes('@') ? 'email' : 'name'
+  console.log(searchType, profileToEdit, 'hi')
 
-    const searchType = comicSearch.includes('@') ? 'email' : 'name'
-console.log(searchType, comicSearch)
-    try { 
-      const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
-      const doc = await (getDocs(docRef))
-      console.log(doc.docs[0].data(), 'hi')
-      const comic = await doc.docs[0].data()
-      console.log(comic)
-      // @ts-ignore
-      setComedianMask({
-        name: comic.name,
-        uid: comic.uid,
-        type: comic.type,
-        email: comic.email,
-        downTownShowCount: comic.downTownShowCount,
-        southShowCount: comic.southShowCount,
-        downTownWeekCount: comic.downTownWeekCount,
-        southWeekCount: comic.southWeekCount,
-        // showsAvailabledowntown: comic.showsAvailabledowntown,
-        // showsAvailablesouth: comic.showsAvailablesouth,
-        // showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
-        // showsAvailablesouthHistory: comic.showsAvailablesouthHistory,
-        clean: comic.clean, 
-        famFriendly: comic.famFriendly
-      })
-    } catch (err) {
-      const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
-      if (docRef.converter == null) {
-        return alert('Comedian does not exist or incorrect name has been entered')
-      }
-      const doc = await (getDocs(docRef))
-      const comic = await doc.docs[0].data()
-      console.log(comic)
-      setComedianMask({
-        name: comic.name,
-        id: comic.uid,
-        type: comic.type,
-        email: comic.email,
-        downTownShowCount: comic.downTownShowCount,
-        southShowCount: comic.southShowCount,
-        downTownWeekCount: comic.downTownWeekCount,
-        southWeekCount: comic.southWeekCount,
-        showsAvailabledowntown: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
-        }, 
-        showsAvailablesouth: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
-        },
-        showsAvailabledowntownHistory: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
-        },
-        showsAvailablesouthHistory: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
+  const comicToSearch = profileToEdit != '' ? profileToEdit : comicSearch
+
+  console.log(comicToSearch)
+
+      try { 
+        const docRef = query(collection(db, `users`), where(searchType, "==", comicToSearch))
+        const doc = await (getDocs(docRef))
+        console.log(doc.docs[0].data(), 'hi')
+        const comic = await doc.docs[0].data()
+        console.log(comic)
+        // @ts-ignore
+        setComedianMask({
+          name: comic.name,
+          uid: comic.uid,
+          type: comic.type,
+          email: comic.email,
+          downTownShowCount: comic.downTownShowCount,
+          southShowCount: comic.southShowCount,
+          downTownWeekCount: comic.downTownWeekCount,
+          southWeekCount: comic.southWeekCount,
+          // showsAvailabledowntown: comic.showsAvailabledowntown,
+          // showsAvailablesouth: comic.showsAvailablesouth,
+          // showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
+          // showsAvailablesouthHistory: comic.showsAvailablesouthHistory,
+          clean: comic.clean, 
+          famFriendly: comic.famFriendly
+        })
+      } catch (err) {
+        const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
+        if (docRef.converter == null) {
+          return alert('Comedian does not exist or incorrect name has been entered')
         }
-      })
-      
-      console.log(err)
+        const doc = await (getDocs(docRef))
+        const comic = await doc.docs[0].data()
+        console.log(comic)
+        setComedianMask({
+          name: comic.name,
+          id: comic.uid,
+          type: comic.type,
+          email: comic.email,
+          downTownShowCount: comic.downTownShowCount,
+          southShowCount: comic.southShowCount,
+          downTownWeekCount: comic.downTownWeekCount,
+          southWeekCount: comic.southWeekCount,
+          showsAvailabledowntown: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          }, 
+          showsAvailablesouth: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          },
+          showsAvailabledowntownHistory: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          },
+          showsAvailablesouthHistory: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          }
+        })
+        
+        console.log(err)
+      }
     }
-  }
 
   const addToWeek = () => {
     const idCheck = props.shows.map(show => show.id)
@@ -1078,19 +1091,27 @@ You will receive confirmation emails to this email address each time you submit 
     } 
   };
 
-  const takeToEdit = (name: string) => {
-    console.log(name)
-    setComicSearch(name)
-    maskAsComic()
-    toggleComicProfiles()
-    toggleEnterAvailabilityForComic()
+  const takeToEdit = async (name: string) => {
+    console.log(name);
+    setProfileToEdit(name); // Await the setComicSearch function call
+    toggleComicProfiles();
+    toggleEnterAvailabilityForComic();
+    console.log(comicSearch);
 
-  }
+    setSelectedButtons({
+        ...selectedButtons,
+        changeComicType: true,
+        comicProfiles: false,
+    });
+
+    // maskAsComic(); // Await the maskAsComic function call
+    
+};
+
 
     const displayProfiles = (listToUse: string) => {
       if (listToUse === 'all') {
         return profiles.map(profile => {
-          console.log(profile)
           return <div className='profile' key={profile.uid}>
                     <div className='profile-contact-info'>
                       <h1 className='profile-headers'>{profile.name}</h1>
