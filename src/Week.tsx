@@ -155,7 +155,7 @@
           }
         }).join('\n').replaceAll(',', '\n').replace(/(^[ \t]*\n)/gm, "")
 
-
+console.log(downtownString, southString)
   //       const emailData = {
   //         to: `${props.comedian.email}`,
   //         from: 'bregmanmax91@gmail.com',
@@ -207,35 +207,35 @@
         };
         
         //   })
-//         try {
-//           const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
-//             method: 'POST',
-//             headers: {
-//               'Content-Type': 'application/json',
-//               // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
-//             },
-//             body: JSON.stringify({ email: props.comedian.email, message: `Here is the availabilty you submitted ${getCurrentDayAndTime()}:
+        try {
+          const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
+            },
+            body: JSON.stringify({ email: props.comedian.email, message: `Here is the availabilty you submitted ${getCurrentDayAndTime()}:
 
-// Downtown: 
-// ${downtownString} 
+Downtown: 
+${downtownString} 
 
 
-// South: 
-// ${southString}
+South: 
+${southString}
             
-// Comic's Note: ${comicNote}` }),
-//           });
+Comic's Note: ${comicNote}` }),
+          });
       
-//           if (response.ok) {
-//             const data = await response.json();
-//             console.log('Email sent successfully:', data);
-//             console.log(currentComedian.email);
-//           } else {
-//             console.error('Error sending email:', response);
-//           }
-//         } catch (error) {
-//           console.error('Error sending email:', error);
-//         }
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Email sent successfully:', data);
+            console.log(currentComedian.email);
+          } else {
+            console.error('Error sending email:', response);
+          }
+        } catch (error) {
+          console.error('Error sending email:', error);
+        }
       }
 
     const submitForm = async (event: any) => {

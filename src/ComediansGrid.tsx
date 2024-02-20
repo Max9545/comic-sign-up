@@ -188,15 +188,36 @@ import { db } from './firebase';
     
           // Update comedian's availability in comediansForAdmin collection
           try {
-            console.log(`showsAvailable${show.club}${show.day.toLowerCase()}`, comedian.comedianInfo)
             const comedianDocRef = doc(db, 'comediansForAdmin', comedian.comedianInfo.id);
+            
+            // Generate dynamic keys for accessing comedian's availability
+            const clubKey = `showsAvailable${show.club}`;
+            const dayKey = show.day.toLowerCase();
+            
+            // Filter out the show id from the appropriate day's availability array
+            comedian.comedianInfo[clubKey][dayKey].push(show.id)
+            const updatedAvailability = comedian.comedianInfo[clubKey][dayKey]
+            
+            // .filter((id) => id !== show.id);
+            
+            // Create a copy of comedianInfo with updated availability
+            const updatedComedianInfo = {
+                ...comedian.comedianInfo,
+                [clubKey]: {
+                    ...comedian.comedianInfo[clubKey],
+                    [dayKey]: updatedAvailability
+                }
+            };
+        
+            // Update the document with the new availability for the specified comedian
             await updateDoc(comedianDocRef, {
-              [`showsAvailable${show.club}${show.day.toLowerCase()}`]: comedian.comedianInfo[`showsAvailable${show.club}`][`${show.day.toLowerCase()}`].filter((id: string) => id !== show.id)
+                comedianInfo: updatedComedianInfo
             });
-          } catch (error) {
+        } catch (error) {
             console.error('Error updating comedian availability:', error);
-          }
         }
+      }        
+
       // }
     };
     
