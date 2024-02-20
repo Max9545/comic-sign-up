@@ -68,6 +68,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [almostFamous, setAlmostFamous] = useState(true)
   const [profiles, setProfiles] = useState<DocumentData[]>([])
   const [searchQuery, setSearchQuery] = useState('');
+  const [profileToEdit, setProfileToEdit] = useState('');
   const [publishedShows, setPublishedShows] = useState<DocumentData[]>([])
   const [publishedVisible, setPublishedVisible] = useState(false)
   const [prosEmailBool, setProsEmailBool] = useState<boolean>(false);
@@ -143,6 +144,13 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
     viewAllComicsAvailableSouth()
     viewAllComicsAvailableDowntown()
   }, [published])
+
+  useEffect(() => {
+    if (profileToEdit !== '') {
+
+        maskAsComic();
+    }
+}, [profileToEdit]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -572,29 +580,21 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
 
     const pros = doc.docs.filter(comic =>  comic.data().type == 'pro').map((comic: any ) => comic.data().email)
 
-    console.log(pros)
 
     setProEmails(pros)
-    console.log('pro emails state', pros)
 
     const outOfTown = doc.docs.filter(comic =>  comic.data().type == 'OutOfTown').map((comic: any ) => comic.data().email)
 
-    console.log(outOfTown)
 
     setOutOfTownEmails(outOfTown)
-    console.log('outOfTownEmails', outOfTownEmails)
 
     const almostFamous = doc.docs.filter(comic =>  comic.data().type == 'AlmostFamous').map((comic: any ) => comic.data().email)
 
-    console.log(almostFamous)
     setAlmostFamousEmails(almostFamous)
 
-console.log('almostFamousEmails', almostFamousEmails)
     const inactive = doc.docs.filter(comic =>  comic.data().type == 'Inactive').map((comic: any ) => comic.data().email)
 
-    console.log(inactive)
     setInactiveEmails(inactive)
-    console.log('inactiveEmails', inactiveEmails)
 
     // const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
 
@@ -652,11 +652,8 @@ console.log('almostFamousEmails', almostFamousEmails)
         const docSnap = await getDocs(docRef);
         if (!docSnap.empty) {
             const data = docSnap.docs.map(doc => doc.data());
-            setPublished(data); // Ensure data is treated as DocumentData[]
+            setPublished(data)
 
-            console.log(data);
-
-            // Process logic dependent on 'published' state here
             const showsForEmailRawDowntown = data.map(pubShow => {
                 if (pubShow.bookedshow.club === 'downtown') {
                     const arrayLineup = pubShow.comicArray.map((comic: { type: string, comic: string }) => `${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)} ${comic.comic}`).filter((line: string) => line != '').join('\n').replace(/(^[ \t]*\n)/gm, "");
@@ -680,12 +677,10 @@ console.log('almostFamousEmails', almostFamousEmails)
 
             // Update showsForEmailRawString state
             setShowsForEmailRawString(showsForEmailRaw);
-            console.log(showsForEmailRawString);
 
             // Once showsForEmailRawString is set, send emails
             emailList.forEach(async email => {
                 try {
-                  console.log(email, showsForEmailRaw)
                     const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
                         method: 'POST',
                         headers: {
@@ -722,85 +717,89 @@ console.log('almostFamousEmails', almostFamousEmails)
     setAdTrigger(!adTrigger)
   }
 
-  const maskAsComic = async () => {
+    const maskAsComic = async () => {
+      const searchType = profileToEdit == '' ? 'email' : comicSearch.includes('@') ? 'email' : 'name'
 
-    const searchType = comicSearch.includes('@') ? 'email' : 'name'
+  const comicToSearch = profileToEdit != '' ? profileToEdit : comicSearch
 
-    try {
-      const docRef = query(collection(db, `comediansForAdmin`), where(`comedianInfo.${searchType}`, "==", comicSearch))
-      const doc = await (getDocs(docRef))
-      const comic = await doc.docs[0].data().comedianInfo
-      setComedianMask({
-        name: comic.name,
-        id: comic.id,
-        type: comic.type,
-        email: comic.email,
-        downTownShowCount: comic.downTownShowCount,
-        southShowCount: comic.southShowCount,
-        downTownWeekCount: comic.downTownWeekCount,
-        southWeekCount: comic.southWeekCount,
-        showsAvailabledowntown: comic.showsAvailabledowntown,
-        showsAvailablesouth: comic.showsAvailablesouth,
-        showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
-        showsAvailablesouthHistory: comic.showsAvailablesouthHistory
-      })
-    } catch (err) {
-      const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
-      if (docRef.converter == null) {
-        return alert('Comedian does not exist or incorrect name has been entered')
-      }
-      const doc = await (getDocs(docRef))
-      const comic = await doc.docs[0].data()
-      setComedianMask({
-        name: comic.name,
-        id: comic.uid,
-        type: comic.type,
-        email: comic.email,
-        downTownShowCount: comic.downTownShowCount,
-        southShowCount: comic.southShowCount,
-        downTownWeekCount: comic.downTownWeekCount,
-        southWeekCount: comic.southWeekCount,
-        showsAvailabledowntown: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
-        }, 
-        showsAvailablesouth: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
-        },
-        showsAvailabledowntownHistory: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
-        },
-        showsAvailablesouthHistory: {
-          monday: [],
-          tuesday: [],
-          wednesday: [],
-          thursday: [], 
-          friday: [],
-          saturday: [],
-          sunday: []
+      try { 
+        const docRef = query(collection(db, `users`), where(searchType, "==", comicToSearch))
+        const doc = await (getDocs(docRef))
+        const comic = await doc.docs[0].data()
+        // @ts-ignore
+        setComedianMask({
+          name: comic.name,
+          uid: comic.uid,
+          type: comic.type,
+          email: comic.email,
+          downTownShowCount: comic.downTownShowCount,
+          southShowCount: comic.southShowCount,
+          downTownWeekCount: comic.downTownWeekCount,
+          southWeekCount: comic.southWeekCount,
+          // showsAvailabledowntown: comic.showsAvailabledowntown,
+          // showsAvailablesouth: comic.showsAvailablesouth,
+          // showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
+          // showsAvailablesouthHistory: comic.showsAvailablesouthHistory,
+          clean: comic.clean, 
+          famFriendly: comic.famFriendly
+        })
+      } catch (err) {
+        const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
+        if (docRef.converter == null) {
+          return alert('Comedian does not exist or incorrect name has been entered')
         }
-      })
-      
-      console.log(err)
+        const doc = await (getDocs(docRef))
+        const comic = await doc.docs[0].data()
+        setComedianMask({
+          name: comic.name,
+          id: comic.uid,
+          type: comic.type,
+          email: comic.email,
+          downTownShowCount: comic.downTownShowCount,
+          southShowCount: comic.southShowCount,
+          downTownWeekCount: comic.downTownWeekCount,
+          southWeekCount: comic.southWeekCount,
+          showsAvailabledowntown: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          }, 
+          showsAvailablesouth: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          },
+          showsAvailabledowntownHistory: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          },
+          showsAvailablesouthHistory: {
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [], 
+            friday: [],
+            saturday: [],
+            sunday: []
+          }
+        })
+        
+        console.log(err)
+      }
     }
-  }
 
   const addToWeek = () => {
     const idCheck = props.shows.map(show => show.id)
@@ -827,6 +826,21 @@ console.log('almostFamousEmails', almostFamousEmails)
     const docTwo = await (getDocs(docRef))
     updateDoc(doc(db, `comediansForAdmin/${comedianMask.id}`), {"comedianInfo.type": comedianMask.type})
     alert(`${comedianMask.name} is now filed as ${type}`) 
+    setAdTrigger(!adTrigger)
+  }
+
+  const updateComedian = async () => {  
+    const db = getFirestore()
+    const q = query(collection(db, "users"), where("uid", "==", comedianMask?.uid)) 
+    const docUser = await getDocs(q)
+    const data = docUser.docs[0].data()
+    updateDoc(doc(db, `users/${comedianMask?.uid}`), comedianMask)
+    
+    // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
+    // const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", comedianMask.id))
+    // await (getDocs(docRef))
+    updateDoc(doc(db, `comediansForAdmin/${comedianMask.uid}`), comedianMask)
+    alert(`${comedianMask.name} is now updated`) 
     setAdTrigger(!adTrigger)
   }
 
@@ -1055,16 +1069,29 @@ You will receive confirmation emails to this email address each time you submit 
     } 
   };
 
-    const displayProfiles = (listToUse: string) => {
+  const takeToEdit = async (name: string) => {
+    setProfileToEdit(name)
+    toggleComicProfiles();
+    toggleEnterAvailabilityForComic();
 
+    setSelectedButtons({
+        ...selectedButtons,
+        changeComicType: true,
+        comicProfiles: false,
+    });
+    
+};
+
+
+    const displayProfiles = (listToUse: string) => {
       if (listToUse === 'all') {
         return profiles.map(profile => {
-          console.log(profile)
-          return <div className='profile'>
+          return <div className='profile' key={profile.uid}>
                     <div className='profile-contact-info'>
                       <h1 className='profile-headers'>{profile.name}</h1>
                       <h3 className='profile-headers'>{profile.email}</h3>
                       <h4 className='profile-headers'>{profile.phone}</h4>
+                      <button onClick={() => takeToEdit(profile.name)}>Edit Comic</button>
                     </div>
                     <div className='profile-type'>
                       <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
@@ -1083,8 +1110,7 @@ You will receive confirmation emails to this email address each time you submit 
         })
       } else if (listToUse === 'filtered') {
         return filteredProfiles.map(profile => {
-          console.log(profile)
-          return <div className='profile'>
+          return <div className='profile' key={profile.uid}>
                     <div className='profile-contact-info'>
                       <h1 className='profile-headers'>{profile.name}</h1>
                       <h3 className='profile-headers'>{profile.email}</h3>
@@ -1210,9 +1236,9 @@ const filteredPublishedShows = publishedShows.filter(show => {
     
         <div className='profile-stats'>
           {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
-          <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
-          <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
-          <h4 className='profile-headers'>Needed Support: {show.bookedshow.supportStatus ? 'True' : 'False'}</h4>
+          <h4 className='profile-headers'>Clean: {show.bookedshow.clean == 'not-clean' ? 'False' : 'True'}</h4>
+          <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly == 'not-familyFriendly' ? 'False' : 'True'}</h4>
+          <h4 className='profile-headers'>Needed Support: {show.bookedshow.supportStatus == 'support' ? 'True' : 'False'}</h4>
           {/* Add other relevant show details */} 
         </div>
       </div>
@@ -1303,7 +1329,7 @@ const filteredPublishedShows = publishedShows.filter(show => {
           className={selectedButtons.changeComicType ? 'highlighted' : ''}
           onClick={() => handleButtonClick('changeComicType')}
         >
-          Change Comic Type
+          Edit Comic Profile
         </button>
         <button 
           className={selectedButtons.comicProfiles ? 'highlighted' : ''}
@@ -1321,27 +1347,123 @@ const filteredPublishedShows = publishedShows.filter(show => {
         <div className='admin-form'>
       {/* @ts-ignore */}
       {gridVisible && <ComediansGrid comedians={props.comedians} shows={props.shows} />}
-      {enterAvailabilityForComic && <><div className='mask-container'
+      {enterAvailabilityForComic && <>
+      <div className='mask-container'
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               maskAsComic()
             }
           } }
-        >
-          <h3 className='shows-visible-to-comics'>Enter availabilty for comic using their name or email</h3>
+      >
+          <h3 className='shows-visible-to-comics'>Enter Comedic To Edit</h3>
           <input type='text' className='yes-spot' onChange={(e) => {
             setComicSearch(e.target.value)
           } } />
           <input type='submit' className='submit-mask' onClick={() => maskAsComic()} />
-
+          
         </div>
-          <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
-    {comedianMask.downTownShowCount > 0 &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
+          <h2 className='shows-visible-to-comics'>Current Comedic {comedianMask.name}'s Profile</h2>
+        <div className='profile profile-for-edit'>
+                    <div className='profile-contact-info'>
+                      <h1 className='profile-headers'>{comedianMask.name}</h1>
+                      <h3 className='profile-headers'>{comedianMask.email}</h3>
+                      <h4 className='profile-headers'>{comedianMask.phone}</h4>
+                    </div>
+                    <div className='profile-type'>
+                      <h2 className='profile-headers'>{comedianMask.type === 'pro' ? 'Pro' : comedianMask.type === 'AlmostFamous' ? 'Almost Famous' : comedianMask.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
+                      <h4 className='profile-headers'>Clean: {comedianMask.clean ? 'True' : 'False'}</h4>
+                      <h4 className='profile-headers'>Family Friendly: {comedianMask.famFriendly ? 'True' : 'False'}</h4>
+                      <h5 className='profile-headers'>Allowed: {comedianMask.allowed ? 'True' : 'False'}</h5>
+                      </div>
+                      <div className='profile-stats'>
+                        <p className='profile-headers'>Downtown Show Sign Up Count: {comedianMask.downTownShowCount}</p>
+                        <p className='profile-headers'>South Show Sign Up Count: {comedianMask.southShowCount}</p>
+                        <p className='profile-headers'>Down Town Weeks Submitted: {comedianMask.downTownWeekCount}</p>
+                        <p className='profile-headers'>South Weeks Submitted: {comedianMask.southWeekCount}</p>
+                      
+                    </div>
+                  </div>
+    {/* {comedianMask.downTownShowCount > 0 &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
     {comedianMask.southShowCount > 0 && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
     {comedianMask.downTownWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
-    {comedianMask.southWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
+    {comedianMask.southWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>} */}
     <div className='shows-visible-to-comics'>
-    <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
+    
+    <h2 className='admin-build'>Comedian Information Fields</h2>
+          <div className='create-new-comic'
+        onKeyUp={(e) => {
+          if (e.key === "Enter") {
+            createNewComic()        
+          }
+        }}
+      >
+          <label> Edit Comic Email
+            <br></br>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, email: e.target.value})}/> 
+          </label>
+          <label> Edit Comic Name
+            <br></br>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, name: e.target.value})}/>
+          </label>
+          <label className='new-comic-password'> Edit Comic Password
+            <br></br>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, password: e.target.value})}/>
+          </label>
+          <label className='new-comic-address'> Edit Comic Address
+            <br></br>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, address: e.target.value})}/>
+          </label>
+          <label className='new-comic-phone'> Edit Comic Phone
+            <br></br>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, phone: e.target.value})} maxLength={14}/>
+          </label>
+          {/* <div className='create-new-comic-type-box'>
+            <div>
+              <input type='radio' id='new-pro' name='new-comic-type' value='pro' onClick={() => setNewComicType('pro')} defaultChecked/>
+              <label htmlFor='new-pro'>Pro</label>
+            </div>
+            <div>
+              <input type='radio' id='new-outOfTown' name='new-comic-type' value='outOfTown'onClick={() => {setNewComicType('OutOfTown')}}/>
+              <label htmlFor='new-outOfTown'>Out of Town Pro</label>
+            </div>
+            <div>
+              <input type='radio' id='new-almostFamous' name='new-comic-type' value='almostFamous'onClick={() => {setNewComicType('AlmostFamous')}}/>
+              <label htmlFor='new-almostFamous'>Almost Famous</label>
+            </div>
+            <div>
+              <input type='radio' id='new-admin' name='new-comic-type' value='admin'onClick={() => {setNewComicType('admin')}}/>
+              <label htmlFor='new-admin'>Administrator</label>
+            </div>
+          </div> */}
+          <div>
+            <label htmlFor="clean">Edit Clean</label>
+            <input type="radio" id="clean-true" name="clean" value="cleanTrue" className='create-comic-radio-label' onClick={(e) => setComedianMask({...comedianMask, clean: true})} />
+            <label className='create-comic-radio-label'>True</label>
+            <input type="radio" id="clean-false" name="clean" value="false" onClick={(e) => setComedianMask({...comedianMask, clean: false})} defaultChecked/>
+            <label className='create-comic-radio-label'>False</label>
+          </div>
+
+          <div>
+            <label htmlFor="famFriendly">Edit Family Friendly</label>
+            <input type="radio" id="famFriendly-true" name="famFriendly" value="famFriendlyTrue" className='create-comic-radio-label' onClick={(e) => setComedianMask({...comedianMask, famFriendly: true})} />
+            <label className='create-comic-radio-label'>True</label>
+            <input type="radio" id="famFriendly-false" name="famFriendly" value="false" onClick={(e) => setComedianMask({...comedianMask, famFriendly: false})} defaultChecked/>
+            <label className='create-comic-radio-label'>False</label>
+          </div>
+          <button value='Create Comic Profile' onClick={() => updateComedian()} className='create-comic-button'>
+            Update Comic Profile
+          </button>
+        </div>
+        <div className='create-new-comic'
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              deleteComic()        
+            }
+          }}
+        >
+
+        </div>
+        <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
     <div
       onKeyUp={(e) => {
         if (e.key === "Enter" && type != '') {

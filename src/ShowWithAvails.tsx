@@ -93,6 +93,13 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
   }
 
   const setComedianType = (typeOfComic: string, comic: any) => {
+
+    if (typeOfComic.includes('star')) {
+      typeOfComic = '*' + typeOfComic.slice(4)
+      console.log(typeOfComic)
+    }
+    
+    console.log(typeOfComic)
     if (bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] == '') {
       bookedShow.comics[typeOfComic.charAt(0).toUpperCase() + typeOfComic.slice(1)] = comic
       setBookedShow(bookedShow)
@@ -184,7 +191,7 @@ function ShowWithAvails(props: {availableComics: [], headliner: string, time: st
           {bookedShow.comics[key].length > 0 && <div className='potential-booked-comic'>{`${key.includes('Star') ? '*' + key.slice(4) : key.charAt(0).toUpperCase() + key.slice(1)}: ${bookedShow.comics[key]}`}<button className='delete-potential-comic' onClick={() => removeComic(key)}>Delete</button></div>}
         </div>
       ))}
-        {(bookedShow.comics.MC || bookedShow.comics.StarMC || bookedShow.comics.A1 || bookedShow.comics.B1 || bookedShow.comics.Yes || bookedShow.comics.Star7) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}  
+        {(bookedShow.comics.MC || bookedShow.comics['*MC'] || bookedShow.comics.A1 || bookedShow.comics.B1 || bookedShow.comics.Yes || bookedShow.comics['*7']) && <button className='add-show' onClick={() => publishShow()}>Publish Show</button>}  
       <div className='available-comics-list' id={`available-comics-list-${props.id}`}>
         <div>
     </div>

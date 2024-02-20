@@ -14,8 +14,10 @@ export interface WeekInter {
 }
 
 export interface Comic {
+  [x: string]: any;
   name: string;
-  id: string;
+  // id?: string;
+  // uid?: string;
   email: any;
   type: string;
   address?: string;
