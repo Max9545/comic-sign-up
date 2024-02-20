@@ -678,3 +678,7 @@ label {
 .profile-for-edit{
   width: 54.5vw
 }
+
+.override-button {
+  font-weight: 900;
+}

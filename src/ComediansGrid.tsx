@@ -209,7 +209,7 @@ const handleOverrideClick = () => {
     return (
       <div className="grid-container">
         {/* Header row */}
-        <button className={`override-button ${override ? 'red' : 'grey'}`} onClick={handleOverrideClick}>Override</button>
+        <button className={`override-button ${override ? 'red' : 'grey'}`} onClick={handleOverrideClick}>OVERRIDE AVAILABILITY</button>
 
         <div className="row header">
           <div className="cell"></div> {/* Empty cell for spacing */}
