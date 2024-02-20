@@ -1355,14 +1355,14 @@ const filteredPublishedShows = publishedShows.filter(show => {
             }
           } }
       >
-          <h3 className='shows-visible-to-comics'>Edit/Update Comedian Information</h3>
+          <h3 className='shows-visible-to-comics'>Enter Comedic To Edit</h3>
           <input type='text' className='yes-spot' onChange={(e) => {
             setComicSearch(e.target.value)
           } } />
           <input type='submit' className='submit-mask' onClick={() => maskAsComic()} />
           
-
         </div>
+          <h2 className='shows-visible-to-comics'>Current Comedic {comedianMask.name}'s Profile</h2>
         <div className='profile profile-for-edit'>
                     <div className='profile-contact-info'>
                       <h1 className='profile-headers'>{comedianMask.name}</h1>
@@ -1383,7 +1383,6 @@ const filteredPublishedShows = publishedShows.filter(show => {
                       
                     </div>
                   </div>
-          <h2 className='shows-visible-to-comics'>Current Comedian: {comedianMask.name}</h2>
     {/* {comedianMask.downTownShowCount > 0 &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
     {comedianMask.southShowCount > 0 && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
     {comedianMask.downTownWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
