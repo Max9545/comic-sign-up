@@ -53,8 +53,6 @@ import { db } from './firebase';
         if (!docSnap.empty) {
           const data = docSnap.docs.map(doc => doc.data());
           setComicHistory(data); // Ensure data is treated as DocumentData[]
-
-          console.log(data)
         }
       };
   
@@ -78,9 +76,6 @@ import { db } from './firebase';
               }
             }).filter(note => note !== undefined && note !== null)
             setAllNotes(notes);
-    
-            // Log data to ensure retrieval
-            console.log(comedianData);
           }
         } catch (error) {
           console.error('Error fetching comedians:', error);
@@ -93,22 +88,17 @@ import { db } from './firebase';
 
     const handleCellClick = (event: React.MouseEvent<HTMLDivElement>, comedian: any, show: any) => {
       const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
-      setCurrentCellKey(cellKey); // Store the cell key of the clicked cell
+      setCurrentCellKey(cellKey); 
     
       const cellData = selectedCells[cellKey];
-    
-      // Check if override is true and the comedian is not available for the show
-      console.log(comedian.comedianInfo)
+
       const isAvailableDown = comedian.comedianInfo.showsAvailabledowntown &&
                           comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()] &&
                           comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()].includes(show.id);
 
       const isAvailableSouth = comedian.comedianInfo.showsAvailablesouth &&
                           comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()] &&
-                          comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()].includes(show.id);                    
-
-                          console.log('isAvailableSouth', isAvailableSouth, 'isAvailableDown', isAvailableDown, 'override', override)
-    
+                          comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()].includes(show.id)                        
       if (isAvailableSouth || isAvailableDown) {
         setPopupPosition({ x: event.clientX, y: event.clientY });
         setSelectedCells({
@@ -143,9 +133,6 @@ import { db } from './firebase';
             return;
           }
     
-          console.log("Selected cell:", selectedCells[currentCellKey]);
-          console.log(comedian, show);
-    
           const updatedCells = { ...selectedCells };
           const columnCellKey = `${comedian.comedianInfo.id}-${show.id}`;
           const updatedCell = {
@@ -154,14 +141,11 @@ import { db } from './firebase';
           };
     
           updatedCells[columnCellKey] = updatedCell;
-          console.log(updatedCells[columnCellKey]);
           try {
             const existingComicArray = comicHistory.length ? comicHistory.find(item => item.bookedshow.id === show.id) : undefined;
     
-            console.log(comicHistory);
             if (existingComicArray) {
               const existingComicIndex = existingComicArray.comicArray.length ? existingComicArray.comicArray.findIndex((item: { showId: string, type: string, comic: string }) => item.comic === comedian.comedianInfo.name) : -1;
-              console.log(existingComicIndex);
     
               if (existingComicIndex !== -1) {
                 if (position === 'X' || '') {
