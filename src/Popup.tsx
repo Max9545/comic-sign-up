@@ -37,6 +37,7 @@ const Popup: React.FC<PopupProps> = ({ position, onClose }) => {
             <option value="*7">*7</option>
             <option value="*MC">*MC</option>
             <option value='X'>X</option>
+            <option value='remove'>Remove</option>
           </select>
         </div>
         <div>
