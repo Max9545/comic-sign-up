@@ -214,7 +214,7 @@ console.log(downtownString, southString)
               'Content-Type': 'application/json',
               // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
             },
-            body: JSON.stringify({ email: props.comedian.email, message: `Here is the availabilty you submitted ${getCurrentDayAndTime()}:
+            body: JSON.stringify({ email: props.comedian.email, sender: 'confirm', message: `Here is the availabilty you submitted ${getCurrentDayAndTime()}:
 
 Downtown: 
 ${downtownString} 

@@ -1,4 +1,4 @@
-  import { collection, doc, DocumentData, getDocs, query, setDoc, updateDoc } from 'firebase/firestore';
+  import { collection, deleteDoc, doc, DocumentData, getDoc, getDocs, query, setDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { db } from './firebase';
   import Popup from './Popup'; // Importing the Popup component
@@ -20,7 +20,7 @@ import { db } from './firebase';
     };
 
     const [currentCellKey, setCurrentCellKey] = useState<string>('');
-    // const [trig, setTrig] = useState(true)
+    const [trig, setTrig] = useState(true)
 
 
     comedians.forEach((comedian) => {
@@ -58,6 +58,11 @@ import { db } from './firebase';
   
       fetchData();
     }, []);
+
+    useEffect(() => {
+      console.log(selectedCells[currentCellKey]);
+    }, [selectedCells]);
+    
 
     useEffect(() => {
       const fetchData = async () => {
@@ -124,102 +129,177 @@ import { db } from './firebase';
     const handlePopupSelection = async (position: string) => {
       // if (override) { // Check if override is true
         let newComicArray: { showId: string, type: string, comic: string }[] = [];
-    
-        if (currentCellKey && selectedCells[currentCellKey]) {
-          const { comedian, show } = selectedCells[currentCellKey];
-    
-          if (!comedian || !show) {
-            console.error('Comedian or show is undefined.');
-            return;
+
+        if (position === 'remove') {
+          await handleRemoveSubmission();
+          console.log('remove');
+          
+          // Clear the selected cell content
+          if (currentCellKey && selectedCells[currentCellKey]) {
+            // const updatedCells = { ...selectedCells };
+            // updatedCells[currentCellKey].selectedPosition = '';
+            const { comedian, show } = selectedCells[currentCellKey];
+
+            const updatedCells = { ...selectedCells };
+            const columnCellKey = `${comedian.comedianInfo.id}-${show.id}`;
+            const updatedCell = {
+              ...selectedCells[currentCellKey],
+              selectedPosition: position
+            };
+      
+            updatedCells[columnCellKey] = updatedCell;
+            setSelectedCells(updatedCells);
+            console.log(updatedCells[currentCellKey])
+            setShowPopup(false);
           }
-    
-          const updatedCells = { ...selectedCells };
-          const columnCellKey = `${comedian.comedianInfo.id}-${show.id}`;
-          const updatedCell = {
-            ...selectedCells[currentCellKey],
-            selectedPosition: position
-          };
-    
-          updatedCells[columnCellKey] = updatedCell;
-          try {
-            const existingComicArray = comicHistory.length ? comicHistory.find(item => item.bookedshow.id === show.id) : undefined;
-    
-            if (existingComicArray) {
-              const existingComicIndex = existingComicArray.comicArray.length ? existingComicArray.comicArray.findIndex((item: { showId: string, type: string, comic: string }) => item.comic === comedian.comedianInfo.name) : -1;
-    
-              if (existingComicIndex !== -1) {
-                if (position === 'X' || '') {
-                  existingComicArray.comicArray.splice(existingComicIndex, 1);
+          console.log(selectedCells[currentCellKey])
+        } else {
+          console.log('else')
+          if (currentCellKey && selectedCells[currentCellKey]) {
+            const { comedian, show } = selectedCells[currentCellKey];
+      
+            if (!comedian || !show) {
+              console.error('Comedian or show is undefined.');
+              return;
+            }
+      
+            const updatedCells = { ...selectedCells };
+            const columnCellKey = `${comedian.comedianInfo.id}-${show.id}`;
+            const updatedCell = {
+              ...selectedCells[currentCellKey],
+              selectedPosition: position
+            };
+      
+            updatedCells[columnCellKey] = updatedCell;
+            try {
+              const existingComicArray = comicHistory.length ? comicHistory.find(item => item.bookedshow.id === show.id) : undefined;
+      
+              if (existingComicArray) {
+                const existingComicIndex = existingComicArray.comicArray.length ? existingComicArray.comicArray.findIndex((item: { showId: string, type: string, comic: string }) => item.comic === comedian.comedianInfo.name) : -1;
+      
+                if (existingComicIndex !== -1) {
+                  if (position === 'X' || '') {
+                    existingComicArray.comicArray.splice(existingComicIndex, 1);
+                  } else {
+                    existingComicArray.comicArray[existingComicIndex].type = position;
+                  }
                 } else {
-                  existingComicArray.comicArray[existingComicIndex].type = position;
+                  if (position !== 'X' || '') {
+                    existingComicArray.comicArray.push({
+                      showId: show.id,
+                      type: position,
+                      comic: comedian.comedianInfo.name
+                    });
+                  }
                 }
               } else {
                 if (position !== 'X' || '') {
-                  existingComicArray.comicArray.push({
+                  newComicArray = [{
                     showId: show.id,
                     type: position,
                     comic: comedian.comedianInfo.name
-                  });
+                  }];
+                  comicHistory.push({ bookedshow: show, comicArray: newComicArray });
                 }
               }
-            } else {
-              if (position !== 'X' || '') {
-                newComicArray = [{
-                  showId: show.id,
-                  type: position,
-                  comic: comedian.comedianInfo.name
-                }];
-                comicHistory.push({ bookedshow: show, comicArray: newComicArray });
-              }
+      
+              console.log(existingComicArray);
+              await setDoc(doc(db, 'publishedShows', show.id), {
+                bookedshow: show,
+                fireOrder: Date.now(),
+                comicArray: existingComicArray ? existingComicArray.comicArray : newComicArray
+              });
+      
+              setSelectedCells(updatedCells);
+              setShowPopup(false);
+            } catch (error) {
+              console.error('Error updating data:', error);
             }
-    
-            console.log(existingComicArray);
-            await setDoc(doc(db, 'publishedShows', show.id), {
-              bookedshow: show,
-              fireOrder: Date.now(),
-              comicArray: existingComicArray ? existingComicArray.comicArray : newComicArray
-            });
-    
-            setSelectedCells(updatedCells);
-            setShowPopup(false);
+      
+            // Update comedian's availability in comediansForAdmin collection
+            try {
+              const comedianDocRef = doc(db, 'comediansForAdmin', comedian.comedianInfo.id);
+              
+              // Generate dynamic keys for accessing comedian's availability
+              const clubKey = `showsAvailable${show.club}`;
+              const dayKey = show.day.toLowerCase();
+              
+              // Filter out the show id from the appropriate day's availability array
+              comedian.comedianInfo[clubKey][dayKey].push(show.id)
+              const updatedAvailability = comedian.comedianInfo[clubKey][dayKey]
+              
+              // .filter((id) => id !== show.id);
+              
+              // Create a copy of comedianInfo with updated availability
+              const updatedComedianInfo = {
+                  ...comedian.comedianInfo,
+                  [clubKey]: {
+                      ...comedian.comedianInfo[clubKey],
+                      [dayKey]: updatedAvailability
+                  }
+              };
+          
+              // Update the document with the new availability for the specified comedian
+              await updateDoc(comedianDocRef, {
+                  comedianInfo: updatedComedianInfo
+              });
           } catch (error) {
-            console.error('Error updating data:', error);
+              console.error('Error updating comedian availability:', error);
           }
-    
-          // Update comedian's availability in comediansForAdmin collection
-          try {
-            const comedianDocRef = doc(db, 'comediansForAdmin', comedian.comedianInfo.id);
-            
-            // Generate dynamic keys for accessing comedian's availability
-            const clubKey = `showsAvailable${show.club}`;
-            const dayKey = show.day.toLowerCase();
-            
-            // Filter out the show id from the appropriate day's availability array
-            comedian.comedianInfo[clubKey][dayKey].push(show.id)
-            const updatedAvailability = comedian.comedianInfo[clubKey][dayKey]
-            
-            // .filter((id) => id !== show.id);
-            
-            // Create a copy of comedianInfo with updated availability
-            const updatedComedianInfo = {
-                ...comedian.comedianInfo,
-                [clubKey]: {
-                    ...comedian.comedianInfo[clubKey],
-                    [dayKey]: updatedAvailability
-                }
-            };
-        
-            // Update the document with the new availability for the specified comedian
-            await updateDoc(comedianDocRef, {
-                comedianInfo: updatedComedianInfo
-            });
-        } catch (error) {
-            console.error('Error updating comedian availability:', error);
-        }
-      }        
-
+        }    
+      }
       // }
+console.log(trig)
+      setTrig(!trig)
     };
+
+    const handleRemoveSubmission = async () => {
+      if (currentCellKey && selectedCells[currentCellKey]) {
+        const { comedian, show } = selectedCells[currentCellKey];
+        
+        try {
+          // Remove the comedian from the show
+          const comedianDocRef = doc(db, 'comediansForAdmin', comedian.comedianInfo.id);
+          const clubKey = `showsAvailable${show.club}`;
+          const dayKey = show.day.toLowerCase();
+          
+          const updatedAvailability = comedian.comedianInfo[clubKey][dayKey].filter((id: string) => id !== show.id);
+          const updatedComedianInfo = {
+            ...comedian.comedianInfo,
+            [clubKey]: {
+              ...comedian.comedianInfo[clubKey],
+              [dayKey]: updatedAvailability
+            }
+          };
+          
+          await updateDoc(comedianDocRef, {
+            comedianInfo: updatedComedianInfo
+          });
+          
+          // Remove the comedian's assignment from the published show
+          const publishedShowDocRef = doc(db, 'publishedShows', show.id);
+          const publishedShowDoc = await getDoc(publishedShowDocRef); // Use getDoc instead of getDocs
+          if (publishedShowDoc.exists()) {
+            const publishedShowData = publishedShowDoc.data();
+            const updatedComicArray = publishedShowData.comicArray.filter((comic: any) => comic.comic !== comedian.comedianInfo.name);
+            
+            if (updatedComicArray.length === 0) {
+              await deleteDoc(publishedShowDocRef);
+            } else {
+              await updateDoc(publishedShowDocRef, {
+                comicArray: updatedComicArray
+              });
+            }
+          }
+          
+          // Update state or perform other actions as needed
+          
+        } catch (error) {
+          console.error('Error handling remove submission:', error);
+        }
+      }
+    };
+    
     
 const handleOverrideClick = () => {
   setOverride(prevState => !prevState); // Step 2: Toggle override state
@@ -289,13 +369,14 @@ const handleOverrideClick = () => {
 
     return (
       <div
-        className={`cell ${assignedType || (isAvailable ? 'available' : '')}`} // Adding comic type as a class
-        key={cellKey}
-        onClick={(event) => handleCellClick(event, comedian, show)}
+      className={`cell ${assignedType || (isAvailable ? 'available' : '')}`} // Adding comic type as a class
+      key={cellKey}
+      onClick={(event) => handleCellClick(event, comedian, show)}
       >
         {/* {selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')} */}
 
-        {selectedCells[cellKey]?.selectedPosition || assignedType || (isAvailable ? 'X' : '')} {/* Display assigned type or 'X' if available */}
+        {/* {selectedCells[cellKey]?.selectedPosition || assignedType || (isAvailable ? 'X' : '')} Display assigned type or 'X' if available */}
+        {selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')}
       </div>
     );
   })
@@ -305,6 +386,7 @@ const handleOverrideClick = () => {
 {shows
   .filter(show => show.club === 'south')
   .map(show => {
+    
     const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
     const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
     let assignedType = null;
@@ -326,7 +408,9 @@ const handleOverrideClick = () => {
         key={cellKey}
         onClick={(event) => handleCellClick(event, comedian, show)}
       >
-        {selectedCells[cellKey]?.selectedPosition || assignedType || (isAvailable ? 'X' : '')} {/* Display assigned type or 'X' if available */}
+
+      {selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')}
+        {/* {selectedCells[cellKey]?.selectedPosition || selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || (isAvailable ? 'X' : '')} Display assigned type or 'X' if available */}
       </div>
     );
   })

@@ -677,7 +677,7 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
 
             // Update showsForEmailRawString state
             setShowsForEmailRawString(showsForEmailRaw);
-
+console.log(showsForEmailRaw)
             // Once showsForEmailRawString is set, send emails
             emailList.forEach(async email => {
                 try {
@@ -687,7 +687,7 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
                             'Content-Type': 'application/json',
                             // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
                         },
-                        body: JSON.stringify({ email, message: showsForEmailRaw }),
+                        body: JSON.stringify({ email, message: showsForEmailRaw, sender: 'schedule' }),
                     });
 
                     if (response.ok) {
@@ -937,7 +937,7 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
           'Content-Type': 'application/json',
           // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
         },
-        body: JSON.stringify({email: createNewComicEmail, message: `Hello ${createNewComicName}, this is an email to inviting you to use https://comicsignuptest.comedyworks.com in order to give the club your weekly availability. Your login username is this email you provided the club and your initial password is 
+        body: JSON.stringify({email: createNewComicEmail, sender: 'schedule', message: `Hello ${createNewComicName}, this is an email to inviting you to use https://comicsignuptest.comedyworks.com in order to give the club your weekly availability. Your login username is this email you provided the club and your initial password is 
         ${createNewComicPassword} 
 and you will need to change your password after your first login to something that is private and known only to you.
 
