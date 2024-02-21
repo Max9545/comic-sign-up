@@ -225,8 +225,16 @@ import { db } from './firebase';
               const dayKey = show.day.toLowerCase();
               
               // Filter out the show id from the appropriate day's availability array
-              comedian.comedianInfo[clubKey][dayKey].push(show.id)
-              const updatedAvailability = comedian.comedianInfo[clubKey][dayKey]
+              if (!comedian.comedianInfo[clubKey][dayKey].includes(show.id)) {
+                comedian.comedianInfo[clubKey][dayKey].push(show.id)
+
+              }
+              
+              const updatedAvailability = comedian.comedianInfo[clubKey][dayKey];
+                if (!updatedAvailability.includes(show.id)) {
+                  updatedAvailability.push(show.id);
+                }
+
               
               // .filter((id) => id !== show.id);
               

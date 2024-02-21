@@ -686,8 +686,18 @@ label {
 .popup-button-box {
   display: flex;
   flex-direction: column;
+  margin: 0vh 0vw 1vh 0vw;
 }
 
 .popup-content {
   padding: 5%
+}
+
+.popup-submit {
+  margin-top: 1vh;
+}
+
+.popup-button {
+  font-weight: 900;
+  margin: 2%;
 }

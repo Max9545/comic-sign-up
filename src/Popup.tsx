@@ -46,26 +46,26 @@ const Popup: React.FC<PopupProps> = ({ position, onClose, showPopup, setShowPopu
         <div className="popup-content">
           <div>
             <label>Position:</label>
-            <div>
-              <button onClick={() => handlePositionSelection('MC')}>MC</button>
-              <button onClick={() => handlePositionSelection('A1')}>A1</button>
-              <button onClick={() => handlePositionSelection('B1')}>B1</button>
-              <button onClick={() => handlePositionSelection('*7')}>*7</button>
-              <button onClick={() => handlePositionSelection('*MC')}>*MC</button>
-              <button onClick={() => handlePositionSelection('X')}>X</button>
-              <button onClick={() => handlePositionSelection('remove')}>Remove</button>
+            <div className='popup-button-box'>
+              <button onClick={() => handlePositionSelection('MC')} className='popup-button'>MC</button>
+              <button onClick={() => handlePositionSelection('A1')} className='popup-button'>A1</button>
+              <button onClick={() => handlePositionSelection('B1')} className='popup-button'>B1</button>
+              <button onClick={() => handlePositionSelection('*7')} className='popup-button'>*7</button>
+              <button onClick={() => handlePositionSelection('*MC')} className='popup-button'>*MC</button>
+              <button onClick={() => handlePositionSelection('X')} className='popup-button'>X</button>
+              <button onClick={() => handlePositionSelection('remove')} className='popup-button'>Remove</button>
             </div>
           </div>
           <div>
             <label htmlFor="other">Other:</label>
             <input 
             type="text" 
-            id="other" 
+            id="other"
             onChange={(e) => setOtherPosition(e.target.value)} 
             onKeyPress={handleKeyPress} 
             autoFocus/>
           </div>
-          <button onClick={handleSubmit}>Submit</button>
+          <button onClick={handleSubmit} className='popup-submit'>Submit</button>
         </div>
       </div>
     </div>
