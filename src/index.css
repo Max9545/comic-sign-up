@@ -682,3 +682,12 @@ label {
 .override-button {
   font-weight: 900;
 }
+
+.popup-button-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-content {
+  padding: 5%
+}

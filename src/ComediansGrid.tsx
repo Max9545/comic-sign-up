@@ -251,6 +251,7 @@ import { db } from './firebase';
       // }
 console.log(trig)
       setTrig(!trig)
+      
     };
 
     const handleRemoveSubmission = async () => {
@@ -421,7 +422,9 @@ const handleOverrideClick = () => {
     {showPopup && (
       <Popup
         position={popupPosition}
-        onClose={(position) => handlePopupSelection(position)} // Only pass the selected position
+        onClose={(position) => handlePopupSelection(position)} 
+        showPopup={showPopup}
+        setShowPopup={setShowPopup}
       />
     )}
     
