@@ -720,7 +720,7 @@ console.log(showsForEmailRaw)
   }
 
     const maskAsComic = async () => {
-      const searchType = profileToEdit == '' ? 'email' : comicSearch.includes('@') ? 'email' : 'name'
+      const searchType = comicSearch.includes('@') ? 'email' : 'name'
 
   const comicToSearch = profileToEdit != '' ? profileToEdit : comicSearch
 
