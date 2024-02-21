@@ -208,13 +208,13 @@ console.log(downtownString, southString)
         
         //   })
         try {
-          const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+          const response = await fetch('http://localhost:3003/sendMail', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
             },
-            body: JSON.stringify({ email: props.comedian.email, message: `Here is the availabilty you submitted ${getCurrentDayAndTime()}:
+            body: JSON.stringify({ email: props.comedian.email, sender: 'confirm', message: `Here is the availabilty you submitted ${getCurrentDayAndTime()}:
 
 Downtown: 
 ${downtownString} 
