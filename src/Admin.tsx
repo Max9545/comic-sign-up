@@ -719,89 +719,75 @@ console.log(showsForEmailRaw)
     setAdTrigger(!adTrigger)
   }
 
-    const maskAsComic = async () => {
-      const searchType = comicSearch.includes('@') ? 'email' : 'name'
+  const maskAsComic = async () => {
+    const comicToSearch = (profileToEdit || comicSearch).toLowerCase();
 
-  const comicToSearch = profileToEdit != '' ? profileToEdit : comicSearch
+    try {
+        const querySnapshot = await getDocs(collection(db, 'users'));
+        const matchingDocs = querySnapshot.docs.filter(doc => {
+            const data = doc.data();
+            return data.name.toLowerCase().includes(comicToSearch) || data.email.toLowerCase().includes(comicToSearch);
+        });
 
-      try { 
-        const docRef = query(collection(db, `users`), where(searchType, "==", comicToSearch))
-        const doc = await (getDocs(docRef))
-        const comic = await doc.docs[0].data()
-        // @ts-ignore
-        setComedianMask({
-          name: comic.name,
-          uid: comic.uid,
-          type: comic.type,
-          email: comic.email,
-          downTownShowCount: comic.downTownShowCount,
-          southShowCount: comic.southShowCount,
-          downTownWeekCount: comic.downTownWeekCount,
-          southWeekCount: comic.southWeekCount,
-          // showsAvailabledowntown: comic.showsAvailabledowntown,
-          // showsAvailablesouth: comic.showsAvailablesouth,
-          // showsAvailabledowntownHistory: comic.showsAvailabledowntownHistory,
-          // showsAvailablesouthHistory: comic.showsAvailablesouthHistory,
-          clean: comic.clean, 
-          famFriendly: comic.famFriendly
-        })
-      } catch (err) {
-        const docRef = query(collection(db, `users`), where(searchType, "==", comicSearch))
-        if (docRef.converter == null) {
-          return alert('Comedian does not exist or incorrect name has been entered')
+        if (matchingDocs.length > 0) {
+            const comic = matchingDocs[0].data();
+            setComedianMask({
+                name: comic.name,
+                uid: comic.uid,
+                type: comic.type,
+                email: comic.email,
+                downTownShowCount: comic.downTownShowCount,
+                southShowCount: comic.southShowCount,
+                downTownWeekCount: comic.downTownWeekCount,
+                southWeekCount: comic.southWeekCount,
+                clean: comic.clean,
+                famFriendly: comic.famFriendly,
+                showsAvailabledowntown: {
+                  monday: [],
+                  tuesday: [],
+                  wednesday: [],
+                  thursday: [], 
+                  friday: [],
+                  saturday: [],
+                  sunday: []
+                },
+                showsAvailablesouth: {
+                  monday: [],
+                  tuesday: [],
+                  wednesday: [],
+                  thursday: [], 
+                  friday: [],
+                  saturday: [],
+                  sunday: []
+                },
+                showsAvailabledowntownHistory: {
+                  monday: [],
+                  tuesday: [],
+                  wednesday: [],
+                  thursday: [], 
+                  friday: [],
+                  saturday: [],
+                  sunday: []
+                },
+                showsAvailablesouthHistory: {
+                  monday: [],
+                  tuesday: [],
+                  wednesday: [],
+                  thursday: [], 
+                  friday: [],
+                  saturday: [],
+                  sunday: []
+                }
+            });
+        } else {
+            alert('Comedian does not exist or incorrect name has been entered');
         }
-        const doc = await (getDocs(docRef))
-        const comic = await doc.docs[0].data()
-        setComedianMask({
-          name: comic.name,
-          id: comic.uid,
-          type: comic.type,
-          email: comic.email,
-          downTownShowCount: comic.downTownShowCount,
-          southShowCount: comic.southShowCount,
-          downTownWeekCount: comic.downTownWeekCount,
-          southWeekCount: comic.southWeekCount,
-          showsAvailabledowntown: {
-            monday: [],
-            tuesday: [],
-            wednesday: [],
-            thursday: [], 
-            friday: [],
-            saturday: [],
-            sunday: []
-          }, 
-          showsAvailablesouth: {
-            monday: [],
-            tuesday: [],
-            wednesday: [],
-            thursday: [], 
-            friday: [],
-            saturday: [],
-            sunday: []
-          },
-          showsAvailabledowntownHistory: {
-            monday: [],
-            tuesday: [],
-            wednesday: [],
-            thursday: [], 
-            friday: [],
-            saturday: [],
-            sunday: []
-          },
-          showsAvailablesouthHistory: {
-            monday: [],
-            tuesday: [],
-            wednesday: [],
-            thursday: [], 
-            friday: [],
-            saturday: [],
-            sunday: []
-          }
-        })
-        
-        console.log(err)
-      }
+    } catch (err) {
+        console.log(err);
+        alert('Error fetching comedian data.');
     }
+};
+
 
   const addToWeek = () => {
     const idCheck = props.shows.map(show => show.id)
