@@ -60,11 +60,6 @@ import { db } from './firebase';
     }, []);
 
     useEffect(() => {
-      console.log(selectedCells[currentCellKey]);
-    }, [selectedCells]);
-    
-
-    useEffect(() => {
       const fetchData = async () => {
         try {
           const docRef = query(collection(db, 'comediansForAdmin'));
@@ -119,9 +114,7 @@ import { db } from './firebase';
         });
         setShowPopup(true);
       } else {
-        // Display a warning message or handle the case where the comedian is available for the show or override is false
-        // For example:
-        alert(`Comedian "${comedian.comedianInfo.name}" is either available for the show or override is not enabled.`);
+        alert(`Comedian "${comedian.comedianInfo.name}" is not available for this show. Enable override to change.`);
       }
     };
     
@@ -132,7 +125,6 @@ import { db } from './firebase';
 
         if (position === 'remove') {
           await handleRemoveSubmission();
-          console.log('remove');
           
           // Clear the selected cell content
           if (currentCellKey && selectedCells[currentCellKey]) {
@@ -152,9 +144,7 @@ import { db } from './firebase';
             console.log(updatedCells[currentCellKey])
             setShowPopup(false);
           }
-          console.log(selectedCells[currentCellKey])
         } else {
-          console.log('else')
           if (currentCellKey && selectedCells[currentCellKey]) {
             const { comedian, show } = selectedCells[currentCellKey];
       
@@ -203,7 +193,6 @@ import { db } from './firebase';
                 }
               }
       
-              console.log(existingComicArray);
               await setDoc(doc(db, 'publishedShows', show.id), {
                 bookedshow: show,
                 fireOrder: Date.now(),
@@ -258,7 +247,7 @@ import { db } from './firebase';
       }
       // }
 console.log(trig)
-      setTrig(!trig)
+      // setTrig(!trig)
       
     };
 
