@@ -208,7 +208,7 @@ console.log(downtownString, southString)
         
         //   })
         try {
-          const response = await fetch('http://localhost:3003/sendMail', {
+          const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
