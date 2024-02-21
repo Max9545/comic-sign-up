@@ -60,6 +60,11 @@ import { db } from './firebase';
     }, []);
 
     useEffect(() => {
+      console.log(selectedCells[currentCellKey]);
+    }, [selectedCells]);
+    
+
+    useEffect(() => {
       const fetchData = async () => {
         try {
           const docRef = query(collection(db, 'comediansForAdmin'));
@@ -127,17 +132,27 @@ import { db } from './firebase';
 
         if (position === 'remove') {
           await handleRemoveSubmission();
-          setShowPopup(false);
           console.log('remove');
-      
+          
           // Clear the selected cell content
           if (currentCellKey && selectedCells[currentCellKey]) {
-            const updatedCells = { ...selectedCells };
+            // const updatedCells = { ...selectedCells };
             // updatedCells[currentCellKey].selectedPosition = '';
+            const { comedian, show } = selectedCells[currentCellKey];
+
+            const updatedCells = { ...selectedCells };
+            const columnCellKey = `${comedian.comedianInfo.id}-${show.id}`;
+            const updatedCell = {
+              ...selectedCells[currentCellKey],
+              selectedPosition: position
+            };
+      
+            updatedCells[columnCellKey] = updatedCell;
             setSelectedCells(updatedCells);
-            console.log(updatedCells)
+            console.log(updatedCells[currentCellKey])
+            setShowPopup(false);
           }
-          
+          console.log(selectedCells[currentCellKey])
         } else {
           console.log('else')
           if (currentCellKey && selectedCells[currentCellKey]) {
@@ -232,13 +247,10 @@ import { db } from './firebase';
               console.error('Error updating comedian availability:', error);
           }
         }    
-        }
-
-
-    
-            
-
+      }
       // }
+console.log(trig)
+      setTrig(!trig)
     };
 
     const handleRemoveSubmission = async () => {
@@ -363,7 +375,8 @@ const handleOverrideClick = () => {
       >
         {/* {selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')} */}
 
-        {selectedCells[cellKey]?.selectedPosition || assignedType || (isAvailable ? 'X' : '')} {/* Display assigned type or 'X' if available */}
+        {/* {selectedCells[cellKey]?.selectedPosition || assignedType || (isAvailable ? 'X' : '')} Display assigned type or 'X' if available */}
+        {selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')}
       </div>
     );
   })
@@ -373,6 +386,7 @@ const handleOverrideClick = () => {
 {shows
   .filter(show => show.club === 'south')
   .map(show => {
+    
     const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
     const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
     let assignedType = null;
@@ -394,7 +408,9 @@ const handleOverrideClick = () => {
         key={cellKey}
         onClick={(event) => handleCellClick(event, comedian, show)}
       >
-        {selectedCells[cellKey]?.selectedPosition || assignedType || (isAvailable ? 'X' : '')} {/* Display assigned type or 'X' if available */}
+
+      {selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')}
+        {/* {selectedCells[cellKey]?.selectedPosition || selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || (isAvailable ? 'X' : '')} Display assigned type or 'X' if available */}
       </div>
     );
   })

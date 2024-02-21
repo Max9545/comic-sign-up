@@ -677,29 +677,29 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
 
             // Update showsForEmailRawString state
             setShowsForEmailRawString(showsForEmailRaw);
-
+console.log(showsForEmailRaw)
             // Once showsForEmailRawString is set, send emails
-            emailList.forEach(async email => {
-                try {
-                    const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
-                        },
-                        body: JSON.stringify({ email, message: showsForEmailRaw }),
-                    });
+            // emailList.forEach(async email => {
+            //     try {
+            //         const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
+            //             method: 'POST',
+            //             headers: {
+            //                 'Content-Type': 'application/json',
+            //                 // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
+            //             },
+            //             body: JSON.stringify({ email, message: showsForEmailRaw }),
+            //         });
 
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log('Email sent successfully:', data);
-                    } else {
-                        console.error('Error sending email:', response);
-                    }
-                } catch (error) {
-                    console.error('Error sending email:', error);
-                }
-            });
+            //         if (response.ok) {
+            //             const data = await response.json();
+            //             console.log('Email sent successfully:', data);
+            //         } else {
+            //             console.error('Error sending email:', response);
+            //         }
+            //     } catch (error) {
+            //         console.error('Error sending email:', error);
+            //     }
+            // });
 
             alert('Comics have been notified');
         }
