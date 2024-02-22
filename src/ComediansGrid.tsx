@@ -329,7 +329,7 @@ return (
               .filter(show => show.club === 'downtown')
               .map(show => (
                 <div className="cell" key={`${type}-${show.id}`}>
-                  {`${show.day.slice(0, 3)} ${show.time.slice(0, -2)} ${show.headliner} ${show.club.slice(0, -4)}`}
+                  {`${show.day.slice(0, 3)} ${show.time.slice(0, -2)} ${show.headliner.split(" ")[show.headliner.split(" ").length - 1]} ${show.club.slice(0, -4)}`}
                 </div>
               ))}
           </div>
@@ -395,7 +395,7 @@ return (
               .filter(show => show.club === 'south')
               .map(show => (
                 <div className="cell" key={`${type}-${show.id}`}>
-                  {`${show.day.slice(0, 3)} ${show.time.slice(0, -2)} ${show.headliner} ${show.club}`}
+                  {`${show.day.slice(0, 3)} ${show.time.slice(0, -2)} ${show.headliner.split(" ")[show.headliner.split(" ").length - 1]} ${show.club}`}
                 </div>
               ))}
           </div>

@@ -513,16 +513,16 @@ label {
 
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* Display two columns */
-  gap: 20px; /* Gap between the grids */
+  grid-template-columns: 1fr 1fr; /* Display two columns */
+  gap: 2px; /* Gap between the grids */
   /* grid-template-columns: auto repeat(auto-fit, minmax(120px, 1fr)); */
   /* gap: 2px; */
-  background-color: white;
+  background-color: black;
   padding: 10px;
   width: 80vw;
   color: black;
-  align-self: flex-end;
-  margin-right:3vw; 
+  align-self: center;
+  margin-right:1vw; 
 }
 
 .row {
@@ -678,6 +678,7 @@ label {
   border: 2px solid red;
   margin-top: 3vh;
   background-color: white;
+  color: black;
 }
 
 .red {
@@ -709,4 +710,8 @@ label {
 .popup-button {
   font-weight: 900;
   margin: 2%;
+}
+
+.type-cell {
+  min-height: 7vh;
 }
