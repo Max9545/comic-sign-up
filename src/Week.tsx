@@ -58,7 +58,8 @@
                         availableComedian={currentComedian}
                         date={show.date}
                         headliner={show.headliner}
-                        availability={show.availableComics.includes(props.comedian.name)}
+                        availability={show.availableComics.includes(props.comedian.name) || show.availableComics.some((comic: { name: string }) => comic.name === props.comedian.name)
+                        }
                         setAllAvailability={setAllAvailability}
                         availableComics={show.availableComics}
                         supportStatus={show.supportStatus}
@@ -88,7 +89,8 @@
                           availableComedian={currentComedian}
                           date={show.date}
                           headliner={show.headliner}
-                          availability={show.availableComics. includes(props.comedian.name)}
+                          availability={show.availableComics.includes(props.comedian.name) || show.availableComics.some((comic: { name: string }) => comic.name === props.comedian.name)
+                        }                          
                           setAllAvailability={setAllAvailability}
                           availableComics={show.availableComics}
                           supportStatus={show.supportStatus}
@@ -252,15 +254,18 @@ Comic's Note: ${comicNote}` }),
       currentComedian.downTownWeekCount += 1
       currentComedian.southWeekCount += 1
 
-      const showRef = doc(db, "users", currentComedian.id);
+
+console.log(currentComedian.uid, currentComedian.downTownWeekCount)
+      const showRef = doc(db, "users", currentComedian.uid || currentComedian.id);
       // Set the "capital" field of the city 'DC'
+      console.log(showRef)
       await updateDoc(showRef, {
         downTownShowCount: currentComedian.downTownShowCount,
         southShowCount: currentComedian.southShowCount,
         downTownWeekCount: currentComedian.downTownWeekCount,
         southWeekCount: currentComedian.southWeekCount,
       });
-
+console.log(comicNote)
       setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now(), note: comicNote})
       addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
         comedianInfo: currentComedian, 

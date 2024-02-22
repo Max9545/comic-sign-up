@@ -46,8 +46,10 @@ code {
 
 .admin-form {
   /* width: 80%; */
+  display: flex;
   align-self: center;
   justify-content: center; 
+  flex-direction: column;
 } 
 
 .available-comics {
@@ -647,6 +649,7 @@ label {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
 }
 
 .profile-type {
@@ -659,11 +662,14 @@ label {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  margin: 0%;
+  font-size: .7em;
+  font-weight: 800;
 }
 
 .profile-search {
   height: 5vh;
-  width: 20vw
+  width: 20vw;
 }
 
 .notes-list {
@@ -681,4 +687,23 @@ label {
 
 .override-button {
   font-weight: 900;
+}
+
+.popup-button-box {
+  display: flex;
+  flex-direction: column;
+  margin: 0vh 0vw 1vh 0vw;
+}
+
+.popup-content {
+  padding: 5%
+}
+
+.popup-submit {
+  margin-top: 1vh;
+}
+
+.popup-button {
+  font-weight: 900;
+  margin: 2%;
 }

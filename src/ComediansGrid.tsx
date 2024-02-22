@@ -60,11 +60,6 @@ import { db } from './firebase';
     }, []);
 
     useEffect(() => {
-      console.log(selectedCells[currentCellKey]);
-    }, [selectedCells]);
-    
-
-    useEffect(() => {
       const fetchData = async () => {
         try {
           const docRef = query(collection(db, 'comediansForAdmin'));
@@ -119,9 +114,7 @@ import { db } from './firebase';
         });
         setShowPopup(true);
       } else {
-        // Display a warning message or handle the case where the comedian is available for the show or override is false
-        // For example:
-        alert(`Comedian "${comedian.comedianInfo.name}" is either available for the show or override is not enabled.`);
+        alert(`Comedian "${comedian.comedianInfo.name}" is not available for this show. Enable override to change.`);
       }
     };
     
@@ -132,7 +125,6 @@ import { db } from './firebase';
 
         if (position === 'remove') {
           await handleRemoveSubmission();
-          console.log('remove');
           
           // Clear the selected cell content
           if (currentCellKey && selectedCells[currentCellKey]) {
@@ -152,9 +144,7 @@ import { db } from './firebase';
             console.log(updatedCells[currentCellKey])
             setShowPopup(false);
           }
-          console.log(selectedCells[currentCellKey])
         } else {
-          console.log('else')
           if (currentCellKey && selectedCells[currentCellKey]) {
             const { comedian, show } = selectedCells[currentCellKey];
       
@@ -203,7 +193,6 @@ import { db } from './firebase';
                 }
               }
       
-              console.log(existingComicArray);
               await setDoc(doc(db, 'publishedShows', show.id), {
                 bookedshow: show,
                 fireOrder: Date.now(),
@@ -225,8 +214,16 @@ import { db } from './firebase';
               const dayKey = show.day.toLowerCase();
               
               // Filter out the show id from the appropriate day's availability array
-              comedian.comedianInfo[clubKey][dayKey].push(show.id)
-              const updatedAvailability = comedian.comedianInfo[clubKey][dayKey]
+              if (!comedian.comedianInfo[clubKey][dayKey].includes(show.id)) {
+                comedian.comedianInfo[clubKey][dayKey].push(show.id)
+
+              }
+              
+              const updatedAvailability = comedian.comedianInfo[clubKey][dayKey];
+                if (!updatedAvailability.includes(show.id)) {
+                  updatedAvailability.push(show.id);
+                }
+
               
               // .filter((id) => id !== show.id);
               
@@ -250,7 +247,8 @@ import { db } from './firebase';
       }
       // }
 console.log(trig)
-      setTrig(!trig)
+      // setTrig(!trig)
+      
     };
 
     const handleRemoveSubmission = async () => {
@@ -344,80 +342,76 @@ const handleOverrideClick = () => {
                 ))}
             </div>
             {/* Comedians of this type */}
-            {comediansOfType.map((comedian: any, index: number) => (
-              <div className={`row ${index % 2 === 0 ? 'even' : 'odd'}`} key={comedian.comedianInfo.id}>
-                {/* Comedian name cell */}
-                <div className="cell">{comedian.comedianInfo.name}</div>
-                {/* Downtown show cells */}
-{shows
-  .filter(show => show.club === 'downtown')
-  .map(show => {
-    const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
-    const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
-    let assignedType = null;
-    if (comicHistoryItem) {
-      const comic = comicHistoryItem.comicArray.find((comic: { comic: any; }) => comic.comic === comedian.comedianInfo.name);
-      if (comic) {
-        assignedType = comic.type;
-      }
-    }
+            {comediansOfType
+              .sort((a, b) => a.comedianInfo.name.localeCompare(b.comedianInfo.name)) // Sort comedians alphabetically by name
+              .map((comedian: any, index: number) => (
+                <div className={`row ${index % 2 === 0 ? 'even' : 'odd'}`} key={comedian.comedianInfo.id}>
+                  {/* Comedian name cell */}
+                  <div className="cell">{comedian.comedianInfo.name}</div>
+                  {/* Downtown show cells */}
+                  {shows
+                    .filter(show => show.club === 'downtown')
+                    .map(show => {
+                      const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
+                      const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
+                      let assignedType = null;
+                      if (comicHistoryItem) {
+                        const comic = comicHistoryItem.comicArray.find((comic: { comic: any; }) => comic.comic === comedian.comedianInfo.name);
+                        if (comic) {
+                          assignedType = comic.type;
+                        }
+                      }
 
-    const isAvailable = comedian.comedianInfo.showsAvailabledowntown &&
-                        comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()] &&
-                        comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()].includes(show.id);
+                      const isAvailable = comedian.comedianInfo.showsAvailabledowntown &&
+                                          comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()] &&
+                                          comedian.comedianInfo.showsAvailabledowntown[show.day.toLowerCase()].includes(show.id);
 
+                      return (
+                        <div
+                          className={`cell ${assignedType || (isAvailable ? 'available' : '')}`} // Adding comic type as a class
+                          key={cellKey}
+                          onClick={(event) => handleCellClick(event, comedian, show)}
+                        >
+                          {selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')}
+                        </div>
+                      );
+                    })
+                  }
 
-    return (
-      <div
-      className={`cell ${assignedType || (isAvailable ? 'available' : '')}`} // Adding comic type as a class
-      key={cellKey}
-      onClick={(event) => handleCellClick(event, comedian, show)}
-      >
-        {/* {selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')} */}
+                  {/* South Club show cells */}
+                  {shows
+                    .filter(show => show.club === 'south')
+                    .map(show => {
+                      const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
+                      const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
+                      let assignedType = null;
+                      if (comicHistoryItem) {
+                        const comic = comicHistoryItem.comicArray.find((comic: { comic: any; }) => comic.comic === comedian.comedianInfo.name);
+                        if (comic) {
+                          assignedType = comic.type;
+                        }
+                      }
 
-        {/* {selectedCells[cellKey]?.selectedPosition || assignedType || (isAvailable ? 'X' : '')} Display assigned type or 'X' if available */}
-        {selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')}
-      </div>
-    );
-  })
-}
+                      const isAvailable = comedian.comedianInfo.showsAvailablesouth &&
+                                          comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()] &&
+                                          comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()].includes(show.id);
 
-{/* South Club show cells */}
-{shows
-  .filter(show => show.club === 'south')
-  .map(show => {
-    
-    const cellKey = `${comedian.comedianInfo.id}-${show.id}`;
-    const comicHistoryItem = comicHistory.find(item => item.bookedshow.id === show.id);
-    let assignedType = null;
-    if (comicHistoryItem) {
-      const comic = comicHistoryItem.comicArray.find((comic: { comic: any; }) => comic.comic === comedian.comedianInfo.name);
-      if (comic) {
-        assignedType = comic.type;
-      }
-    }
+                      return (
+                        <div
+                          className={`cell ${assignedType || (isAvailable ? 'available' : '')}`} // Adding comic type as a class
+                          key={cellKey}
+                          onClick={(event) => handleCellClick(event, comedian, show)}
+                        >
+                          {selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')}
+                        </div>
+                      );
+                    })
+                  }
+                </div>
+              ))
+            }
 
-    const isAvailable = comedian.comedianInfo.showsAvailablesouth &&
-                        comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()] &&
-                        comedian.comedianInfo.showsAvailablesouth[show.day.toLowerCase()].includes(show.id);
-
-
-    return (
-      <div
-        className={`cell ${assignedType || (isAvailable ? 'available' : '')}`} // Adding comic type as a class
-        key={cellKey}
-        onClick={(event) => handleCellClick(event, comedian, show)}
-      >
-
-      {selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || selectedCells[cellKey]?.selectedPosition || (isAvailable ? 'X' : '')}
-        {/* {selectedCells[cellKey]?.selectedPosition || selectedCells[cellKey]?.selectedPosition == 'remove' ? '' : assignedType || (isAvailable ? 'X' : '')} Display assigned type or 'X' if available */}
-      </div>
-    );
-  })
-}
-
-              </div>
-            ))}
+            
           </React.Fragment>
         ))}
 
@@ -425,7 +419,9 @@ const handleOverrideClick = () => {
     {showPopup && (
       <Popup
         position={popupPosition}
-        onClose={(position) => handlePopupSelection(position)} // Only pass the selected position
+        onClose={(position) => handlePopupSelection(position)} 
+        showPopup={showPopup}
+        setShowPopup={setShowPopup}
       />
     )}
     
