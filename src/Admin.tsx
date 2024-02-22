@@ -757,7 +757,8 @@ const docSnapshot = await getDoc(docRef);
                 showsAvailabledowntown: comicForAdmin.comedianInfo.showsAvailabledowntown,
                 showsAvailablesouth: comicForAdmin.comedianInfo.showsAvailablesouth,
                 showsAvailabledowntownHistory: comicForAdmin.comedianInfo.showsAvailabledowntownHistory,
-                showsAvailablesouthHistory: comicForAdmin.comedianInfo.showsAvailablesouthHistory
+                showsAvailablesouthHistory: comicForAdmin.comedianInfo.showsAvailablesouthHistory,
+                adminNote: comic.adminNote
             });
         } else {
             alert('Comedian does not exist or incorrect name has been entered');
@@ -1066,6 +1067,7 @@ You will receive confirmation emails to this email address each time you submit 
                       <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
                       <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
                       <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
+                      <p>Note: {profile.adminNote}</p>
                       </div>
                       <div className='profile-stats'>
                         <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
@@ -1089,6 +1091,7 @@ You will receive confirmation emails to this email address each time you submit 
                       <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
                       <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
                       <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
+                      <p>Note: {profile.adminNote}</p>
                       </div>
                       <div className='profile-stats'>
                         <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
