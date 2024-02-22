@@ -715,3 +715,9 @@ label {
 .type-cell {
   min-height: 6vh;
 }
+
+.profile-in-edit {
+  align-self: center;
+  width: 50vw;
+  margin-bottom: 2vh;
+}

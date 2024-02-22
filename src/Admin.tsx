@@ -749,6 +749,8 @@ const docSnapshot = await getDoc(docRef);
                 uid: comic.uid,
                 type: comic.type,
                 email: comic.email,
+                address: comic.address,
+                phone: comic.phone,
                 downTownShowCount: comic.downTownShowCount,
                 southShowCount: comic.southShowCount,
                 downTownWeekCount: comic.downTownWeekCount,
@@ -1315,34 +1317,43 @@ You will receive confirmation emails to this email address each time you submit 
             }
           } }
       >
-          <h3 className='shows-visible-to-comics'>Enter Comedic To Edit</h3>
+          <h3 className='shows-visible-to-comics'>Enter Comic To Edit</h3>
           <input type='text' className='yes-spot' onChange={(e) => {
             setComicSearch(e.target.value)
           } } />
           <input type='submit' className='submit-mask' onClick={() => maskAsComic()} />
           
         </div>
-          <h2 className='shows-visible-to-comics'>Current Comedic {comedianMask.name}'s Profile</h2>
-        <div className='profile profile-for-edit'>
-                    <div className='profile-contact-info'>
-                      <h1 className='profile-headers'>{comedianMask.name}</h1>
-                      <h3 className='profile-headers'>{comedianMask.email}</h3>
-                      <h4 className='profile-headers'>{comedianMask.phone}</h4>
-                    </div>
-                    <div className='profile-type'>
-                      <h2 className='profile-headers'>{comedianMask.type === 'pro' ? 'Pro' : comedianMask.type === 'AlmostFamous' ? 'Almost Famous' : comedianMask.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
-                      <h4 className='profile-headers'>Clean: {comedianMask.clean ? 'True' : 'False'}</h4>
-                      <h4 className='profile-headers'>Family Friendly: {comedianMask.famFriendly ? 'True' : 'False'}</h4>
-                      <h5 className='profile-headers'>Allowed: {comedianMask.allowed ? 'True' : 'False'}</h5>
-                      </div>
-                      <div className='profile-stats'>
-                        <p className='profile-headers'>Downtown Show Sign Up Count: {comedianMask.downTownShowCount}</p>
-                        <p className='profile-headers'>South Show Sign Up Count: {comedianMask.southShowCount}</p>
-                        <p className='profile-headers'>Down Town Weeks Submitted: {comedianMask.downTownWeekCount}</p>
-                        <p className='profile-headers'>South Weeks Submitted: {comedianMask.southWeekCount}</p>
-                      
-                    </div>
-                  </div>
+          <h2 className='shows-visible-to-comics'>Current Comic {comedianMask.name}'s Profile</h2>
+      <div className='profile profile-in-edit' key={comedianMask.uid}>
+        <div className='profile-contact-info'>
+          <h3 className='profile-headers'>{comedianMask.name}</h3>
+          <h4 className='profile-headers'>{comedianMask.email}</h4>
+          <h5 className='profile-headers'>{comedianMask.phone}</h5>
+          <h5 className='profile-headers'>{comedianMask.address}</h5>
+          
+        </div>
+        <div className='profile-type'>
+          <h4 className='profile-headers'>{comedianMask.type === 'pro' ? 'Pro' : comedianMask.type === 'AlmostFamous' ? 'Almost Famous' : comedianMask.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h4>
+          <h5 className='profile-headers'>Clean: {comedianMask.clean ? 'True' : 'False'}</h5>
+          <h5 className='profile-headers'>Family Friendly: {comedianMask.famFriendly ? 'True' : 'False'}</h5>
+          <h6 className='profile-headers'>Allowed: {comedianMask.allowed ? 'True' : 'False'}</h6>
+          {comedianMask.adminNote && <p>Note: {comedianMask.adminNote}</p>}
+        </div>
+        <div className='profile-stats'>
+          {/* Display positions count */}
+          <div>
+            {/* {Object.entries(assignedPos).map(([position, count]) => (
+              <p key={position}>{position} Count: {count}</p>
+            ))} */}
+          </div>
+          {/* Other profile stats */}
+          <p>Downtown Show Sign Up Count: {comedianMask.downTownShowCount}</p>
+          <p>South Show Sign Up Count: {comedianMask.southShowCount}</p>
+          <p>Down Town Weeks Submitted: {comedianMask.downTownWeekCount}</p>
+          <p>South Weeks Submitted: {comedianMask.southWeekCount}</p>
+        </div>
+      </div>
     {/* {comedianMask.downTownShowCount > 0 &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
     {comedianMask.southShowCount > 0 && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
     {comedianMask.downTownWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
