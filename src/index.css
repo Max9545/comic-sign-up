@@ -513,8 +513,10 @@ label {
 
 .grid-container {
   display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* Display two columns */
+  gap: 20px; /* Gap between the grids */
   /* grid-template-columns: auto repeat(auto-fit, minmax(120px, 1fr)); */
-  gap: 2px;
+  /* gap: 2px; */
   background-color: white;
   padding: 10px;
   width: 80vw;
@@ -674,7 +676,8 @@ label {
 
 .notes-list {
   border: 2px solid red;
-  margin-top: 3vh
+  margin-top: 3vh;
+  background-color: white;
 }
 
 .red {
