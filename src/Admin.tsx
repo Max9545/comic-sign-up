@@ -1053,8 +1053,18 @@ You will receive confirmation emails to this email address each time you submit 
 
 
     const displayProfiles = (listToUse: string) => {
+
+
+      let profilesToDisplay: any[] = [];
+
       if (listToUse === 'all') {
-        return profiles.map(profile => {
+        profilesToDisplay = profiles.slice().sort((a, b) => a.name.localeCompare(b.name));
+      } else if (listToUse === 'filtered') {
+        profilesToDisplay = filteredProfiles.slice().sort((a, b) => a.name.localeCompare(b.name));
+      }
+
+      if (listToUse === 'all') {
+        return profilesToDisplay.map(profile => {
           return <div className='profile' key={profile.uid}>
                     <div className='profile-contact-info'>
                       <h1 className='profile-headers'>{profile.name}</h1>
@@ -1067,7 +1077,7 @@ You will receive confirmation emails to this email address each time you submit 
                       <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
                       <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
                       <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
-                      <p>Note: {profile.adminNote}</p>
+                      {profile.adminNote && <p>Note: {profile.adminNote}</p>}
                       </div>
                       <div className='profile-stats'>
                         <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
@@ -1079,7 +1089,7 @@ You will receive confirmation emails to this email address each time you submit 
                   </div>
         })
       } else if (listToUse === 'filtered') {
-        return filteredProfiles.map(profile => {
+        return profilesToDisplay.map(profile => {
           return <div className='profile' key={profile.uid}>
                     <div className='profile-contact-info'>
                       <h1 className='profile-headers'>{profile.name}</h1>
@@ -1091,7 +1101,7 @@ You will receive confirmation emails to this email address each time you submit 
                       <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
                       <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
                       <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
-                      <p>Note: {profile.adminNote}</p>
+                      {profile.adminNote && <p>Note: {profile.adminNote}</p>}
                       </div>
                       <div className='profile-stats'>
                         <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
