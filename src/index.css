@@ -46,8 +46,10 @@ code {
 
 .admin-form {
   /* width: 80%; */
+  display: flex;
   align-self: center;
   justify-content: center; 
+  flex-direction: column;
 } 
 
 .available-comics {
@@ -667,7 +669,7 @@ label {
 
 .profile-search {
   height: 5vh;
-  width: 20vw
+  width: 20vw;
 }
 
 .notes-list {
