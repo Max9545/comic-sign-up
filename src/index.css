@@ -657,6 +657,7 @@ label {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
 }
 
 .profile-stats {
@@ -712,5 +713,5 @@ label {
 }
 
 .type-cell {
-  min-height: 7vh;
+  min-height: 6vh;
 }

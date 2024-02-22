@@ -1095,7 +1095,8 @@ You will receive confirmation emails to this email address each time you submit 
           <h3 className='profile-headers'>{profile.name}</h3>
           <h4 className='profile-headers'>{profile.email}</h4>
           <h5 className='profile-headers'>{profile.phone}</h5>
-          <button onClick={() => takeToEdit(profile.name)}>Edit Comic</button>
+          <h5 className='profile-headers'>{profile.address}</h5>
+          
         </div>
         <div className='profile-type'>
           <h4 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h4>
@@ -1103,6 +1104,7 @@ You will receive confirmation emails to this email address each time you submit 
           <h5 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h5>
           <h6 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h6>
           {profile.adminNote && <p>Note: {profile.adminNote}</p>}
+          <button onClick={() => takeToEdit(profile.name)}>Edit Comic</button>
         </div>
         <div className='profile-stats'>
           {/* Display positions count */}
