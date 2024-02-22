@@ -1365,25 +1365,30 @@ const filteredPublishedShows = publishedShows.filter(show => {
           }
         }}
       >
-          <label> Edit Comic Email
+          <label> Edit Email
             <br></br>
             <input type='text' required onChange={e => setComedianMask({...comedianMask, email: e.target.value})}/> 
           </label>
-          <label> Edit Comic Name
+          <label> Edit Name
             <br></br>
             <input type='text' required onChange={e => setComedianMask({...comedianMask, name: e.target.value})}/>
           </label>
-          <label className='new-comic-password'> Edit Comic Password
+          <label className='new-comic-password'> Edit Password
             <br></br>
             <input type='text' required onChange={e => setComedianMask({...comedianMask, password: e.target.value})}/>
           </label>
-          <label className='new-comic-address'> Edit Comic Address
+          <label className='new-comic-address'> Edit Address
             <br></br>
             <input type='text' required onChange={e => setComedianMask({...comedianMask, address: e.target.value})}/>
           </label>
-          <label className='new-comic-phone'> Edit Comic Phone
+          <label className='new-comic-phone'> Edit Phone
             <br></br>
             <input type='text' required onChange={e => setComedianMask({...comedianMask, phone: e.target.value})} maxLength={14}/>
+          </label>
+
+          <label className='new-comic-phone'> Edit Note
+            <br></br>
+            <input type='text' required onChange={e => setComedianMask({...comedianMask, adminNote: e.target.value})}/>
           </label>
           {/* <div className='create-new-comic-type-box'>
             <div>
@@ -1483,7 +1488,7 @@ const filteredPublishedShows = publishedShows.filter(show => {
     {comedianMask.southWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
     <div className='shows-visible-to-comics'>
     <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
-    
+
   </div><Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/></>}
       {/* <p className='admin-build' onClick={() => toggleBuildShowVisible()}>Admin: Build Week of Upcoming Shows</p> */}
       { buildShowVisible && <>
