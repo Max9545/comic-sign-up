@@ -56,6 +56,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [createNewComicPhone, setCreateNewComicPhone] = useState('')
   const [createNewComicClean, setCreateNewComicClean] = useState(false)
   const [createNewComicFamFriendly, setCreateNewComicFamFriendly] = useState(false)
+  const [createNewComicNote, setCreateNewComicNote] = useState('')
   const [weekVisibility, setWeekVisibility] = useState(false)
   const [comicToDelete, setComicToDelete] = useState('')
   const [buildShowVisible, setBuildShowVisible] = useState(false)
@@ -835,6 +836,7 @@ const docSnapshot = await getDoc(docRef);
           southShowCount: 0,
           downTownWeekCount: 0,
           southWeekCount: 0,
+          adminNote: createNewComicNote,
         })
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
@@ -887,7 +889,8 @@ const docSnapshot = await getDoc(docRef);
             saturday: [],
             sunday: []
           }
-        }, fireOrder: Date.now()})
+        }, 
+        fireOrder: Date.now()})
         alert(`${createNewComicName} at ${userCredential.user.email} has been added`)
       })
       .catch((error) => {
@@ -1541,19 +1544,23 @@ You will receive confirmation emails to this email address each time you submit 
           </label>
           <label> New Comic Name
             <br></br>
-            <input type='text' required onChange={e => setCreateNewComicName(e.target.value)}/>
+            <input type='text' required onChange={e => setCreateNewComicName(e.target.value.trim())}/>
           </label>
           <label className='new-comic-password'> New Comic Password
             <br></br>
-            <input type='text' required onChange={e => setCreateNewComicPassword(e.target.value)}/>
+            <input type='text' required onChange={e => setCreateNewComicPassword(e.target.value.trim())}/>
           </label>
           <label className='new-comic-address'> New Comic Address
             <br></br>
-            <input type='text' required onChange={e => setCreateNewComicAddress(e.target.value)}/>
+            <input type='text' required onChange={e => setCreateNewComicAddress(e.target.value.trim())}/>
           </label>
           <label className='new-comic-phone'> New Comic Phone
             <br></br>
-            <input type='text' required onChange={e => setCreateNewComicPhone(e.target.value)} maxLength={14}/>
+            <input type='text' required onChange={e => setCreateNewComicPhone(e.target.value.trim())} maxLength={14}/>
+          </label>
+          <label className='new-comic-note'> New Comic Note
+            <br></br>
+            <input type='text' required onChange={e => setCreateNewComicNote(e.target.value.trim())}/>
           </label>
           <div className='create-new-comic-type-box'>
             <div>
