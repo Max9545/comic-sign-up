@@ -518,11 +518,10 @@ label {
   /* grid-template-columns: auto repeat(auto-fit, minmax(120px, 1fr)); */
   /* gap: 2px; */
   background-color: black;
-  padding: 10px;
+  /* padding: 10px; */
   width: 80vw;
   color: black;
   align-self: center;
-  margin-right:1vw; 
 }
 
 .row {
