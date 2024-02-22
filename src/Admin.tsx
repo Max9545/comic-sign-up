@@ -6,7 +6,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Show from './Show' 
 import { Comic, ShowToBook } from './interface'
-import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where, getFirestore, setDoc, updateDoc, orderBy, limit } from "firebase/firestore"
+import { addDoc, collection, query, getDocs, DocumentData, deleteDoc, doc, where, getFirestore, setDoc, updateDoc, orderBy, limit, getDoc } from "firebase/firestore"
 import { db } from './firebase'
 import ShowWithAvails from './ShowWithAvails'
 import Week from './Week'
@@ -720,6 +720,7 @@ console.log(showsForEmailRaw)
   }
 
   const maskAsComic = async () => {
+    
     const comicToSearch = (profileToEdit || comicSearch).toLowerCase();
 
     try {
@@ -729,7 +730,18 @@ console.log(showsForEmailRaw)
             return data.name.toLowerCase().includes(comicToSearch) || data.email.toLowerCase().includes(comicToSearch);
         });
 
-        if (matchingDocs.length > 0) {
+        const docRef = doc(collection(db, 'comediansForAdmin'), matchingDocs[0].data().uid);
+
+const docSnapshot = await getDoc(docRef);
+
+// if (docSnapshot.exists()) {
+  // console.log(docSnapshot.id, ' => ', docSnapshot.data());
+  const comicForAdmin = docSnapshot.data()
+// } else {
+//   console.log('No such document!');
+// }
+
+        if (comicForAdmin) {
             const comic = matchingDocs[0].data();
             setComedianMask({
                 name: comic.name,
@@ -742,42 +754,10 @@ console.log(showsForEmailRaw)
                 southWeekCount: comic.southWeekCount,
                 clean: comic.clean,
                 famFriendly: comic.famFriendly,
-                showsAvailabledowntown: {
-                  monday: [],
-                  tuesday: [],
-                  wednesday: [],
-                  thursday: [], 
-                  friday: [],
-                  saturday: [],
-                  sunday: []
-                },
-                showsAvailablesouth: {
-                  monday: [],
-                  tuesday: [],
-                  wednesday: [],
-                  thursday: [], 
-                  friday: [],
-                  saturday: [],
-                  sunday: []
-                },
-                showsAvailabledowntownHistory: {
-                  monday: [],
-                  tuesday: [],
-                  wednesday: [],
-                  thursday: [], 
-                  friday: [],
-                  saturday: [],
-                  sunday: []
-                },
-                showsAvailablesouthHistory: {
-                  monday: [],
-                  tuesday: [],
-                  wednesday: [],
-                  thursday: [], 
-                  friday: [],
-                  saturday: [],
-                  sunday: []
-                }
+                showsAvailabledowntown: comicForAdmin.comedianInfo.showsAvailabledowntown,
+                showsAvailablesouth: comicForAdmin.comedianInfo.showsAvailablesouth,
+                showsAvailabledowntownHistory: comicForAdmin.comedianInfo.showsAvailabledowntownHistory,
+                showsAvailablesouthHistory: comicForAdmin.comedianInfo.showsAvailablesouthHistory
             });
         } else {
             alert('Comedian does not exist or incorrect name has been entered');
@@ -1503,32 +1483,7 @@ const filteredPublishedShows = publishedShows.filter(show => {
     {comedianMask.southWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>}
     <div className='shows-visible-to-comics'>
     <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
-    {/* <div
-      onKeyUp={(e) => {
-        if (e.key === "Enter" && type != '') {
-          changeComedianType()  
-          setAdTrigger(!adTrigger)      
-        }
-      }}
-    >
-    <div>
-      <input type='radio' id='pro-radio' name='type' value='pro' onClick={() => setType('pro')}/>
-      <label htmlFor='pro-radio'>Pro</label>
-    </div>
-    <div>
-      <input type='radio' id='outOfTown' name='type' value='outOfTown'onClick={() => {setType('OutOfTown')}}/>
-      <label htmlFor='outOfTown' >Out of Town Pro</label>
-    </div>
-    <div>
-      <input type='radio' id='almostFamous' name='type' value='almostFamous'onClick={() => {setType('AlmostFamous')}}/>
-      <label htmlFor='almostFamous' >Almost Famous</label>
-    </div>
-    <div>
-      <input type='radio' id='inactive' name='type' value='inactive'onClick={() => {setType('Inactive')}}/>
-      <label htmlFor='inactive' >Inactive</label>
-    </div>
-      <button className='edit-show' onClick={() => changeComedianType()}>Submit Change of Type</button>
-    </div> */}
+    
   </div><Week comedian={comedianMask} weeklyShowTimes={props.shows} admin={props.admin} fetchWeekForComedian={props.fetchWeekForComedian} weekOrder={props.weekOrder}/></>}
       {/* <p className='admin-build' onClick={() => toggleBuildShowVisible()}>Admin: Build Week of Upcoming Shows</p> */}
       { buildShowVisible && <>

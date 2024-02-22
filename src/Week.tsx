@@ -58,7 +58,8 @@
                         availableComedian={currentComedian}
                         date={show.date}
                         headliner={show.headliner}
-                        availability={show.availableComics.includes(props.comedian.name)}
+                        availability={show.availableComics.includes(props.comedian.name) || show.availableComics.some((comic: { name: string }) => comic.name === props.comedian.name)
+                        }
                         setAllAvailability={setAllAvailability}
                         availableComics={show.availableComics}
                         supportStatus={show.supportStatus}
@@ -88,7 +89,8 @@
                           availableComedian={currentComedian}
                           date={show.date}
                           headliner={show.headliner}
-                          availability={show.availableComics. includes(props.comedian.name)}
+                          availability={show.availableComics.includes(props.comedian.name) || show.availableComics.some((comic: { name: string }) => comic.name === props.comedian.name)
+                        }                          
                           setAllAvailability={setAllAvailability}
                           availableComics={show.availableComics}
                           supportStatus={show.supportStatus}
