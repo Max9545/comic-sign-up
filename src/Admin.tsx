@@ -1052,70 +1052,70 @@ You will receive confirmation emails to this email address each time you submit 
 };
 
 
-    const displayProfiles = (listToUse: string) => {
+const displayProfiles = (listToUse: string) => {
+  let profilesToDisplay: any[] = [];
 
+  if (listToUse === 'all') {
+    profilesToDisplay = profiles.slice().sort((a, b) => a.name.localeCompare(b.name));
+  } else if (listToUse === 'filtered') {
+    profilesToDisplay = filteredProfiles.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }
 
-      let profilesToDisplay: any[] = [];
+  console.log("Published Shows in displayProfiles:", publishedShows);
 
-      if (listToUse === 'all') {
-        profilesToDisplay = profiles.slice().sort((a, b) => a.name.localeCompare(b.name));
-      } else if (listToUse === 'filtered') {
-        profilesToDisplay = filteredProfiles.slice().sort((a, b) => a.name.localeCompare(b.name));
-      }
-
-      if (listToUse === 'all') {
-        return profilesToDisplay.map(profile => {
-          return <div className='profile' key={profile.uid}>
-                    <div className='profile-contact-info'>
-                      <h1 className='profile-headers'>{profile.name}</h1>
-                      <h3 className='profile-headers'>{profile.email}</h3>
-                      <h4 className='profile-headers'>{profile.phone}</h4>
-                      <button onClick={() => takeToEdit(profile.name)}>Edit Comic</button>
-                    </div>
-                    <div className='profile-type'>
-                      <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
-                      <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
-                      <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
-                      <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
-                      {profile.adminNote && <p>Note: {profile.adminNote}</p>}
-                      </div>
-                      <div className='profile-stats'>
-                        <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
-                        <p className='profile-headers'>South Show Sign Up Count: {profile.southShowCount}</p>
-                        <p className='profile-headers'>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
-                        <p className='profile-headers'>South Weeks Submitted: {profile.southWeekCount}</p>
-                      
-                    </div>
-                  </div>
-        })
-      } else if (listToUse === 'filtered') {
-        return profilesToDisplay.map(profile => {
-          return <div className='profile' key={profile.uid}>
-                    <div className='profile-contact-info'>
-                      <h1 className='profile-headers'>{profile.name}</h1>
-                      <h3 className='profile-headers'>{profile.email}</h3>
-                      <h4 className='profile-headers'>{profile.phone}</h4>
-                    </div>
-                    <div className='profile-type'>
-                      <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
-                      <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
-                      <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
-                      <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
-                      {profile.adminNote && <p>Note: {profile.adminNote}</p>}
-                      </div>
-                      <div className='profile-stats'>
-                        <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
-                        <p className='profile-headers'>South Show Sign Up Count: {profile.southShowCount}</p>
-                        <p className='profile-headers'>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
-                        <p className='profile-headers'>South Weeks Submitted: {profile.southWeekCount}</p>
-                      
-                    </div>
-                  </div>
-        })
-      }
-
+  return profilesToDisplay.map(profile => {
+    // Count positions for the current comic
+    const positionsCount: { [key: string]: number } = {};
+    publishedShows.forEach(show => {
+      console.log("Current Show:", show);
+      console.log("Profile Name:", profile.name);
+      console.log("Show Comic:", show);
+      console.log(show.comicArray, profile.name);
       
-    }
+      if (show.comicArray && show.comicArray.some(comic => comic.comic === profile.name)) {
+        show.comicArray.forEach(comic => {
+          if (comic.comic === profile.name) {
+            console.log(comic, profile, show)
+            positionsCount[comic.type] = (positionsCount[comic.type] || 0) + 1;
+          }
+        });
+      }
+    });
+    
+    console.log(positionsCount)
+    
+    console.log("Positions Count for", profile.name, ":", positionsCount);
+
+    return (
+      <div className='profile' key={profile.uid}>
+        <div className='profile-contact-info'>
+          <h1 className='profile-headers'>{profile.name}</h1>
+          <h3 className='profile-headers'>{profile.email}</h3>
+          <h4 className='profile-headers'>{profile.phone}</h4>
+          <button onClick={() => takeToEdit(profile.name)}>Edit Comic</button>
+        </div>
+        <div className='profile-type'>
+          <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
+          <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
+          <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
+          <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
+          {profile.adminNote && <p>Note: {profile.adminNote}</p>}
+        </div>
+        <div className='profile-stats'>
+          {/* Display positions count */}
+          {Object.entries(positionsCount).map(([position, count]) => (
+            <p key={position} className='profile-headers'>{position} Count: {count}</p>
+          ))}
+          {/* Other profile stats */}
+          <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
+          <p className='profile-headers'>South Show Sign Up Count: {profile.southShowCount}</p>
+          <p className='profile-headers'>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
+          <p className='profile-headers'>South Weeks Submitted: {profile.southWeekCount}</p>
+        </div>
+      </div>
+    );
+  });
+};
 
 
 
