@@ -660,6 +660,9 @@ label {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  margin: 0%;
+  font-size: .7em;
+  font-weight: 800;
 }
 
 .profile-search {

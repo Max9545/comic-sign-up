@@ -1052,7 +1052,7 @@ You will receive confirmation emails to this email address each time you submit 
 };
 
 
-const displayProfiles = (listToUse: string) => {
+    const displayProfiles = (listToUse: string) => {
   let profilesToDisplay: any[] = [];
 
   if (listToUse === 'all') {
@@ -1072,8 +1072,8 @@ const displayProfiles = (listToUse: string) => {
       console.log("Show Comic:", show);
       console.log(show.comicArray, profile.name);
       
-      if (show.comicArray && show.comicArray.some(comic => comic.comic === profile.name)) {
-        show.comicArray.forEach(comic => {
+      if (show.comicArray && show.comicArray.some((comic: { comic: any }) => comic.comic === profile.name)) {
+        show.comicArray.forEach((comic: { comic: any; type: string | number }) => {
           if (comic.comic === profile.name) {
             console.log(comic, profile, show)
             positionsCount[comic.type] = (positionsCount[comic.type] || 0) + 1;
@@ -1089,176 +1089,150 @@ const displayProfiles = (listToUse: string) => {
     return (
       <div className='profile' key={profile.uid}>
         <div className='profile-contact-info'>
-          <h1 className='profile-headers'>{profile.name}</h1>
-          <h3 className='profile-headers'>{profile.email}</h3>
-          <h4 className='profile-headers'>{profile.phone}</h4>
+          <h3 className='profile-headers'>{profile.name}</h3>
+          <h5 className='profile-headers'>{profile.email}</h5>
+          <h5 className='profile-headers'>{profile.phone}</h5>
           <button onClick={() => takeToEdit(profile.name)}>Edit Comic</button>
         </div>
         <div className='profile-type'>
-          <h2 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
-          <h4 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h4>
-          <h4 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h4>
-          <h5 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h5>
+          <h4 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h4>
+          <h5 className='profile-headers'>Clean: {profile.clean ? 'True' : 'False'}</h5>
+          <h5 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h5>
+          <h6 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h6>
           {profile.adminNote && <p>Note: {profile.adminNote}</p>}
         </div>
         <div className='profile-stats'>
           {/* Display positions count */}
           {Object.entries(positionsCount).map(([position, count]) => (
-            <p key={position} className='profile-headers'>{position} Count: {count}</p>
+            <p key={position}>{position} Count: {count}</p>
           ))}
           {/* Other profile stats */}
-          <p className='profile-headers'>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
-          <p className='profile-headers'>South Show Sign Up Count: {profile.southShowCount}</p>
-          <p className='profile-headers'>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
-          <p className='profile-headers'>South Weeks Submitted: {profile.southWeekCount}</p>
+          <p>Downtown Show Sign Up Count: {profile.downTownShowCount}</p>
+          <p>South Show Sign Up Count: {profile.southShowCount}</p>
+          <p>Down Town Weeks Submitted: {profile.downTownWeekCount}</p>
+          <p>South Weeks Submitted: {profile.southWeekCount}</p>
         </div>
       </div>
     );
   });
-};
-
-
-
-// allowed
-// true
-// (boolean)
+    };
 
 
 
 
-// downTownShowCount
-// 0
-// (number)
+    const handleSearch = (event: { target: { value: React.SetStateAction<string> } }) => {
+      setSearchQuery(event.target.value);
+    };
+
+    const filteredProfiles = profiles.filter(profile => {
+      return Object.values(profile).some(value =>
+        typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
 
 
-// downTownWeekCount
-// 0
-// (number)
+    const filteredPublishedShows = publishedShows.filter(show => {
+      // Helper function to check if a value contains the search query
+      const containsQuery = (value: string) =>
+        typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase());
 
-
-
-// southShowCount
-// 0
-// (number)
-
-
-// southWeekCount
-// 0
-// (number)
-
-const handleSearch = (event: { target: { value: React.SetStateAction<string> } }) => {
-  setSearchQuery(event.target.value);
-};
-
-const filteredProfiles = profiles.filter(profile => {
-  return Object.values(profile).some(value =>
-    typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-});
-
-
-const filteredPublishedShows = publishedShows.filter(show => {
-  // Helper function to check if a value contains the search query
-  const containsQuery = (value: string) =>
-    typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase());
-
-  // Function to search through nested objects recursively
-  const searchObject = (obj: DocumentData) => {
-    for (const key in obj) {
-      if (key === 'availableComics') continue; // Skip searching the availableComics array
-      const value = obj[key];
-      if (containsQuery(value)) {
-        return true; // Found a match
-      }
-      if (Array.isArray(value)) {
-        // Search through array elements
-        if (value.some(item => typeof item === 'object' && searchObject(item))) {
-          return true; // Found a match
+      // Function to search through nested objects recursively
+      const searchObject = (obj: DocumentData) => {
+        for (const key in obj) {
+          if (key === 'availableComics') continue; // Skip searching the availableComics array
+          const value = obj[key];
+          if (containsQuery(value)) {
+            return true; // Found a match
+          }
+          if (Array.isArray(value)) {
+            // Search through array elements
+            if (value.some(item => typeof item === 'object' && searchObject(item))) {
+              return true; // Found a match
+            }
+          } else if (typeof value === 'object') {
+            // Recursively search through nested objects
+            if (searchObject(value)) {
+              return true; // Found a match
+            }
+          }
         }
-      } else if (typeof value === 'object') {
-        // Recursively search through nested objects
-        if (searchObject(value)) {
-          return true; // Found a match
+        return false; // No match found
+      };
+
+      // Check if the show matches the search query
+      const match = searchObject(show);
+      return match;
+    });
+
+
+
+
+      const displayBookedShows = (type: string) => {
+        if (type == 'all') {
+          return publishedShows.map(show => {
+            return <div className='profile' key={show.bookedshow.id}>
+            <div className='profile-contact-info'>
+              <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
+              <h3 className='profile-headers'>{show.bookedshow.time} {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
+              {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
+              <h4 className='profile-headers'>{show.time}</h4>
+            </div>
+        
+        
+            <div className='profile-contact-info'>
+              <h2 className='profile-headers'>Comics</h2>
+              {show.comicArray.map((comic: { comic: string, type: string }) => {
+                return <>
+                <p>{comic.comic}: {comic.type}</p>
+                </>
+              })}
+              </div>
+        
+        
+            <div className='profile-stats'>
+              {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
+              <h4 className='profile-headers'>Clean: {show.bookedshow.clean == 'not-clean' ? 'False' : 'True'}</h4>
+              <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly == 'not-familyFriendly' ? 'False' : 'True'}</h4>
+              <h4 className='profile-headers'>Needed Support: {show.bookedshow.supportStatus == 'support' ? 'True' : 'False'}</h4>
+              {/* Add other relevant show details */} 
+            </div>
+          </div>
+          })  
+        } else {
+          return filteredPublishedShows.map(show => {
+            return <div className='profile' key={show.bookedshow.id}>
+            <div className='profile-contact-info'>
+              <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
+              <h3 className='profile-headers'>{show.bookedshow.time}  {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
+              {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
+              <h4 className='profile-headers'>{show.time}</h4>
+            </div>
+        
+        
+            <div className='profile-contact-info'>
+              <h2 className='profile-headers'>Comics</h2>
+              {show.comicArray.map((comic: { comic: string, type: string }) => {
+                return <>
+                <p>{comic.comic}: {comic.type}</p>
+                </>
+              })}
+              </div>
+        
+        
+            <div className='profile-stats'>
+              {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
+              <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
+              <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
+              {/* Add other relevant show details */} 
+            </div>
+          </div>
+          })
         }
-      }
-    }
-    return false; // No match found
-  };
+      
 
-  // Check if the show matches the search query
-  const match = searchObject(show);
-  return match;
-});
-
-
-
-
-  const displayBookedShows = (type: string) => {
-    if (type == 'all') {
-      return publishedShows.map(show => {
-        return <div className='profile' key={show.bookedshow.id}>
-        <div className='profile-contact-info'>
-          <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
-          <h3 className='profile-headers'>{show.bookedshow.time} {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-          {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
-          <h4 className='profile-headers'>{show.time}</h4>
-        </div>
-    
-    
-        <div className='profile-contact-info'>
-          <h2 className='profile-headers'>Comics</h2>
-          {show.comicArray.map((comic: { comic: string, type: string }) => {
-            return <>
-            <p>{comic.comic}: {comic.type}</p>
-            </>
-          })}
-          </div>
-    
-    
-        <div className='profile-stats'>
-          {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
-          <h4 className='profile-headers'>Clean: {show.bookedshow.clean == 'not-clean' ? 'False' : 'True'}</h4>
-          <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly == 'not-familyFriendly' ? 'False' : 'True'}</h4>
-          <h4 className='profile-headers'>Needed Support: {show.bookedshow.supportStatus == 'support' ? 'True' : 'False'}</h4>
-          {/* Add other relevant show details */} 
-        </div>
-      </div>
-      })  
-    } else {
-      return filteredPublishedShows.map(show => {
-        return <div className='profile' key={show.bookedshow.id}>
-        <div className='profile-contact-info'>
-          <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
-          <h3 className='profile-headers'>{show.bookedshow.time}  {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-          {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
-          <h4 className='profile-headers'>{show.time}</h4>
-        </div>
-    
-    
-        <div className='profile-contact-info'>
-          <h2 className='profile-headers'>Comics</h2>
-          {show.comicArray.map((comic: { comic: string, type: string }) => {
-            return <>
-            <p>{comic.comic}: {comic.type}</p>
-            </>
-          })}
-          </div>
-    
-    
-        <div className='profile-stats'>
-          {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
-          <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
-          <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
-          {/* Add other relevant show details */} 
-        </div>
-      </div>
-      })
-    }
-  
-
-  } 
-  
-  
+      } 
+      
+      
 
   return (
     <div className='admin-container'>
