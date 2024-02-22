@@ -1093,7 +1093,7 @@ You will receive confirmation emails to this email address each time you submit 
       <div className='profile' key={profile.uid}>
         <div className='profile-contact-info'>
           <h3 className='profile-headers'>{profile.name}</h3>
-          <h5 className='profile-headers'>{profile.email}</h5>
+          <h4 className='profile-headers'>{profile.email}</h4>
           <h5 className='profile-headers'>{profile.phone}</h5>
           <button onClick={() => takeToEdit(profile.name)}>Edit Comic</button>
         </div>
