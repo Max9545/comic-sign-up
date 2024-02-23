@@ -266,7 +266,7 @@ console.log(currentComedian.uid, currentComedian.downTownWeekCount)
         southWeekCount: currentComedian.southWeekCount,
       });
 console.log(comicNote)
-      setDoc(doc(db, `comediansForAdmin/${currentComedian.id}`), {comedianInfo: currentComedian, fireOrder: Date.now(), note: comicNote})
+      setDoc(doc(db, `comediansForAdmin/${currentComedian.id || currentComedian.uid}`), {comedianInfo: currentComedian, fireOrder: Date.now(), note: comicNote || ''})
       addDoc(collection(db, `comedians/comicStorage/${currentComedian.name}`), {
         comedianInfo: currentComedian, 
         fireOrder: Date.now(), note: comicNote})

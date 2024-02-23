@@ -761,7 +761,7 @@ const docSnapshot = await getDoc(docRef);
                 showsAvailablesouth: comicForAdmin.comedianInfo.showsAvailablesouth,
                 showsAvailabledowntownHistory: comicForAdmin.comedianInfo.showsAvailabledowntownHistory,
                 showsAvailablesouthHistory: comicForAdmin.comedianInfo.showsAvailablesouthHistory,
-                adminNote: comic.adminNote
+                adminNote: comic.adminNote || ''
             });
         } else {
             alert('Comedian does not exist or incorrect name has been entered');
@@ -838,7 +838,7 @@ const docSnapshot = await getDoc(docRef);
           southShowCount: 0,
           downTownWeekCount: 0,
           southWeekCount: 0,
-          adminNote: createNewComicNote,
+          adminNote: createNewComicNote || '',
         })
         await updateCurrentUser(auth, props.user)
         setDoc(doc(db, `comediansForAdmin/${userCredential.user.uid}`), {comedianInfo: {
