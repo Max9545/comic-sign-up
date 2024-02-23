@@ -1004,44 +1004,133 @@ You will receive confirmation emails to this email address each time you submit 
   };
 
   const handleButtonClick = (buttonName: string) => {
-    setSelectedButtons(prevState => ({
-      ...prevState,
-      [buttonName]: !prevState[buttonName]
-    }));
+    // Set the visibility state of each component based on the clicked button
 
-    // Add your button click logic here
+    if (buttonName != 'gridVisible') {
+      setSelectedButtons({...selectedButtons, gridVisible})
+    }
+
+    setSelectedButtons(prevState => {
+
+      const newState = { ...prevState };
+      Object.keys(newState).forEach(key => {
+        newState[key] = key === buttonName ? true : false;
+      });
+      return newState;
+    });
     if (buttonName === 'availabiltyForComics') {
-      // Logic for the "Enter Availabilty For Comics" button
-      toggleWeekVisibility(); // Assuming this function toggles visibility
+      toggleWeekVisibility();
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'gridVisible') {
-      // Logic for the "Build Shows" button
-      toggleGridVisible(); // Assuming this function toggles visibility
-    }else if (buttonName === 'buildShows') {
-      // Logic for the "Build Shows" button
-      toggleBuildShowVisible(); // Assuming this function toggles visibility
+      toggleGridVisible();
+      setWeekVisibility(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+    } else if (buttonName === 'buildShows') {
+      toggleBuildShowVisible();
+      setWeekVisibility(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'createNewComic') {
-      // Logic for the "Create New Comic" button
-      toggleComicBuildVisible(); // Assuming this function toggles visibility
+      toggleComicBuildVisible();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'changeComicType') {
-      // Logic for the "Change Comic Type" button
-      toggleEnterAvailabilityForComic(); // Assuming this function toggles visibility
+      toggleEnterAvailabilityForComic();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'emailComics') {
-      // Logic for the "Change Comic Type" button
-      toggleEmailComics(); // Assuming this function toggles visibility
+      toggleEmailComics();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'downtownLong') {
-      // Logic for the "Change Comic Type" button
-      toggledowntownLong(); // Assuming this function toggles visibility
+      toggledowntownLong();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'southLong') {
-      // Logic for the "Change Comic Type" button
-      toggleSouthLong(); // Assuming this function toggles visibility
+      toggleSouthLong();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'comicProfiles') {
-      // Logic for the "Change Comic Type" button
-      toggleComicProfiles(); // Assuming this function toggles visibility
+      toggleComicProfiles();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'publishedVisible') {
-      // Logic for the "Change Comic Type" button
-      togglePublishedVisible(); // Assuming this function toggles visibility
+      togglePublishedVisible();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setGridVisible(false)
     } 
   };
+  
+  
 
   const takeToEdit = async (name: string) => {
     setProfileToEdit(name)
