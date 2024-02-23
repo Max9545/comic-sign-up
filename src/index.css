@@ -513,14 +513,15 @@ label {
 
 .grid-container {
   display: grid;
+  grid-template-columns: 1fr 1fr; /* Display two columns */
+  gap: 2px; /* Gap between the grids */
   /* grid-template-columns: auto repeat(auto-fit, minmax(120px, 1fr)); */
-  gap: 2px;
-  background-color: white;
-  padding: 10px;
+  /* gap: 2px; */
+  background-color: black;
+  /* padding: 10px; */
   width: 80vw;
   color: black;
-  align-self: flex-end;
-  margin-right:3vw; 
+  align-self: center;
 }
 
 .row {
@@ -656,6 +657,7 @@ label {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
 }
 
 .profile-stats {
@@ -674,7 +676,9 @@ label {
 
 .notes-list {
   border: 2px solid red;
-  margin-top: 3vh
+  margin-top: 3vh;
+  background-color: white;
+  color: black;
 }
 
 .red {
@@ -706,4 +710,14 @@ label {
 .popup-button {
   font-weight: 900;
   margin: 2%;
+}
+
+.type-cell {
+  min-height: 6vh;
+}
+
+.profile-in-edit {
+  align-self: center;
+  width: 50vw;
+  margin-bottom: 2vh;
 }

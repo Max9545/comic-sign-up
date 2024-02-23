@@ -749,6 +749,8 @@ const docSnapshot = await getDoc(docRef);
                 uid: comic.uid,
                 type: comic.type,
                 email: comic.email,
+                address: comic.address,
+                phone: comic.phone,
                 downTownShowCount: comic.downTownShowCount,
                 southShowCount: comic.southShowCount,
                 downTownWeekCount: comic.downTownWeekCount,
@@ -1002,44 +1004,133 @@ You will receive confirmation emails to this email address each time you submit 
   };
 
   const handleButtonClick = (buttonName: string) => {
-    setSelectedButtons(prevState => ({
-      ...prevState,
-      [buttonName]: !prevState[buttonName]
-    }));
+    // Set the visibility state of each component based on the clicked button
 
-    // Add your button click logic here
+    if (buttonName != 'gridVisible') {
+      setSelectedButtons({...selectedButtons, gridVisible})
+    }
+
+    setSelectedButtons(prevState => {
+
+      const newState = { ...prevState };
+      Object.keys(newState).forEach(key => {
+        newState[key] = key === buttonName ? true : false;
+      });
+      return newState;
+    });
     if (buttonName === 'availabiltyForComics') {
-      // Logic for the "Enter Availabilty For Comics" button
-      toggleWeekVisibility(); // Assuming this function toggles visibility
+      toggleWeekVisibility();
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'gridVisible') {
-      // Logic for the "Build Shows" button
-      toggleGridVisible(); // Assuming this function toggles visibility
-    }else if (buttonName === 'buildShows') {
-      // Logic for the "Build Shows" button
-      toggleBuildShowVisible(); // Assuming this function toggles visibility
+      toggleGridVisible();
+      setWeekVisibility(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+    } else if (buttonName === 'buildShows') {
+      toggleBuildShowVisible();
+      setWeekVisibility(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'createNewComic') {
-      // Logic for the "Create New Comic" button
-      toggleComicBuildVisible(); // Assuming this function toggles visibility
+      toggleComicBuildVisible();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'changeComicType') {
-      // Logic for the "Change Comic Type" button
-      toggleEnterAvailabilityForComic(); // Assuming this function toggles visibility
+      toggleEnterAvailabilityForComic();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'emailComics') {
-      // Logic for the "Change Comic Type" button
-      toggleEmailComics(); // Assuming this function toggles visibility
+      toggleEmailComics();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'downtownLong') {
-      // Logic for the "Change Comic Type" button
-      toggledowntownLong(); // Assuming this function toggles visibility
+      toggledowntownLong();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'southLong') {
-      // Logic for the "Change Comic Type" button
-      toggleSouthLong(); // Assuming this function toggles visibility
+      toggleSouthLong();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setComicProfiles(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'comicProfiles') {
-      // Logic for the "Change Comic Type" button
-      toggleComicProfiles(); // Assuming this function toggles visibility
+      toggleComicProfiles();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setPublishedVisible(false);
+      setGridVisible(false)
     } else if (buttonName === 'publishedVisible') {
-      // Logic for the "Change Comic Type" button
-      togglePublishedVisible(); // Assuming this function toggles visibility
+      togglePublishedVisible();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setGridVisible(false)
     } 
   };
+  
+  
 
   const takeToEdit = async (name: string) => {
     setProfileToEdit(name)
@@ -1095,7 +1186,8 @@ You will receive confirmation emails to this email address each time you submit 
           <h3 className='profile-headers'>{profile.name}</h3>
           <h4 className='profile-headers'>{profile.email}</h4>
           <h5 className='profile-headers'>{profile.phone}</h5>
-          <button onClick={() => takeToEdit(profile.name)}>Edit Comic</button>
+          <h5 className='profile-headers'>{profile.address}</h5>
+          
         </div>
         <div className='profile-type'>
           <h4 className='profile-headers'>{profile.type === 'pro' ? 'Pro' : profile.type === 'AlmostFamous' ? 'Almost Famous' : profile.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h4>
@@ -1103,6 +1195,7 @@ You will receive confirmation emails to this email address each time you submit 
           <h5 className='profile-headers'>Family Friendly: {profile.famFriendly ? 'True' : 'False'}</h5>
           <h6 className='profile-headers'>Allowed: {profile.allowed ? 'True' : 'False'}</h6>
           {profile.adminNote && <p>Note: {profile.adminNote}</p>}
+          <button onClick={() => takeToEdit(profile.name)}>Edit Comic</button>
         </div>
         <div className='profile-stats'>
           {/* Display positions count */}
@@ -1313,34 +1406,43 @@ You will receive confirmation emails to this email address each time you submit 
             }
           } }
       >
-          <h3 className='shows-visible-to-comics'>Enter Comedic To Edit</h3>
+          <h3 className='shows-visible-to-comics'>Enter Comic To Edit</h3>
           <input type='text' className='yes-spot' onChange={(e) => {
             setComicSearch(e.target.value)
           } } />
           <input type='submit' className='submit-mask' onClick={() => maskAsComic()} />
           
         </div>
-          <h2 className='shows-visible-to-comics'>Current Comedic {comedianMask.name}'s Profile</h2>
-        <div className='profile profile-for-edit'>
-                    <div className='profile-contact-info'>
-                      <h1 className='profile-headers'>{comedianMask.name}</h1>
-                      <h3 className='profile-headers'>{comedianMask.email}</h3>
-                      <h4 className='profile-headers'>{comedianMask.phone}</h4>
-                    </div>
-                    <div className='profile-type'>
-                      <h2 className='profile-headers'>{comedianMask.type === 'pro' ? 'Pro' : comedianMask.type === 'AlmostFamous' ? 'Almost Famous' : comedianMask.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h2>
-                      <h4 className='profile-headers'>Clean: {comedianMask.clean ? 'True' : 'False'}</h4>
-                      <h4 className='profile-headers'>Family Friendly: {comedianMask.famFriendly ? 'True' : 'False'}</h4>
-                      <h5 className='profile-headers'>Allowed: {comedianMask.allowed ? 'True' : 'False'}</h5>
-                      </div>
-                      <div className='profile-stats'>
-                        <p className='profile-headers'>Downtown Show Sign Up Count: {comedianMask.downTownShowCount}</p>
-                        <p className='profile-headers'>South Show Sign Up Count: {comedianMask.southShowCount}</p>
-                        <p className='profile-headers'>Down Town Weeks Submitted: {comedianMask.downTownWeekCount}</p>
-                        <p className='profile-headers'>South Weeks Submitted: {comedianMask.southWeekCount}</p>
-                      
-                    </div>
-                  </div>
+          <h2 className='shows-visible-to-comics'>Current Comic {comedianMask.name}'s Profile</h2>
+      <div className='profile profile-in-edit' key={comedianMask.uid}>
+        <div className='profile-contact-info'>
+          <h3 className='profile-headers'>{comedianMask.name}</h3>
+          <h4 className='profile-headers'>{comedianMask.email}</h4>
+          <h5 className='profile-headers'>{comedianMask.phone}</h5>
+          <h5 className='profile-headers'>{comedianMask.address}</h5>
+          
+        </div>
+        <div className='profile-type'>
+          <h4 className='profile-headers'>{comedianMask.type === 'pro' ? 'Pro' : comedianMask.type === 'AlmostFamous' ? 'Almost Famous' : comedianMask.type === 'OutOfTown' ? 'Out of Town Pro' : 'Inactive'}</h4>
+          <h5 className='profile-headers'>Clean: {comedianMask.clean ? 'True' : 'False'}</h5>
+          <h5 className='profile-headers'>Family Friendly: {comedianMask.famFriendly ? 'True' : 'False'}</h5>
+          <h6 className='profile-headers'>Allowed: {comedianMask.allowed ? 'True' : 'False'}</h6>
+          {comedianMask.adminNote && <p>Note: {comedianMask.adminNote}</p>}
+        </div>
+        <div className='profile-stats'>
+          {/* Display positions count */}
+          <div>
+            {/* {Object.entries(assignedPos).map(([position, count]) => (
+              <p key={position}>{position} Count: {count}</p>
+            ))} */}
+          </div>
+          {/* Other profile stats */}
+          <p>Downtown Show Sign Up Count: {comedianMask.downTownShowCount}</p>
+          <p>South Show Sign Up Count: {comedianMask.southShowCount}</p>
+          <p>Down Town Weeks Submitted: {comedianMask.downTownWeekCount}</p>
+          <p>South Weeks Submitted: {comedianMask.southWeekCount}</p>
+        </div>
+      </div>
     {/* {comedianMask.downTownShowCount > 0 &&  <div className='shows-visible-to-comics'>{`Total Downtown Show Signups: ${comedianMask.downTownShowCount}`}</div>}
     {comedianMask.southShowCount > 0 && <div className='shows-visible-to-comics'>{`Total South Show Signups: ${comedianMask.southShowCount}`}</div>}
     {comedianMask.downTownWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total Downtown Week Signups: ${comedianMask.downTownWeekCount}`}</div>}
