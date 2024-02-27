@@ -154,12 +154,12 @@ import { db } from './firebase';
             }
       
             const updatedCells = { ...selectedCells };
-            const columnCellKey = `${comedian.comedianInfo.id}-${show.id}`;
+            const columnCellKey = `${comedian.comedianInfo.uid || comedian.comedianInfo.id}-${show.id}`;
             const updatedCell = {
               ...selectedCells[currentCellKey],
               selectedPosition: position
             };
-      
+      console.log(columnCellKey, comedian.comedianInfo)
             updatedCells[columnCellKey] = updatedCell;
             try {
               const existingComicArray = comicHistory.length ? comicHistory.find(item => item.bookedshow.id === show.id) : undefined;
