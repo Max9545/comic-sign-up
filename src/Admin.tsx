@@ -1263,70 +1263,50 @@ You will receive confirmation emails to this email address each time you submit 
 
 
 
-      const displayBookedShows = (type: string) => {
-        if (type == 'all') {
-          return publishedShows.map(show => {
-            return <div className='profile' key={show.bookedshow.id}>
-            <div className='profile-contact-info'>
-              <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
-              <h3 className='profile-headers'>{show.bookedshow.time} {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-              {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
-              <h4 className='profile-headers'>{show.time}</h4>
-            </div>
-        
-        
-            <div className='profile-contact-info'>
-              <h2 className='profile-headers'>Comics</h2>
-              {show.comicArray.map((comic: { comic: string, type: string }) => {
-                return <>
-                <p>{comic.comic}: {comic.type}</p>
-                </>
-              })}
-              </div>
-        
-        
-            <div className='profile-stats'>
-              {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
-              <h4 className='profile-headers'>Clean: {show.bookedshow.clean == 'not-clean' ? 'False' : 'True'}</h4>
-              <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly == 'not-familyFriendly' ? 'False' : 'True'}</h4>
-              <h4 className='profile-headers'>Needed Support: {show.bookedshow.supportStatus == 'support' ? 'True' : 'False'}</h4>
-              {/* Add other relevant show details */} 
-            </div>
-          </div>
-          })  
-        } else {
-          return filteredPublishedShows.map(show => {
-            return <div className='profile' key={show.bookedshow.id}>
-            <div className='profile-contact-info'>
-              <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
-              <h3 className='profile-headers'>{show.bookedshow.time}  {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
-              {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
-              <h4 className='profile-headers'>{show.time}</h4>
-            </div>
-        
-        
-            <div className='profile-contact-info'>
-              <h2 className='profile-headers'>Comics</h2>
-              {show.comicArray.map((comic: { comic: string, type: string }) => {
-                return <>
-                <p>{comic.comic}: {comic.type}</p>
-                </>
-              })}
-              </div>
-        
-        
-            <div className='profile-stats'>
-              {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
-              <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
-              <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
-              {/* Add other relevant show details */} 
-            </div>
-          </div>
-          })
+    const displayBookedShows = (type: string) => {
+      let showsToDisplay = type === 'all' ? publishedShows : filteredPublishedShows;
+    
+      // Sort shows by date and time
+      showsToDisplay.sort((a, b) => {
+        // Convert dates to timestamps
+        const dateA = new Date(a.bookedshow.date).getTime();
+        const dateB = new Date(b.bookedshow.date).getTime();
+    
+        // Compare timestamps
+        if (dateA !== dateB) {
+          return dateA - dateB;
         }
+        // If dates are equal, compare times
+        return a.bookedshow.time.localeCompare(b.bookedshow.time);
+      });
+    
+      return showsToDisplay.map(show => (
+        <div className='profile' key={show.bookedshow.id}>
+          <div className='profile-contact-info'>
+            <h2 className='profile-headers'>{show.bookedshow.headliner} {show.bookedshow.date}</h2>
+            <h3 className='profile-headers'>{show.bookedshow.time} {show.bookedshow.day} {show.bookedshow.club.charAt(0).toUpperCase() + show.bookedshow.club.slice(1)}</h3>
+            {/* <h4 className='profile-headers'>{show.bookedshow.date}</h4> */}
+            <h4 className='profile-headers'>{show.time}</h4>
+          </div>
       
-
-      } 
+          <div className='profile-contact-info'>
+            <h2 className='profile-headers'>Comics</h2>
+            {show.comicArray.map((comic: { comic: string, type: string }) => (
+              <p key={comic.comic}>{comic.comic}: {comic.type}</p>
+            ))}
+          </div>
+      
+          <div className='profile-stats'>
+            {/* <h2 className='profile-headers'>Day: {show.bookedshow.day}</h2> */}
+            <h4 className='profile-headers'>Clean: {show.bookedshow.clean ? 'True' : 'False'}</h4>
+            <h4 className='profile-headers'>Family Friendly: {show.bookedshow.familyFriendly ? 'True' : 'False'}</h4>
+            {/* Add other relevant show details */} 
+          </div>
+        </div>
+      ));
+    }
+    
+    
       
       
 
