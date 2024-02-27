@@ -784,34 +784,34 @@ const docSnapshot = await getDoc(docRef);
   }
 
   const changeComedianType = async () => {  
+    console.log(comedianMask)
    
     comedianMask.type = type
     const db = getFirestore()
-    const q = query(collection(db, "users"), where("uid", "==", comedianMask?.id)) 
+    const q = query(collection(db, "users"), where("uid", "==", comedianMask?.id || comedianMask.uid)) 
     const docUser = await getDocs(q)
     const data = docUser.docs[0].data()
     data.type = type
-    updateDoc(doc(db, `users/${comedianMask?.id}`), {...data, type: type})
-    
+    updateDoc(doc(db, `users/${comedianMask?.id || comedianMask.uid}`), {...data, type: type})
     // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
-    const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", comedianMask.id))
+    const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", comedianMask.id || comedianMask.uid))
     const docTwo = await (getDocs(docRef))
-    updateDoc(doc(db, `comediansForAdmin/${comedianMask.id}`), {"comedianInfo.type": comedianMask.type})
+    updateDoc(doc(db, `comediansForAdmin/${comedianMask.id || comedianMask.uid}`), {"comedianInfo.type": comedianMask.type})
     alert(`${comedianMask.name} is now filed as ${type}`) 
     setAdTrigger(!adTrigger)
   }
 
   const updateComedian = async () => {  
     const db = getFirestore()
-    const q = query(collection(db, "users"), where("uid", "==", comedianMask?.uid)) 
+    const q = query(collection(db, "users"), where("uid", "==", comedianMask?.uid || comedianMask.id)) 
     const docUser = await getDocs(q)
     const data = docUser.docs[0].data()
-    updateDoc(doc(db, `users/${comedianMask?.uid}`), comedianMask)
+    updateDoc(doc(db, `users/${comedianMask?.uid || comedianMask.id}`), comedianMask)
     
     // const docRef = query(collection(db, `comedians/comicStorage/${comedianMask.name}`), orderBy('fireOrder', 'desc'), limit(1))
     // const docRef = query(collection(db, `comediansForAdmin`), where("comedianInfo.id", "==", comedianMask.id))
     // await (getDocs(docRef))
-    updateDoc(doc(db, `comediansForAdmin/${comedianMask.uid}`), comedianMask)
+    updateDoc(doc(db, `comediansForAdmin/${comedianMask.uid || comedianMask.id}`), comedianMask)
     alert(`${comedianMask.name} is now updated`) 
     setAdTrigger(!adTrigger)
   }
