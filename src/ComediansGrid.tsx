@@ -23,7 +23,7 @@ import ShowPopup from './ShowPopup';
     const [currentCellKey, setCurrentCellKey] = useState<string>('');
     const [trig, setTrig] = useState(true)
     const [showToEdit, setShowToEdit] = useState<any>(null); // State to manage the show to be edited
-
+    const [newShows, setNewShows] = useState([])
 
 
     comedians.forEach((comedian) => {
@@ -382,6 +382,16 @@ const handleSaveShow = async (editedShow: any) => {
   } catch (error) {
     console.error('Error updating show:', error);
   }
+
+  const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1));
+  const docSnapshot = await getDocs(docRef);
+  const docData = docSnapshot.docs[0].data();
+  console.log(docData)
+  const thisWeek = docData.thisWeek;
+  
+  setNewShows(thisWeek)
+
+
 };
 
 
@@ -407,7 +417,8 @@ return (
           <div className="row type-header">
             <div className="cell type-cell">{type.replace(/([A-Z])/g, ' $1').trim()}</div>
             {/* Downtown show information */}
-            {shows
+            {console.log(newShows, shows)}
+            {(newShows.length ? newShows : shows)
               .filter(show => show.club === 'downtown')
               .map(show => (
                 <div className="cell" 
@@ -480,7 +491,7 @@ return (
           <div className="row type-header">
             <div className="cell type-cell">{type.replace(/([A-Z])/g, ' $1').trim()}</div>
             {/* South Club show information */}
-            {shows
+            {(newShows.length ? newShows : shows)
               .filter(show => show.club === 'south')
               .map(show => (
                 <div className="cell" 

@@ -14,8 +14,6 @@ const ShowPopup: React.FC<{ position: any, show: any; onClose: () => void; onSav
 
   return (
     <div className="show-popup" style={{ position: 'fixed', top: position.y, left: position.x }}>
-
-      {console.log(position)}
       <div>
         <span className="close" onClick={onClose}>&times;</span>
         <h2>Edit Show Details</h2>
