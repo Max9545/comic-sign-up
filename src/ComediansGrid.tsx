@@ -417,7 +417,6 @@ return (
           <div className="row type-header">
             <div className="cell type-cell">{type.replace(/([A-Z])/g, ' $1').trim()}</div>
             {/* Downtown show information */}
-            {console.log(newShows, shows)}
             {(newShows.length ? newShows : shows)
               .filter(show => show.club === 'downtown')
               .map(show => (

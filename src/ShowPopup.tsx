@@ -1,7 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const ShowPopup: React.FC<{ position: any, show: any; onClose: () => void; onSave: (editedShow: any) => void }> = ({ position, show, onClose, onSave }) => {
   const [editedShow, setEditedShow] = useState<any>({ ...show });
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+        onClose(); // Close the popup if clicked outside
+      }
+    };
+
+    // Attach event listener when the component mounts
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -13,7 +31,7 @@ const ShowPopup: React.FC<{ position: any, show: any; onClose: () => void; onSav
   };
 
   return (
-    <div className="show-popup" style={{ position: 'fixed', top: position.y, left: position.x }}>
+    <div ref={popupRef} className="show-popup" style={{ position: 'fixed', top: position.y, left: position.x }}>
       <div>
         <span className="close" onClick={onClose}>&times;</span>
         <h2>Edit Show Details</h2>
