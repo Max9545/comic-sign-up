@@ -69,7 +69,7 @@ import { db } from './firebase';
             setComediansNow(comedianData); // Update comedians state with fetched data
     
             // Extract all notes
-            console.log(comedianData)
+            // consolnpm starte.log(comedianData)
             const notes = comedianData.map(comedian => {
               if (comedian.note) {
                 return `${comedian.comedianInfo.name} - ${comedian.note}`
@@ -333,7 +333,7 @@ return (
                   <br></br>
                   {`${show.headliner.split(" ")[show.headliner.split(" ").length - 1]}`}
                   <br></br>
-                  {`${show.club}`}
+                  {`down`}
                 </div>
               ))}
           </div>
