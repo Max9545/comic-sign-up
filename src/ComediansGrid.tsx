@@ -314,11 +314,44 @@ const handleShowClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, showIn
 }
 
 const handleSaveShow = async (editedShow: any) => {
+
+
+
+
+
+  try {
+    // Update the show details in the database
+    const showToEditRef = doc(db, 'publishedShows', showToEdit.id);
+    const showToEditDoc = await getDoc(showToEditRef);
+    const showToEditData = showToEditDoc.data();
+
+    if (showToEditData) {
+      const updatedShow = {
+        ...showToEditData,
+        bookedshow: editedShow // Replace the bookedShow with the one from editedShow
+      };
+
+      await updateDoc(showToEditRef, updatedShow);
+      
+      // Update state or perform other actions as needed
+      setShowToEdit(null); // Clear the show to be edited
+      // Optionally, you can update the local state with the edited show data
+    } else {
+      console.log("Show to edit not found in database.");
+    }
+  } catch (error) {
+    console.error('Error updating show:', error);
+  }
+
+
+
+
   try {
     const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1));
     const docSnapshot = await getDocs(docRef);
     const docData = docSnapshot.docs[0].data();
     let thisWeek = docData.thisWeek;
+    // await updateDoc(doc(db, 'publishedShows', showToEdit.id), editedShow);
 
     // Find the index of the editedShow in the thisWeek array
     const index = thisWeek.findIndex((item: any) => item.id === editedShow.id);
