@@ -483,7 +483,10 @@ return (
             {shows
               .filter(show => show.club === 'south')
               .map(show => (
-                <div className="cell" key={`${type}-${show.id}`}>
+                <div className="cell" 
+                key={`${type}-${show.id}`}
+                onClick={(event) => handleShowClick(event, show)}
+                >
                   {`${show.day.slice(0, 3)} ${show.time.slice(0, -2)}`}
                   <br></br>
                   {`${show.headliner.split(" ")[show.headliner.split(" ").length - 1]}`}
