@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface PopupProps {
   position: { x: number; y: number };
@@ -10,6 +10,24 @@ interface PopupProps {
 
 const Popup: React.FC<PopupProps> = ({ position, onClose, showPopup, setShowPopup }) => {
   const [otherPosition, setOtherPosition] = useState<string>('');
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+        setShowPopup(!showPopup)
+        // onClose(event); // Close the popup if clicked outside
+      }
+    };
+
+    // Attach event listener when the component mounts
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
 
   // Function to handle position selection
   const handlePositionSelection = (position: string) => {
@@ -37,7 +55,7 @@ const Popup: React.FC<PopupProps> = ({ position, onClose, showPopup, setShowPopu
   };  
 
   return (
-    <div className="popup-overlay" onClick={handleClose}>
+    <div ref={popupRef} className="popup-overlay" onClick={handleClose}>
       <div className="popup" style={{ position: 'fixed', top: position.y, left: position.x }}>
         <div className="close-icon" onClick={() => setShowPopup(!showPopup)}>
           <span>X</span>
