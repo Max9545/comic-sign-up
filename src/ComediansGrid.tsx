@@ -309,7 +309,14 @@ const handleOverrideClick = () => {
 const handleShowClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, showInfo: object) => {
   console.log(showInfo)
   if (window.confirm('Do you want to  edit this show?')) {
-    setShowToEdit(showInfo); // Set the show to be edited
+    const x = e.clientX;
+    const y = e.clientY;
+
+    // Set the popup position
+    setPopupPosition({ x, y });
+
+    setShowToEdit(showInfo); 
+    
   }
 }
 
@@ -541,7 +548,7 @@ return (
      {/* Render Popup for editing show */}
      {showToEdit && (
         <ShowPopup
-          position={{ x: 100, y: 100 }} // You can adjust the position as needed
+          position={popupPosition} // You can adjust the position as needed
           onClose={() => setShowToEdit(null)}
           onSave={handleSaveShow}
           show={showToEdit}

@@ -724,8 +724,8 @@ label {
 
 .show-popup {
   position: absolute;
-  top: 0; /* You can adjust this value as needed */
-  left: 0; 
+  /* top: 0; 
+  left: 0;  */
   background-color: black;
   padding: 0%;
   color: white;
