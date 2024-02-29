@@ -721,3 +721,18 @@ label {
   width: 50vw;
   margin-bottom: 2vh;
 }
+
+.show-popup {
+  position: absolute;
+  top: 0; /* You can adjust this value as needed */
+  left: 0; 
+  background-color: black;
+  padding: 0%;
+  color: white;
+}
+
+.show-popup-content {
+  /* display: block; */
+  display: flex;
+  justify-content: flex-start;
+}

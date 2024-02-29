@@ -1,7 +1,8 @@
-  import { collection, deleteDoc, doc, DocumentData, getDoc, getDocs, query, setDoc, updateDoc } from 'firebase/firestore';
+  import { collection, deleteDoc, doc, DocumentData, getDoc, getDocs, limit, orderBy, query, setDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { db } from './firebase';
   import Popup from './Popup'; // Importing the Popup component
+import ShowPopup from './ShowPopup';
 
   // Define the type for PopupProps
   type PopupProps = {
@@ -21,6 +22,8 @@ import { db } from './firebase';
 
     const [currentCellKey, setCurrentCellKey] = useState<string>('');
     const [trig, setTrig] = useState(true)
+    const [showToEdit, setShowToEdit] = useState<any>(null); // State to manage the show to be edited
+
 
 
     comedians.forEach((comedian) => {
@@ -303,6 +306,45 @@ const handleOverrideClick = () => {
   setOverride(prevState => !prevState); // Step 2: Toggle override state
 };
 
+const handleShowClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, showInfo: object) => {
+  console.log(showInfo)
+  if (window.confirm('Do you want to  edit this show?')) {
+    setShowToEdit(showInfo); // Set the show to be edited
+  }
+}
+
+const handleSaveShow = async (editedShow: any) => {
+  try {
+    const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1));
+    const docSnapshot = await getDocs(docRef);
+    const docData = docSnapshot.docs[0].data();
+    let thisWeek = docData.thisWeek;
+
+    // Find the index of the editedShow in the thisWeek array
+    const index = thisWeek.findIndex((item: any) => item.id === editedShow.id);
+
+    if (index !== -1) {
+      // Replace the existing show with the editedShow
+      thisWeek[index] = editedShow;
+
+      // Update the document in the database with the modified thisWeek array
+      await updateDoc(doc(db, `shows for week`, docSnapshot.docs[0].id), {
+        thisWeek: thisWeek
+      });
+
+      console.log("Show updated successfully.");
+    } else {
+      console.log("Edited show not found in thisWeek array.");
+    }
+
+    setShowToEdit(null); // Clear the show to be edited
+    // Optionally, you can update the local state with the edited show data
+  } catch (error) {
+    console.error('Error updating show:', error);
+  }
+};
+
+
 
 return (
   <>
@@ -328,7 +370,10 @@ return (
             {shows
               .filter(show => show.club === 'downtown')
               .map(show => (
-                <div className="cell" key={`${type}-${show.id}`}>
+                <div className="cell" 
+                key={`${type}-${show.id}`}
+                onClick={(event) => handleShowClick(event, show)}
+                >
                   {`${show.day.slice(0, 3)} ${show.time.slice(0, -2)}`}
                   <br></br>
                   {`${show.headliner.split(" ")[show.headliner.split(" ").length - 1]}`}
@@ -459,6 +504,16 @@ return (
         setShowPopup={setShowPopup}
       />
     )}
+
+     {/* Render Popup for editing show */}
+     {showToEdit && (
+        <ShowPopup
+          position={{ x: 100, y: 100 }} // You can adjust the position as needed
+          onClose={() => setShowToEdit(null)}
+          onSave={handleSaveShow}
+          show={showToEdit}
+        />
+      )}
 
     {/* <button className='delete-potential-comic' onClick={() => publishShow()}>Submit</button> */}
   </div>
