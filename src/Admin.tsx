@@ -1429,7 +1429,7 @@ You will receive confirmation emails to this email address each time you submit 
     {comedianMask.southWeekCount > 0 && <div className='shows-visible-to-comics'>{`Total South Week Signups: ${comedianMask.southWeekCount}`}</div>} */}
     <div className='shows-visible-to-comics'>
     
-    <h2 className='admin-build'>Comedian Information Fields</h2>
+    <h2>Comedian Information Fields</h2>
           <div className='create-new-comic'
         onKeyUp={(e) => {
           if (e.key === "Enter") {
@@ -1498,14 +1498,7 @@ You will receive confirmation emails to this email address each time you submit 
           <button value='Create Comic Profile' onClick={() => updateComedian()} className='create-comic-button'>
             Update Comic Profile
           </button>
-        </div>
-        <div className='create-new-comic'
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              deleteComic()        
-            }
-          }}
-        >
+        
 
         </div>
         <h3 className='change-type-header'>{`Comic Type: ${comedianMask.type.charAt(0).toUpperCase() + comedianMask.type.slice(1) || props.comedian.type.charAt(0).toUpperCase() + props.comedian.type.slice(1)}`}</h3>
