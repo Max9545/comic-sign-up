@@ -1607,7 +1607,7 @@ You will receive confirmation emails to this email address each time you submit 
        
         {/* <h2 className='admin-build' onClick={() => toggleComicBuildVisible()}>Create New Comic/Delete Comic</h2> */}
         {comicBuildVisible && <div>
-          <h2 className='admin-build'>Create New Comic/Delete Comic</h2>
+          <h2 className='downtown-available-header'>Create New Comic/Delete Comic</h2>
           <div className='create-new-comic'
         onKeyUp={(e) => {
           if (e.key === "Enter") {
