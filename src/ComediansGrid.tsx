@@ -308,16 +308,13 @@ const handleOverrideClick = () => {
 
 const handleShowClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, showInfo: object) => {
   console.log(showInfo)
-  if (window.confirm('Do you want to  edit this show?')) {
     const x = e.clientX;
     const y = e.clientY;
 
-    // Set the popup position
     setPopupPosition({ x, y });
 
     setShowToEdit(showInfo); 
     
-  }
 }
 
 const handleSaveShow = async (editedShow: any) => {
