@@ -1039,6 +1039,8 @@ You will receive confirmation emails to this email address each time you submit 
       setSouthLong(false);
       setComicProfiles(false);
       setPublishedVisible(false);
+      setBuildShowVisible(false);
+
     } else if (buttonName === 'buildShows') {
       toggleBuildShowVisible();
       setWeekVisibility(false);
@@ -1317,31 +1319,31 @@ You will receive confirmation emails to this email address each time you submit 
           className={selectedButtons.gridVisible ? 'highlighted' : ''}
           onClick={() => handleButtonClick('gridVisible')}
         >
-        Grid Availability Sheet
+        Grid Availability
         </button>
       <button 
           className={selectedButtons.downtownLong ? 'highlighted' : ''}
           onClick={() => handleButtonClick('downtownLong')}
         >
-          Book Downtown Long Form
+          Downtown Form
         </button>
         <button 
           className={selectedButtons.southLong ? 'highlighted' : ''}
           onClick={() => handleButtonClick('southLong')}
         >
-          Book South Long Form
+          South Form
         </button>
         <button 
           className={selectedButtons.emailComics ? 'highlighted' : ''}
           onClick={() => handleButtonClick('emailComics')}
         >
-          Email Booked Shows To Comics
+          Email Comics
         </button>
         <button 
           className={selectedButtons.availabiltyForComics ? 'highlighted' : ''}
           onClick={() => handleButtonClick('availabiltyForComics')}
         >
-          Comic View and Enter Availabilty For Comic
+          Enter Availabilty in Comic View
         </button>
         <button 
           className={selectedButtons.buildShows ? 'highlighted' : ''}
@@ -1353,7 +1355,7 @@ You will receive confirmation emails to this email address each time you submit 
           className={selectedButtons.createNewComic ? 'highlighted' : ''}
           onClick={() => handleButtonClick('createNewComic')}
         >
-          Create New Comic/Delete Comic
+          Create/Delete Comic
         </button>
         
         <button 
@@ -1372,7 +1374,7 @@ You will receive confirmation emails to this email address each time you submit 
           className={selectedButtons.publishedVisible ? 'highlighted' : ''}
           onClick={() => handleButtonClick('publishedVisible')}
         >
-          Booked Show History
+          Show History
         </button>
       </div>
         <div className='admin-form'>
