@@ -729,12 +729,30 @@ label {
   /* top: 0; 
   left: 0;  */
   background-color: black;
-  padding: 0%;
+  padding: 1%;
   color: white;
 }
 
 .show-popup-content {
   /* display: block; */
+  /* display: flex;
+  justify-content: flex-start; */
+  /* padding: 2%; */
+  /* align-content: flex-start; */
+  
+}
+
+.close {
+  font-size: 2em;
+}
+
+.change-show-form {
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  font-size: .5em;
+}
+
+.edit-show-save {
+  margin-top: 2vh;
 }

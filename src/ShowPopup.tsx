@@ -38,33 +38,33 @@ const ShowPopup: React.FC<{ position: any, show: any; onClose: () => void; onSav
 
       </div>
       <div className="popup-content show-popup-content">
-        <form>
+        <form className='change-show-form'>
           <label>
             Date:
-            <input type="text" name="date" value={editedShow.date} onChange={handleInputChange} />
           </label>
+            <input type="text" name="date" value={editedShow.date} onChange={handleInputChange} />
           <br></br>
           <label>
             Day:
-            <input type="text" name="day" value={editedShow.day} onChange={handleInputChange} />
           </label>
+            <input type="text" name="day" value={editedShow.day} onChange={handleInputChange} />
           <br></br>
           <label>
             Time:
-            <input type="text" name="time" value={editedShow.time} onChange={handleInputChange} />
           </label>
+            <input type="text" name="time" value={editedShow.time} onChange={handleInputChange} />
           <br></br>
           <label>
             Comic:
-            <input type="text" name="headliner" value={editedShow.headliner} onChange={handleInputChange} />
           </label>
+            <input type="text" name="headliner" value={editedShow.headliner} onChange={handleInputChange} />
           <br></br>
           <label>
             Club:
-            <input type="text" name="club" value={editedShow.club} onChange={handleInputChange} />
           </label>
+            <input type="text" name="club" value={editedShow.club} onChange={handleInputChange} />
           {/* Add more input fields for other show details as needed */}
-          <button type="button" onClick={handleSave}>Save</button>
+          <button className='edit-show-save' type="button" onClick={handleSave}>Save</button>
         </form>
       </div>
     </div>
