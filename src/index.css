@@ -1,12 +1,5 @@
-/* html {
-  border:#282c34 dotted;
-} */
 
 body {
-  /* padding: 0px 5px 5px 5px; */
-  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', */
-    /* 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
   margin: 0%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -21,7 +14,6 @@ code {
 
 .show-button {
   font-weight: 700;
-  /* color: white; */
   width: 40vw;
   min-height: 9vh;
   font-size: 1.1rem;
@@ -192,7 +184,6 @@ label {
   padding: .8%;
   font-size: 1.3rem;
   color: black;
-  /* background-color: #17a2b8; */
   background-color: rgb(190, 185, 185)
 }
 
@@ -389,25 +380,18 @@ label {
   .available-comic {
     column-count: 1;
   }
-  /* .show-div {
-    display: flex;
-    flex-direction: column;
-  } */
 }
 
 .show-div {
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
-  /* align-content: center; */
 }
 
 .edit-published {
   min-width: 6vw;
   font-weight: 700;
-  /* color: white; */
   height: 5vh;
-  /* font-size: 1.1rem; */
   margin: 0;
   align-self: center;
 }
@@ -571,14 +555,9 @@ label {
   display: flex;
   position: relative;
   margin-left: 15%; 
-  padding-left: 20px; /* Optional: Add padding to the left of the admin container */
+  padding-left: 20px;
 }
 
-
-
-/* .admin-container { */
-  /* position: relative; Ensure relative positioning for children */
-/* } */
 
 .sidebar {
   position: fixed;
@@ -596,7 +575,6 @@ label {
   width: 100%;
   margin-bottom: 10px;
   padding: 10px;
-  /* font-size: 16px; */
   border: none;
   border-radius: 5px;
   background-color: #ddd;
@@ -610,8 +588,7 @@ label {
 }
 
 .sidebar button.highlighted {
-  background-color: #dc3545; /* Adjust the color as needed */
-  /* Add any other styles to indicate the selected state */
+  background-color: #dc3545
 }
 
 .close-icon {
@@ -726,20 +703,10 @@ label {
 
 .show-popup {
   position: absolute;
-  /* top: 0; 
-  left: 0;  */
+
   background-color: black;
   padding: 1%;
   color: white;
-}
-
-.show-popup-content {
-  /* display: block; */
-  /* display: flex;
-  justify-content: flex-start; */
-  /* padding: 2%; */
-  /* align-content: flex-start; */
-  
 }
 
 .close {
