@@ -144,7 +144,6 @@ import ShowPopup from './ShowPopup';
       
             updatedCells[columnCellKey] = updatedCell;
             setSelectedCells(updatedCells);
-            console.log(updatedCells[currentCellKey])
             setShowPopup(false);
           }
         } else {
@@ -162,7 +161,6 @@ import ShowPopup from './ShowPopup';
               ...selectedCells[currentCellKey],
               selectedPosition: position
             };
-      console.log(columnCellKey, comedian.comedianInfo)
             updatedCells[columnCellKey] = updatedCell;
             try {
               const existingComicArray = comicHistory.length ? comicHistory.find(item => item.bookedshow.id === show.id) : undefined;
@@ -227,10 +225,7 @@ import ShowPopup from './ShowPopup';
                   updatedAvailability.push(show.id);
                 }
 
-              
-              // .filter((id) => id !== show.id);
-              
-              // Create a copy of comedianInfo with updated availability
+    
               const updatedComedianInfo = {
                   ...comedian.comedianInfo,
                   [clubKey]: {
@@ -248,10 +243,6 @@ import ShowPopup from './ShowPopup';
           }
         }    
       }
-      // }
-console.log(trig)
-      // setTrig(!trig)
-      
     };
 
     const handleRemoveSubmission = async () => {
@@ -307,7 +298,6 @@ const handleOverrideClick = () => {
 };
 
 const handleShowClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, showInfo: object) => {
-  console.log(showInfo)
     const x = e.clientX;
     const y = e.clientY;
 
@@ -318,10 +308,6 @@ const handleShowClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, showIn
 }
 
 const handleSaveShow = async (editedShow: any) => {
-
-
-
-
 
   try {
     // Update the show details in the database
@@ -383,11 +369,9 @@ const handleSaveShow = async (editedShow: any) => {
   const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1));
   const docSnapshot = await getDocs(docRef);
   const docData = docSnapshot.docs[0].data();
-  console.log(docData)
   const thisWeek = docData.thisWeek;
   
   setNewShows(thisWeek)
-
 
 };
 

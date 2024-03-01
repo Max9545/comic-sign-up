@@ -98,22 +98,6 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
   useEffect(() => {
     setComicEmailList()
   }, [])
-
-  // useEffect(() => {
-  //   console.log('pro emails state', proEmails);
-  // }, [proEmails]);
-  
-  // useEffect(() => {
-  //   console.log('outOfTownEmails', outOfTownEmails);
-  // }, [outOfTownEmails]);
-  
-  // useEffect(() => {
-  //   console.log('almostFamousEmails', almostFamousEmails);
-  // }, [almostFamousEmails]);
-  
-  // useEffect(() => {
-  //   console.log('inactiveEmails', inactiveEmails);
-  // }, [inactiveEmails]);
   
 
   useEffect(() => {
@@ -521,51 +505,6 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
     }
   }
 
-  const sendEmail = async (comicsEmail: any, showsForEmail: any) => {
-
-    // const emailData = {
-    //   to: `${comicsEmail}`,
-    //   from: 'bregmanmax91@gmail.com',
-    //   subject: 'Comedy Works Upcoming Lineup',
-    //   text: `${showsForEmail}`,
-    // }
-  
-    // fetch('http://localhost:3001/send-email', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(emailData),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data.message)
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error sending email', error)
-    //   })
-    try {
-      const response = await fetch('https://comicsignuptestmail.comedyworks.com/sendMail', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
-        },
-        body: JSON.stringify({email: comicsEmail, message: `${showsForEmail}`}),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Email sent successfully:', data);
-      } else {
-        console.error('Error sending email:', response);
-      }
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
-  }
-
-
   const setComicEmailList = async () => {
 
     setEmailList([])
@@ -573,11 +512,6 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
     const docRef = query(collection(db, `users`))
 
     const doc = await (getDocs(docRef))
-
-    // const emails = doc.docs.map(user => user.data().email)
-
-    // setEmailList(emails)
-    // setEmailListWithOutTowners([])
 
     const pros = doc.docs.filter(comic =>  comic.data().type == 'pro').map((comic: any ) => comic.data().email)
 
@@ -596,46 +530,6 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
     const inactive = doc.docs.filter(comic =>  comic.data().type == 'Inactive').map((comic: any ) => comic.data().email)
 
     setInactiveEmails(inactive)
-
-    // const withoutOutTowners = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown')
-
-    // const withoutOutTownersOrInactive = doc.docs.filter(comic =>  comic.data().type != 'OutOfTown' && comic.data().type != 'Inactive')
-    // const emailsWithoutOutTowners = withoutOutTowners.map((comic: any ) => comic.data().email)
-
-    // setEmailListWithOutTowners(emailsWithoutOutTowners)
-
-    // @ts-ignore
-    // setEmailListWithNoInactiveOrOutTown(withoutOutTownersOrInactive)
-    // // const docRefOut = query(collection(db, `users`), where('type', '!=', 'outOfTown'))
-    // const withoutOutInactive = doc.docs.filter(comic =>  comic.data().type !='Inactive').map((comic: any ) => comic.data().email)
-    // // @ts-ignore
-    // setEmailListWithNoInactive(withoutOutInactive)
-    // // const docOut = await (getDocs(docRefOut))
-
-
-    // const withoutOutAlmostFamous = doc.docs.filter(comic =>  comic.data().type !='AlmostFamous').map((comic: any ) => comic.data().email)
-    // // @ts-ignore
-    // setEmailWithNoAlmostFamous(withoutOutAlmostFamous)
-    // // const emailsOut = docOut.docs.map(user => user.data().email)
-
-    // setEmailListWithOutTowners(emailsOut)
-    // console.log(emailListWithOutTowners, emailList)
-    // const showList = doc.docs.map(show => show.data().bookedshow)
-    // showList.map(async show => {
-    //   const nameList = Object.values(show)
-    //   nameList.map(async name => {
-    //     if (typeof(name) === 'string') {
-    //      const q = query(collection(db, 'users'), where("name", '==', name))
-    //      const doc = await getDocs(q)
-    //      if(doc.empty === false && !emailList.includes(doc.docs[0].data().email)) {
-    //        const data = doc.docs[0].data()
-    //        emailList.push(data.email)
-    //        setEmailList(emailList)
-    //      }
-    //     }
-    //    })
-    //   })
-
    
   }
 
@@ -646,7 +540,6 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
     if (outOfTownersEmailBool) emailList.push(...outOfTownEmails);
     if (inactiveBool) emailList.push(...inactiveEmails);
 
-    console.log("Email list:", emailList);
 
     const fetchData = async () => {
         const docRef = query(collection(db, 'publishedShows'));
@@ -680,7 +573,6 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
 
             // Update showsForEmailRawString state
             setShowsForEmailRawString(showsForEmailRaw);
-console.log(showsForEmailRaw)
             // Once showsForEmailRawString is set, send emails
             emailList.forEach(async email => {
                 try {
@@ -735,12 +627,8 @@ console.log(showsForEmailRaw)
 
 const docSnapshot = await getDoc(docRef);
 
-// if (docSnapshot.exists()) {
-  // console.log(docSnapshot.id, ' => ', docSnapshot.data());
   const comicForAdmin = docSnapshot.data()
-// } else {
-//   console.log('No such document!');
-// }
+
 
         if (comicForAdmin) {
             const comic = matchingDocs[0].data();
@@ -784,7 +672,6 @@ const docSnapshot = await getDoc(docRef);
   }
 
   const changeComedianType = async () => {  
-    console.log(comedianMask)
    
     comedianMask.type = type
     const db = getFirestore()
@@ -948,22 +835,7 @@ You will receive confirmation emails to this email address each time you submit 
     }
   }
 
-  // const gatherStats = async () => {
-
-  //   console.log('down',comedianMask.downTownShowCount, 'south', comedianMask.southShowCount)
-
-    // const comediansRef = collection(db, `comedians/comicStorage/${comedianMask.name}`)
-    // // const shows = query(comediansRef, where("name", "==", `${comedianMask.name}`))
-    // const docShows = await getDocs(comediansRef)
-    // const downTownShows: any[] = []
-    // const data = docShows.docs.map(show => {
-
-    //   downTownShows.push(show)
-
-    // console.log(Object.values(show.data().comedianInfo.showsAvailabledowntown), ' yes')
-    // })
-    // console.log(downTownShows)
-  // }
+ 
   const toggleWeekVisibility = () => {
     setWeekVisibility(!weekVisibility);
   };
@@ -1157,30 +1029,20 @@ You will receive confirmation emails to this email address each time you submit 
     profilesToDisplay = filteredProfiles.slice().sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  console.log("Published Shows in displayProfiles:", publishedShows);
 
   return profilesToDisplay.map(profile => {
     // Count positions for the current comic
     const positionsCount: { [key: string]: number } = {};
     publishedShows.forEach(show => {
-      console.log("Current Show:", show);
-      console.log("Profile Name:", profile.name);
-      console.log("Show Comic:", show);
-      console.log(show.comicArray, profile.name);
       
       if (show.comicArray && show.comicArray.some((comic: { comic: any }) => comic.comic === profile.name)) {
         show.comicArray.forEach((comic: { comic: any; type: string | number }) => {
           if (comic.comic === profile.name) {
-            console.log(comic, profile, show)
-            positionsCount[comic.type] = (positionsCount[comic.type] || 0) + 1;
+            positionsCount[comic.type] = (positionsCount[comic.type] || 0) + 1
           }
-        });
+        })
       }
-    });
-    
-    console.log(positionsCount)
-    
-    console.log("Positions Count for", profile.name, ":", positionsCount);
+    })
 
     return (
       <div className='profile' key={profile.uid}>

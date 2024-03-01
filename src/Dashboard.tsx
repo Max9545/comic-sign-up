@@ -76,7 +76,6 @@ function Dashboard() {
     const fetchComedians = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "comediansForAdmin")); // Assuming "comedians" is your collection name
-        // console.log(querySnapshot[0].data())
         const comediansData: any[] = [];
         querySnapshot.forEach((doc) => {
           // Assuming each document contains comedian data
@@ -90,8 +89,8 @@ function Dashboard() {
     };
 
     fetchComedians();
-  }, []); // Run once on component mount
-
+  }, [])
+  
   useEffect(() => {
     viewAllComicsAvailableDowntown()
     viewAllComicsAvailableSouth()
