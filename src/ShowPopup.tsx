@@ -31,7 +31,16 @@
     };
 
     return (
-      <div ref={popupRef} className="show-popup" style={{ position: 'fixed', top: position.y, left: position.x }}>
+      <div 
+      ref={popupRef} 
+      className="show-popup" 
+      style={{ position: 'fixed', top: position.y, left: position.x }}
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          handleSave()
+        }
+      } }
+      >
         <div>
           <span className="close" onClick={onClose}>&times;</span>
           <h2>Edit Show Details</h2>
