@@ -321,7 +321,6 @@ const handleSaveShow = async (editedShow: any) => {
         ...showToEditData,
         bookedshow: editedShow // Replace the bookedShow with the one from editedShow
       };
-
       await updateDoc(showToEditRef, updatedShow);
       
       // Update state or perform other actions as needed
@@ -350,12 +349,16 @@ const handleSaveShow = async (editedShow: any) => {
     if (index !== -1) {
       // Replace the existing show with the editedShow
       thisWeek[index] = editedShow;
-
+console.log(thisWeek[index], editedShow, showToEdit)
       // Update the document in the database with the modified thisWeek array
       await updateDoc(doc(db, `shows for week`, docSnapshot.docs[0].id), {
         thisWeek: thisWeek
       });
 
+      if (editedShow.club !== showToEdit.club) {
+        console.log('club change')
+        window.location.reload();
+      }
       console.log("Show updated successfully.");
     } else {
       console.log("Edited show not found in thisWeek array.");
