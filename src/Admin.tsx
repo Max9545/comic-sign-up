@@ -799,7 +799,9 @@ const docSnapshot = await getDoc(docRef);
           // 'Access-Control-Allow-Origin': 'http://localhost:3000', 
         },
         body: JSON.stringify({email: createNewComicEmail, sender: 'schedule', message: `Hello ${createNewComicName}, this is an email to inviting you to use https://comicsignuptest.comedyworks.com in order to give the club your weekly availability. Your login username is this email you provided the club and your initial password is 
+
         ${createNewComicPassword} 
+        
 and you will need to change your password after your first login to something that is private and known only to you.
 
 The rules for submitting your availability remain the same. Your last availability submitted by Tuesday at 5PM is what will be used to book the shows. 

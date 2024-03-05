@@ -193,13 +193,14 @@ import ShowPopup from './ShowPopup';
                   comicHistory.push({ bookedshow: show, comicArray: newComicArray });
                 }
               }
-      
-              await setDoc(doc(db, 'publishedShows', show.id), {
-                bookedshow: show,
-                fireOrder: Date.now(),
-                comicArray: existingComicArray ? existingComicArray.comicArray : newComicArray
-              });
-      
+              if (position !== 'X' && 'remove' && '') {
+                console.log(position)
+                await setDoc(doc(db, 'publishedShows', show.id), {
+                  bookedshow: show,
+                  fireOrder: Date.now(),
+                  comicArray: existingComicArray ? existingComicArray.comicArray : newComicArray
+                });
+              }
               setSelectedCells(updatedCells);
               setShowPopup(false);
             } catch (error) {
