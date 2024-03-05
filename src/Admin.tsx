@@ -1538,7 +1538,7 @@ You will receive confirmation emails to this email address each time you submit 
             Create Comic Profile
           </button>
         </div>
-        <div className='create-new-comic'
+        <div className='create-new-comic delete-comic'
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               deleteComic()        
@@ -1547,7 +1547,11 @@ You will receive confirmation emails to this email address each time you submit 
         >
           <label> Comic To Delete (By Name or Email)
             <br></br>
-            <input type='text' onChange={e => setComicToDelete(e.target.value)}/>
+            <input 
+            type='text' 
+            onChange={e => setComicToDelete(e.target.value)}
+            placeholder='Enter Here'
+            />
           </label>
           <button onClick={() => deleteComic()} className='create-comic-button'>Delete Comic Profile</button>
         </div>

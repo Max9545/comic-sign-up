@@ -278,12 +278,6 @@ label {
   border: 1px solid #17a2b8;
 }
 
-.delete-comic {
-  height: 60%;
-  align-self: center;
-  background-color: #dc3545;
-  font-size: 1.2rem;
-}
 
 .shows-visible-to-comics {
   font-size: 1.8rem;
@@ -692,7 +686,8 @@ label {
 }
 
 .type-cell {
-  min-height: 7.5vh;
+  min-height: 9vh;
+  font-weight: 800;
 }
 
 .profile-in-edit {
@@ -722,4 +717,13 @@ label {
 
 .edit-show-save {
   margin-top: 2vh;
+}
+
+.delete-comic {
+  border-color: #17a2b8;
+  margin-top: 3vh;
+}
+
+.new-comic-note {
+  margin-bottom: 2vh;
 }
