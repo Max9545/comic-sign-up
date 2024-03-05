@@ -1,7 +1,8 @@
-  import { collection, deleteDoc, doc, DocumentData, getDoc, getDocs, query, setDoc, updateDoc } from 'firebase/firestore';
+  import { collection, deleteDoc, doc, DocumentData, getDoc, getDocs, limit, orderBy, query, setDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { db } from './firebase';
   import Popup from './Popup'; // Importing the Popup component
+import ShowPopup from './ShowPopup';
 
   // Define the type for PopupProps
   type PopupProps = {
@@ -21,6 +22,8 @@ import { db } from './firebase';
 
     const [currentCellKey, setCurrentCellKey] = useState<string>('');
     const [trig, setTrig] = useState(true)
+    const [showToEdit, setShowToEdit] = useState<any>(null); // State to manage the show to be edited
+    const [newShows, setNewShows] = useState([])
 
 
     comedians.forEach((comedian) => {
@@ -69,7 +72,7 @@ import { db } from './firebase';
             setComediansNow(comedianData); // Update comedians state with fetched data
     
             // Extract all notes
-            console.log(comedianData)
+            // consolnpm starte.log(comedianData)
             const notes = comedianData.map(comedian => {
               if (comedian.note) {
                 return `${comedian.comedianInfo.name} - ${comedian.note}`
@@ -141,7 +144,6 @@ import { db } from './firebase';
       
             updatedCells[columnCellKey] = updatedCell;
             setSelectedCells(updatedCells);
-            console.log(updatedCells[currentCellKey])
             setShowPopup(false);
           }
         } else {
@@ -159,7 +161,6 @@ import { db } from './firebase';
               ...selectedCells[currentCellKey],
               selectedPosition: position
             };
-      console.log(columnCellKey, comedian.comedianInfo)
             updatedCells[columnCellKey] = updatedCell;
             try {
               const existingComicArray = comicHistory.length ? comicHistory.find(item => item.bookedshow.id === show.id) : undefined;
@@ -192,13 +193,14 @@ import { db } from './firebase';
                   comicHistory.push({ bookedshow: show, comicArray: newComicArray });
                 }
               }
-      
-              await setDoc(doc(db, 'publishedShows', show.id), {
-                bookedshow: show,
-                fireOrder: Date.now(),
-                comicArray: existingComicArray ? existingComicArray.comicArray : newComicArray
-              });
-      
+              if (position !== 'X' && 'remove' && '') {
+                console.log(position)
+                await setDoc(doc(db, 'publishedShows', show.id), {
+                  bookedshow: show,
+                  fireOrder: Date.now(),
+                  comicArray: existingComicArray ? existingComicArray.comicArray : newComicArray
+                });
+              }
               setSelectedCells(updatedCells);
               setShowPopup(false);
             } catch (error) {
@@ -224,10 +226,7 @@ import { db } from './firebase';
                   updatedAvailability.push(show.id);
                 }
 
-              
-              // .filter((id) => id !== show.id);
-              
-              // Create a copy of comedianInfo with updated availability
+    
               const updatedComedianInfo = {
                   ...comedian.comedianInfo,
                   [clubKey]: {
@@ -245,10 +244,6 @@ import { db } from './firebase';
           }
         }    
       }
-      // }
-console.log(trig)
-      // setTrig(!trig)
-      
     };
 
     const handleRemoveSubmission = async () => {
@@ -303,6 +298,88 @@ const handleOverrideClick = () => {
   setOverride(prevState => !prevState); // Step 2: Toggle override state
 };
 
+const handleShowClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, showInfo: object) => {
+    const x = e.clientX;
+    const y = e.clientY;
+
+    setPopupPosition({ x, y });
+
+    setShowToEdit(showInfo); 
+    
+}
+
+const handleSaveShow = async (editedShow: any) => {
+
+  try {
+    // Update the show details in the database
+    const showToEditRef = doc(db, 'publishedShows', showToEdit.id);
+    const showToEditDoc = await getDoc(showToEditRef);
+    const showToEditData = showToEditDoc.data();
+
+    if (showToEditData) {
+      const updatedShow = {
+        ...showToEditData,
+        bookedshow: editedShow // Replace the bookedShow with the one from editedShow
+      };
+      await updateDoc(showToEditRef, updatedShow);
+      
+      // Update state or perform other actions as needed
+      setShowToEdit(null); // Clear the show to be edited
+      // Optionally, you can update the local state with the edited show data
+    } else {
+      console.log("Show to edit not found in database.");
+    }
+  } catch (error) {
+    console.error('Error updating show:', error);
+  }
+
+
+
+
+  try {
+    const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1));
+    const docSnapshot = await getDocs(docRef);
+    const docData = docSnapshot.docs[0].data();
+    let thisWeek = docData.thisWeek;
+    // await updateDoc(doc(db, 'publishedShows', showToEdit.id), editedShow);
+
+    // Find the index of the editedShow in the thisWeek array
+    const index = thisWeek.findIndex((item: any) => item.id === editedShow.id);
+
+    if (index !== -1) {
+      // Replace the existing show with the editedShow
+      thisWeek[index] = editedShow;
+console.log(thisWeek[index], editedShow, showToEdit)
+      // Update the document in the database with the modified thisWeek array
+      await updateDoc(doc(db, `shows for week`, docSnapshot.docs[0].id), {
+        thisWeek: thisWeek
+      });
+
+      if (editedShow.club !== showToEdit.club) {
+        console.log('club change')
+        window.location.reload();
+      }
+      console.log("Show updated successfully.");
+    } else {
+      console.log("Edited show not found in thisWeek array.");
+    }
+
+    setShowToEdit(null); // Clear the show to be edited
+    // Optionally, you can update the local state with the edited show data
+  } catch (error) {
+    console.error('Error updating show:', error);
+  }
+
+  const docRef = query(collection(db, `shows for week`), orderBy('fireOrder', 'desc'), limit(1));
+  const docSnapshot = await getDocs(docRef);
+  const docData = docSnapshot.docs[0].data();
+  const thisWeek = docData.thisWeek;
+  
+  setNewShows(thisWeek)
+
+};
+
+
 
 return (
   <>
@@ -325,15 +402,18 @@ return (
           <div className="row type-header">
             <div className="cell type-cell">{type.replace(/([A-Z])/g, ' $1').trim()}</div>
             {/* Downtown show information */}
-            {shows
+            {(newShows.length ? newShows : shows)
               .filter(show => show.club === 'downtown')
               .map(show => (
-                <div className="cell" key={`${type}-${show.id}`}>
+                <div className="cell" 
+                key={`${type}-${show.id}`}
+                onClick={(event) => handleShowClick(event, show)}
+                >
                   {`${show.day.slice(0, 3)} ${show.time.slice(0, -2)}`}
                   <br></br>
                   {`${show.headliner.split(" ")[show.headliner.split(" ").length - 1]}`}
                   <br></br>
-                  {`${show.club}`}
+                  {`down`}
                 </div>
               ))}
           </div>
@@ -395,10 +475,13 @@ return (
           <div className="row type-header">
             <div className="cell type-cell">{type.replace(/([A-Z])/g, ' $1').trim()}</div>
             {/* South Club show information */}
-            {shows
+            {(newShows.length ? newShows : shows)
               .filter(show => show.club === 'south')
               .map(show => (
-                <div className="cell" key={`${type}-${show.id}`}>
+                <div className="cell" 
+                key={`${type}-${show.id}`}
+                onClick={(event) => handleShowClick(event, show)}
+                >
                   {`${show.day.slice(0, 3)} ${show.time.slice(0, -2)}`}
                   <br></br>
                   {`${show.headliner.split(" ")[show.headliner.split(" ").length - 1]}`}
@@ -459,6 +542,16 @@ return (
         setShowPopup={setShowPopup}
       />
     )}
+
+     {/* Render Popup for editing show */}
+     {showToEdit && (
+        <ShowPopup
+          position={popupPosition} // You can adjust the position as needed
+          onClose={() => setShowToEdit(null)}
+          onSave={handleSaveShow}
+          show={showToEdit}
+        />
+      )}
 
     {/* <button className='delete-potential-comic' onClick={() => publishShow()}>Submit</button> */}
   </div>

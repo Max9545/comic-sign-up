@@ -1,12 +1,5 @@
-/* html {
-  border:#282c34 dotted;
-} */
 
 body {
-  /* padding: 0px 5px 5px 5px; */
-  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', */
-    /* 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
   margin: 0%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -21,7 +14,6 @@ code {
 
 .show-button {
   font-weight: 700;
-  /* color: white; */
   width: 40vw;
   min-height: 9vh;
   font-size: 1.1rem;
@@ -93,7 +85,7 @@ code {
   width: 100%;
   background-color: #282c34;
   font-size: 2rem;
-  color: #dc3545
+  color: #dc3545;
 }
 
 label {
@@ -192,7 +184,6 @@ label {
   padding: .8%;
   font-size: 1.3rem;
   color: black;
-  /* background-color: #17a2b8; */
   background-color: rgb(190, 185, 185)
 }
 
@@ -287,12 +278,6 @@ label {
   border: 1px solid #17a2b8;
 }
 
-.delete-comic {
-  height: 60%;
-  align-self: center;
-  background-color: #dc3545;
-  font-size: 1.2rem;
-}
 
 .shows-visible-to-comics {
   font-size: 1.8rem;
@@ -389,25 +374,18 @@ label {
   .available-comic {
     column-count: 1;
   }
-  /* .show-div {
-    display: flex;
-    flex-direction: column;
-  } */
 }
 
 .show-div {
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
-  /* align-content: center; */
 }
 
 .edit-published {
   min-width: 6vw;
   font-weight: 700;
-  /* color: white; */
   height: 5vh;
-  /* font-size: 1.1rem; */
   margin: 0;
   align-self: center;
 }
@@ -463,6 +441,8 @@ label {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 1vh;
+
 }
 
 .create-comic-button {
@@ -569,14 +549,9 @@ label {
   display: flex;
   position: relative;
   margin-left: 15%; 
-  padding-left: 20px; /* Optional: Add padding to the left of the admin container */
+  padding-left: 20px;
 }
 
-
-
-/* .admin-container { */
-  /* position: relative; Ensure relative positioning for children */
-/* } */
 
 .sidebar {
   position: fixed;
@@ -594,7 +569,6 @@ label {
   width: 100%;
   margin-bottom: 10px;
   padding: 10px;
-  /* font-size: 16px; */
   border: none;
   border-radius: 5px;
   background-color: #ddd;
@@ -608,8 +582,7 @@ label {
 }
 
 .sidebar button.highlighted {
-  background-color: #dc3545; /* Adjust the color as needed */
-  /* Add any other styles to indicate the selected state */
+  background-color: #dc3545
 }
 
 .close-icon {
@@ -713,11 +686,44 @@ label {
 }
 
 .type-cell {
-  min-height: 6vh;
+  min-height: 9vh;
+  font-weight: 800;
 }
 
 .profile-in-edit {
   align-self: center;
   width: 50vw;
+  margin-bottom: 2vh;
+}
+
+.show-popup {
+  position: absolute;
+
+  background-color: black;
+  padding: 1%;
+  color: white;
+}
+
+.close {
+  font-size: 2em;
+}
+
+.change-show-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: .5em;
+}
+
+.edit-show-save {
+  margin-top: 2vh;
+}
+
+.delete-comic {
+  border-color: #17a2b8;
+  margin-top: 3vh;
+}
+
+.new-comic-note {
   margin-bottom: 2vh;
 }
