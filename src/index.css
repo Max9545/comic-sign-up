@@ -727,3 +727,15 @@ label {
 .new-comic-note {
   margin-bottom: 2vh;
 }
+
+.show-to-select {
+  background-color: black;
+  color: white;
+  margin: 5%;
+}
+
+.show-to-select-highlighted {
+  background-color: red;
+  color: black;
+  margin: 5%;
+}
