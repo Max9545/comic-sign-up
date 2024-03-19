@@ -1171,7 +1171,9 @@ You will receive confirmation emails to this email address each time you submit 
     });
 
 
-
+    const submitDBShows = () => {
+      console.log(highlightedShows)
+    }
 
     const displayBookedShows = (type: string) => {
       let showsToDisplay = type === 'all' ? publishedShows : filteredPublishedShows;
@@ -1217,17 +1219,20 @@ You will receive confirmation emails to this email address each time you submit 
     }
     
     
-    const [highlightedShows, setHighlightedShows] = useState([]);
+    const [highlightedShows, setHighlightedShows] = useState<number[]>([]);;
 
     // Function to toggle highlight for a specific show
     const toggleHighlight = (id: any) => {
       if (highlightedShows.includes(id)) {
         // If show is already highlighted, remove it from the list
         setHighlightedShows(highlightedShows.filter(showId => showId !== id));
+        console.log(highlightedShows)
       } else {
         // If show is not highlighted, add it to the list
         setHighlightedShows([...highlightedShows, id]);
+        console.log(highlightedShows)
       }
+      
     };
       
 
@@ -1533,7 +1538,7 @@ You will receive confirmation emails to this email address each time you submit 
         {/* <h2 className='admin-build' onClick={() => toggleComicBuildVisible()}>Create New Comic/Delete Comic</h2> */}
         {selectShows && (
   <>
-    <h2>Select Shows</h2>
+    <button className='set-DB-shows' onClick={() => submitDBShows()}>Select Shows</button>
     {DBShows?.length > 0 && DBShows.map((show: any) => {
       return <div key={show.id}    
       className={`show-to-select${highlightedShows.includes(show.id) ? '-highlighted' : ''}`}
