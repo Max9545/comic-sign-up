@@ -1172,7 +1172,15 @@ You will receive confirmation emails to this email address each time you submit 
 
 
     const submitDBShows = () => {
-      console.log(highlightedShows)
+      if (DBShows) {
+        // Filter DBShows to capture only the highlighted shows
+        const highlightedDBShows = DBShows.filter((show: { id: number }) => highlightedShows.includes(show.id));
+    
+        // Output the highlighted shows
+        console.log(highlightedDBShows);
+      } else {
+        console.log('DBShows is null or undefined');
+      }
     }
 
     const displayBookedShows = (type: string) => {
@@ -1222,7 +1230,7 @@ You will receive confirmation emails to this email address each time you submit 
     const [highlightedShows, setHighlightedShows] = useState<number[]>([]);;
 
     // Function to toggle highlight for a specific show
-    const toggleHighlight = (id: any) => {
+    const toggleHighlight = (id: any, show: any) => {
       if (highlightedShows.includes(id)) {
         // If show is already highlighted, remove it from the list
         setHighlightedShows(highlightedShows.filter(showId => showId !== id));
@@ -1542,7 +1550,7 @@ You will receive confirmation emails to this email address each time you submit 
     {DBShows?.length > 0 && DBShows.map((show: any) => {
       return <div key={show.id}    
       className={`show-to-select${highlightedShows.includes(show.id) ? '-highlighted' : ''}`}
-      onClick={() => toggleHighlight(show.id)}>
+      onClick={() => toggleHighlight(show.id, show)}>
       <p>{show.first_name} {show.last_name}</p>
       </div>
     })}
