@@ -296,6 +296,13 @@ import ShowPopup from './ShowPopup';
     
 const handleOverrideClick = () => {
   setOverride(prevState => !prevState); // Step 2: Toggle override state
+  fetch('http://localhost:3001/comedians')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        // Now you can use the data in your React app
+    })
+    .catch(error => console.error('Error fetching comedians:', error));
 };
 
 const handleShowClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, showInfo: object) => {

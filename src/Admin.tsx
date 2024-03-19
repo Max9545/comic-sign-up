@@ -66,6 +66,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [comicProfiles, setComicProfiles] = useState(false)
   const [downtownLong, setDowntownLong] = useState(false)
   const [southLong, setSouthLong] = useState(false)
+  const [selectShows, setSelectShows] = useState(false)
   const [almostFamous, setAlmostFamous] = useState(true)
   const [profiles, setProfiles] = useState<DocumentData[]>([])
   const [searchQuery, setSearchQuery] = useState('');
@@ -73,8 +74,8 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [publishedShows, setPublishedShows] = useState<DocumentData[]>([])
   const [publishedVisible, setPublishedVisible] = useState(false)
   const [prosEmailBool, setProsEmailBool] = useState<boolean>(false);
-const [almostFamousEmailBool, setAlmostFamousEmailBool] = useState<boolean>(false);
-const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(false);
+  const [almostFamousEmailBool, setAlmostFamousEmailBool] = useState<boolean>(false);
+  const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(false);
 
   
   const [gridVisible, setGridVisible] = useState(true)
@@ -88,7 +89,8 @@ const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(fals
     southLong: false,
     gridVisible: true,
     comicProfiles: false,
-    publishedVisible: false
+    publishedVisible: false, 
+    selectShows: false
   });
 
   
@@ -876,6 +878,10 @@ You will receive confirmation emails to this email address each time you submit 
   const togglePublishedVisible = () => {
     setPublishedVisible(!publishedVisible);
   };
+  
+  const toggleSelectShowsVisible = () => {
+    setSelectShows(!selectShows);
+  };
 
   const handleButtonClick = (buttonName: string) => {
     // Set the visibility state of each component based on the clicked button
@@ -896,6 +902,7 @@ You will receive confirmation emails to this email address each time you submit 
       toggleWeekVisibility();
       setBuildShowVisible(false);
       setComicBuildVisible(false);
+      setSelectShows(false)
       setEnterAvailabilityForComic(false);
       setEmailComics(false);
       setDowntownLong(false);
@@ -905,6 +912,7 @@ You will receive confirmation emails to this email address each time you submit 
       setGridVisible(false)
     } else if (buttonName === 'gridVisible') {
       toggleGridVisible();
+      setSelectShows(false)
       setWeekVisibility(false);
       setComicBuildVisible(false);
       setEnterAvailabilityForComic(false);
@@ -918,6 +926,7 @@ You will receive confirmation emails to this email address each time you submit 
     } else if (buttonName === 'buildShows') {
       toggleBuildShowVisible();
       setWeekVisibility(false);
+      setSelectShows(false)
       setComicBuildVisible(false);
       setEnterAvailabilityForComic(false);
       setEmailComics(false);
@@ -933,6 +942,7 @@ You will receive confirmation emails to this email address each time you submit 
       setEnterAvailabilityForComic(false);
       setEmailComics(false);
       setDowntownLong(false);
+      setSelectShows(false)
       setSouthLong(false);
       setComicProfiles(false);
       setPublishedVisible(false);
@@ -946,6 +956,7 @@ You will receive confirmation emails to this email address each time you submit 
       setDowntownLong(false);
       setSouthLong(false);
       setComicProfiles(false);
+      setSelectShows(false)
       setPublishedVisible(false);
       setGridVisible(false)
     } else if (buttonName === 'emailComics') {
@@ -957,6 +968,7 @@ You will receive confirmation emails to this email address each time you submit 
       setDowntownLong(false);
       setSouthLong(false);
       setComicProfiles(false);
+      setSelectShows(false)
       setPublishedVisible(false);
       setGridVisible(false)
     } else if (buttonName === 'downtownLong') {
@@ -966,6 +978,7 @@ You will receive confirmation emails to this email address each time you submit 
       setComicBuildVisible(false);
       setEnterAvailabilityForComic(false);
       setEmailComics(false);
+      setSelectShows(false)
       setSouthLong(false);
       setComicProfiles(false);
       setPublishedVisible(false);
@@ -980,6 +993,7 @@ You will receive confirmation emails to this email address each time you submit 
       setDowntownLong(false);
       setComicProfiles(false);
       setPublishedVisible(false);
+      setSelectShows(false)
       setGridVisible(false)
     } else if (buttonName === 'comicProfiles') {
       toggleComicProfiles();
@@ -989,11 +1003,25 @@ You will receive confirmation emails to this email address each time you submit 
       setEnterAvailabilityForComic(false);
       setEmailComics(false);
       setDowntownLong(false);
+      setSelectShows(false)
       setSouthLong(false);
       setPublishedVisible(false);
       setGridVisible(false)
     } else if (buttonName === 'publishedVisible') {
       togglePublishedVisible();
+      setWeekVisibility(false);
+      setBuildShowVisible(false);
+      setComicBuildVisible(false);
+      setEnterAvailabilityForComic(false);
+      setEmailComics(false);
+      setSelectShows(false)
+      setDowntownLong(false);
+      setSouthLong(false);
+      setComicProfiles(false);
+      setGridVisible(false)
+    } else if (buttonName === 'selectShows') {
+      toggleSelectShowsVisible();
+      setPublishedVisible(false);
       setWeekVisibility(false);
       setBuildShowVisible(false);
       setComicBuildVisible(false);
@@ -1184,6 +1212,12 @@ You will receive confirmation emails to this email address each time you submit 
           onClick={() => handleButtonClick('gridVisible')}
         >
         Grid Availability
+        </button>
+        <button 
+          className={selectedButtons.selectShows ? 'highlighted' : ''}
+          onClick={() => handleButtonClick('selectShows')}
+        >
+          Select Shows
         </button>
       <button 
           className={selectedButtons.downtownLong ? 'highlighted' : ''}
