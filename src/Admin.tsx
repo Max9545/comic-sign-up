@@ -76,8 +76,9 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [prosEmailBool, setProsEmailBool] = useState<boolean>(false);
   const [almostFamousEmailBool, setAlmostFamousEmailBool] = useState<boolean>(false);
   const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(false);
-
   
+  const [DBShows, setDBShows] = useState([]);
+
   const [gridVisible, setGridVisible] = useState(true)
   const [selectedButtons, setSelectedButtons] = useState({
     availabiltyForComics: false,
@@ -883,6 +884,22 @@ You will receive confirmation emails to this email address each time you submit 
     setSelectShows(!selectShows);
   };
 
+  useEffect(() => {
+    showShowsFromDB(); // Trigger fetch operation on component mount
+  }, []);
+
+  const showShowsFromDB = () => {
+    fetch('http://localhost:3001/comedians')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        setDBShows(data)
+        // Now you can use the data in your React app
+    })
+    .catch(error => console.error('Error fetching comedians:', error));
+  }
+
+
   const handleButtonClick = (buttonName: string) => {
     // Set the visibility state of each component based on the clicked button
 
@@ -1106,7 +1123,6 @@ You will receive confirmation emails to this email address each time you submit 
     );
   });
     };
-
 
 
 
@@ -1504,6 +1520,18 @@ You will receive confirmation emails to this email address each time you submit 
       {showsToAddSouth}</>}
        
         {/* <h2 className='admin-build' onClick={() => toggleComicBuildVisible()}>Create New Comic/Delete Comic</h2> */}
+        {selectShows && (
+  <>
+    <h2>Select Shows</h2>
+    {DBShows?.length > 0 && DBShows.map((show: any) => {
+      return <div key={show.id} className='show-div'>
+      <p>{show.first_name} {show.last_name}</p>
+      </div>
+    })}
+  </>
+)}
+
+
         {comicBuildVisible && <div>
           <h2 className='downtown-available-header'>Create New Comic/Delete Comic</h2>
           <div className='create-new-comic'
