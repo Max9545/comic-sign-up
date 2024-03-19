@@ -1546,7 +1546,7 @@ You will receive confirmation emails to this email address each time you submit 
         {/* <h2 className='admin-build' onClick={() => toggleComicBuildVisible()}>Create New Comic/Delete Comic</h2> */}
         {selectShows && (
   <>
-    <button className='set-DB-shows' onClick={() => submitDBShows()}>Select Shows</button>
+    <button className='set-DB-shows' onClick={() => submitDBShows()}>Build Week</button>
     {DBShows?.length > 0 && DBShows.map((show: any) => {
       return <div key={show.id}    
       className={`show-to-select${highlightedShows.includes(show.id) ? '-highlighted' : ''}`}
