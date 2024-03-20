@@ -1242,6 +1242,52 @@ You will receive confirmation emails to this email address each time you submit 
       }
       
     };
+
+    function convertStringToDateAndTime(str: string | number | Date) {
+      // Convert string to Date object
+      const date = new Date(str);
+  
+      // Convert to Mountain Time (UTC-7)
+      const mountainTimeOffsetSeconds = -7 * 60 * 60; // -7 hours * 60 minutes * 60 seconds
+      const mountainTimeOffsetMilliseconds = mountainTimeOffsetSeconds * 1000; // Convert to milliseconds
+      const mountainTime = new Date(date.getTime() + mountainTimeOffsetMilliseconds);
+  
+      // Get day of the week
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const dayOfWeek = days[mountainTime.getDay()];
+  
+      // Format date and time
+      const formattedDate = mountainTime.toLocaleDateString('en-US', {
+          timeZone: 'America/Denver', // Mountain Time zone
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+      });
+  
+      const formattedTime = mountainTime.toLocaleTimeString('en-US', {
+          timeZone: 'America/Denver', // Mountain Time zone
+          hour: 'numeric',
+          minute: 'numeric'
+      });
+  
+      return { formattedDate, formattedTime, dayOfWeek };
+  }
+  
+  // Example usage
+  const inputString = "2024-03-22T01:30:00.000Z";
+  const { formattedDate, formattedTime, dayOfWeek } = convertStringToDateAndTime(inputString);
+  console.log("Formatted Date:", formattedDate);
+  console.log("Formatted Time (Mountain Time - HH:MM):", formattedTime);
+  console.log("Day of the Week:", dayOfWeek);
+  
+  
+  // Example usage
+  // const inputString = "2024-03-22T01:30:00.000Z";
+  // const { formattedDateTime, dayOfWeek } = convertStringToDateAndTime(inputString);
+  // console.log("Formatted Date and Time (Mountain Time):", formattedDateTime);
+  // console.log("Day of the Week:", dayOfWeek);
+  
       
 
   return (
@@ -1551,13 +1597,13 @@ You will receive confirmation emails to this email address each time you submit 
       return <div key={show.id}    
       className={`show-to-select${highlightedShows.includes(show.id) ? '-highlighted' : ''}`}
       onClick={() => toggleHighlight(show.id, show)}>
-      <p>{show.first_name} {show.last_name}</p>
+      <p>{show['First Name']} {show['Last Name']}</p>
+        <p>{`${convertStringToDateAndTime(show.first_showtime).formattedDate}`}</p>
+        <p>{`${convertStringToDateAndTime(show.first_showtime).formattedTime}`}</p>
       </div>
     })}
   </>
 )}
-
-
         {comicBuildVisible && <div>
           <h2 className='downtown-available-header'>Create New Comic/Delete Comic</h2>
           <div className='create-new-comic'
