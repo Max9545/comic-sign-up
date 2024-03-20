@@ -739,7 +739,8 @@ label {
 .show-to-select-highlighted {
   background-color: red;
   color: black;
-  margin: 5%
+  margin: 5%;
+  border: white solid 2px;
 }
 
 

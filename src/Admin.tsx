@@ -1248,7 +1248,7 @@ You will receive confirmation emails to this email address each time you submit 
       const date = new Date(str);
   
       // Convert to Mountain Time (UTC-7)
-      const mountainTimeOffsetSeconds = -7 * 60 * 60; // -7 hours * 60 minutes * 60 seconds
+      const mountainTimeOffsetSeconds = -3 * 60 * 60; // -7 hours * 60 minutes * 60 seconds
       const mountainTimeOffsetMilliseconds = mountainTimeOffsetSeconds * 1000; // Convert to milliseconds
       const mountainTime = new Date(date.getTime() + mountainTimeOffsetMilliseconds);
   
@@ -1613,8 +1613,8 @@ You will receive confirmation emails to this email address each time you submit 
           onClick={() => toggleHighlight(show.id, show)}
         >
           <div>{show['First Name']} {show['Last Name']}</div>
-          <div>{`${convertStringToDateAndTime(show.first_showtime).formattedDate}`}</div>
-          <div>{`${convertStringToDateAndTime(show.first_showtime).formattedTime}`}</div>
+          <div>{`${convertStringToDateAndTime(show.showdate).formattedDate}`}</div>
+          <div>{`${convertStringToDateAndTime(show.showtime).formattedTime}`}</div>
         </div>
       ))}
     </div>
@@ -1628,8 +1628,8 @@ You will receive confirmation emails to this email address each time you submit 
           onClick={() => toggleHighlight(show.id, show)}
         >
            <div>{show['First Name']} {show['Last Name']}</div>
-          <div>{`${convertStringToDateAndTime(show.first_showtime).formattedDate}`}</div>
-          <div>{`${convertStringToDateAndTime(show.first_showtime).formattedTime}`}</div>
+           <div>{`${convertStringToDateAndTime(show.showdate).formattedDate}`}</div>
+          <div>{`${convertStringToDateAndTime(show.showtime).formattedTime}`}</div>
         </div>
       ))}
     </div>
