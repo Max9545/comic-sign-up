@@ -1604,7 +1604,8 @@ You will receive confirmation emails to this email address each time you submit 
     })} */}
     <div className="shows-container">
     <div className="column">
-      <h2>Location 1</h2>
+      <h2>Downtown</h2>
+      {/* @ts-ignore */}
       {DBShows.filter(show => show.location_id === 1).map((show: any) => (
         <div
           key={show.id}
@@ -1618,7 +1619,8 @@ You will receive confirmation emails to this email address each time you submit 
       ))}
     </div>
     <div className="column">
-      <h2>Location 2</h2>
+      <h2>South</h2>
+      {/* @ts-ignore */}
       {DBShows.filter(show => show.location_id === 2).map((show: any) => (
         <div
           key={show.id}
