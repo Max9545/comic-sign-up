@@ -76,7 +76,7 @@ function Admin(props: {shows: [ShowToBook], setShows: any, setWeekSchedule: any,
   const [prosEmailBool, setProsEmailBool] = useState<boolean>(false);
   const [almostFamousEmailBool, setAlmostFamousEmailBool] = useState<boolean>(false);
   const [outOfTownersEmailBool, setOutOfTownersEmailBool] = useState<boolean>(false);
-  
+  const [highlightedShows, setHighlightedShows] = useState<number[]>([]);;
   const [DBShows, setDBShows] = useState([]);
 
   const [gridVisible, setGridVisible] = useState(true)
@@ -1178,6 +1178,26 @@ You will receive confirmation emails to this email address each time you submit 
     
         // Output the highlighted shows
         console.log(highlightedDBShows);
+        const newSched = highlightedDBShows.map(show => {
+          return {
+            // supportStatus: string;
+            key: show.id, 
+            // day: string, 
+            time: show.showtime, 
+            currentClub: show.location_id == 1 ? 'downtown' : 'south', 
+            // availableComedian: object, 
+            date: show.showdate, 
+            id: show.id,
+            headliner: show['First Name'] + show['Last Name']
+            // club: string,
+            // availability: boolean,
+            // availableComics: any
+            // clean?: any,
+            // familyFriendly: any
+          }
+        })
+        console.log(newSched)
+        // buildWeek()
       } else {
         console.log('DBShows is null or undefined');
       }
@@ -1227,7 +1247,6 @@ You will receive confirmation emails to this email address each time you submit 
     }
     
     
-    const [highlightedShows, setHighlightedShows] = useState<number[]>([]);;
 
     // Function to toggle highlight for a specific show
     const toggleHighlight = (id: any, show: any) => {
@@ -1275,11 +1294,11 @@ You will receive confirmation emails to this email address each time you submit 
   }
   
   // Example usage
-  const inputString = "2024-03-22T01:30:00.000Z";
-  const { formattedDate, formattedTime, dayOfWeek } = convertStringToDateAndTime(inputString);
-  console.log("Formatted Date:", formattedDate);
-  console.log("Formatted Time (Mountain Time - HH:MM):", formattedTime);
-  console.log("Day of the Week:", dayOfWeek);
+  // const inputString = "2024-03-22T01:30:00.000Z";
+  // const { formattedDate, formattedTime, dayOfWeek } = convertStringToDateAndTime(inputString);
+  // console.log("Formatted Date:", formattedDate);
+  // console.log("Formatted Time (Mountain Time - HH:MM):", formattedTime);
+  // console.log("Day of the Week:", dayOfWeek);
   
   
   // Example usage
