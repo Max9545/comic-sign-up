@@ -1187,7 +1187,7 @@ You will receive confirmation emails to this email address each time you submit 
             club: show.location_id == 1 ? 'downtown' : 'south', 
             date: show.showdate, 
             id: show.id,
-            headliner: show['First Name'] + show['Last Name']
+            headliner: show['First Name'] + ' ' + show['Last Name']
             // clean?: false,
             // familyFriendly: false
           }
