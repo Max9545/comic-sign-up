@@ -1178,22 +1178,18 @@ You will receive confirmation emails to this email address each time you submit 
     
         // Output the highlighted shows
         console.log(highlightedDBShows);
-        const newSched = highlightedDBShows.map(show => {
+        const newSched = highlightedDBShows.map((show: any) => {
           return {
             // supportStatus: string;
             key: show.id, 
             // day: string, 
             time: show.showtime, 
-            currentClub: show.location_id == 1 ? 'downtown' : 'south', 
-            // availableComedian: object, 
+            club: show.location_id == 1 ? 'downtown' : 'south', 
             date: show.showdate, 
             id: show.id,
             headliner: show['First Name'] + show['Last Name']
-            // club: string,
-            // availability: boolean,
-            // availableComics: any
-            // clean?: any,
-            // familyFriendly: any
+            // clean?: false,
+            // familyFriendly: false
           }
         })
         console.log(newSched)
