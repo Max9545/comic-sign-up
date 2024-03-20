@@ -1593,7 +1593,7 @@ You will receive confirmation emails to this email address each time you submit 
         {selectShows && (
   <>
     <button className='set-DB-shows' onClick={() => submitDBShows()}>Build Week</button>
-    {DBShows?.length > 0 && DBShows.map((show: any) => {
+    {/* {DBShows?.length > 0 && DBShows.map((show: any) => {
       return <div key={show.id}    
       className={`show-to-select${highlightedShows.includes(show.id) ? '-highlighted' : ''}`}
       onClick={() => toggleHighlight(show.id, show)}>
@@ -1601,7 +1601,37 @@ You will receive confirmation emails to this email address each time you submit 
         <p>{`${convertStringToDateAndTime(show.first_showtime).formattedDate}`}</p>
         <p>{`${convertStringToDateAndTime(show.first_showtime).formattedTime}`}</p>
       </div>
-    })}
+    })} */}
+    <div className="shows-container">
+    <div className="column">
+      <h2>Location 1</h2>
+      {DBShows.filter(show => show.location_id === 1).map((show: any) => (
+        <div
+          key={show.id}
+          className={`show-to-select${highlightedShows.includes(show.id) ? '-highlighted' : ''}`}
+          onClick={() => toggleHighlight(show.id, show)}
+        >
+          <p>{show['First Name']} {show['Last Name']}</p>
+          <p>{`${convertStringToDateAndTime(show.first_showtime).formattedDate}`}</p>
+          <p>{`${convertStringToDateAndTime(show.first_showtime).formattedTime}`}</p>
+        </div>
+      ))}
+    </div>
+    <div className="column">
+      <h2>Location 2</h2>
+      {DBShows.filter(show => show.location_id === 2).map((show: any) => (
+        <div
+          key={show.id}
+          className={`show-to-select${highlightedShows.includes(show.id) ? '-highlighted' : ''}`}
+          onClick={() => toggleHighlight(show.id, show)}
+        >
+          <p>{show['First Name']} {show['Last Name']}</p>
+          <p>{`${convertStringToDateAndTime(show.first_showtime).formattedDate}`}</p>
+          <p>{`${convertStringToDateAndTime(show.first_showtime).formattedTime}`}</p>
+        </div>
+      ))}
+    </div>
+  </div>
   </>
 )}
         {comicBuildVisible && <div>

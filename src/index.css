@@ -745,3 +745,8 @@ label {
   height:5vh;
   font-weight: 900;
 }
+
+.shows-container{
+  display: flex;
+  justify-content: space-between;
+}
