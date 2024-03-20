@@ -1612,9 +1612,9 @@ You will receive confirmation emails to this email address each time you submit 
           className={`show-to-select${highlightedShows.includes(show.id) ? '-highlighted' : ''}`}
           onClick={() => toggleHighlight(show.id, show)}
         >
-          <p>{show['First Name']} {show['Last Name']}</p>
-          <p>{`${convertStringToDateAndTime(show.first_showtime).formattedDate}`}</p>
-          <p>{`${convertStringToDateAndTime(show.first_showtime).formattedTime}`}</p>
+          <div>{show['First Name']} {show['Last Name']}</div>
+          <div>{`${convertStringToDateAndTime(show.first_showtime).formattedDate}`}</div>
+          <div>{`${convertStringToDateAndTime(show.first_showtime).formattedTime}`}</div>
         </div>
       ))}
     </div>
@@ -1627,9 +1627,9 @@ You will receive confirmation emails to this email address each time you submit 
           className={`show-to-select${highlightedShows.includes(show.id) ? '-highlighted' : ''}`}
           onClick={() => toggleHighlight(show.id, show)}
         >
-          <p>{show['First Name']} {show['Last Name']}</p>
-          <p>{`${convertStringToDateAndTime(show.first_showtime).formattedDate}`}</p>
-          <p>{`${convertStringToDateAndTime(show.first_showtime).formattedTime}`}</p>
+           <div>{show['First Name']} {show['Last Name']}</div>
+          <div>{`${convertStringToDateAndTime(show.first_showtime).formattedDate}`}</div>
+          <div>{`${convertStringToDateAndTime(show.first_showtime).formattedTime}`}</div>
         </div>
       ))}
     </div>
